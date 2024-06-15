@@ -56,6 +56,7 @@ public class StaircaseGenerator : MonoBehaviour
         {
             var index = random.Next(_stairs.Length);
             var stair = Instantiate(_stairs[index], position, Quaternion.Euler(rotation));
+            stair.transform.parent = transform;
             position += stair.transform.TransformDirection(positionDifference);
             rotation += rotationDifference;
             await UniTask.Yield();

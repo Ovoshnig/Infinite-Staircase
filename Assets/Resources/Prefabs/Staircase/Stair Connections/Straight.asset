@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: Straight
   m_EditorClassIdentifier: 
   Prefab: {fileID: 523713080736793696, guid: b17df4bdf50112a4d8c11af1f4d9193c, type: 3}
-  MinCount: 10
-  MaxCount: 30
+  MinCount: 5
+  MaxCount: 15
   CanBeInStart: 1

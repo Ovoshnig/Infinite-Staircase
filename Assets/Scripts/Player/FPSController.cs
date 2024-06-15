@@ -22,17 +22,17 @@ public class FPSController : MonoBehaviour
     private Vector2 _lookInput;
     private bool _jumpInput;
     private bool _runInput;
-    private Vector3 _moveDirection = Vector3.zero;
+    private Vector3 _moveDirection;
     private float _rotationX;
     private float _currentSpeedX;
     private float _currentSpeedZ;
     private float _movementDirectionY;
 
     [Inject]
-    private void Construct(GamePauser gamePauser, LookTuner lookSettings)
+    private void Construct(GamePauser gamePauser, LookTuner lookTuner)
     {
         _gamePauser = gamePauser;
-        _lookTuner = lookSettings;
+        _lookTuner = lookTuner;
     }
 
     private void Awake()

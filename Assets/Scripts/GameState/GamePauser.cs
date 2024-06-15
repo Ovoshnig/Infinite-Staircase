@@ -55,6 +55,11 @@ public class GamePauser : IDisposable
     private void OnLevelLoaded(SceneSwitch.Scene scene)
     {
         _reversePauseStateAllowed = true;
+
+        PauseMenu pauseMenuHandler = UnityEngine.Object.FindFirstObjectByType<PauseMenu>();
+
+        if (pauseMenuHandler != null)
+            pauseMenuHandler.OnResumeClicked += Unpause;
     }
 
     private void SetPauseState(bool pause)

@@ -14,5 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Prefab: {fileID: 523713080736793696, guid: 8204cbe76c3fa0a4f947177e875846a2, type: 3}
   MinCount: 8
-  MaxCount: 20
+  MaxCount: 10
   CanBeInStart: 0
