@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1f052a82553564f49a319e8b23892e8f, type: 3}
+  m_Name: Settings
+  m_EditorClassIdentifier: 
+  _controlSettings:
+    MaxSensitivity: 2
+  _levelSettings:
+    FirstGameplayLevel: 1
+    GameplayLevelsCount: 1
+    LevelTransitionDuration: 5
+  _audioSettings:
+    MinVolume: -80
+    MaxVolume: 0
+    MusicFadeInDuration: 5
