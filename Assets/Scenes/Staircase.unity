@@ -227,6 +227,60 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 121746514}
   m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &202818000
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 202818002}
+  - component: {fileID: 202818001}
+  m_Layer: 0
+  m_Name: GameObject
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!95 &202818001
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 202818000}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 156edaf123c888a47842867c94884d83, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
+--- !u!4 &202818002
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 202818000}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -15.7243395, y: -1.1060225, z: -1.1001599}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &423108022
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -274,22 +328,6 @@ PrefabInstance:
     - target: {fileID: 1473590532434987169, guid: 7eaf84d7312f3c54c8e31b402647ff4c, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3435781456481947353, guid: 7eaf84d7312f3c54c8e31b402647ff4c, type: 3}
-      propertyPath: far clip plane
-      value: 100
-      objectReference: {fileID: 0}
-    - target: {fileID: 3435781456481947353, guid: 7eaf84d7312f3c54c8e31b402647ff4c, type: 3}
-      propertyPath: m_BackGroundColor.b
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 3435781456481947353, guid: 7eaf84d7312f3c54c8e31b402647ff4c, type: 3}
-      propertyPath: m_BackGroundColor.g
-      value: 0.8794117
-      objectReference: {fileID: 0}
-    - target: {fileID: 3435781456481947353, guid: 7eaf84d7312f3c54c8e31b402647ff4c, type: 3}
-      propertyPath: m_BackGroundColor.r
-      value: 0.745283
       objectReference: {fileID: 0}
     - target: {fileID: 3472763440191899071, guid: 7eaf84d7312f3c54c8e31b402647ff4c, type: 3}
       propertyPath: m_Name
@@ -535,7 +573,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _startTransform: {fileID: 481872785}
   _partsCount: 50
-  _seed: 81
+  _seed: 64
 --- !u!4 &1166965747
 Transform:
   m_ObjectHideFlags: 0
@@ -806,6 +844,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7264843460696728055, guid: ad8138a2df2ccaf48ac9c3ea265f6b3a, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 188.7998
+      objectReference: {fileID: 0}
     - target: {fileID: 8593626715503206894, guid: ad8138a2df2ccaf48ac9c3ea265f6b3a, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -844,3 +886,4 @@ SceneRoots:
   - {fileID: 423108022}
   - {fileID: 1830459716}
   - {fileID: 1166965747}
+  - {fileID: 202818002}

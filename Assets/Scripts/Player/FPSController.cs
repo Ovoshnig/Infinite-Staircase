@@ -40,16 +40,14 @@ public class FPSController : MonoBehaviour
         _characterController = GetComponent<CharacterController>();
 
         _playerInput = new PlayerInput();
-
-        _playerInput.Player.Move.performed += OnMove;
-        _playerInput.Player.Look.performed += OnLook;
-        _playerInput.Player.Jump.performed += OnJump;
-        _playerInput.Player.Run.performed += OnRun;
-
-        _playerInput.Player.Move.canceled += OnMoveCancel;
-        _playerInput.Player.Look.canceled += OnLookCancel;
-        _playerInput.Player.Jump.canceled += OnJumpCancel;
-        _playerInput.Player.Run.canceled += OnRunCancel;
+        _playerInput.Player.Move.performed += OnMovePerformed;
+        _playerInput.Player.Look.performed += OnLookPerformed;
+        _playerInput.Player.Jump.performed += OnJumpPerformed;
+        _playerInput.Player.Run.performed += OnRunPerformed;
+        _playerInput.Player.Move.canceled += OnMoveCanceled;
+        _playerInput.Player.Look.canceled += OnLookCanceled;
+        _playerInput.Player.Jump.canceled += OnJumpCanceled;
+        _playerInput.Player.Run.canceled += OnRunCanceled;
     }
 
     private void Start()
@@ -78,25 +76,25 @@ public class FPSController : MonoBehaviour
 
     #region "Performed actions"
 
-    private void OnMove(InputAction.CallbackContext context) => _movementInput = context.action.ReadValue<Vector2>();
+    private void OnMovePerformed(InputAction.CallbackContext context) => _movementInput = context.action.ReadValue<Vector2>();
 
-    private void OnLook(InputAction.CallbackContext context) => _lookInput = context.action.ReadValue<Vector2>();
+    private void OnLookPerformed(InputAction.CallbackContext context) => _lookInput = context.action.ReadValue<Vector2>();
 
-    private void OnJump(InputAction.CallbackContext context) => _jumpInput = true;
+    private void OnJumpPerformed(InputAction.CallbackContext context) => _jumpInput = true;
     
-    private void OnRun(InputAction.CallbackContext context) => _runInput = true;
+    private void OnRunPerformed(InputAction.CallbackContext context) => _runInput = true;
     
     #endregion
 
     #region "Canceled actions"
 
-    private void OnMoveCancel(InputAction.CallbackContext context) => _movementInput = Vector2.zero;
+    private void OnMoveCanceled(InputAction.CallbackContext context) => _movementInput = Vector2.zero;
     
-    private void OnLookCancel(InputAction.CallbackContext context) => _lookInput = Vector2.zero;
+    private void OnLookCanceled(InputAction.CallbackContext context) => _lookInput = Vector2.zero;
 
-    private void OnJumpCancel(InputAction.CallbackContext context) => _jumpInput = false;
+    private void OnJumpCanceled(InputAction.CallbackContext context) => _jumpInput = false;
     
-    private void OnRunCancel(InputAction.CallbackContext context) => _runInput = false;
+    private void OnRunCanceled(InputAction.CallbackContext context) => _runInput = false;
 
     #endregion
 
