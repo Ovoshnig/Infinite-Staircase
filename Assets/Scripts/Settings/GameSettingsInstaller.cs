@@ -19,7 +19,7 @@ public class GameSettingsInstaller : ScriptableObjectInstaller<GameSettingsInsta
     [Serializable]
     public class ControlSettings
     {
-        public float MaxSensitivity;
+        [field: SerializeField] public float MaxSensitivity { get; private set; }
 
         public float DefaultSensitivity => MaxSensitivity / 2f;
     }
@@ -27,9 +27,9 @@ public class GameSettingsInstaller : ScriptableObjectInstaller<GameSettingsInsta
     [Serializable]
     public class LevelSettings
     {
-        public uint FirstGameplayLevel;
-        public uint GameplayLevelsCount;
-        public float LevelTransitionDuration;
+        [field: SerializeField] public uint FirstGameplayLevel { get; private set; }
+        [field: SerializeField] public uint GameplayLevelsCount { get; private set; }
+        [field: SerializeField] public float LevelTransitionDuration { get; private set; }
 
         public uint LastGameplayLevel => FirstGameplayLevel + GameplayLevelsCount - 1;
         public uint CreditsScene => LastGameplayLevel + 1;
@@ -38,9 +38,9 @@ public class GameSettingsInstaller : ScriptableObjectInstaller<GameSettingsInsta
     [Serializable]
     public class AudioSettings
     {
-        public float MinVolume;
-        public float MaxVolume;
-        public float MusicFadeInDuration;
+        [field: SerializeField] public float MinVolume { get; private set; }
+        [field: SerializeField] public float MaxVolume { get; private set; }
+        [field: SerializeField] public float MusicFadeInDuration { get; private set; }
 
         public float DefaultVolume => (MinVolume + MaxVolume) / 2f;
     }

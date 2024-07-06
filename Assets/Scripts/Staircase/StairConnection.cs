@@ -7,39 +7,19 @@ public class StairConnection : ScriptableObject
     public int MinCount;
     public int MaxCount;
     public bool CanBeInStart;
+    public GameObject Stair1;
+    public GameObject Stair2;
 
-    private GameObject _stair1;
-    private GameObject _stair2;
-    private Vector3? _positionDifference;
-    private Vector3? _rotationDifference;
+    private Vector3 _positionDifference;
+    private Vector3 _rotationDifference;
 
-    public GameObject Stair1
+    public Vector3 PositionDifference
     {
         get
         {
-            if (_stair1 == null)
-                _stair1 = Prefab.transform.GetChild(0).gameObject;
-            return _stair1;
-        }
-    }
-
-    public GameObject Stair2
-    {
-        get
-        {
-            if (_stair2 == null)
-                _stair2 = Prefab.transform.GetChild(1).gameObject;
-            return _stair2;
-        }
-    }
-
-    public Vector3 PositionDifference 
-    {
-        get
-        {
-            if (_positionDifference == null)
+            if (_positionDifference == default)
                 _positionDifference = Stair2.transform.position - Stair1.transform.position;
-            return (Vector3)_positionDifference;
+            return _positionDifference;
         }
     }
 
@@ -47,9 +27,17 @@ public class StairConnection : ScriptableObject
     {
         get
         {
-            if (_rotationDifference == null)
+            if (_rotationDifference == default)
                 _rotationDifference = Stair2.transform.rotation.eulerAngles - Stair1.transform.rotation.eulerAngles;
-            return (Vector3)_rotationDifference;
+            return _rotationDifference;
         }
+    }
+
+    private void OnValidate()
+    {
+        if (Stair1 == null)
+            Stair1 = Prefab.transform.GetChild(0).gameObject;
+        if (Stair2 == null)
+            Stair2 = Prefab.transform.GetChild(1).gameObject;
     }
 }

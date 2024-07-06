@@ -1,5 +1,7 @@
 using Cysharp.Threading.Tasks;
+using Random = System.Random;
 using System.Linq;
+using System.Threading;
 using UnityEngine;
 
 public class StaircaseGenerator : MonoBehaviour
@@ -11,6 +13,7 @@ public class StaircaseGenerator : MonoBehaviour
     private const string StairPrefabsPath = "Prefabs/Staircase/Stairs";
     private const string StairConnectionsPath = "Prefabs/Staircase/Stair Connections";
 
+    private readonly CancellationTokenSource _cts = new();
     private GameObject[] _stairs;
     private StairConnection[] _stairConnections;
     private Vector3 _size;
@@ -24,9 +27,18 @@ public class StaircaseGenerator : MonoBehaviour
         Generate().Forget();
     }
 
+    private void OnDisable()
+    {
+        if (_cts != null)
+        {
+            _cts.Cancel();
+            _cts.Dispose();
+        }
+    }
+
     private async UniTask Generate()
     {
-        var random = new System.Random(_seed);
+        var random = new Random(_seed);
         var startingConnections = _stairConnections.Where(x => x.CanBeInStart).ToArray();
         var index = random.Next(startingConnections.Length);
         var stairConnection = startingConnections[index];
@@ -59,7 +71,7 @@ public class StaircaseGenerator : MonoBehaviour
             stair.transform.parent = transform;
             position += stair.transform.TransformDirection(positionDifference);
             rotation += rotationDifference;
-            await UniTask.Yield();
+            await UniTask.Yield(_cts.Token);
         }
         
         return (position, rotation);

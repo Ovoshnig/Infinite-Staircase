@@ -4,21 +4,22 @@ using Zenject;
 
 public abstract class Menu : MonoBehaviour
 {
-    [SerializeField] protected GameObject MenuPanel;
-    [SerializeField] protected GameObject SettingsPanel;
-
+    [SerializeField] private GameObject _menuPanel;
+    [SerializeField] private GameObject _settingsPanel;
     [SerializeField] private Button _openSettingsPanelButton;
     [SerializeField] private Button _closeSettingsPanelButton;
     [SerializeField] private Slider _sensitivitySlider;
     [SerializeField] private Slider _soundsVolumeSlider;
     [SerializeField] private Slider _musicVolumeSlider;
 
-    protected SceneSwitch SceneSwitch;
-
     private LookTuner _lookTuner;
     private AudioTuner _audioTuner;
     private GameSettingsInstaller.ControlSettings _controlSettings;
     private GameSettingsInstaller.AudioSettings _audioSettings;
+
+    protected GameObject MenuPanel => _menuPanel;
+    protected GameObject SettingsPanel => _settingsPanel;
+    protected SceneSwitch SceneSwitch { get; private set; }
 
     [Inject]
     protected void Construct(SceneSwitch sceneSwitch, LookTuner lookTuner, 
@@ -107,13 +108,13 @@ public abstract class Menu : MonoBehaviour
     private void OpenSettingsPanel()
     {
         MenuPanel.SetActive(false);
-        SettingsPanel.SetActive(true);
+        _settingsPanel.SetActive(true);
     }
 
     private void CloseSettingsPanel()
     {
         MenuPanel.SetActive(true);
-        SettingsPanel.SetActive(false);
+        _settingsPanel.SetActive(false);
     }
 
     private void SetSensitivity(float value) => _lookTuner.Sensitivity = value;

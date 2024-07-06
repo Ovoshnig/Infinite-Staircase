@@ -16,3 +16,7 @@ MonoBehaviour:
   MinCount: 5
   MaxCount: 10
   CanBeInStart: 0
+  Stair1: {fileID: 5747487624539764512, guid: a68fb2ebf557b5941a485bed04c096d5, type: 3}
+  Stair2: {fileID: 8582038576156830903, guid: a68fb2ebf557b5941a485bed04c096d5, type: 3}
+  PositionDifference: {x: 0.069, y: 0.2, z: -0.293}
+  RotationDifference: {x: 0, y: 343, z: -0}

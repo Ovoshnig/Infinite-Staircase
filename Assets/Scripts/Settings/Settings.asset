@@ -13,12 +13,12 @@ MonoBehaviour:
   m_Name: Settings
   m_EditorClassIdentifier: 
   _controlSettings:
-    MaxSensitivity: 2
+    <MaxSensitivity>k__BackingField: 2
   _levelSettings:
-    FirstGameplayLevel: 1
-    GameplayLevelsCount: 1
-    LevelTransitionDuration: 5
+    <FirstGameplayLevel>k__BackingField: 1
+    <GameplayLevelsCount>k__BackingField: 1
+    <LevelTransitionDuration>k__BackingField: 5
   _audioSettings:
-    MinVolume: -80
-    MaxVolume: 0
-    MusicFadeInDuration: 5
+    <MinVolume>k__BackingField: -80
+    <MaxVolume>k__BackingField: 0
+    <MusicFadeInDuration>k__BackingField: 5
