@@ -1,12 +1,13 @@
 using UnityEngine;
 using Zenject;
 
-public class SceneInstaller : MonoInstaller
+public class InventoryInstaller : MonoInstaller
 {
     [SerializeField] private GameObject _inventoryCanvas;
 
     public override void InstallBindings()
     {
-        GameObject inventoryCanvas = Instantiate(_inventoryCanvas);
     }
+
+    public override void Start() => Container.InstantiatePrefab(_inventoryCanvas);
 }

@@ -1,11 +1,13 @@
 using Cysharp.Threading.Tasks;
+using Random = System.Random;
 using System;
 using System.Collections.Generic;
 using System.Threading;
 using UnityEngine;
 using Zenject;
 
-public class MusicPlayer : IDisposable
+[RequireComponent(typeof(AudioSource))]
+public class MusicPlayer : MonoBehaviour
 {
     private enum MusicCategory
     {
@@ -16,10 +18,10 @@ public class MusicPlayer : IDisposable
 
     private const string MusicClipsPath = "Audio/Music";
 
-    private readonly System.Random _random = new();
-    private readonly SceneSwitch _sceneSwitch;
-    private readonly AudioSource _musicSource;
-    private readonly Dictionary<MusicCategory, List<AudioClip>> _musicTracks;
+    private readonly Random _random = new();
+    private SceneSwitch _sceneSwitch;
+    private AudioSource _audioSource;
+    private Dictionary<MusicCategory, List<AudioClip>> _musicTracks;
     private List<AudioClip> _currentTracks;
     private Queue<AudioClip> _trackQueue;
     private CancellationTokenSource _cts = new();
@@ -27,23 +29,25 @@ public class MusicPlayer : IDisposable
     public event Action MusicTrackChanged;
 
     [Inject]
-    public MusicPlayer([Inject(Id = "musicSource")] AudioSource musicSource, SceneSwitch sceneSwitch)
-    {
-        _musicSource = musicSource;
-        _sceneSwitch = sceneSwitch;
-        _sceneSwitch.SceneLoaded += OnLevelLoaded;
+    private void Construct(SceneSwitch sceneSwitch) => _sceneSwitch = sceneSwitch;
 
+    private void Awake()
+    {
+        _audioSource = GetComponent<AudioSource>();
         _musicTracks = new Dictionary<MusicCategory, List<AudioClip>>();
-        LoadMusicTracks();
     }
 
-    public void Dispose()
+    private void Start() => LoadMusicTracks();
+
+    private void OnEnable() => _sceneSwitch.SceneLoaded += OnSceneLoaded;
+
+    public void OnDisable()
     {
-        _sceneSwitch.SceneLoaded -= OnLevelLoaded;
+        _sceneSwitch.SceneLoaded -= OnSceneLoaded;
         CancelToken();
     }
 
-    private void OnLevelLoaded(SceneSwitch.Scene scene)
+    private void OnSceneLoaded(SceneSwitch.Scene scene)
     {
         Dictionary<SceneSwitch.Scene, MusicCategory> sceneToMusicCategory = new()
         {
@@ -119,10 +123,10 @@ public class MusicPlayer : IDisposable
         while (true)
         {
             AudioClip clip = GetNextTrack();
-            _musicSource.clip = clip;
-            _musicSource.Play();
+            _audioSource.clip = clip;
+            _audioSource.Play();
             MusicTrackChanged?.Invoke();
-            await UniTask.WaitWhile(() => _musicSource.isPlaying, cancellationToken: _cts.Token);
+            await UniTask.WaitWhile(() => _audioSource.isPlaying, cancellationToken: _cts.Token);
         }
     }
 }

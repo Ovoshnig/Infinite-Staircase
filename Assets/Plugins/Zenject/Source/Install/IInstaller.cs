@@ -4,6 +4,7 @@ namespace Zenject
     public interface IInstaller
     {
         void InstallBindings();
+        void Start();
 
         bool IsEnabled
         {

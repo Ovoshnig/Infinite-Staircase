@@ -7,14 +7,10 @@ public class PauseMenuInstaller : MonoInstaller
 
     public override void InstallBindings()
     {
-        Container.BindFactory<PauseMenu, PauseMenu.Factory>()
+        Container.Bind<PauseMenu>()
             .FromComponentInNewPrefab(_pauseMenuCanvas)
             .AsSingle();
     }
 
-    public override void Start()
-    {
-        var pauseMenuFactory = Container.Resolve<PauseMenu.Factory>();
-        pauseMenuFactory.Create();
-    }
+    public override void Start() => Container.InstantiatePrefab(_pauseMenuCanvas);
 }
