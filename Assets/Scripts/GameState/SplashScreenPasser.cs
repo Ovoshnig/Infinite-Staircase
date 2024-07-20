@@ -25,11 +25,11 @@ public class SplashScreenPasser : IDisposable
     private void InitializePlayerInput()
     {
         _playerInput = new PlayerInput();
-        _playerInput.SplashScreen.Pass.performed += Pass;
+        _playerInput.SplashScreen.Pass.performed += OnPassPerformed;
         _playerInput.Enable();
     }
 
-    private void Pass(InputAction.CallbackContext _)
+    private void OnPassPerformed(InputAction.CallbackContext _)
     {
         if (!SplashScreen.isFinished)
             SplashScreen.Stop(SplashScreen.StopBehavior.FadeOut);

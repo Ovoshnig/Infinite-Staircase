@@ -76,4 +76,6 @@ public sealed class PauseMenu : Menu
         SettingsPanel.SetActive(false);
         _playerPoint.SetActive(true);
     }
+
+    public class Factory : PlaceholderFactory<PauseMenu> { }
 }

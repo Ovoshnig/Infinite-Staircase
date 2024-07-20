@@ -282,6 +282,34 @@
                     "isPartOfComposite": false
                 }
             ]
+        },
+        {
+            "name": "Inventory",
+            "id": "eff85bad-07a5-4c85-b8cb-02ebcc7c7679",
+            "actions": [
+                {
+                    "name": "OpenOrClose",
+                    "type": "Button",
+                    "id": "c1734492-2167-4ee8-9518-fbb0da7f129d",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "97dd5ac4-f3ac-4ec0-99c5-438750ac5241",
+                    "path": "<Keyboard>/e",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Keyboard and Mouse",
+                    "action": "OpenOrClose",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
         }
     ],
     "controlSchemes": [

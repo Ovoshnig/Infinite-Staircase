@@ -305,6 +305,34 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": false
                 }
             ]
+        },
+        {
+            ""name"": ""Inventory"",
+            ""id"": ""eff85bad-07a5-4c85-b8cb-02ebcc7c7679"",
+            ""actions"": [
+                {
+                    ""name"": ""OpenOrClose"",
+                    ""type"": ""Button"",
+                    ""id"": ""c1734492-2167-4ee8-9518-fbb0da7f129d"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""97dd5ac4-f3ac-4ec0-99c5-438750ac5241"",
+                    ""path"": ""<Keyboard>/e"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard and Mouse"",
+                    ""action"": ""OpenOrClose"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
         }
     ],
     ""controlSchemes"": [
@@ -352,6 +380,9 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
         // Credits
         m_Credits = asset.FindActionMap("Credits", throwIfNotFound: true);
         m_Credits_SpeedUp = m_Credits.FindAction("SpeedUp", throwIfNotFound: true);
+        // Inventory
+        m_Inventory = asset.FindActionMap("Inventory", throwIfNotFound: true);
+        m_Inventory_OpenOrClose = m_Inventory.FindAction("OpenOrClose", throwIfNotFound: true);
     }
 
     ~@PlayerInput()
@@ -360,6 +391,7 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
         Debug.Assert(!m_GameState.enabled, "This will cause a leak and performance issues, PlayerInput.GameState.Disable() has not been called.");
         Debug.Assert(!m_SplashScreen.enabled, "This will cause a leak and performance issues, PlayerInput.SplashScreen.Disable() has not been called.");
         Debug.Assert(!m_Credits.enabled, "This will cause a leak and performance issues, PlayerInput.Credits.Disable() has not been called.");
+        Debug.Assert(!m_Inventory.enabled, "This will cause a leak and performance issues, PlayerInput.Inventory.Disable() has not been called.");
     }
 
     public void Dispose()
@@ -625,6 +657,52 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
         }
     }
     public CreditsActions @Credits => new CreditsActions(this);
+
+    // Inventory
+    private readonly InputActionMap m_Inventory;
+    private List<IInventoryActions> m_InventoryActionsCallbackInterfaces = new List<IInventoryActions>();
+    private readonly InputAction m_Inventory_OpenOrClose;
+    public struct InventoryActions
+    {
+        private @PlayerInput m_Wrapper;
+        public InventoryActions(@PlayerInput wrapper) { m_Wrapper = wrapper; }
+        public InputAction @OpenOrClose => m_Wrapper.m_Inventory_OpenOrClose;
+        public InputActionMap Get() { return m_Wrapper.m_Inventory; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(InventoryActions set) { return set.Get(); }
+        public void AddCallbacks(IInventoryActions instance)
+        {
+            if (instance == null || m_Wrapper.m_InventoryActionsCallbackInterfaces.Contains(instance)) return;
+            m_Wrapper.m_InventoryActionsCallbackInterfaces.Add(instance);
+            @OpenOrClose.started += instance.OnOpenOrClose;
+            @OpenOrClose.performed += instance.OnOpenOrClose;
+            @OpenOrClose.canceled += instance.OnOpenOrClose;
+        }
+
+        private void UnregisterCallbacks(IInventoryActions instance)
+        {
+            @OpenOrClose.started -= instance.OnOpenOrClose;
+            @OpenOrClose.performed -= instance.OnOpenOrClose;
+            @OpenOrClose.canceled -= instance.OnOpenOrClose;
+        }
+
+        public void RemoveCallbacks(IInventoryActions instance)
+        {
+            if (m_Wrapper.m_InventoryActionsCallbackInterfaces.Remove(instance))
+                UnregisterCallbacks(instance);
+        }
+
+        public void SetCallbacks(IInventoryActions instance)
+        {
+            foreach (var item in m_Wrapper.m_InventoryActionsCallbackInterfaces)
+                UnregisterCallbacks(item);
+            m_Wrapper.m_InventoryActionsCallbackInterfaces.Clear();
+            AddCallbacks(instance);
+        }
+    }
+    public InventoryActions @Inventory => new InventoryActions(this);
     private int m_KeyboardandMouseSchemeIndex = -1;
     public InputControlScheme KeyboardandMouseScheme
     {
@@ -661,5 +739,9 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
     public interface ICreditsActions
     {
         void OnSpeedUp(InputAction.CallbackContext context);
+    }
+    public interface IInventoryActions
+    {
+        void OnOpenOrClose(InputAction.CallbackContext context);
     }
 }

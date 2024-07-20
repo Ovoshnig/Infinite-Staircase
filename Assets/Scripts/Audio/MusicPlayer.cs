@@ -19,8 +19,8 @@ public class MusicPlayer : IDisposable
     private readonly System.Random _random = new();
     private readonly SceneSwitch _sceneSwitch;
     private readonly AudioSource _musicSource;
-    private List<AudioClip> _currentTracks;
     private readonly Dictionary<MusicCategory, List<AudioClip>> _musicTracks;
+    private List<AudioClip> _currentTracks;
     private Queue<AudioClip> _trackQueue;
     private CancellationTokenSource _cts = new();
 
@@ -99,10 +99,7 @@ public class MusicPlayer : IDisposable
         }
     }
 
-    private void SetCurrentTracks(MusicCategory category)
-    {
-        _currentTracks = _musicTracks[category];
-    }
+    private void SetCurrentTracks(MusicCategory category) => _currentTracks = _musicTracks[category];
 
     private void ShuffleAndQueueTracks()
     {

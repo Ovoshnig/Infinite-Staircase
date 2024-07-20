@@ -62,16 +62,16 @@ public class FPSController : MonoBehaviour
     {
         _playerInput.Enable();
 
-        _gamePauser.GamePaused += Pause;
-        _gamePauser.GameUnpaused += Unpause;
+        _gamePauser.GamePaused += OnPaused;
+        _gamePauser.GameUnpaused += OnUnpaused;
     }
 
     private void OnDisable()
     {
         _playerInput.Disable();
 
-        _gamePauser.GamePaused -= Pause;
-        _gamePauser.GameUnpaused -= Unpause;
+        _gamePauser.GamePaused -= OnPaused;
+        _gamePauser.GameUnpaused -= OnUnpaused;
     }
 
     #region "Performed actions"
@@ -98,13 +98,13 @@ public class FPSController : MonoBehaviour
 
     #endregion
 
-    private void Pause()
+    private void OnPaused()
     {
         _canMove = false;
         SetPauseState(pause: true);
     }
 
-    private void Unpause()
+    private void OnUnpaused()
     {
         _canMove = true;
         SetPauseState(pause: false);
