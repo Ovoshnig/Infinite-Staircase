@@ -494,7 +494,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _startTransform: {fileID: 481872785}
   _partsCount: 100
-  _seed: 54
+  _seed: 400
 --- !u!4 &1166965747
 Transform:
   m_ObjectHideFlags: 0
