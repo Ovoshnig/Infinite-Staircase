@@ -1,6 +1,4 @@
-using Cysharp.Threading.Tasks;
 using System;
-using UnityEngine;
 using UnityEngine.Audio;
 using Zenject;
 
@@ -14,19 +12,17 @@ public class AudioTuner : IDisposable
 
     private readonly GamePauser _gamePauser;
     private readonly AudioMixerGroup _audioMixerGroup;
-    private readonly MusicPlayer _musicPlayer;
     private float _soundsVolume;
     private float _musicVolume;
 
     [Inject]
     public AudioTuner(DataSaver dataSaver, GameSettingsInstaller.AudioSettings audioSettings,
-                         GamePauser gamePauser, AudioMixerGroup audioMixerGroup, MusicPlayer musicPlayer)
+                         GamePauser gamePauser, AudioMixerGroup audioMixerGroup)
     {
         _dataSaver = dataSaver;
         _audioSettings = audioSettings;
         _gamePauser = gamePauser;
         _audioMixerGroup = audioMixerGroup;
-        _musicPlayer = musicPlayer;
 
         InitializeVolumeData();
         SubscribeToEvents();
@@ -83,14 +79,12 @@ public class AudioTuner : IDisposable
     {
         _gamePauser.GamePaused += PauseSoundSources;
         _gamePauser.GameUnpaused += UnpauseSoundSources;
-        _musicPlayer.MusicTrackChanged += FadeInMusicVolume;
     }
 
     private void UnsubscribeFromEvents()
     {
         _gamePauser.GamePaused -= PauseSoundSources;
         _gamePauser.GameUnpaused -= UnpauseSoundSources;
-        _musicPlayer.MusicTrackChanged -= FadeInMusicVolume;
     }
 
     private void SaveVolumeData()
@@ -105,23 +99,5 @@ public class AudioTuner : IDisposable
             _audioMixerGroup.audioMixer.SetFloat(SoundsVolumeKey, _audioSettings.MinVolume);
         else
             _audioMixerGroup.audioMixer.SetFloat(SoundsVolumeKey, _soundsVolume);
-    }
-
-    private async void FadeInMusicVolume()
-    {
-        float duration = _audioSettings.MusicFadeInDuration;
-        float elapsedTime = 0f;
-        float t;
-
-        while (elapsedTime < duration)
-        {
-            t = elapsedTime / duration;
-            float volume = Mathf.Lerp(_audioSettings.MinVolume, MusicVolume, t);
-            _audioMixerGroup.audioMixer.SetFloat(MusicVolumeKey, volume);
-            elapsedTime += Time.deltaTime;
-            await UniTask.Yield();
-        }
-
-        _audioMixerGroup.audioMixer.SetFloat(MusicVolumeKey, MusicVolume);
     }
 }
