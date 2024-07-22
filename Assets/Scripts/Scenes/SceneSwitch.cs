@@ -1,12 +1,16 @@
 using Cysharp.Threading.Tasks;
 using System;
+using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AddressableAssets;
+using UnityEngine.ResourceManagement.AsyncOperations;
+using UnityEngine.ResourceManagement.ResourceLocations;
 using UnityEngine.SceneManagement;
 using Zenject;
 
 public class SceneSwitch : IDisposable
 {
-    public enum Scene
+    public enum SceneType
     {
         MainMenu,
         GameLevel,
@@ -14,7 +18,6 @@ public class SceneSwitch : IDisposable
     }
 
     private const string AchievedLevelKey = "AchievedLevel";
-    private const string TransitionSceneName = "TransitionScene";
 
     private readonly DataSaver _dataKeeper;
     private readonly GameSettingsInstaller.LevelSettings _levelSettings;
@@ -22,8 +25,8 @@ public class SceneSwitch : IDisposable
     private uint _currentLevel;
     private bool _isLevelLoading = false;
 
-    public event Action<Scene> SceneLoading;
-    public event Action<Scene> SceneLoaded;
+    public event Action<SceneType> SceneLoading;
+    public event Action<SceneType> SceneLoaded;
 
     [Inject]
     public SceneSwitch(DataSaver dataKeeper, GameSettingsInstaller.LevelSettings levelSettings)
@@ -89,25 +92,23 @@ public class SceneSwitch : IDisposable
 
     public async UniTask LoadLevel(uint index)
     {
-        Scene scene = GetSceneByIndex(index);
+        SceneType scene = GetSceneByIndex(index);
+        string label = GetLabelBySceneType(scene);
 
         SceneLoading?.Invoke(scene);
         _isLevelLoading = true;
 
-        if (scene == Scene.GameLevel)
-        {
-            await SceneManager.LoadSceneAsync(TransitionSceneName, LoadSceneMode.Additive);
-            await UniTask.WaitForSeconds(_levelSettings.LevelTransitionDuration / 2);
-            await SceneManager.UnloadSceneAsync(SceneManager.GetActiveScene().buildIndex);
+        AsyncOperationHandle<IList<IResourceLocation>> handle = Addressables.LoadResourceLocationsAsync(label);
+        await handle.Task;
 
-            await SceneManager.LoadSceneAsync((int)index, LoadSceneMode.Additive);
-
-            await UniTask.WaitForSeconds(_levelSettings.LevelTransitionDuration / 2);
-            await SceneManager.UnloadSceneAsync(TransitionSceneName);
-        }
-        else
+        if (handle.Status == AsyncOperationStatus.Succeeded)
         {
-            await SceneManager.LoadSceneAsync((int)index);
+            var locations = handle.Result;
+            if (locations.Count > 0)
+            {
+                var sceneLocation = locations[(int)index];
+                await Addressables.LoadSceneAsync(sceneLocation);
+            }
         }
 
         SceneLoaded?.Invoke(scene);
@@ -121,19 +122,17 @@ public class SceneSwitch : IDisposable
         SceneLoaded?.Invoke(GetSceneByIndex(_currentLevel));
     }
 
-    private Scene GetSceneByIndex(uint index) 
+    private SceneType GetSceneByIndex(uint index)
     {
-        Scene scene;
-
         if (index == 0)
-            scene = Scene.MainMenu;
+            return SceneType.MainMenu;
         else if (index >= _levelSettings.FirstGameplayLevel && index <= _levelSettings.LastGameplayLevel)
-            scene = Scene.GameLevel;
+            return SceneType.GameLevel;
         else if (index == _levelSettings.CreditsScene)
-            scene = Scene.Credits;
+            return SceneType.Credits;
         else
             throw new InvalidOperationException("Invalid level index");
-
-        return scene;
     }
+
+    private string GetLabelBySceneType(SceneType sceneType) => sceneType.ToString();
 }

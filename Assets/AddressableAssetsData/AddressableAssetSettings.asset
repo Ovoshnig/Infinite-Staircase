@@ -15,7 +15,7 @@ MonoBehaviour:
   m_DefaultGroup: 62ded741060b6ab44b3dbc8dd2b981bf
   m_currentHash:
     serializedVersion: 2
-    Hash: eb9cfae888b1449c21b7b649bc0fe69e
+    Hash: b0b256e18293eb3992ff91cffc73686e
   m_OptimizeCatalogSize: 0
   m_BuildRemoteCatalog: 0
   m_CatalogRequestsTimeout: 0
@@ -61,6 +61,7 @@ MonoBehaviour:
   m_GroupAssets:
   - {fileID: 11400000, guid: 7eb86ad968c2e02478d3e785f6747c94, type: 2}
   - {fileID: 11400000, guid: 2ac95595c3320bb4ca33c2e72b319304, type: 2}
+  - {fileID: 11400000, guid: 3e52a37fd1d1a8b47b243a7fe3885b0d, type: 2}
   m_BuildSettings:
     m_LogResourceManagerExceptions: 1
     m_BundleBuildPath: Temp/com.unity.addressables/AssetBundles
@@ -99,12 +100,10 @@ MonoBehaviour:
     m_ProfileVersion: 1
   m_LabelTable:
     m_LabelNames:
-    - default
-    - Music
     - MainMenu
     - GameLevel
     - Credits
-    - Credits
+    - New Label
   m_SchemaTemplates: []
   m_GroupTemplateObjects:
   - {fileID: 11400000, guid: b6f7fb7da7e9ee144aa20150c06060d2, type: 2}

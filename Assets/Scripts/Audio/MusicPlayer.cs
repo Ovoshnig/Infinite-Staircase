@@ -34,7 +34,7 @@ public class MusicPlayer : MonoBehaviour
     {
         await LoadMusicTrackKeys();
         _sceneSwitch.SceneLoaded += OnSceneLoaded;
-        OnSceneLoaded(SceneSwitch.Scene.GameLevel);
+        OnSceneLoaded(SceneSwitch.SceneType.GameLevel);
     }
 
     private void OnDestroy()
@@ -70,16 +70,16 @@ public class MusicPlayer : MonoBehaviour
         }
     }
 
-    private void OnSceneLoaded(SceneSwitch.Scene scene)
+    private void OnSceneLoaded(SceneSwitch.SceneType scene)
     {
         CancelToken();
         _cts = new CancellationTokenSource();
 
-        Dictionary<SceneSwitch.Scene, MusicCategory> sceneToMusicCategory = new()
+        Dictionary<SceneSwitch.SceneType, MusicCategory> sceneToMusicCategory = new()
         {
-            { SceneSwitch.Scene.MainMenu, MusicCategory.MainMenu },
-            { SceneSwitch.Scene.GameLevel, MusicCategory.GameLevel },
-            { SceneSwitch.Scene.Credits, MusicCategory.Credits }
+            { SceneSwitch.SceneType.MainMenu, MusicCategory.MainMenu },
+            { SceneSwitch.SceneType.GameLevel, MusicCategory.GameLevel },
+            { SceneSwitch.SceneType.Credits, MusicCategory.Credits }
         };
 
         MusicCategory category;
