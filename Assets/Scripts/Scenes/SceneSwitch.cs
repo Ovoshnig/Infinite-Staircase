@@ -42,6 +42,8 @@ public class SceneSwitch : IDisposable
         WaitForFirstSceneLoad().Forget();
     }
 
+    public SceneType CurrentSceneType { get; private set; }
+
     public void Dispose() => _dataKeeper.SaveData(AchievedLevelKey, _achievedLevel);
 
     public async UniTask LoadAchievedLevel() => await LoadLevel(_achievedLevel);
@@ -92,11 +94,11 @@ public class SceneSwitch : IDisposable
 
     public async UniTask LoadLevel(uint index)
     {
-        SceneType scene = GetSceneByIndex(index);
-        string label = GetLabelBySceneType(scene);
+        SceneType sceneType = GetSceneTypeByIndex(index);
+        string label = GetLabelBySceneType(sceneType);
 
-        SceneLoading?.Invoke(scene);
         _isLevelLoading = true;
+        SceneLoading?.Invoke(sceneType);
 
         AsyncOperationHandle<IList<IResourceLocation>> handle = Addressables.LoadResourceLocationsAsync(label);
         await handle.Task;
@@ -104,6 +106,7 @@ public class SceneSwitch : IDisposable
         if (handle.Status == AsyncOperationStatus.Succeeded)
         {
             var locations = handle.Result;
+
             if (locations.Count > 0)
             {
                 var sceneLocation = locations[(int)index];
@@ -111,18 +114,21 @@ public class SceneSwitch : IDisposable
             }
         }
 
-        SceneLoaded?.Invoke(scene);
         _isLevelLoading = false;
         _currentLevel = index;
+        CurrentSceneType = sceneType;
+        SceneLoaded?.Invoke(sceneType);
     }
 
     private async UniTaskVoid WaitForFirstSceneLoad()
     {
         await UniTask.WaitUntil(() => SceneManager.GetActiveScene().isLoaded);
-        SceneLoaded?.Invoke(GetSceneByIndex(_currentLevel));
+        SceneType sceneType = GetSceneTypeByIndex(_currentLevel);
+        CurrentSceneType = sceneType;
+        SceneLoaded?.Invoke(sceneType);
     }
 
-    private SceneType GetSceneByIndex(uint index)
+    private SceneType GetSceneTypeByIndex(uint index)
     {
         if (index == 0)
             return SceneType.MainMenu;

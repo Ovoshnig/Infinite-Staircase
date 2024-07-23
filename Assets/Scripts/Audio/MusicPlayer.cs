@@ -20,10 +20,11 @@ public class MusicPlayer : MonoBehaviour
 
     private readonly Dictionary<MusicCategory, List<string>> _musicTrackKeys = new();
     private readonly Random _random = new();
-    private Queue<string> _tracksQueue = new();
+    private Queue<string> _trackKeysQueue = new();
     private AudioSource _audioSource;
     private SceneSwitch _sceneSwitch;
     private CancellationTokenSource _cts = default;
+    private AsyncOperationHandle<AudioClip>? _currentTrackHandle = null;
 
     [Inject]
     private void Construct(SceneSwitch sceneSwitch) => _sceneSwitch = sceneSwitch;
@@ -34,7 +35,7 @@ public class MusicPlayer : MonoBehaviour
     {
         await LoadMusicTrackKeys();
         _sceneSwitch.SceneLoaded += OnSceneLoaded;
-        OnSceneLoaded(SceneSwitch.SceneType.GameLevel);
+        OnSceneLoaded(_sceneSwitch.CurrentSceneType);
     }
 
     private void OnDestroy()
@@ -108,49 +109,51 @@ public class MusicPlayer : MonoBehaviour
             return false;
         }
 
-        _tracksQueue.Clear();
-        _tracksQueue = new Queue<string>(_musicTrackKeys[category]);
+        _trackKeysQueue.Clear();
+        _trackKeysQueue = new Queue<string>(_musicTrackKeys[category]);
 
         return true;
     }
 
     private void ShuffleAndQueueTracks()
     {
-        int tracksCount = _tracksQueue.Count;
-        List<string> temporaryList = new(_tracksQueue);
-        _tracksQueue.Clear();
+        int tracksCount = _trackKeysQueue.Count;
+        List<string> temporaryList = new(_trackKeysQueue);
+        _trackKeysQueue.Clear();
 
         for (int i = 0; i < tracksCount; i++)
         {
             int index = _random.Next(temporaryList.Count);
-            _tracksQueue.Enqueue(temporaryList[index]);
+            _trackKeysQueue.Enqueue(temporaryList[index]);
             temporaryList.RemoveAt(index);
         }
     }
 
-    private async UniTask<AudioClip> LoadTrackByKey(string key)
+    private async UniTask<AsyncOperationHandle<AudioClip>> LoadTrack(string key)
     {
         var handle = Addressables.LoadAssetAsync<AudioClip>(key);
         await handle;
 
         if (handle.Status == AsyncOperationStatus.Succeeded)
         {
-            AudioClip track = handle.Result;
-            Addressables.Release(handle);
-
-            return track;
+            return handle;
         }
         else
         {
             Debug.LogError($"Failed to load track with key: {key}");
-
-            return null;
+            return default;
         }
+    }
+
+    private void ReleaseTrack(AsyncOperationHandle<AudioClip> handle)
+    {
+        if (handle.IsValid())
+            Addressables.Release(handle);
     }
 
     private async UniTask PlayNextTrack(MusicCategory category)
     {
-        if (_tracksQueue.Count == 0)
+        if (_trackKeysQueue.Count == 0)
         {
             if (TrySetCurrentTracks(category))
                 ShuffleAndQueueTracks();
@@ -158,12 +161,24 @@ public class MusicPlayer : MonoBehaviour
                 return;
         }
 
-        AudioClip track = await LoadTrackByKey(_tracksQueue.Dequeue());
-        _audioSource.clip = track;
-        _audioSource.Play();
-        await UniTask.WaitWhile(() => _audioSource.isPlaying, cancellationToken: _cts.Token);
+        if (_currentTrackHandle.HasValue)
+        {
+            ReleaseTrack(_currentTrackHandle.Value);
+            _currentTrackHandle = null;
+        }
 
-        PlayNextTrack(category).Forget();
+        string trackKey = _trackKeysQueue.Dequeue();
+        var trackHandle = await LoadTrack(trackKey);
+
+        if (trackHandle.Status == AsyncOperationStatus.Succeeded)
+        {
+            _currentTrackHandle = trackHandle;
+            _audioSource.clip = trackHandle.Result;
+            _audioSource.Play();
+            await UniTask.WaitWhile(() => _audioSource.isPlaying, cancellationToken: _cts.Token);
+
+            PlayNextTrack(category).Forget();
+        }
     }
 
     private void CancelToken()
@@ -173,6 +188,12 @@ public class MusicPlayer : MonoBehaviour
             _cts.Cancel();
             _cts.Dispose();
             _cts = null;
+        }
+
+        if (_currentTrackHandle.HasValue)
+        {
+            ReleaseTrack(_currentTrackHandle.Value);
+            _currentTrackHandle = null;
         }
     }
 }
