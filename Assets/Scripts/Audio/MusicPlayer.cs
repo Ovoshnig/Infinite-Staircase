@@ -23,8 +23,8 @@ public class MusicPlayer : MonoBehaviour
     private Queue<string> _trackKeysQueue = new();
     private AudioSource _audioSource;
     private SceneSwitch _sceneSwitch;
-    private CancellationTokenSource _cts = default;
     private AsyncOperationHandle<AudioClip>? _currentTrackHandle = null;
+    private CancellationTokenSource _cts = default;
 
     [Inject]
     private void Construct(SceneSwitch sceneSwitch) => _sceneSwitch = sceneSwitch;

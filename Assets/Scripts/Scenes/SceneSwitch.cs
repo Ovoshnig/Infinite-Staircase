@@ -18,6 +18,7 @@ public class SceneSwitch : IDisposable
     }
 
     private const string AchievedLevelKey = "AchievedLevel";
+    private const string GroupName = "Scenes";
 
     private readonly DataSaver _dataKeeper;
     private readonly GameSettingsInstaller.LevelSettings _levelSettings;
@@ -100,7 +101,10 @@ public class SceneSwitch : IDisposable
         _isLevelLoading = true;
         SceneLoading?.Invoke(sceneType);
 
-        AsyncOperationHandle<IList<IResourceLocation>> handle = Addressables.LoadResourceLocationsAsync(label);
+        AsyncOperationHandle<IList<IResourceLocation>> handle = Addressables.LoadResourceLocationsAsync(
+            new List<object> { label, GroupName },
+            Addressables.MergeMode.Intersection
+        );
         await handle.Task;
 
         if (handle.Status == AsyncOperationStatus.Succeeded)
@@ -131,7 +135,7 @@ public class SceneSwitch : IDisposable
     private SceneType GetSceneTypeByIndex(uint index)
     {
         if (index == 0)
-            return SceneType.MainMenu;
+            return SceneType.GameLevel;
         else if (index >= _levelSettings.FirstGameplayLevel && index <= _levelSettings.LastGameplayLevel)
             return SceneType.GameLevel;
         else if (index == _levelSettings.CreditsScene)
