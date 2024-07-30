@@ -46,13 +46,13 @@ public class GamePauser : IDisposable
         GameUnpaused?.Invoke();
     }
 
-    private void OnLevelLoading(SceneSwitch.Scene scene)
+    private void OnLevelLoading(SceneSwitch.SceneType scene)
     {
         Unpause();
         _reversePauseStateAllowed = false;
     }
 
-    private void OnLevelLoaded(SceneSwitch.Scene scene)
+    private void OnLevelLoaded(SceneSwitch.SceneType scene)
     {
         _reversePauseStateAllowed = true;
 

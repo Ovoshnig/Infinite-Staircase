@@ -28,12 +28,12 @@ public class SlotView : MonoBehaviour
         _slot.ItemPlaced -= OnItemPlaced;
     }
 
-    private void OnItemTaken(Item item)
+    private void OnItemTaken(RectTransform draggedItem)
     {
         _image.sprite = _emptySprite;
     }
 
-    private void OnItemPlaced(Item item)
+    private void OnItemPlaced(RectTransform draggedItem)
     {
         _image.sprite = _emptySprite;
     }

@@ -16,6 +16,11 @@ namespace Zenject
         }
 
         public abstract void InstallBindings();
+
+        public void Start()
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }
 

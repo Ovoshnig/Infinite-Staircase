@@ -1,0 +1,95 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
+  m_Name: Music
+  m_EditorClassIdentifier: 
+  m_GroupName: Music
+  m_GUID: 1a5ea5bbef2b16f43823553cff3612c9
+  m_SerializeEntries:
+  - m_GUID: 064e9ba828d814e4bb3fcc75c2d8c2ed
+    m_Address: background-music-instrumental-207886
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - GameLevel
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 32e6bb50032348d4ab86a528247819fc
+    m_Address: closing-credits-189582
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Credits
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 3be0c21db36c51949bc242900e403aea
+    m_Address: just-relax-11157
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - MainMenu
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 4fcec731d62d17345ad090fb76450ec5
+    m_Address: little-charlie-synthwave-version-background-music-for-video-vlog-204016
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - GameLevel
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 517cc0cb6c410474a8d48af51e70d719
+    m_Address: Assets/Resources_moved/Audio/Music/GameLevel/island-breeze-214305.mp3
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - GameLevel
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 7a5a512ad6a86c246b0a1393ce1ce4dc
+    m_Address: Assets/Resources_moved/Audio/Music/GameLevel/better-day-186374.mp3
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - GameLevel
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 962493f83116fbc47b966eaa82db93bc
+    m_Address: Assets/Resources_moved/Audio/Music/GameLevel/in-slow-motion-inspiring-ambient-lounge-219592.mp3
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - GameLevel
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 9d13802d331f53648886bd1f9fd4748c
+    m_Address: tvari-tokyo-cafe-159065
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - GameLevel
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c8b5c29229d87124bb025cbae4ff108f
+    m_Address: Assets/Resources_moved/Audio/Music/GameLevel/lotus-sky-dreams-216049.mp3
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - GameLevel
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d855bc7cb06030f4ba5aca1e1445ff6d
+    m_Address: Assets/Resources_moved/Audio/Music/GameLevel/endless-horizons-223627.mp3
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - GameLevel
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f62fe9a12f1464f48ba8306749a8163d
+    m_Address: Assets/Resources_moved/Audio/Music/GameLevel/movement-200697.mp3
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - GameLevel
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f8ac9aab90050164cbe58291840a8f48
+    m_Address: Assets/Resources_moved/Audio/Music/GameLevel/tvari-swiss-view-163808.mp3
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - GameLevel
+    FlaggedDuringContentUpdateRestriction: 0
+  m_ReadOnly: 0
+  m_Settings: {fileID: 11400000, guid: 63a18ce4cbc721543b95162c9196a842, type: 2}
+  m_SchemaSet:
+    m_Schemas:
+    - {fileID: 11400000, guid: dd2b02ff9fa0401428bb5cb6fdeedc7e, type: 2}
+    - {fileID: 11400000, guid: 6e41abbd42c887e49b7773e5b5f6b957, type: 2}

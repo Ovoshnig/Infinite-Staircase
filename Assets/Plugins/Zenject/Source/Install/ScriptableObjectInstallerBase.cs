@@ -26,6 +26,11 @@ namespace Zenject
         {
             throw new NotImplementedException();
         }
+
+        public void Start()
+        {
+            throw new NotImplementedException();
+        }
     }
 }
 

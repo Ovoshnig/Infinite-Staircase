@@ -1,12 +1,16 @@
 using Cysharp.Threading.Tasks;
 using System;
+using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AddressableAssets;
+using UnityEngine.ResourceManagement.AsyncOperations;
+using UnityEngine.ResourceManagement.ResourceLocations;
 using UnityEngine.SceneManagement;
 using Zenject;
 
 public class SceneSwitch : IDisposable
 {
-    public enum Scene
+    public enum SceneType
     {
         MainMenu,
         GameLevel,
@@ -14,7 +18,7 @@ public class SceneSwitch : IDisposable
     }
 
     private const string AchievedLevelKey = "AchievedLevel";
-    private const string TransitionSceneName = "TransitionScene";
+    private const string GroupName = "Scenes";
 
     private readonly DataSaver _dataKeeper;
     private readonly GameSettingsInstaller.LevelSettings _levelSettings;
@@ -22,8 +26,8 @@ public class SceneSwitch : IDisposable
     private uint _currentLevel;
     private bool _isLevelLoading = false;
 
-    public event Action<Scene> SceneLoading;
-    public event Action<Scene> SceneLoaded;
+    public event Action<SceneType> SceneLoading;
+    public event Action<SceneType> SceneLoaded;
 
     [Inject]
     public SceneSwitch(DataSaver dataKeeper, GameSettingsInstaller.LevelSettings levelSettings)
@@ -38,6 +42,8 @@ public class SceneSwitch : IDisposable
 
         WaitForFirstSceneLoad().Forget();
     }
+
+    public SceneType CurrentSceneType { get; private set; }
 
     public void Dispose() => _dataKeeper.SaveData(AchievedLevelKey, _achievedLevel);
 
@@ -89,51 +95,54 @@ public class SceneSwitch : IDisposable
 
     public async UniTask LoadLevel(uint index)
     {
-        Scene scene = GetSceneByIndex(index);
+        SceneType sceneType = GetSceneTypeByIndex(index);
+        string label = GetLabelBySceneType(sceneType);
 
-        SceneLoading?.Invoke(scene);
         _isLevelLoading = true;
+        SceneLoading?.Invoke(sceneType);
 
-        if (scene == Scene.GameLevel)
+        AsyncOperationHandle<IList<IResourceLocation>> handle = Addressables.LoadResourceLocationsAsync(
+            new List<object> { label, GroupName },
+            Addressables.MergeMode.Intersection
+        );
+        await handle.Task;
+
+        if (handle.Status == AsyncOperationStatus.Succeeded)
         {
-            await SceneManager.LoadSceneAsync(TransitionSceneName, LoadSceneMode.Additive);
-            await UniTask.WaitForSeconds(_levelSettings.LevelTransitionDuration / 2);
-            await SceneManager.UnloadSceneAsync(SceneManager.GetActiveScene().buildIndex);
+            var locations = handle.Result;
 
-            await SceneManager.LoadSceneAsync((int)index, LoadSceneMode.Additive);
-
-            await UniTask.WaitForSeconds(_levelSettings.LevelTransitionDuration / 2);
-            await SceneManager.UnloadSceneAsync(TransitionSceneName);
-        }
-        else
-        {
-            await SceneManager.LoadSceneAsync((int)index);
+            if (locations.Count > 0)
+            {
+                var sceneLocation = locations[(int)index];
+                await Addressables.LoadSceneAsync(sceneLocation);
+            }
         }
 
-        SceneLoaded?.Invoke(scene);
         _isLevelLoading = false;
         _currentLevel = index;
+        CurrentSceneType = sceneType;
+        SceneLoaded?.Invoke(sceneType);
     }
 
     private async UniTaskVoid WaitForFirstSceneLoad()
     {
         await UniTask.WaitUntil(() => SceneManager.GetActiveScene().isLoaded);
-        SceneLoaded?.Invoke(GetSceneByIndex(_currentLevel));
+        SceneType sceneType = GetSceneTypeByIndex(_currentLevel);
+        CurrentSceneType = sceneType;
+        SceneLoaded?.Invoke(sceneType);
     }
 
-    private Scene GetSceneByIndex(uint index) 
+    private SceneType GetSceneTypeByIndex(uint index)
     {
-        Scene scene;
-
         if (index == 0)
-            scene = Scene.MainMenu;
+            return SceneType.GameLevel;
         else if (index >= _levelSettings.FirstGameplayLevel && index <= _levelSettings.LastGameplayLevel)
-            scene = Scene.GameLevel;
+            return SceneType.GameLevel;
         else if (index == _levelSettings.CreditsScene)
-            scene = Scene.Credits;
+            return SceneType.Credits;
         else
             throw new InvalidOperationException("Invalid level index");
-
-        return scene;
     }
+
+    private string GetLabelBySceneType(SceneType sceneType) => sceneType.ToString();
 }
