@@ -10,6 +10,6 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 035af97fde7d47b4394309fa1d881912, type: 3}
-  m_Name: Play
+  m_Name: Gear
   m_EditorClassIdentifier: 
-  <Sprite>k__BackingField: {fileID: 21300000, guid: 0a3330c4ee1408d46b7c21db02562eff, type: 3}
+  <Icon>k__BackingField: {fileID: 21300000, guid: 2375f72906b9a394bb23947cc580130c, type: 3}
