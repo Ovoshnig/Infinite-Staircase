@@ -7,6 +7,8 @@ public class InventoryInstaller : MonoInstaller
 
     public override void InstallBindings()
     {
+        Container.BindInterfacesAndSelfTo<DraggedItemHolder>().FromNew().AsSingle();
+        Container.BindInterfacesAndSelfTo<SlotKeeper>().FromNew().AsSingle();
     }
 
     public override void Start() => Container.InstantiatePrefab(_inventoryCanvas);

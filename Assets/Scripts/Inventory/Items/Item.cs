@@ -16,11 +16,4 @@ public class Item : MonoBehaviour
         if (_itemData != null)
             _image.sprite = _itemData.Icon;
     }
-
-    /*private void Awake() => _image = GetComponent<Image>();
-
-    private void Start()
-    {
-        _image.sprite = _itemData.Sprite;
-    }*/
 }

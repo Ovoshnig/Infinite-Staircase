@@ -7,7 +7,7 @@ using Zenject;
                   typeof(CanvasGroup))]
 public class DraggedItem : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDragHandler
 {
-    private const float TransparentValue = 0.75f;
+    private const float TransparentValue = 0.8f;
     private const float OpaqueValue = 1f;
 
     private RectTransform _rectTransform;

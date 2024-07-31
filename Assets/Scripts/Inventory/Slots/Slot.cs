@@ -1,72 +1,67 @@
 using System;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using UnityEngine.InputSystem;
 using Zenject;
 
-public class Slot : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerDownHandler, IPointerUpHandler
+public class Slot : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerDownHandler
 {
-    private const string MouseBinding = "<Mouse>/leftButton";
-
-    private RectTransform _draggedItem;
+    private RectTransform _storedItem;
     private DraggedItemHolder _draggedItemHolder;
-    private InputAction _mouseClickAction;
-    private bool _isPointerOver = false;
+    private SlotKeeper _slotKeeper;
 
-    public event Action<RectTransform> ItemTaken;
     public event Action<RectTransform> ItemPlaced;
+    public event Action<RectTransform> ItemTaken;
 
     [Inject]
-    private void Construct(DraggedItemHolder draggedItemHolder) => _draggedItemHolder = draggedItemHolder;
+    private void Construct(DraggedItemHolder draggedItemHolder, SlotKeeper slotKeeper)
+    {
+        _draggedItemHolder = draggedItemHolder;
+        _slotKeeper = slotKeeper;
+    }
+
+    public bool HasItem { get; private set; } = false;
 
     private void Awake()
     {
         if (transform.childCount > 0)
-            _draggedItem = transform.GetChild(0).GetComponent<RectTransform>();
-        else
-            _draggedItem = null;
-
-        _mouseClickAction = new InputAction(type: InputActionType.Button, binding: MouseBinding);
-        _mouseClickAction.canceled += OnMouseClickCanceled;
-    }
-
-    private void OnEnable() => _mouseClickAction.Enable();
-
-    private void OnDisable() => _mouseClickAction.Disable();
-
-    public void OnPointerEnter(PointerEventData eventData) => _isPointerOver = true;
-
-    public void OnPointerExit(PointerEventData eventData) => _isPointerOver = false;
-
-    private void OnMouseClickCanceled(InputAction.CallbackContext context)
-    {
-        if (_isPointerOver)
-            OnPointerClickEnd();
-    }
-
-    public void OnPointerDown(PointerEventData eventData)
-    {
-        if (_draggedItem != null)
         {
-            _draggedItem.transform.SetParent(transform.parent);
-            ItemTaken?.Invoke(_draggedItem);
-            _draggedItem = null;
+            _storedItem = transform.GetChild(0).GetComponent<RectTransform>();
+            HasItem = true;
+        }
+        else
+        {
+            _storedItem = null;
+            HasItem = false;
         }
     }
 
-    public void OnPointerUp(PointerEventData eventData)
-    {
-        
-    }
+    public void OnPointerEnter(PointerEventData _) => _slotKeeper.SelectedSlot = this;
 
-    private void OnPointerClickEnd()
+    public void OnPointerExit(PointerEventData _) => _slotKeeper.SelectedSlot = null;
+
+    public void OnPointerDown(PointerEventData _) => TakeItem();
+
+    public void PlaceItem()
     {
         if (_draggedItemHolder.DraggedItem != null)
         {
-            _draggedItem = _draggedItemHolder.DraggedItem;
-            _draggedItem.transform.SetParent(transform);
-            _draggedItem.anchoredPosition = Vector2.zero;
-            ItemPlaced?.Invoke(_draggedItem);
+            _storedItem = _draggedItemHolder.DraggedItem;
+            _storedItem.transform.SetParent(transform);
+            _storedItem.anchoredPosition = Vector2.zero;
+            HasItem = true;
+            ItemPlaced?.Invoke(_storedItem);
+        }
+    }
+
+    public void TakeItem()
+    {
+        if (_storedItem != null)
+        {
+            _storedItem.transform.SetParent(transform.parent);
+            HasItem = false;
+            ItemTaken?.Invoke(_storedItem);
+            _storedItem = null;
+            _slotKeeper.StartingSlot = this;
         }
     }
 }

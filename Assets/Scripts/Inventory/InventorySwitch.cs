@@ -20,7 +20,7 @@ public class InventorySwitch : MonoBehaviour
 
     private void OnDisable() => _playerInput.Disable();
 
-    private void OpenOrClosePerformed(InputAction.CallbackContext obj)
+    private void OpenOrClosePerformed(InputAction.CallbackContext _)
     {
         _isOpen = !_isOpen;
         _panel.SetActive(_isOpen);
