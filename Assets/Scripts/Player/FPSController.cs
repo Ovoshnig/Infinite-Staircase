@@ -155,7 +155,7 @@ public class FPSController : MonoBehaviour
     {
         _rotationX += -_lookInput.y * _rotationSpeed;
         _rotationX = Mathf.Clamp(_rotationX, -_xRotationLimit, _xRotationLimit);
-        _cameraTransform.localRotation = Quaternion.Euler(_rotationX, 0, 0);
-        transform.rotation *= Quaternion.Euler(0, _lookInput.x * _rotationSpeed, 0);
+        _cameraTransform.localRotation = Quaternion.Euler(_rotationX, 0f, 0f);
+        transform.rotation *= Quaternion.Euler(0f, _lookInput.x * _rotationSpeed, 0f);
     }
 }

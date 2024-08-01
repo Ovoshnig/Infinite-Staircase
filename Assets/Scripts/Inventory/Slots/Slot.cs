@@ -1,16 +1,13 @@
-using System;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using Zenject;
 
 public class Slot : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerDownHandler
 {
+    private readonly Vector2 _halfVector2 = Vector2.one / 2f;
     private RectTransform _storedItem;
     private DraggedItemHolder _draggedItemHolder;
     private SlotKeeper _slotKeeper;
-
-    public event Action<RectTransform> ItemPlaced;
-    public event Action<RectTransform> ItemTaken;
 
     [Inject]
     private void Construct(DraggedItemHolder draggedItemHolder, SlotKeeper slotKeeper)
@@ -20,6 +17,8 @@ public class Slot : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IP
     }
 
     public bool HasItem { get; private set; } = false;
+
+    private Transform CanvasTransform => transform.parent.parent;
 
     private void Awake()
     {
@@ -46,10 +45,12 @@ public class Slot : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IP
         if (_draggedItemHolder.DraggedItem != null)
         {
             _storedItem = _draggedItemHolder.DraggedItem;
+            _draggedItemHolder.DraggedItem = null;
             _storedItem.transform.SetParent(transform);
+            _storedItem.anchorMax = _halfVector2;
+            _storedItem.anchorMin = _halfVector2;
             _storedItem.anchoredPosition = Vector2.zero;
             HasItem = true;
-            ItemPlaced?.Invoke(_storedItem);
         }
     }
 
@@ -57,9 +58,9 @@ public class Slot : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IP
     {
         if (_storedItem != null)
         {
-            _storedItem.transform.SetParent(transform.parent);
+            _storedItem.transform.SetParent(CanvasTransform);
+            _draggedItemHolder.DraggedItem = _storedItem;
             HasItem = false;
-            ItemTaken?.Invoke(_storedItem);
             _storedItem = null;
             _slotKeeper.StartingSlot = this;
         }

@@ -3,21 +3,20 @@ using UnityEngine;
 
 public class DraggedItemHolder
 {
-    public RectTransform DraggedItem { get; private set; } = null;
+    private RectTransform _draggedItem = null;
 
-    public void SetDraggedItem(RectTransform draggedItem)
+    public RectTransform DraggedItem 
     {
-        if (DraggedItem != null)
-            throw new InvalidOperationException("Item is already dragging");
+        get => _draggedItem;
+        set
+        {
+            if (value == null && _draggedItem == null)
+                throw new InvalidOperationException("Item has already been released");
 
-        DraggedItem = draggedItem;
-    }
+            if (value != null && _draggedItem != null)
+                throw new InvalidOperationException("Item is already dragging");
 
-    public void ReleaseDraggedItem()
-    {
-        if (DraggedItem == null)
-            throw new InvalidOperationException("Item has already been released");
-
-        DraggedItem = null;
+            _draggedItem = value;
+        }
     }
 }

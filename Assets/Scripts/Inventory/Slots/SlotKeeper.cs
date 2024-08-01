@@ -20,7 +20,7 @@ public class SlotKeeper : IDisposable
 
     public void Dispose() => _mouseClickAction.Disable();
 
-    private void OnMouseClickCanceled(InputAction.CallbackContext context)
+    private void OnMouseClickCanceled(InputAction.CallbackContext _)
     {
         if (StartingSlot == null)
             return;
