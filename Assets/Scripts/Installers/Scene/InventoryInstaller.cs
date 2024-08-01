@@ -7,6 +7,7 @@ public class InventoryInstaller : MonoInstaller
 
     public override void InstallBindings()
     {
+        Container.BindInterfacesAndSelfTo<InventorySaver>().FromNew().AsSingle();
         Container.BindInterfacesAndSelfTo<DraggedItemHolder>().FromNew().AsSingle();
         Container.BindInterfacesAndSelfTo<SlotKeeper>().FromNew().AsSingle();
     }

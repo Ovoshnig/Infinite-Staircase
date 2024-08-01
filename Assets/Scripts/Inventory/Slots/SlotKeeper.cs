@@ -1,22 +1,22 @@
 using System;
 using UnityEngine.InputSystem;
+using Zenject;
 
-public class SlotKeeper : IDisposable
+public class SlotKeeper : IInitializable, IDisposable
 {
     private const string MouseBinding = "<Mouse>/leftButton";
 
-    private readonly InputAction _mouseClickAction;
-
-    public SlotKeeper()
-    {
-        _mouseClickAction = new InputAction(type: InputActionType.Button, binding: MouseBinding);
-        _mouseClickAction.canceled += OnMouseClickCanceled;
-        _mouseClickAction.Enable();
-    }
-
+    private readonly InputAction _mouseClickAction = new(type: InputActionType.Button, binding: MouseBinding);
+    
     public Slot StartingSlot { get; set; }
 
     public Slot SelectedSlot { get; set; }
+
+    public void Initialize()
+    {
+        _mouseClickAction.canceled += OnMouseClickCanceled;
+        _mouseClickAction.Enable();
+    }
 
     public void Dispose() => _mouseClickAction.Disable();
 

@@ -1,32 +1,26 @@
 using System;
 using UnityEngine.InputSystem;
 using UnityEngine.Rendering;
+using Zenject;
 
-public class SplashScreenPasser : IDisposable
+public class SplashScreenPasser : IInitializable, IDisposable
 {
-    private PlayerInput _playerInput;
+    private readonly PlayerInput _playerInput = new();
+
+    public void Initialize()
+    {
+        PlaySplashScreen();
+
+        _playerInput.SplashScreen.Pass.performed += OnPassPerformed;
+        _playerInput.Enable();
+    }
 
     public void Dispose() => _playerInput.Disable();
-
-    private SplashScreenPasser()
-    {
-#if !UNITY_EDITOR
-        PlaySplashScreen();
-#endif
-        InitializePlayerInput();
-    }
 
     private void PlaySplashScreen()
     {
         SplashScreen.Begin();
         SplashScreen.Draw();
-    }
-
-    private void InitializePlayerInput()
-    {
-        _playerInput = new PlayerInput();
-        _playerInput.SplashScreen.Pass.performed += OnPassPerformed;
-        _playerInput.Enable();
     }
 
     private void OnPassPerformed(InputAction.CallbackContext _)

@@ -8,7 +8,7 @@ using UnityEngine.ResourceManagement.ResourceLocations;
 using UnityEngine.SceneManagement;
 using Zenject;
 
-public class SceneSwitch : IDisposable
+public class SceneSwitch : IInitializable, IDisposable
 {
     public enum SceneType
     {
@@ -34,6 +34,12 @@ public class SceneSwitch : IDisposable
     {
         _dataKeeper = dataKeeper;
         _levelSettings = levelSettings;
+    }
+
+    public SceneType CurrentSceneType { get; private set; }
+
+    public void Initialize()
+    {
         _achievedLevel = _dataKeeper.LoadData(AchievedLevelKey, _levelSettings.FirstGameplayLevel);
         _currentLevel = (uint)SceneManager.GetActiveScene().buildIndex;
 
@@ -42,8 +48,6 @@ public class SceneSwitch : IDisposable
 
         WaitForFirstSceneLoad().Forget();
     }
-
-    public SceneType CurrentSceneType { get; private set; }
 
     public void Dispose() => _dataKeeper.SaveData(AchievedLevelKey, _achievedLevel);
 

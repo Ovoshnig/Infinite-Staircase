@@ -19,13 +19,11 @@ public class DraggedItem : MonoBehaviour, IBeginDragHandler, IEndDragHandler, ID
         _canvasGroup.blocksRaycasts = false;
     }
 
-    public void OnDrag(PointerEventData _) => MoveToMousePosition();
+    public void OnDrag(PointerEventData _) => transform.position = Mouse.current.position.ReadValue();
 
     public void OnEndDrag(PointerEventData _)
     {
         _canvasGroup.alpha = OpaqueValue;
         _canvasGroup.blocksRaycasts = true;
     }
-
-    public void MoveToMousePosition() => transform.position = Mouse.current.position.ReadValue();
 }

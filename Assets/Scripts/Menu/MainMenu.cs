@@ -36,7 +36,10 @@ public sealed class MainMenu : Menu
     }
 
     private void ContinueGame() => SceneSwitch.LoadAchievedLevel().Forget();
+
     private void StartNewGame() => SceneSwitch.LoadFirstLevel().Forget();
+
     private void QuitGame() => Application.Quit();
+
     private void ResetProgress() => SceneSwitch.ResetProgress();
 }

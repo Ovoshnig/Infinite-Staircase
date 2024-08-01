@@ -1,7 +1,7 @@
 using System;
 using Zenject;
 
-public class LookTuner : IDisposable
+public class LookTuner : IInitializable, IDisposable
 {
     private const string SensitivityKey = "Sensitivity";
 
@@ -14,8 +14,6 @@ public class LookTuner : IDisposable
     {
         _dataSaver = dataSaver;
         _controlSettings = controlSettings;
-        _sensitivity = _dataSaver.LoadData(SensitivityKey, _controlSettings.DefaultSensitivity);
-        Sensitivity = _sensitivity;
     }
 
     public float Sensitivity
@@ -30,6 +28,8 @@ public class LookTuner : IDisposable
                 _sensitivity = value;
         }
     }
+
+    public void Initialize() => _sensitivity = _dataSaver.LoadData(SensitivityKey, _controlSettings.DefaultSensitivity);
 
     public void Dispose() => _dataSaver.SaveData(SensitivityKey, _sensitivity);
 }

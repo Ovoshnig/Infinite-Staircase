@@ -3,10 +3,10 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using Zenject;
 
-public class GamePauser : IDisposable
+public class GamePauser : IInitializable, IDisposable
 {
-    private readonly PlayerInput _playerInput;
     private readonly SceneSwitch _sceneSwitch;
+    private readonly PlayerInput _playerInput = new();
     private bool _isGamePaused = false;
     private bool _reversePauseStateAllowed = true;
 
@@ -14,13 +14,13 @@ public class GamePauser : IDisposable
     public event Action GameUnpaused;
 
     [Inject]
-    public GamePauser(SceneSwitch sceneSwitch)
-    {
-        _sceneSwitch = sceneSwitch;
-        _sceneSwitch.SceneLoading += OnLevelLoading;
-        _sceneSwitch.SceneLoaded += OnLevelLoaded;
+    public GamePauser(SceneSwitch sceneSwitch) => _sceneSwitch = sceneSwitch;
 
-        _playerInput = new PlayerInput();
+    public void Initialize()
+    {
+        _sceneSwitch.SceneLoading += OnSceneLoading;
+        _sceneSwitch.SceneLoaded += OnSceneLoaded;
+
         _playerInput.GameState.ReversePauseState.performed += ReversePauseState;
         _playerInput.Enable();
 
@@ -29,8 +29,9 @@ public class GamePauser : IDisposable
 
     public void Dispose()
     {
-        _sceneSwitch.SceneLoading -= OnLevelLoading;
-        _sceneSwitch.SceneLoaded -= OnLevelLoaded;
+        _sceneSwitch.SceneLoading -= OnSceneLoading;
+        _sceneSwitch.SceneLoaded -= OnSceneLoaded;
+
         _playerInput.Disable();
     }
 
@@ -46,13 +47,13 @@ public class GamePauser : IDisposable
         GameUnpaused?.Invoke();
     }
 
-    private void OnLevelLoading(SceneSwitch.SceneType scene)
+    private void OnSceneLoading(SceneSwitch.SceneType scene)
     {
         Unpause();
         _reversePauseStateAllowed = false;
     }
 
-    private void OnLevelLoaded(SceneSwitch.SceneType scene)
+    private void OnSceneLoaded(SceneSwitch.SceneType scene)
     {
         _reversePauseStateAllowed = true;
 

@@ -2,7 +2,7 @@ using System;
 using UnityEngine.Audio;
 using Zenject;
 
-public class AudioTuner : IDisposable
+public class AudioTuner : IInitializable, IDisposable
 {
     private const string SoundsVolumeKey = "SoundsVolume";
     private const string MusicVolumeKey = "MusicVolume";
@@ -23,9 +23,6 @@ public class AudioTuner : IDisposable
         _audioSettings = audioSettings;
         _gamePauser = gamePauser;
         _audioMixerGroup = audioMixerGroup;
-
-        InitializeVolumeData();
-        SubscribeToEvents();
     }
 
     public float SoundsVolume
@@ -55,6 +52,12 @@ public class AudioTuner : IDisposable
                 _audioMixerGroup.audioMixer.SetFloat(MusicVolumeKey, value);
             }
         }
+    }
+
+    public void Initialize()
+    {
+        InitializeVolumeData();
+        SubscribeToEvents();
     }
 
     public void Dispose()

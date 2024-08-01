@@ -19,6 +19,7 @@ public class StairConnection : ScriptableObject
         {
             if (_positionDifference == default)
                 _positionDifference = Stair2.transform.position - Stair1.transform.position;
+
             return _positionDifference;
         }
     }
@@ -29,6 +30,7 @@ public class StairConnection : ScriptableObject
         {
             if (_rotationDifference == default)
                 _rotationDifference = Stair2.transform.rotation.eulerAngles - Stair1.transform.rotation.eulerAngles;
+
             return _rotationDifference;
         }
     }
@@ -37,6 +39,7 @@ public class StairConnection : ScriptableObject
     {
         if (Stair1 == null)
             Stair1 = Prefab.transform.GetChild(0).gameObject;
+
         if (Stair2 == null)
             Stair2 = Prefab.transform.GetChild(1).gameObject;
     }

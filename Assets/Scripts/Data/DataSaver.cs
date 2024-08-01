@@ -8,14 +8,11 @@ public class DataSaver : IDisposable
 {
     private const string SaveFileName = "playerData.json";
 
-    private readonly string _filePath;
     private Dictionary<string, object> _dataStore;
 
-    public DataSaver()
-    {
-        _filePath = Path.Combine(Application.persistentDataPath, SaveFileName);
-        LoadDataStore();
-    }
+    private string FilePath => Path.Combine(Application.persistentDataPath, SaveFileName);
+
+    public DataSaver() => LoadDataStore();
 
     public void Dispose() => SaveDataStore();
 
@@ -33,9 +30,11 @@ public class DataSaver : IDisposable
             catch (JsonException)
             {
                 Debug.LogWarning($"Failed to deserialize value for key {key}");
+
                 return defaultValue;
             }
         }
+
         return defaultValue;
     }
 
@@ -43,9 +42,9 @@ public class DataSaver : IDisposable
 
     private void LoadDataStore()
     {
-        if (File.Exists(_filePath))
+        if (File.Exists(FilePath))
         {
-            string json = File.ReadAllText(_filePath);
+            string json = File.ReadAllText(FilePath);
             _dataStore = JsonConvert.DeserializeObject<Dictionary<string, object>>(json);
         }
         else
@@ -57,6 +56,6 @@ public class DataSaver : IDisposable
     private void SaveDataStore()
     {
         string json = JsonConvert.SerializeObject(_dataStore, Formatting.Indented);
-        File.WriteAllText(_filePath, json);
+        File.WriteAllText(FilePath, json);
     }
 }

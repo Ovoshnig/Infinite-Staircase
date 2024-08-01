@@ -59,9 +59,13 @@ public sealed class PauseMenu : Menu
 
     [Inject]
     private void Construct(GamePauser gamePauser) => _gamePauser = gamePauser;
+
     private void ResetLevel() => SceneSwitch.LoadCurrentLevel();
+
     private void LoadPreviousLevel() => SceneSwitch.LoadPreviousLevel().Forget();
+
     private void LoadNextLevel() => SceneSwitch.LoadNextLevel().Forget();
+
     private void LoadMainMenu() => SceneSwitch.LoadLevel(0).Forget();
 
     private void Pause()

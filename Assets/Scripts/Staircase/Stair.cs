@@ -12,6 +12,7 @@ public class Stair : MonoBehaviour
         {
             if (_size == default)
                 _size = _meshRenderer.bounds.size;
+
             return _size;
         }
         private set

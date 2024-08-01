@@ -1513,6 +1513,7 @@ GameObject:
   - component: {fileID: 3299043245569640261}
   - component: {fileID: 3801810043162240963}
   - component: {fileID: 7388686235183027827}
+  - component: {fileID: 4300706985685447929}
   m_Layer: 5
   m_Name: Panel
   m_TagString: Untagged
@@ -1639,6 +1640,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _slotPrefab: {fileID: 70310172741059577, guid: 0935ffcca6454064888813cbb72661a3, type: 3}
   _settings: {fileID: 11400000, guid: 0988861611452554ba55170e30c85ebb, type: 2}
+--- !u!114 &4300706985685447929
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6448144735486128748}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 564adb8d32ae2a84eaab7e27e03e0859, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &6472468773268937855
 GameObject:
   m_ObjectHideFlags: 0

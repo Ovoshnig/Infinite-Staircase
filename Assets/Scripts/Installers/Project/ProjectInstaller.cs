@@ -8,7 +8,9 @@ public class ProjectInstaller : MonoInstaller
 
     public override void InstallBindings()
     {
+#if !UNITY_EDITOR
         Container.BindInterfacesAndSelfTo<SplashScreenPasser>().FromNew().AsSingle().NonLazy();
+#endif
         Container.BindInterfacesAndSelfTo<GamePauser>().FromNew().AsSingle().NonLazy();
         Container.BindInterfacesAndSelfTo<DataSaver>().FromNew().AsSingle().NonLazy();
         Container.Bind<AudioMixerGroup>().FromInstance(_audioMixerGroup).AsSingle().NonLazy();

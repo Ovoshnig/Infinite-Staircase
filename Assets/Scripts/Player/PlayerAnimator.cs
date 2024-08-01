@@ -14,6 +14,7 @@ public class PlayerAnimator : MonoBehaviour
     private void Awake()
     {
         _animator = GetComponent<Animator>();
+
         _playerInput = new PlayerInput();
         _playerInput.Player.Move.performed += OnMovePerformed;
         _playerInput.Player.Run.performed += OnRunPerformed;

@@ -6,12 +6,12 @@ using UnityEngine;
 
 public class StaircaseGenerator : MonoBehaviour
 {
+    private const string StairPrefabsPath = "Prefabs/Staircase/Stairs";
+    private const string StairConnectionsPath = "Prefabs/Staircase/Stair Connections";
+
     [SerializeField] private Transform _startTransform;
     [SerializeField] private int _partsCount;
     [SerializeField] private int _seed;
-
-    private const string StairPrefabsPath = "Prefabs/Staircase/Stairs";
-    private const string StairConnectionsPath = "Prefabs/Staircase/Stair Connections";
 
     private readonly CancellationTokenSource _cts = new();
     private GameObject[] _stairs;
