@@ -7,7 +7,7 @@ public class ItemDataRepository : ScriptableObject
 {
     private const string ItemsPath = "Items";
 
-    private List<ItemDataSO> _items;
+    [SerializeField] private List<ItemDataSO> _items;
 
     public ItemDataSO GetItemDataByName(string name)
     {

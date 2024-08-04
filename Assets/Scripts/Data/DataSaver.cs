@@ -1,13 +1,14 @@
+using UnityEngine;
+using Zenject;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using Newtonsoft.Json;
-using UnityEngine;
+using Newtonsoft.Json.Linq;
 
 public class DataSaver : IDisposable
 {
     private const string SaveFileName = "playerData.json";
-
     private Dictionary<string, object> _dataStore;
 
     private string FilePath => Path.Combine(Application.persistentDataPath, SaveFileName);
@@ -22,15 +23,13 @@ public class DataSaver : IDisposable
         {
             try
             {
-                if (typeof(T) == typeof(float) && storedValue is double doubleValue)
-                    return (T)(object)(float)doubleValue;
-
-                return JsonConvert.DeserializeObject<T>(storedValue.ToString());
+                return storedValue is JObject jObject
+                    ? jObject.ToObject<T>()
+                    : (T)Convert.ChangeType(storedValue, typeof(T));
             }
-            catch (JsonException)
+            catch (Exception e)
             {
-                Debug.LogWarning($"Failed to deserialize value for key {key}");
-
+                Debug.LogWarning($"Failed to deserialize value for key {key}: {e.Message}");
                 return defaultValue;
             }
         }
@@ -45,7 +44,10 @@ public class DataSaver : IDisposable
         if (File.Exists(FilePath))
         {
             string json = File.ReadAllText(FilePath);
-            _dataStore = JsonConvert.DeserializeObject<Dictionary<string, object>>(json);
+            _dataStore = JsonConvert.DeserializeObject<Dictionary<string, object>>(json, new JsonSerializerSettings
+            {
+                TypeNameHandling = TypeNameHandling.Auto
+            });
         }
         else
         {
@@ -55,7 +57,10 @@ public class DataSaver : IDisposable
 
     private void SaveDataStore()
     {
-        string json = JsonConvert.SerializeObject(_dataStore, Formatting.Indented);
+        string json = JsonConvert.SerializeObject(_dataStore, Formatting.Indented, new JsonSerializerSettings
+        {
+            TypeNameHandling = TypeNameHandling.Auto
+        });
         File.WriteAllText(FilePath, json);
     }
 }

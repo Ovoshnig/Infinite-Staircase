@@ -14,7 +14,6 @@ public class SceneSwitch : IInitializable, IDisposable
     }
 
     private const string AchievedLevelKey = "AchievedLevel";
-    private const string GroupName = "Scenes";
 
     private readonly DataSaver _dataKeeper;
     private readonly GameSettingsInstaller.LevelSettings _levelSettings;
