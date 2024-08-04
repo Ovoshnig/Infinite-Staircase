@@ -1,24 +1,38 @@
-using System;
-using System.IO;
 using UnityEngine;
+using Zenject;
 
-public class InventorySaver : IDisposable
+public class InventorySaver : MonoBehaviour
 {
-    private const string SaveFileName = "inventoryData.json";
+    private const string InventoryKey = "Inventory";
 
-    public InventorySaver() => LoadDataStore();
+    private SlotView[] _slots;
+    private DataSaver _dataSaver;
+    private ItemDataRepository _itemDataRepository;
 
-    private string FilePath => Path.Combine(Application.persistentDataPath, SaveFileName);
-
-    public void Dispose() => SaveDataStore();
-
-    private void LoadDataStore()
+    [Inject]
+    private void Construct(DataSaver dataSaver, ItemDataRepository itemDataRepository)
     {
-        
+        _dataSaver = dataSaver;
+        _itemDataRepository = itemDataRepository;
     }
 
-    private void SaveDataStore()
-    {
+    private void Awake() => _slots = GetComponentsInChildren<SlotView>();
 
+    private void Start()
+    {
+        SlotData[] slotDataArray = _dataSaver.LoadData(InventoryKey, new SlotData[_slots.Length]);
+
+        for (int i = 0; i < _slots.Length; i++)
+            _slots[i].Load(slotDataArray[i], _itemDataRepository);
+    }
+
+    private void OnDestroy()
+    {
+        SlotData[] slotDataArray = new SlotData[_slots.Length];
+
+        for (int i = 0; i < _slots.Length; i++)
+            slotDataArray[i] = _slots[i].Save();
+
+        _dataSaver.SaveData(InventoryKey, slotDataArray);
     }
 }

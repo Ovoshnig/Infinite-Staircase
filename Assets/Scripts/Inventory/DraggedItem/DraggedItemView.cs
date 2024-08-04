@@ -4,7 +4,7 @@ using UnityEngine.InputSystem;
 
 [RequireComponent(typeof(RectTransform),
                   typeof(CanvasGroup))]
-public class DraggedItem : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDragHandler
+public class DraggedItemView : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDragHandler
 {
     private const float TransparentValue = 0.8f;
     private const float OpaqueValue = 1f;

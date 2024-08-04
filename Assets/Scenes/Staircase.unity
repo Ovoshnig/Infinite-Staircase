@@ -402,6 +402,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _inventoryCanvas: {fileID: 9071114180932561489, guid: bdbf62912e381bb48b8ce2d9c21bcc7a, type: 3}
+  _itemDataRepository: {fileID: 11400000, guid: 5d610a8efaa825046b5d945a2b98fdfe, type: 2}
 --- !u!114 &900829435
 MonoBehaviour:
   m_ObjectHideFlags: 0

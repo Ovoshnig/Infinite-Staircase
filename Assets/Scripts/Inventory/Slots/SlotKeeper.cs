@@ -7,10 +7,9 @@ public class SlotKeeper : IInitializable, IDisposable
     private const string MouseBinding = "<Mouse>/leftButton";
 
     private readonly InputAction _mouseClickAction = new(type: InputActionType.Button, binding: MouseBinding);
-    
-    public Slot StartingSlot { get; set; }
 
-    public Slot SelectedSlot { get; set; }
+    public SlotView StartingSlot { get; set; }
+    public SlotView SelectedSlot { get; set; }
 
     public void Initialize()
     {
@@ -31,7 +30,7 @@ public class SlotKeeper : IInitializable, IDisposable
         }
         else
         {
-            if (SelectedSlot.HasItem)
+            if (SelectedSlot.SlotModel.HasItem)
                 StartingSlot.PlaceItem();
             else
                 SelectedSlot.PlaceItem();

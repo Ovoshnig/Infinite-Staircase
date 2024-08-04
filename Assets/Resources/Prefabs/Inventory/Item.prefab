@@ -12,10 +12,10 @@ GameObject:
   - component: {fileID: 4731382878139147089}
   - component: {fileID: 1632297242093873414}
   - component: {fileID: 5994575001197824402}
+  - component: {fileID: 1333634497572162168}
   - component: {fileID: 8882428364784428671}
-  - component: {fileID: 490444839772079460}
   m_Layer: 5
-  m_Name: GearImage
+  m_Name: Item
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -90,6 +90,19 @@ CanvasGroup:
   m_Interactable: 1
   m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0
+--- !u!114 &1333634497572162168
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 533006257995505487}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3730fa65b65a6154c85859bca71a966f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _itemData: {fileID: 11400000, guid: 3e6ba3fbcf590084882b2661c18f413b, type: 2}
 --- !u!114 &8882428364784428671
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -102,16 +115,3 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bd61bf3538c058a4b8a201c94a6b0265, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &490444839772079460
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 533006257995505487}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 966b77402674c4a4e9a6f6fc666212d2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _itemData: {fileID: 11400000, guid: 3e6ba3fbcf590084882b2661c18f413b, type: 2}
