@@ -18,13 +18,13 @@ public class GamePauser : IInitializable, IDisposable
 
     public void Initialize()
     {
-        _sceneSwitch.SceneLoading += OnSceneLoading;
+        /*_sceneSwitch.SceneLoading += OnSceneLoading;
         _sceneSwitch.SceneLoaded += OnSceneLoaded;
 
-        _playerInput.GameState.ReversePauseState.performed += ReversePauseState;
+        _playerInput.PauseMenu.OpenOrClose.performed += ReversePauseState;
         _playerInput.Enable();
 
-        SetPauseState(pause: false);
+        SetPauseState(pause: false);*/
     }
 
     public void Dispose()
@@ -60,7 +60,7 @@ public class GamePauser : IInitializable, IDisposable
         PauseMenu pauseMenuHandler = UnityEngine.Object.FindFirstObjectByType<PauseMenu>();
 
         if (pauseMenuHandler != null)
-            pauseMenuHandler.OnResumeClicked += Unpause;
+            pauseMenuHandler.ResumeClicked += Unpause;
     }
 
     private void SetPauseState(bool pause)

@@ -223,11 +223,11 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
             ]
         },
         {
-            ""name"": ""GameState"",
+            ""name"": ""PauseMenu"",
             ""id"": ""a45349ce-b576-4d1a-9622-9dffb3c11a02"",
             ""actions"": [
                 {
-                    ""name"": ""ReversePauseState"",
+                    ""name"": ""OpenOrClose"",
                     ""type"": ""Button"",
                     ""id"": ""457c5597-75dd-4544-b674-41484284c01c"",
                     ""expectedControlType"": """",
@@ -244,7 +244,7 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Keyboard and Mouse"",
-                    ""action"": ""ReversePauseState"",
+                    ""action"": ""OpenOrClose"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -371,9 +371,9 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
         m_Player_Look = m_Player.FindAction("Look", throwIfNotFound: true);
         m_Player_Jump = m_Player.FindAction("Jump", throwIfNotFound: true);
         m_Player_Run = m_Player.FindAction("Run", throwIfNotFound: true);
-        // GameState
-        m_GameState = asset.FindActionMap("GameState", throwIfNotFound: true);
-        m_GameState_ReversePauseState = m_GameState.FindAction("ReversePauseState", throwIfNotFound: true);
+        // PauseMenu
+        m_PauseMenu = asset.FindActionMap("PauseMenu", throwIfNotFound: true);
+        m_PauseMenu_OpenOrClose = m_PauseMenu.FindAction("OpenOrClose", throwIfNotFound: true);
         // SplashScreen
         m_SplashScreen = asset.FindActionMap("SplashScreen", throwIfNotFound: true);
         m_SplashScreen_Pass = m_SplashScreen.FindAction("Pass", throwIfNotFound: true);
@@ -388,7 +388,7 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
     ~@PlayerInput()
     {
         Debug.Assert(!m_Player.enabled, "This will cause a leak and performance issues, PlayerInput.Player.Disable() has not been called.");
-        Debug.Assert(!m_GameState.enabled, "This will cause a leak and performance issues, PlayerInput.GameState.Disable() has not been called.");
+        Debug.Assert(!m_PauseMenu.enabled, "This will cause a leak and performance issues, PlayerInput.PauseMenu.Disable() has not been called.");
         Debug.Assert(!m_SplashScreen.enabled, "This will cause a leak and performance issues, PlayerInput.SplashScreen.Disable() has not been called.");
         Debug.Assert(!m_Credits.enabled, "This will cause a leak and performance issues, PlayerInput.Credits.Disable() has not been called.");
         Debug.Assert(!m_Inventory.enabled, "This will cause a leak and performance issues, PlayerInput.Inventory.Disable() has not been called.");
@@ -520,51 +520,51 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
     }
     public PlayerActions @Player => new PlayerActions(this);
 
-    // GameState
-    private readonly InputActionMap m_GameState;
-    private List<IGameStateActions> m_GameStateActionsCallbackInterfaces = new List<IGameStateActions>();
-    private readonly InputAction m_GameState_ReversePauseState;
-    public struct GameStateActions
+    // PauseMenu
+    private readonly InputActionMap m_PauseMenu;
+    private List<IPauseMenuActions> m_PauseMenuActionsCallbackInterfaces = new List<IPauseMenuActions>();
+    private readonly InputAction m_PauseMenu_OpenOrClose;
+    public struct PauseMenuActions
     {
         private @PlayerInput m_Wrapper;
-        public GameStateActions(@PlayerInput wrapper) { m_Wrapper = wrapper; }
-        public InputAction @ReversePauseState => m_Wrapper.m_GameState_ReversePauseState;
-        public InputActionMap Get() { return m_Wrapper.m_GameState; }
+        public PauseMenuActions(@PlayerInput wrapper) { m_Wrapper = wrapper; }
+        public InputAction @OpenOrClose => m_Wrapper.m_PauseMenu_OpenOrClose;
+        public InputActionMap Get() { return m_Wrapper.m_PauseMenu; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
         public bool enabled => Get().enabled;
-        public static implicit operator InputActionMap(GameStateActions set) { return set.Get(); }
-        public void AddCallbacks(IGameStateActions instance)
+        public static implicit operator InputActionMap(PauseMenuActions set) { return set.Get(); }
+        public void AddCallbacks(IPauseMenuActions instance)
         {
-            if (instance == null || m_Wrapper.m_GameStateActionsCallbackInterfaces.Contains(instance)) return;
-            m_Wrapper.m_GameStateActionsCallbackInterfaces.Add(instance);
-            @ReversePauseState.started += instance.OnReversePauseState;
-            @ReversePauseState.performed += instance.OnReversePauseState;
-            @ReversePauseState.canceled += instance.OnReversePauseState;
+            if (instance == null || m_Wrapper.m_PauseMenuActionsCallbackInterfaces.Contains(instance)) return;
+            m_Wrapper.m_PauseMenuActionsCallbackInterfaces.Add(instance);
+            @OpenOrClose.started += instance.OnOpenOrClose;
+            @OpenOrClose.performed += instance.OnOpenOrClose;
+            @OpenOrClose.canceled += instance.OnOpenOrClose;
         }
 
-        private void UnregisterCallbacks(IGameStateActions instance)
+        private void UnregisterCallbacks(IPauseMenuActions instance)
         {
-            @ReversePauseState.started -= instance.OnReversePauseState;
-            @ReversePauseState.performed -= instance.OnReversePauseState;
-            @ReversePauseState.canceled -= instance.OnReversePauseState;
+            @OpenOrClose.started -= instance.OnOpenOrClose;
+            @OpenOrClose.performed -= instance.OnOpenOrClose;
+            @OpenOrClose.canceled -= instance.OnOpenOrClose;
         }
 
-        public void RemoveCallbacks(IGameStateActions instance)
+        public void RemoveCallbacks(IPauseMenuActions instance)
         {
-            if (m_Wrapper.m_GameStateActionsCallbackInterfaces.Remove(instance))
+            if (m_Wrapper.m_PauseMenuActionsCallbackInterfaces.Remove(instance))
                 UnregisterCallbacks(instance);
         }
 
-        public void SetCallbacks(IGameStateActions instance)
+        public void SetCallbacks(IPauseMenuActions instance)
         {
-            foreach (var item in m_Wrapper.m_GameStateActionsCallbackInterfaces)
+            foreach (var item in m_Wrapper.m_PauseMenuActionsCallbackInterfaces)
                 UnregisterCallbacks(item);
-            m_Wrapper.m_GameStateActionsCallbackInterfaces.Clear();
+            m_Wrapper.m_PauseMenuActionsCallbackInterfaces.Clear();
             AddCallbacks(instance);
         }
     }
-    public GameStateActions @GameState => new GameStateActions(this);
+    public PauseMenuActions @PauseMenu => new PauseMenuActions(this);
 
     // SplashScreen
     private readonly InputActionMap m_SplashScreen;
@@ -728,9 +728,9 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
         void OnJump(InputAction.CallbackContext context);
         void OnRun(InputAction.CallbackContext context);
     }
-    public interface IGameStateActions
+    public interface IPauseMenuActions
     {
-        void OnReversePauseState(InputAction.CallbackContext context);
+        void OnOpenOrClose(InputAction.CallbackContext context);
     }
     public interface ISplashScreenActions
     {

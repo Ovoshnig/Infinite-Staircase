@@ -1,6 +1,7 @@
 using Cysharp.Threading.Tasks;
 using System;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.UI;
 using Zenject;
 
@@ -13,33 +14,42 @@ public sealed class PauseMenu : Menu
     [SerializeField] private Button _loadPreviousLevelButton;
     [SerializeField] private Button _loadMainMenuButton;
 
-    private GamePauser _gamePauser;
+    private WindowTracker _windowTracker;
+    private PlayerInput _playerInput;
+    private bool _paused = false;
 
-    public event Action OnResumeClicked;
-        
+    public event Action ResumeClicked;
+
+    [Inject]
+    private void Construct(WindowTracker windowTracker) => _windowTracker = windowTracker;
+
+    private void Awake()
+    {
+        _playerInput = new PlayerInput();
+        _playerInput.PauseMenu.OpenOrClose.performed += OnOpenOrClose;
+    }
+
     protected override void InitializeSettings() => Resume();
 
     protected override void SubscribeToEvents()
     {
         base.SubscribeToEvents();
 
-        _gamePauser.GamePaused += Pause;
-        _gamePauser.GameUnpaused += Resume;
+        _playerInput.Enable();
     }
 
     protected override void UnsubscribeFromEvents()
     {
         base.UnsubscribeFromEvents();
 
-        _gamePauser.GamePaused -= Pause;
-        _gamePauser.GameUnpaused -= Resume;
+        _playerInput.Disable();
     }
 
     protected override void AddButtonListeners()
     {
         base.AddButtonListeners();
 
-        _resumeButton.onClick.AddListener(() => OnResumeClicked?.Invoke());
+        _resumeButton.onClick.AddListener(OnResumeClicked);
         _resetLevelButton.onClick.AddListener(ResetLevel);
         _loadNextLevelButton.onClick.AddListener(LoadNextLevel);
         _loadPreviousLevelButton.onClick.AddListener(LoadPreviousLevel);
@@ -50,15 +60,12 @@ public sealed class PauseMenu : Menu
     {
         base.RemoveButtonListeners();
 
-        _resumeButton.onClick.RemoveListener(() => OnResumeClicked?.Invoke());
+        _resumeButton.onClick.RemoveListener(OnResumeClicked);
         _resetLevelButton.onClick.RemoveListener(ResetLevel);
         _loadNextLevelButton.onClick.RemoveListener(LoadNextLevel);
         _loadPreviousLevelButton.onClick.RemoveListener(LoadPreviousLevel);
         _loadMainMenuButton.onClick.RemoveListener(LoadMainMenu);
     }
-
-    [Inject]
-    private void Construct(GamePauser gamePauser) => _gamePauser = gamePauser;
 
     private void ResetLevel() => SceneSwitch.LoadCurrentLevel();
 
@@ -68,14 +75,38 @@ public sealed class PauseMenu : Menu
 
     private void LoadMainMenu() => SceneSwitch.LoadLevel(0).Forget();
 
+    private void OnOpenOrClose(InputAction.CallbackContext _)
+    {
+        _paused = !_paused;
+
+        if (_paused)
+            Pause();
+        else
+            Resume();
+    }
+
+    private void OnResumeClicked()
+    {
+        _paused = false;
+        Resume();
+    }
+
     private void Pause()
     {
+        if (!_windowTracker.TryOpenWindow(MenuPanel))
+        {
+            _paused = false;
+            return;
+        }
+
         MenuPanel.SetActive(true);
         _playerPoint.SetActive(false);
     }
 
     private void Resume()
     {
+        _windowTracker.CloseWindow();
+
         MenuPanel.SetActive(false);
         SettingsPanel.SetActive(false);
         _playerPoint.SetActive(true);
