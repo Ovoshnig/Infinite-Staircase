@@ -1,10 +1,6 @@
 using Cysharp.Threading.Tasks;
 using System;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.AddressableAssets;
-using UnityEngine.ResourceManagement.AsyncOperations;
-using UnityEngine.ResourceManagement.ResourceLocations;
 using UnityEngine.SceneManagement;
 using Zenject;
 
@@ -100,27 +96,11 @@ public class SceneSwitch : IInitializable, IDisposable
     public async UniTask LoadLevel(uint index)
     {
         SceneType sceneType = GetSceneTypeByIndex(index);
-        string label = GetLabelBySceneType(sceneType);
 
         _isLevelLoading = true;
         SceneLoading?.Invoke(sceneType);
 
-        AsyncOperationHandle<IList<IResourceLocation>> handle = Addressables.LoadResourceLocationsAsync(
-            new List<object> { label, GroupName },
-            Addressables.MergeMode.Intersection
-        );
-        await handle.Task;
-
-        if (handle.Status == AsyncOperationStatus.Succeeded)
-        {
-            var locations = handle.Result;
-
-            if (locations.Count > 0)
-            {
-                var sceneLocation = locations[(int)index];
-                await Addressables.LoadSceneAsync(sceneLocation);
-            }
-        }
+        await SceneManager.LoadSceneAsync((int)index);
 
         _isLevelLoading = false;
         _currentLevel = index;
@@ -139,7 +119,7 @@ public class SceneSwitch : IInitializable, IDisposable
     private SceneType GetSceneTypeByIndex(uint index)
     {
         if (index == 0)
-            return SceneType.GameLevel;
+            return SceneType.MainMenu;
         else if (index >= _levelSettings.FirstGameplayLevel && index <= _levelSettings.LastGameplayLevel)
             return SceneType.GameLevel;
         else if (index == _levelSettings.CreditsScene)
@@ -147,6 +127,4 @@ public class SceneSwitch : IInitializable, IDisposable
         else
             throw new InvalidOperationException("Invalid level index");
     }
-
-    private string GetLabelBySceneType(SceneType sceneType) => sceneType.ToString();
 }

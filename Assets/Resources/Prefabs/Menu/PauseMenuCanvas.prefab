@@ -1982,10 +1982,6 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 7028046466040186783, guid: 6647addf17a7f864da0aeddd5c1f5df5, type: 3}
-      propertyPath: m_Sprite
-      value: 
-      objectReference: {fileID: 21300000, guid: 324a5f154a1ddb74f8492b2fb5ef1538, type: 3}
     - target: {fileID: 7341746612878157336, guid: 6647addf17a7f864da0aeddd5c1f5df5, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -2275,10 +2271,6 @@ PrefabInstance:
       propertyPath: m_LocalPosition.x
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 5367074779218020759, guid: e117b75ff7cbee349955e8e3cbf47882, type: 3}
-      propertyPath: m_Sprite
-      value: 
-      objectReference: {fileID: 21300000, guid: 17083b15644d9f94bb05cf5966536111, type: 3}
     - target: {fileID: 7206601297564443026, guid: e117b75ff7cbee349955e8e3cbf47882, type: 3}
       propertyPath: m_Name
       value: SensitivityBlock
@@ -2765,10 +2757,6 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 4981665367001107852, guid: 918fd0351db819548bc0100d4d8ba45a, type: 3}
-      propertyPath: m_Sprite
-      value: 
-      objectReference: {fileID: 21300000, guid: d4a269e545141434c9d1c61c34852dc1, type: 3}
     - target: {fileID: 5434503732838492068, guid: 918fd0351db819548bc0100d4d8ba45a, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
