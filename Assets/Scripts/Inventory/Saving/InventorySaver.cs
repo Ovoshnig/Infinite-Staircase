@@ -35,4 +35,30 @@ public class InventorySaver : MonoBehaviour
 
         _dataSaver.SaveData(InventoryKey, slotDataArray);
     }
+
+    public bool AddItem(ItemModel itemModel)
+    {
+        foreach (var slot in _slots)
+        {
+            if (!slot.SlotModel.HasItem)
+                slot.PlaceItem(itemModel);
+
+            return true;
+        }
+
+        return false;
+    }
+
+    public void UseItem(SlotView slotView)
+    {
+        if (slotView.SlotModel.HasItem)
+        {
+            // Implement the logic for using the item
+            // For example:
+            // ItemModel itemModel = slotView.SlotModel.StoredItem;
+            // itemModel.Use();
+
+            slotView.TakeItem();
+        }
+    }
 }

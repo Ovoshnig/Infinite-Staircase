@@ -12,8 +12,8 @@ public sealed class MainMenu : Menu
     {
         SettingsPanel.SetActive(false);
 
-        Cursor.lockState = CursorLockMode.None;
-        Cursor.visible = true;
+        //Cursor.lockState = CursorLockMode.None;
+        //Cursor.visible = true;
     }
 
     protected override void AddButtonListeners()

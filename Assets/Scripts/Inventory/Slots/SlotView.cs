@@ -37,11 +37,16 @@ public class SlotView : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
             _storedItem = _draggedItemHolder.DraggedItem;
             _slotModel.PlaceItem(_storedItem.GetComponent<ItemView>().ItemModel);
             _draggedItemHolder.DraggedItem = null;
-            _storedItem.transform.SetParent(transform);
-            _storedItem.anchorMax = _halfVector2;
-            _storedItem.anchorMin = _halfVector2;
-            _storedItem.anchoredPosition = Vector2.zero;
+            InitializeStoredItem();
         }
+    }
+
+    public void PlaceItem(ItemModel itemModel)
+    {
+        GameObject itemObject = InstantiateItem(itemModel);
+        _storedItem = itemObject.GetComponent<RectTransform>();
+        _slotModel.PlaceItem(itemModel);
+        InitializeStoredItem();
     }
 
     public void TakeItem()
@@ -85,5 +90,13 @@ public class SlotView : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
         ItemView itemView = itemObject.GetComponent<ItemView>();
         itemView.Initialize(itemModel);
         return itemObject;
+    }
+
+    private void InitializeStoredItem()
+    {
+        _storedItem.transform.SetParent(transform);
+        _storedItem.anchorMax = _halfVector2;
+        _storedItem.anchorMin = _halfVector2;
+        _storedItem.anchoredPosition = Vector2.zero;
     }
 }
