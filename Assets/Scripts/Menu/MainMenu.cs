@@ -4,16 +4,15 @@ using UnityEngine.UI;
 
 public sealed class MainMenu : Menu
 {
+    [SerializeField] private GameObject _gameCreationPanel;
     [SerializeField] private Button _continueGameButton;
-    [SerializeField] private Button _startNewGameButton;
+    [SerializeField] private Button _openCreateGamePanelButton;
     [SerializeField] private Button _quitGameButton;
 
     protected override void InitializeSettings()
     {
         SettingsPanel.SetActive(false);
-
-        //Cursor.lockState = CursorLockMode.None;
-        //Cursor.visible = true;
+        _gameCreationPanel.SetActive(false);
     }
 
     protected override void AddButtonListeners()
@@ -21,7 +20,7 @@ public sealed class MainMenu : Menu
         base.AddButtonListeners();
 
         _continueGameButton.onClick.AddListener(ContinueGame);
-        _startNewGameButton.onClick.AddListener(StartNewGame);
+        _openCreateGamePanelButton.onClick.AddListener(OpenGameCreationPanel);
         _quitGameButton.onClick.AddListener(QuitGame);
     }
 
@@ -30,13 +29,13 @@ public sealed class MainMenu : Menu
         base.RemoveButtonListeners();
 
         _continueGameButton.onClick.RemoveListener(ContinueGame);
-        _startNewGameButton.onClick.RemoveListener(StartNewGame);
+        _openCreateGamePanelButton.onClick.RemoveListener(OpenGameCreationPanel);
         _quitGameButton.onClick.RemoveListener(QuitGame);
     }
 
     private void ContinueGame() => SceneSwitch.LoadAchievedLevel().Forget();
 
-    private void StartNewGame() => SceneSwitch.LoadFirstLevel().Forget();
+    private void OpenGameCreationPanel() => _gameCreationPanel.SetActive(true);
 
     private void QuitGame() => Application.Quit();
 }
