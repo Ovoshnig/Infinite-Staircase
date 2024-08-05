@@ -18,7 +18,8 @@ public sealed class PauseMenu : Menu
     private PlayerInput _playerInput;
     private bool _paused = false;
 
-    public event Action ResumeClicked;
+    public event Action Paused;
+    public event Action Resumed;
 
     [Inject]
     private void Construct(WindowTracker windowTracker) => _windowTracker = windowTracker;
@@ -101,6 +102,7 @@ public sealed class PauseMenu : Menu
 
         MenuPanel.SetActive(true);
         _playerPoint.SetActive(false);
+        Paused?.Invoke();
     }
 
     private void Resume()
@@ -110,5 +112,6 @@ public sealed class PauseMenu : Menu
         MenuPanel.SetActive(false);
         SettingsPanel.SetActive(false);
         _playerPoint.SetActive(true);
+        Resumed?.Invoke();
     }
 }

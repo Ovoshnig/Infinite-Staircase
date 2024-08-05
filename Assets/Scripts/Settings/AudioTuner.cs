@@ -10,18 +10,16 @@ public class AudioTuner : IInitializable, IDisposable
     private readonly DataSaver _dataSaver;
     private readonly GameSettingsInstaller.AudioSettings _audioSettings;
 
-    private readonly GamePauser _gamePauser;
     private readonly AudioMixerGroup _audioMixerGroup;
     private float _soundsVolume;
     private float _musicVolume;
 
     [Inject]
     public AudioTuner(DataSaver dataSaver, GameSettingsInstaller.AudioSettings audioSettings,
-                         GamePauser gamePauser, AudioMixerGroup audioMixerGroup)
+                         AudioMixerGroup audioMixerGroup)
     {
         _dataSaver = dataSaver;
         _audioSettings = audioSettings;
-        _gamePauser = gamePauser;
         _audioMixerGroup = audioMixerGroup;
     }
 
@@ -56,39 +54,17 @@ public class AudioTuner : IInitializable, IDisposable
 
     public void Initialize()
     {
-        InitializeVolumeData();
-        SubscribeToEvents();
-    }
-
-    public void Dispose()
-    {
-        UnsubscribeFromEvents();
-        SaveVolumeData();
-    }
-
-    public void PauseSoundSources() => SetSoundSourcesPauseState(pause: true);
-
-    public void UnpauseSoundSources() => SetSoundSourcesPauseState(pause: false);
-
-    private void InitializeVolumeData()
-    {
         _soundsVolume = _dataSaver.LoadData(SoundsVolumeKey, _audioSettings.DefaultVolume);
         _musicVolume = _dataSaver.LoadData(MusicVolumeKey, _audioSettings.DefaultVolume);
         SoundsVolume = _soundsVolume;
         MusicVolume = _musicVolume;
     }
 
-    private void SubscribeToEvents()
-    {
-        _gamePauser.GamePaused += PauseSoundSources;
-        _gamePauser.GameUnpaused += UnpauseSoundSources;
-    }
+    public void Dispose() => SaveVolumeData();
 
-    private void UnsubscribeFromEvents()
-    {
-        _gamePauser.GamePaused -= PauseSoundSources;
-        _gamePauser.GameUnpaused -= UnpauseSoundSources;
-    }
+    public void PauseSoundSources() => SetSoundSourcesPauseState(pause: true);
+
+    public void UnpauseSoundSources() => SetSoundSourcesPauseState(pause: false);
 
     private void SaveVolumeData()
     {
