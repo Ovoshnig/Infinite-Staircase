@@ -16,13 +16,13 @@ public class NewGameCreator : MonoBehaviour
 
     private readonly Random _random = new();
     private SceneSwitch _sceneSwitch;
-    private DataSaver _dataSaver;
+    private SaveSaver _saveSaver;
 
     [Inject]
-    private void Construct(SceneSwitch sceneSwitch, DataSaver dataSaver)
+    private void Construct(SceneSwitch sceneSwitch, SaveSaver saveSaver)
     {
         _sceneSwitch = sceneSwitch;
-        _dataSaver = dataSaver;
+        _saveSaver = saveSaver;
     }
 
     private void OnEnable()
@@ -66,8 +66,7 @@ public class NewGameCreator : MonoBehaviour
         else 
             seed = Convert.ToInt32(_seedInputField.text); 
 
-        Debug.Log("Seed is " + seed.ToString());
-        _dataSaver.SaveData(SeedKey, seed);
+        _saveSaver.SaveData(SeedKey, seed);
         _sceneSwitch.LoadFirstLevel().Forget();
     }
 }

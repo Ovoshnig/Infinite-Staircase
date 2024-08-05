@@ -5,14 +5,14 @@ public class LookTuner : IInitializable, IDisposable
 {
     private const string SensitivityKey = "Sensitivity";
 
-    private readonly DataSaver _dataSaver;
+    private readonly SettingsSaver _settingsSaver;
     private readonly GameSettingsInstaller.ControlSettings _controlSettings;
     private float _sensitivity;
 
     [Inject]
-    public LookTuner(DataSaver dataSaver, GameSettingsInstaller.ControlSettings controlSettings)
+    public LookTuner(SettingsSaver settingsSaver, GameSettingsInstaller.ControlSettings controlSettings)
     {
-        _dataSaver = dataSaver;
+        _settingsSaver = settingsSaver;
         _controlSettings = controlSettings;
     }
 
@@ -29,7 +29,7 @@ public class LookTuner : IInitializable, IDisposable
         }
     }
 
-    public void Initialize() => _sensitivity = _dataSaver.LoadData(SensitivityKey, _controlSettings.DefaultSensitivity);
+    public void Initialize() => _sensitivity = _settingsSaver.LoadData(SensitivityKey, _controlSettings.DefaultSensitivity);
 
-    public void Dispose() => _dataSaver.SaveData(SensitivityKey, _sensitivity);
+    public void Dispose() => _settingsSaver.SaveData(SensitivityKey, _sensitivity);
 }

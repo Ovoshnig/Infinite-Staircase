@@ -6,13 +6,13 @@ public class InventorySaver : MonoBehaviour
     private const string InventoryKey = "Inventory";
 
     private SlotView[] _slots;
-    private DataSaver _dataSaver;
+    private SaveSaver _saveSaver;
     private ItemDataRepository _itemDataRepository;
 
     [Inject]
-    private void Construct(DataSaver dataSaver, ItemDataRepository itemDataRepository)
+    private void Construct(SaveSaver saveSaver, ItemDataRepository itemDataRepository)
     {
-        _dataSaver = dataSaver;
+        _saveSaver = saveSaver;
         _itemDataRepository = itemDataRepository;
     }
 
@@ -20,7 +20,7 @@ public class InventorySaver : MonoBehaviour
 
     private void Start()
     {
-        SlotData[] slotDataArray = _dataSaver.LoadData(InventoryKey, new SlotData[_slots.Length]);
+        SlotData[] slotDataArray = _saveSaver.LoadData(InventoryKey, new SlotData[_slots.Length]);
 
         for (int i = 0; i < _slots.Length; i++)
             _slots[i].Load(slotDataArray[i], _itemDataRepository);
@@ -33,7 +33,7 @@ public class InventorySaver : MonoBehaviour
         for (int i = 0; i < _slots.Length; i++)
             slotDataArray[i] = _slots[i].Save();
 
-        _dataSaver.SaveData(InventoryKey, slotDataArray);
+        _saveSaver.SaveData(InventoryKey, slotDataArray);
     }
 
     public bool AddItem(ItemModel itemModel)

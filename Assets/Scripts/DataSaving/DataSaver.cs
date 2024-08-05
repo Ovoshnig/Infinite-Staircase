@@ -1,5 +1,4 @@
 using UnityEngine;
-using Zenject;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -8,12 +7,16 @@ using Newtonsoft.Json.Linq;
 
 public class DataSaver : IDisposable
 {
-    private const string SaveFileName = "playerData.json";
     private Dictionary<string, object> _dataStore;
 
-    private string FilePath => Path.Combine(Application.persistentDataPath, SaveFileName);
+    public DataSaver()
+    {
+        SetFileName();
+        LoadDataStore();
+    }
 
-    public DataSaver() => LoadDataStore();
+    protected string SaveFileName { get; set; }
+    protected string FilePath => Path.Combine(Application.persistentDataPath, SaveFileName);
 
     public void Dispose() => SaveDataStore();
 
@@ -38,6 +41,8 @@ public class DataSaver : IDisposable
     }
 
     public void SaveData<T>(string key, T value) => _dataStore[key] = value;
+
+    protected virtual void SetFileName() => SaveFileName = string.Empty;
 
     private void LoadDataStore()
     {
