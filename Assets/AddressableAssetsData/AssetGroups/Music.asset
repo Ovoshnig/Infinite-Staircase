@@ -16,25 +16,25 @@ MonoBehaviour:
   m_GUID: 1a5ea5bbef2b16f43823553cff3612c9
   m_SerializeEntries:
   - m_GUID: 064e9ba828d814e4bb3fcc75c2d8c2ed
-    m_Address: background-music-instrumental-207886
+    m_Address: Assets/Resources_moved/Audio/Music/GameLevel/background-music-instrumental-207886.mp3
     m_ReadOnly: 0
     m_SerializedLabels:
     - GameLevel
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 32e6bb50032348d4ab86a528247819fc
-    m_Address: closing-credits-189582
+    m_Address: Assets/Resources_moved/Audio/Music/Credits/closing-credits-189582.mp3
     m_ReadOnly: 0
     m_SerializedLabels:
     - Credits
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 3be0c21db36c51949bc242900e403aea
-    m_Address: just-relax-11157
+    m_Address: Assets/Resources_moved/Audio/Music/MainMenu/just-relax-11157.mp3
     m_ReadOnly: 0
     m_SerializedLabels:
     - MainMenu
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 4fcec731d62d17345ad090fb76450ec5
-    m_Address: little-charlie-synthwave-version-background-music-for-video-vlog-204016
+    m_Address: Assets/Resources_moved/Audio/Music/GameLevel/little-charlie-synthwave-version-background-music-for-video-vlog-204016.mp3
     m_ReadOnly: 0
     m_SerializedLabels:
     - GameLevel
@@ -58,7 +58,7 @@ MonoBehaviour:
     - GameLevel
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 9d13802d331f53648886bd1f9fd4748c
-    m_Address: tvari-tokyo-cafe-159065
+    m_Address: Assets/Resources_moved/Audio/Music/GameLevel/tvari-tokyo-cafe-159065.mp3
     m_ReadOnly: 0
     m_SerializedLabels:
     - GameLevel
