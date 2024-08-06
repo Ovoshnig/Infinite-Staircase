@@ -2,30 +2,22 @@ using System;
 using UnityEngine.Audio;
 using Zenject;
 
-public class AudioTuner : IDisposable
+public class AudioTuner : IInitializable, IDisposable
 {
-    private const string SoundsVolumeKey = "SoundsVolume";
-    private const string MusicVolumeKey = "MusicVolume";
-
-    private readonly DataSaver _dataSaver;
+    private readonly SettingsSaver _settingsSaver;
     private readonly GameSettingsInstaller.AudioSettings _audioSettings;
 
-    private readonly GamePauser _gamePauser;
     private readonly AudioMixerGroup _audioMixerGroup;
     private float _soundsVolume;
     private float _musicVolume;
 
     [Inject]
-    public AudioTuner(DataSaver dataSaver, GameSettingsInstaller.AudioSettings audioSettings,
-                         GamePauser gamePauser, AudioMixerGroup audioMixerGroup)
+    public AudioTuner(SettingsSaver settingsSaver, GameSettingsInstaller.AudioSettings audioSettings,
+                         AudioMixerGroup audioMixerGroup)
     {
-        _dataSaver = dataSaver;
+        _settingsSaver = settingsSaver;
         _audioSettings = audioSettings;
-        _gamePauser = gamePauser;
         _audioMixerGroup = audioMixerGroup;
-
-        InitializeVolumeData();
-        SubscribeToEvents();
     }
 
     public float SoundsVolume
@@ -52,52 +44,36 @@ public class AudioTuner : IDisposable
             if (value >= _audioSettings.MinVolume && value <= _audioSettings.MaxVolume)
             {
                 _musicVolume = value;
-                _audioMixerGroup.audioMixer.SetFloat(MusicVolumeKey, value);
+                _audioMixerGroup.audioMixer.SetFloat(SettingsConstants.MusicVolumeKey, value);
             }
         }
     }
 
-    public void Dispose()
+    public void Initialize()
     {
-        UnsubscribeFromEvents();
-        SaveVolumeData();
+        _soundsVolume = _settingsSaver.LoadData(SettingsConstants.SoundsVolumeKey, _audioSettings.DefaultVolume);
+        _musicVolume = _settingsSaver.LoadData(SettingsConstants.MusicVolumeKey, _audioSettings.DefaultVolume);
+        SoundsVolume = _soundsVolume;
+        MusicVolume = _musicVolume;
     }
+
+    public void Dispose() => SaveVolumeData();
 
     public void PauseSoundSources() => SetSoundSourcesPauseState(pause: true);
 
     public void UnpauseSoundSources() => SetSoundSourcesPauseState(pause: false);
 
-    private void InitializeVolumeData()
-    {
-        _soundsVolume = _dataSaver.LoadData(SoundsVolumeKey, _audioSettings.DefaultVolume);
-        _musicVolume = _dataSaver.LoadData(MusicVolumeKey, _audioSettings.DefaultVolume);
-        SoundsVolume = _soundsVolume;
-        MusicVolume = _musicVolume;
-    }
-
-    private void SubscribeToEvents()
-    {
-        _gamePauser.GamePaused += PauseSoundSources;
-        _gamePauser.GameUnpaused += UnpauseSoundSources;
-    }
-
-    private void UnsubscribeFromEvents()
-    {
-        _gamePauser.GamePaused -= PauseSoundSources;
-        _gamePauser.GameUnpaused -= UnpauseSoundSources;
-    }
-
     private void SaveVolumeData()
     {
-        _dataSaver.SaveData(SoundsVolumeKey, _soundsVolume);
-        _dataSaver.SaveData(MusicVolumeKey, _musicVolume);
+        _settingsSaver.SaveData(SettingsConstants.SoundsVolumeKey, _soundsVolume);
+        _settingsSaver.SaveData(SettingsConstants.MusicVolumeKey, _musicVolume);
     }
 
     private void SetSoundSourcesPauseState(bool pause)
     {
         if (pause)
-            _audioMixerGroup.audioMixer.SetFloat(SoundsVolumeKey, _audioSettings.MinVolume);
+            _audioMixerGroup.audioMixer.SetFloat(SettingsConstants.SoundsVolumeKey, _audioSettings.MinVolume);
         else
-            _audioMixerGroup.audioMixer.SetFloat(SoundsVolumeKey, _soundsVolume);
+            _audioMixerGroup.audioMixer.SetFloat(SettingsConstants.SoundsVolumeKey, _soundsVolume);
     }
 }

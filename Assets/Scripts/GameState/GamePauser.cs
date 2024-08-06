@@ -1,37 +1,36 @@
 using System;
 using UnityEngine;
-using UnityEngine.InputSystem;
 using Zenject;
 
-public class GamePauser : IDisposable
+public class GamePauser : IInitializable, IDisposable
 {
-    private readonly PlayerInput _playerInput;
+    private readonly PauseMenu _pauseMenu;
     private readonly SceneSwitch _sceneSwitch;
-    private bool _isGamePaused = false;
-    private bool _reversePauseStateAllowed = true;
 
     public event Action GamePaused;
     public event Action GameUnpaused;
 
     [Inject]
-    public GamePauser(SceneSwitch sceneSwitch)
+    public GamePauser(PauseMenu pauseMenu, SceneSwitch sceneSwitch)
     {
+        _pauseMenu = pauseMenu;
         _sceneSwitch = sceneSwitch;
-        _sceneSwitch.SceneLoading += OnLevelLoading;
-        _sceneSwitch.SceneLoaded += OnLevelLoaded;
+    }
 
-        _playerInput = new PlayerInput();
-        _playerInput.GameState.ReversePauseState.performed += ReversePauseState;
-        _playerInput.Enable();
+    public void Initialize()
+    {
+        _pauseMenu.Paused += Pause;
+        _pauseMenu.Resumed += Unpause;
+        _sceneSwitch.SceneLoading += OnSceneLoading;
 
         SetPauseState(pause: false);
     }
 
     public void Dispose()
     {
-        _sceneSwitch.SceneLoading -= OnLevelLoading;
-        _sceneSwitch.SceneLoaded -= OnLevelLoaded;
-        _playerInput.Disable();
+        _pauseMenu.Paused -= Pause;
+        _pauseMenu.Resumed -= Unpause;
+        _sceneSwitch.SceneLoading -= OnSceneLoading;
     }
 
     private void Pause()
@@ -46,36 +45,7 @@ public class GamePauser : IDisposable
         GameUnpaused?.Invoke();
     }
 
-    private void OnLevelLoading(SceneSwitch.SceneType scene)
-    {
-        Unpause();
-        _reversePauseStateAllowed = false;
-    }
+    private void OnSceneLoading(SceneSwitch.SceneType _) => Unpause();
 
-    private void OnLevelLoaded(SceneSwitch.SceneType scene)
-    {
-        _reversePauseStateAllowed = true;
-
-        PauseMenu pauseMenuHandler = UnityEngine.Object.FindFirstObjectByType<PauseMenu>();
-
-        if (pauseMenuHandler != null)
-            pauseMenuHandler.OnResumeClicked += Unpause;
-    }
-
-    private void SetPauseState(bool pause)
-    {
-        Time.timeScale = pause ? 0 : 1;
-        _isGamePaused = pause;
-    }
-
-    private void ReversePauseState(InputAction.CallbackContext context)
-    {
-        if (_reversePauseStateAllowed)
-        {
-            if (_isGamePaused)
-                Unpause();
-            else
-                Pause();
-        }
-    }
+    private void SetPauseState(bool pause) => Time.timeScale = pause ? 0 : 1;
 }

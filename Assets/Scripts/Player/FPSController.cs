@@ -14,7 +14,7 @@ public class FPSController : MonoBehaviour
     [SerializeField] private bool _canMove = true;
     [SerializeField] private Transform _cameraTransform;
 
-    private GamePauser _gamePauser;
+    private WindowTracker _windowTracker;
     private LookTuner _lookTuner;
     private CharacterController _characterController;
     private PlayerInput _playerInput;
@@ -29,9 +29,9 @@ public class FPSController : MonoBehaviour
     private float _movementDirectionY;
 
     [Inject]
-    private void Construct(GamePauser gamePauser, LookTuner lookTuner)
+    private void Construct(WindowTracker windowTracker, LookTuner lookTuner)
     {
-        _gamePauser = gamePauser;
+        _windowTracker = windowTracker;
         _lookTuner = lookTuner;
     }
 
@@ -62,16 +62,16 @@ public class FPSController : MonoBehaviour
     {
         _playerInput.Enable();
 
-        _gamePauser.GamePaused += OnPaused;
-        _gamePauser.GameUnpaused += OnUnpaused;
+        _windowTracker.WindowOpened += OnWindowOpened;
+        _windowTracker.WindowClosed += OnWindowClosed;
     }
 
     private void OnDisable()
     {
         _playerInput.Disable();
 
-        _gamePauser.GamePaused -= OnPaused;
-        _gamePauser.GameUnpaused -= OnUnpaused;
+        _windowTracker.WindowOpened -= OnWindowOpened;
+        _windowTracker.WindowClosed -= OnWindowClosed;
     }
 
     #region "Performed actions"
@@ -98,23 +98,12 @@ public class FPSController : MonoBehaviour
 
     #endregion
 
-    private void OnPaused()
-    {
-        _canMove = false;
-        SetPauseState(pause: true);
-    }
+    private void OnWindowOpened() => _canMove = false;
 
-    private void OnUnpaused()
+    private void OnWindowClosed()
     {
         _canMove = true;
-        SetPauseState(pause: false);
         _rotationSpeed = _lookTuner.Sensitivity;
-    }
-
-    private void SetPauseState(bool pause)
-    {
-        Cursor.lockState = pause ? CursorLockMode.None : CursorLockMode.Locked;
-        Cursor.visible = pause;
     }
 
     private void Update()
@@ -155,7 +144,7 @@ public class FPSController : MonoBehaviour
     {
         _rotationX += -_lookInput.y * _rotationSpeed;
         _rotationX = Mathf.Clamp(_rotationX, -_xRotationLimit, _xRotationLimit);
-        _cameraTransform.localRotation = Quaternion.Euler(_rotationX, 0, 0);
-        transform.rotation *= Quaternion.Euler(0, _lookInput.x * _rotationSpeed, 0);
+        _cameraTransform.localRotation = Quaternion.Euler(_rotationX, 0f, 0f);
+        transform.rotation *= Quaternion.Euler(0f, _lookInput.x * _rotationSpeed, 0f);
     }
 }

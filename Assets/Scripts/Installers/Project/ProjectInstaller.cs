@@ -8,17 +8,20 @@ public class ProjectInstaller : MonoInstaller
 
     public override void InstallBindings()
     {
-        Container.BindInterfacesAndSelfTo<SplashScreenPasser>().FromNew().AsSingle().NonLazy();
-        Container.BindInterfacesAndSelfTo<GamePauser>().FromNew().AsSingle().NonLazy();
-        Container.BindInterfacesAndSelfTo<DataSaver>().FromNew().AsSingle().NonLazy();
-        Container.Bind<AudioMixerGroup>().FromInstance(_audioMixerGroup).AsSingle().NonLazy();
+#if !UNITY_EDITOR
+        Container.BindInterfacesAndSelfTo<SplashScreenPasser>().FromNew().AsSingle();
+#endif
+        Container.BindInterfacesAndSelfTo<SaveSaver>().FromNew().AsSingle();
+        Container.BindInterfacesAndSelfTo<SettingsSaver>().FromNew().AsSingle();
+        Container.BindInterfacesAndSelfTo<SceneSwitch>().FromNew().AsSingle();
+        Container.Bind<AudioMixerGroup>().FromInstance(_audioMixerGroup).AsSingle();
+
         BindSettings();
     }
 
     private void BindSettings()
     {
-        Container.BindInterfacesAndSelfTo<SceneSwitch>().FromNew().AsSingle().NonLazy();
-        Container.BindInterfacesAndSelfTo<LookTuner>().FromNew().AsSingle().NonLazy();
-        Container.BindInterfacesAndSelfTo<AudioTuner>().FromNew().AsSingle().NonLazy();
+        Container.BindInterfacesAndSelfTo<LookTuner>().FromNew().AsSingle();
+        Container.BindInterfacesAndSelfTo<AudioTuner>().FromNew().AsSingle();
     }
 }

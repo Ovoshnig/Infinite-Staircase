@@ -3,26 +3,30 @@ using Random = System.Random;
 using System.Linq;
 using System.Threading;
 using UnityEngine;
+using Zenject;
 
 public class StaircaseGenerator : MonoBehaviour
 {
     [SerializeField] private Transform _startTransform;
     [SerializeField] private int _partsCount;
-    [SerializeField] private int _seed;
-
-    private const string StairPrefabsPath = "Prefabs/Staircase/Stairs";
-    private const string StairConnectionsPath = "Prefabs/Staircase/Stair Connections";
 
     private readonly CancellationTokenSource _cts = new();
+    private SaveSaver _saveSaver;
+    private int _seed;
     private GameObject[] _stairs;
     private StairConnection[] _stairConnections;
     private Vector3 _size;
 
+
+    [Inject]
+    private void Construct(SaveSaver saveSaver) => _saveSaver = saveSaver;
+
     private void Start()
     {
-        _stairs = Resources.LoadAll<GameObject>(StairPrefabsPath);
+        _seed = _saveSaver.LoadData<int>(SaveConstants.SeedKey, default);
+        _stairs = Resources.LoadAll<GameObject>(ResourcesConstants.StairPrefabsPath);
         _size = _stairs[0].GetComponent<Stair>().Size;
-        _stairConnections = Resources.LoadAll<StairConnection>(StairConnectionsPath);
+        _stairConnections = Resources.LoadAll<StairConnection>(ResourcesConstants.StairConnectionsPath);
 
         Generate().Forget();
     }

@@ -33,6 +33,7 @@ public class MusicPlayer : MonoBehaviour
 
     private async void Start()
     {
+        _cts = new CancellationTokenSource();
         await LoadMusicTrackKeys();
         _sceneSwitch.SceneLoaded += OnSceneLoaded;
         OnSceneLoaded(_sceneSwitch.CurrentSceneType);
@@ -50,7 +51,7 @@ public class MusicPlayer : MonoBehaviour
         {
             string label = category.ToString();
             var handle = Addressables.LoadResourceLocationsAsync(label, typeof(AudioClip));
-            await handle.Task;
+            await handle.ToUniTask(cancellationToken: _cts.Token);
 
             if (handle.Status == AsyncOperationStatus.Succeeded)
             {
@@ -132,7 +133,7 @@ public class MusicPlayer : MonoBehaviour
     private async UniTask<AsyncOperationHandle<AudioClip>> LoadTrack(string key)
     {
         var handle = Addressables.LoadAssetAsync<AudioClip>(key);
-        await handle;
+        await handle.ToUniTask(cancellationToken: _cts.Token);
 
         if (handle.Status == AsyncOperationStatus.Succeeded)
         {
@@ -141,6 +142,7 @@ public class MusicPlayer : MonoBehaviour
         else
         {
             Debug.LogError($"Failed to load track with key: {key}");
+
             return default;
         }
     }
@@ -163,6 +165,8 @@ public class MusicPlayer : MonoBehaviour
 
         if (_currentTrackHandle.HasValue)
         {
+            _audioSource.Stop();
+            _audioSource.clip = null;
             ReleaseTrack(_currentTrackHandle.Value);
             _currentTrackHandle = null;
         }
@@ -176,6 +180,12 @@ public class MusicPlayer : MonoBehaviour
             _audioSource.clip = trackHandle.Result;
             _audioSource.Play();
             await UniTask.WaitWhile(() => _audioSource.isPlaying, cancellationToken: _cts.Token);
+
+            if (_cts.Token.IsCancellationRequested)
+            {
+                ReleaseTrack(trackHandle);
+                return;
+            }
 
             PlayNextTrack(category).Forget();
         }

@@ -330,8 +330,8 @@ GameObject:
   m_Component:
   - component: {fileID: 900829433}
   - component: {fileID: 900829432}
-  - component: {fileID: 900829437}
   - component: {fileID: 900829436}
+  - component: {fileID: 900829437}
   - component: {fileID: 900829434}
   - component: {fileID: 900829435}
   m_Layer: 0
@@ -355,8 +355,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _scriptableObjectInstallers: []
   _monoInstallers:
-  - {fileID: 900829437}
   - {fileID: 900829436}
+  - {fileID: 900829437}
   - {fileID: 900829434}
   - {fileID: 900829435}
   _installerPrefabs: []
@@ -404,6 +404,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _inventoryCanvas: {fileID: 9071114180932561489, guid: bdbf62912e381bb48b8ce2d9c21bcc7a, type: 3}
+  _itemDataRepository: {fileID: 11400000, guid: 5d610a8efaa825046b5d945a2b98fdfe, type: 2}
 --- !u!114 &900829435
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -440,7 +441,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 900829431}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0a3e6ab871700284dafb338f21c9260c, type: 3}
+  m_Script: {fileID: 11500000, guid: b3be3ba0bcde1534ab63bf1f0f2e5839, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &977685680
@@ -508,7 +509,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _startTransform: {fileID: 481872785}
   _partsCount: 100
-  _seed: 12
+  _seed: 83
 --- !u!4 &1166965747
 Transform:
   m_ObjectHideFlags: 0

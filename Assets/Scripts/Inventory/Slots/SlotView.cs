@@ -1,40 +1,102 @@
 using UnityEngine;
-using UnityEngine.UI;
+using UnityEngine.EventSystems;
+using Zenject;
 
-[RequireComponent(typeof(Image),
-                  typeof(Slot))]
-public class SlotView : MonoBehaviour
+public class SlotView : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerDownHandler
 {
-    private Slot _slot;
-    private Image _image;
-    private Sprite _emptySprite;
+    [SerializeField] private GameObject _itemPrefab;
 
-    private void Awake()
+    private readonly Vector2 _halfVector2 = Vector2.one / 2f;
+    private RectTransform _storedItem;
+    private DraggedItemHolder _draggedItemHolder;
+    private SlotKeeper _slotKeeper;
+    private SlotModel _slotModel;
+
+    [Inject]
+    private void Construct(DraggedItemHolder draggedItemHolder, SlotKeeper slotKeeper)
     {
-        _slot = GetComponent<Slot>();
-        _image = GetComponent<Image>();
-        _emptySprite = _image.sprite;
+        _draggedItemHolder = draggedItemHolder;
+        _slotKeeper = slotKeeper;
+        _slotModel = new SlotModel();
     }
 
-    private void OnEnable()
+    public SlotModel SlotModel => _slotModel;
+
+    private Transform CanvasTransform => transform.parent.parent;
+
+    public void OnPointerEnter(PointerEventData _) => _slotKeeper.SelectedSlot = this;
+
+    public void OnPointerExit(PointerEventData _) => _slotKeeper.SelectedSlot = null;
+
+    public void OnPointerDown(PointerEventData _) => TakeItem();
+
+    public void PlaceItem()
     {
-        _slot.ItemTaken += OnItemTaken;
-        _slot.ItemPlaced += OnItemPlaced;
+        if (_draggedItemHolder.DraggedItem != null)
+        {
+            _storedItem = _draggedItemHolder.DraggedItem;
+            _slotModel.PlaceItem(_storedItem.GetComponent<ItemView>().ItemModel);
+            _draggedItemHolder.DraggedItem = null;
+            InitializeStoredItem();
+        }
     }
 
-    private void OnDisable()
+    public void PlaceItem(ItemModel itemModel)
     {
-        _slot.ItemTaken -= OnItemTaken;
-        _slot.ItemPlaced -= OnItemPlaced;
+        GameObject itemObject = InstantiateItem(itemModel);
+        _storedItem = itemObject.GetComponent<RectTransform>();
+        _slotModel.PlaceItem(itemModel);
+        InitializeStoredItem();
     }
 
-    private void OnItemTaken(RectTransform draggedItem)
+    public void TakeItem()
     {
-        _image.sprite = _emptySprite;
+        if (_storedItem != null)
+        {
+            _storedItem.transform.SetParent(CanvasTransform);
+            _draggedItemHolder.DraggedItem = _storedItem;
+            _slotModel.TakeItem();
+            _storedItem = null;
+            _slotKeeper.StartingSlot = this;
+        }
     }
 
-    private void OnItemPlaced(RectTransform draggedItem)
+    public SlotData Save() => _slotModel.Save();
+
+    public void Load(SlotData data, ItemDataRepository itemDataRepository)
     {
-        _image.sprite = _emptySprite;
+        _slotModel.Load(data, itemDataRepository);
+
+        if (_slotModel.HasItem)
+        {
+            GameObject itemObject = InstantiateItem(_slotModel.StoredItem);
+            _storedItem = itemObject.GetComponent<RectTransform>();
+            _storedItem.transform.SetParent(transform);
+            _storedItem.anchorMax = _halfVector2;
+            _storedItem.anchorMin = _halfVector2;
+            _storedItem.anchoredPosition = Vector2.zero;
+
+            _slotModel.PlaceItem(_storedItem.GetComponent<ItemView>().ItemModel);
+        }
+        else
+        {
+            _storedItem = null;
+        }
+    }
+
+    private GameObject InstantiateItem(ItemModel itemModel)
+    {
+        GameObject itemObject = Instantiate(_itemPrefab);
+        ItemView itemView = itemObject.GetComponent<ItemView>();
+        itemView.Initialize(itemModel);
+        return itemObject;
+    }
+
+    private void InitializeStoredItem()
+    {
+        _storedItem.transform.SetParent(transform);
+        _storedItem.anchorMax = _halfVector2;
+        _storedItem.anchorMin = _halfVector2;
+        _storedItem.anchoredPosition = Vector2.zero;
     }
 }
