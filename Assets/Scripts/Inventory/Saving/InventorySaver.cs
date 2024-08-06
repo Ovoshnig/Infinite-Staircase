@@ -18,7 +18,12 @@ public class InventorySaver : MonoBehaviour
 
     private void Start()
     {
-        SlotData[] slotDataArray = _saveSaver.LoadData(SaveConstants.InventoryKey, new SlotData[_slots.Length]);
+        SlotData[] defaultSlotArray = new SlotData[_slots.Length];
+
+        for (int i = 0; i < defaultSlotArray.Length; i++)
+            defaultSlotArray[i] = new SlotData();
+
+        SlotData[] slotDataArray = _saveSaver.LoadData(SaveConstants.InventoryKey, defaultSlotArray);
 
         for (int i = 0; i < _slots.Length; i++)
             _slots[i].Load(slotDataArray[i], _itemDataRepository);

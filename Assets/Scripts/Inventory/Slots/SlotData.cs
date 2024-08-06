@@ -2,5 +2,5 @@
 public class SlotData
 {
     public bool HasItem = false;
-    public string ItemName = default;
+    public string ItemName = string.Empty;
 }

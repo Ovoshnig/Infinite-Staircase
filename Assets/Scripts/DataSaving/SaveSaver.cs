@@ -1,11 +1,10 @@
 using System.Collections.Generic;
-using System.IO;
 
 public sealed class SaveSaver : DataSaver
 {
     private readonly Dictionary<string, object> _defaultStore = new();
 
-    public override T LoadData<T>(string key, T defaultValue = default)
+    public override T LoadData<T>(string key, T defaultValue)
     {
         _defaultStore[key] = defaultValue;
 
@@ -14,9 +13,6 @@ public sealed class SaveSaver : DataSaver
 
     public void Reset()
     {
-        if (File.Exists(FilePath))
-            File.WriteAllText(SaveFileName, string.Empty);
-
         foreach(var key in _defaultStore.Keys)
             DataStore[key] = _defaultStore[key];
     }

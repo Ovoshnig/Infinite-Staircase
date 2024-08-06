@@ -21,7 +21,7 @@ public class DataSaver : IDisposable
 
     public void Dispose() => SaveDataStore();
 
-    public virtual T LoadData<T>(string key, T defaultValue = default)
+    public virtual T LoadData<T>(string key, T defaultValue)
     {
         if (_dataStore.TryGetValue(key, out object storedValue))
         {
