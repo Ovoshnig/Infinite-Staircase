@@ -28,53 +28,42 @@ public sealed class PauseMenu : Menu
     {
         _playerInput = new PlayerInput();
         _playerInput.PauseMenu.OpenOrClose.performed += OnOpenOrClose;
-    }
-
-    protected override void InitializeSettings() => Resume();
-
-    protected override void SubscribeToEvents()
-    {
-        base.SubscribeToEvents();
-
         _playerInput.Enable();
     }
 
-    protected override void UnsubscribeFromEvents()
-    {
-        base.UnsubscribeFromEvents();
+    private void OnDestroy() => _playerInput.Disable();
 
-        _playerInput.Disable();
-    }
+    protected override void InitializeSettings() => Resume();
 
-    protected override void AddButtonListeners()
+    protected override void AddListeners()
     {
-        base.AddButtonListeners();
+        base.AddListeners();
 
         _resumeButton.onClick.AddListener(OnResumeClicked);
-        _resetLevelButton.onClick.AddListener(ResetLevel);
-        _loadNextLevelButton.onClick.AddListener(LoadNextLevel);
-        _loadPreviousLevelButton.onClick.AddListener(LoadPreviousLevel);
-        _loadMainMenuButton.onClick.AddListener(LoadMainMenu);
+        _resetLevelButton.onClick.AddListener(OnResetButtonClicked);
+        _loadPreviousLevelButton.onClick.AddListener(OnPreviousLevelButtonClicked);
+        _loadNextLevelButton.onClick.AddListener(OnNextLevelButtonClicked);
+        _loadMainMenuButton.onClick.AddListener(OnLoadMainMenuButtonClicked);
     }
 
-    protected override void RemoveButtonListeners()
+    protected override void RemoveListeners()
     {
-        base.RemoveButtonListeners();
+        base.RemoveListeners();
 
         _resumeButton.onClick.RemoveListener(OnResumeClicked);
-        _resetLevelButton.onClick.RemoveListener(ResetLevel);
-        _loadNextLevelButton.onClick.RemoveListener(LoadNextLevel);
-        _loadPreviousLevelButton.onClick.RemoveListener(LoadPreviousLevel);
-        _loadMainMenuButton.onClick.RemoveListener(LoadMainMenu);
+        _resetLevelButton.onClick.RemoveListener(OnResetButtonClicked);
+        _loadPreviousLevelButton.onClick.RemoveListener(OnPreviousLevelButtonClicked);
+        _loadNextLevelButton.onClick.RemoveListener(OnNextLevelButtonClicked);
+        _loadMainMenuButton.onClick.RemoveListener(OnLoadMainMenuButtonClicked);
     }
 
-    private void ResetLevel() => SceneSwitch.LoadCurrentLevel();
+    private void OnResetButtonClicked() => SceneSwitch.LoadCurrentLevel();
 
-    private void LoadPreviousLevel() => SceneSwitch.LoadPreviousLevel().Forget();
+    private void OnPreviousLevelButtonClicked() => SceneSwitch.LoadPreviousLevel().Forget();
 
-    private void LoadNextLevel() => SceneSwitch.LoadNextLevel().Forget();
+    private void OnNextLevelButtonClicked() => SceneSwitch.LoadNextLevel().Forget();
 
-    private void LoadMainMenu() => SceneSwitch.LoadLevel(0).Forget();
+    private void OnLoadMainMenuButtonClicked() => SceneSwitch.LoadLevel(0).Forget();
 
     private void OnOpenOrClose(InputAction.CallbackContext _)
     {
@@ -94,13 +83,13 @@ public sealed class PauseMenu : Menu
 
     private void Pause()
     {
-        if (!_windowTracker.TryOpenWindow(MenuPanel))
+        if (!_windowTracker.TryOpenWindow(gameObject))
         {
             _paused = false;
             return;
         }
 
-        MenuPanel.SetActive(true);
+        gameObject.SetActive(true);
         _playerPoint.SetActive(false);
         Paused?.Invoke();
     }
@@ -109,7 +98,7 @@ public sealed class PauseMenu : Menu
     {
         _windowTracker.CloseWindow();
 
-        MenuPanel.SetActive(false);
+        gameObject.SetActive(false);
         SettingsPanel.SetActive(false);
         _playerPoint.SetActive(true);
         Resumed?.Invoke();

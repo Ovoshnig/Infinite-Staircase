@@ -858,6 +858,7 @@ GameObject:
   - component: {fileID: 3754491217936528018}
   - component: {fileID: 5720759833835930088}
   - component: {fileID: 6854364239376197716}
+  - component: {fileID: 2700741755061230031}
   m_Layer: 5
   m_Name: MenuPanel
   m_TagString: Untagged
@@ -954,6 +955,26 @@ MonoBehaviour:
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
+--- !u!114 &2700741755061230031
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5353405128484736961}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5989e41ff110ae043b07c2faa36c1183, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _settingsPanel: {fileID: 5641787180791348847}
+  _openSettingsButton: {fileID: 8207158550087274155}
+  _playerPoint: {fileID: 3913713412939015788}
+  _resumeButton: {fileID: 4388883544757276118}
+  _resetLevelButton: {fileID: 6637146181343529047}
+  _loadNextLevelButton: {fileID: 8232684048719213644}
+  _loadPreviousLevelButton: {fileID: 4670255160949433345}
+  _loadMainMenuButton: {fileID: 7231281985634509261}
 --- !u!1 &5531206021121791126
 GameObject:
   m_ObjectHideFlags: 0
@@ -1087,6 +1108,7 @@ GameObject:
   - component: {fileID: 8046965769650619367}
   - component: {fileID: 5414912217645280402}
   - component: {fileID: 791497265913550650}
+  - component: {fileID: 9154277365886453504}
   m_Layer: 5
   m_Name: SettingsPanel
   m_TagString: Untagged
@@ -1181,6 +1203,23 @@ MonoBehaviour:
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
+--- !u!114 &9154277365886453504
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5641787180791348847}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cde6d0c6c4487b843a1aa293e1631571, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _menuPanel: {fileID: 5353405128484736961}
+  _closeSettingsPanelButton: {fileID: 112280460668698449}
+  _sensitivitySlider: {fileID: 722106926013914345}
+  _soundsVolumeSlider: {fileID: 7926908524174595672}
+  _musicVolumeSlider: {fileID: 989298758526598428}
 --- !u!1 &6410044983593996332
 GameObject:
   m_ObjectHideFlags: 0
@@ -1587,7 +1626,6 @@ GameObject:
   - component: {fileID: 394595502773644218}
   - component: {fileID: 2817516239737167246}
   - component: {fileID: 3095308959002076045}
-  - component: {fileID: 315893673893202616}
   m_Layer: 5
   m_Name: PauseMenuCanvas
   m_TagString: Untagged
@@ -1680,31 +1718,6 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
---- !u!114 &315893673893202616
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8778363911021503472}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5989e41ff110ae043b07c2faa36c1183, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _menuPanel: {fileID: 5353405128484736961}
-  _settingsPanel: {fileID: 5641787180791348847}
-  _openSettingsPanelButton: {fileID: 8207158550087274155}
-  _closeSettingsPanelButton: {fileID: 112280460668698449}
-  _sensitivitySlider: {fileID: 722106926013914345}
-  _soundsVolumeSlider: {fileID: 7926908524174595672}
-  _musicVolumeSlider: {fileID: 989298758526598428}
-  _playerPoint: {fileID: 3913713412939015788}
-  _resumeButton: {fileID: 4388883544757276118}
-  _resetLevelButton: {fileID: 6637146181343529047}
-  _loadNextLevelButton: {fileID: 8232684048719213644}
-  _loadPreviousLevelButton: {fileID: 4670255160949433345}
-  _loadMainMenuButton: {fileID: 7231281985634509261}
 --- !u!1001 &1951466802345361208
 PrefabInstance:
   m_ObjectHideFlags: 0

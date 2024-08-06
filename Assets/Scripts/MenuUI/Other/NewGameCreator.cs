@@ -10,7 +10,8 @@ public class NewGameCreator : MonoBehaviour
 {
     private const string SeedKey = "Seed";
 
-    [SerializeField] private Button _closeCreateGamePanelButton;
+    [SerializeField] private GameObject _menuPanel;
+    [SerializeField] private Button _closeGameCreationButton;
     [SerializeField] private Button _startGameButton;
     [SerializeField] private TMP_InputField _seedInputField;
 
@@ -27,19 +28,38 @@ public class NewGameCreator : MonoBehaviour
 
     private void OnEnable()
     {
-        _closeCreateGamePanelButton.onClick.AddListener(CloseGameCreationPanel);
-        _startGameButton.onClick.AddListener(StartNewGame);
+        _closeGameCreationButton.onClick.AddListener(OnCloseGameCreationButtonClicked);
+        _startGameButton.onClick.AddListener(OnStartNewGameButtonClicked);
+
         _seedInputField.onValueChanged.AddListener(OnSeedInputFieldValueChanged);
     }
 
     private void OnDisable()
     {
-        _closeCreateGamePanelButton.onClick.RemoveListener(CloseGameCreationPanel);
-        _startGameButton.onClick.RemoveListener(StartNewGame);
+        _closeGameCreationButton.onClick.RemoveListener(OnCloseGameCreationButtonClicked);
+        _startGameButton.onClick.RemoveListener(OnStartNewGameButtonClicked);
+
         _seedInputField.onValueChanged.RemoveListener(OnSeedInputFieldValueChanged);
     }
 
-    private void CloseGameCreationPanel() => gameObject.SetActive(false);
+    private void OnCloseGameCreationButtonClicked()
+    {
+        _menuPanel.SetActive(true);
+        gameObject.SetActive(false);
+    }
+
+    private void OnStartNewGameButtonClicked()
+    {
+        int seed;
+
+        if (_seedInputField.text == string.Empty)
+            seed = _random.Next();
+        else 
+            seed = Convert.ToInt32(_seedInputField.text); 
+
+        _saveSaver.SaveData(SeedKey, seed);
+        _sceneSwitch.LoadFirstLevel().Forget();
+    }
 
     private void OnSeedInputFieldValueChanged(string input)
     {
@@ -55,18 +75,5 @@ public class NewGameCreator : MonoBehaviour
 
             _seedInputField.text = string.Empty;
         }
-    }
-
-    private void StartNewGame()
-    {
-        int seed;
-
-        if (_seedInputField.text == string.Empty)
-            seed = _random.Next();
-        else 
-            seed = Convert.ToInt32(_seedInputField.text); 
-
-        _saveSaver.SaveData(SeedKey, seed);
-        _sceneSwitch.LoadFirstLevel().Forget();
     }
 }

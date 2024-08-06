@@ -17,10 +17,11 @@ public class DataSaver : IDisposable
 
     protected string SaveFileName { get; set; }
     protected string FilePath => Path.Combine(Application.persistentDataPath, SaveFileName);
+    protected Dictionary<string, object> DataStore { get => _dataStore; }
 
     public void Dispose() => SaveDataStore();
 
-    public T LoadData<T>(string key, T defaultValue = default)
+    public virtual T LoadData<T>(string key, T defaultValue = default)
     {
         if (_dataStore.TryGetValue(key, out object storedValue))
         {
@@ -33,6 +34,7 @@ public class DataSaver : IDisposable
             catch (Exception e)
             {
                 Debug.LogWarning($"Failed to deserialize value for key {key}: {e.Message}");
+
                 return defaultValue;
             }
         }
