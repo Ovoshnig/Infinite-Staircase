@@ -23,7 +23,7 @@ public class StaircaseGenerator : MonoBehaviour
 
     private void Start()
     {
-        _seed = _saveSaver.LoadData<int>(SaveConstants.SeedKey);
+        _seed = _saveSaver.LoadData<int>(SaveConstants.SeedKey, default);
         _stairs = Resources.LoadAll<GameObject>(ResourcesConstants.StairPrefabsPath);
         _size = _stairs[0].GetComponent<Stair>().Size;
         _stairConnections = Resources.LoadAll<StairConnection>(ResourcesConstants.StairConnectionsPath);

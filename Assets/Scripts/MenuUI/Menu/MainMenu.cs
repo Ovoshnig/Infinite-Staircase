@@ -9,6 +9,7 @@ public sealed class MainMenu : Menu
     [SerializeField] private Button _newGameButton;
     [SerializeField] private Button _quitGameButton;
     [SerializeField] private GameObject _resetWarningPanel;
+    [SerializeField] private GameObject _gameCreationPanel;
 
     private SaveSaver _saveSaver;
 
@@ -51,7 +52,11 @@ public sealed class MainMenu : Menu
 
     private void OnNewGameButtonClicked()
     {
-        _resetWarningPanel.SetActive(true);
+        if (_saveSaver.LoadData(SaveConstants.SaveCreatedKey, false))
+            _resetWarningPanel.SetActive(true);
+        else
+            _gameCreationPanel.SetActive(true);
+
         gameObject.SetActive(false);
     }
 
