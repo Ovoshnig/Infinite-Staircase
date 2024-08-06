@@ -67,8 +67,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: "\u041F\u0440\u0435\u0434\u044B\u0434\u0443\u0449\u0438\u0439 \u0443\u0440\u043E\u0432\u0435\u043D\u044C"
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 343ce957b98081f41be1d7d67828eda9, type: 2}
+  m_sharedMaterial: {fileID: -4186979094318452625, guid: 343ce957b98081f41be1d7d67828eda9, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -203,8 +203,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: "\u041F\u0440\u043E\u0434\u043E\u043B\u0436\u0438\u0442\u044C"
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 343ce957b98081f41be1d7d67828eda9, type: 2}
+  m_sharedMaterial: {fileID: -4186979094318452625, guid: 343ce957b98081f41be1d7d67828eda9, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -339,8 +339,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: "\u0421\u043B\u0435\u0434\u0443\u044E\u0449\u0438\u0439 \u0443\u0440\u043E\u0432\u0435\u043D\u044C"
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 343ce957b98081f41be1d7d67828eda9, type: 2}
+  m_sharedMaterial: {fileID: -4186979094318452625, guid: 343ce957b98081f41be1d7d67828eda9, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -1287,8 +1287,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: "\u041C\u0435\u043D\u044E"
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 343ce957b98081f41be1d7d67828eda9, type: 2}
+  m_sharedMaterial: {fileID: -4186979094318452625, guid: 343ce957b98081f41be1d7d67828eda9, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -1545,8 +1545,8 @@ MonoBehaviour:
   m_text: "\u041F\u0435\u0440\u0435\u0437\u0430\u043F\u0443\u0441\u0442\u0438\u0442\u044C
     \u0443\u0440\u043E\u0432\u0435\u043D\u044C"
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 343ce957b98081f41be1d7d67828eda9, type: 2}
+  m_sharedMaterial: {fileID: -4186979094318452625, guid: 343ce957b98081f41be1d7d67828eda9, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -1826,6 +1826,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: CloseSettingsButton
       objectReference: {fileID: 0}
+    - target: {fileID: 6371170897766185396, guid: 1c9aed72d75b4c147933aaf7eae87f80, type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: -4186979094318452625, guid: 343ce957b98081f41be1d7d67828eda9, type: 2}
+    - target: {fileID: 6371170897766185396, guid: 1c9aed72d75b4c147933aaf7eae87f80, type: 3}
+      propertyPath: m_hasFontAssetChanged
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1917379831391895657, guid: 745ab0b700d21024dacece2acc82d8ab, type: 3}
       propertyPath: m_Colors.m_NormalColor.b
       value: 0.11320752
@@ -1930,6 +1938,14 @@ PrefabInstance:
     - target: {fileID: 44747820912097145, guid: 6647addf17a7f864da0aeddd5c1f5df5, type: 3}
       propertyPath: m_Name
       value: SoundsVolumeBlock
+      objectReference: {fileID: 0}
+    - target: {fileID: 448534881061846862, guid: 6647addf17a7f864da0aeddd5c1f5df5, type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: -4186979094318452625, guid: 343ce957b98081f41be1d7d67828eda9, type: 2}
+    - target: {fileID: 448534881061846862, guid: 6647addf17a7f864da0aeddd5c1f5df5, type: 3}
+      propertyPath: m_hasFontAssetChanged
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2407967337704737595, guid: 6647addf17a7f864da0aeddd5c1f5df5, type: 3}
       propertyPath: m_AnchorMax.y
@@ -2288,6 +2304,18 @@ PrefabInstance:
       propertyPath: m_Name
       value: SensitivityBlock
       objectReference: {fileID: 0}
+    - target: {fileID: 7622626000620367323, guid: e117b75ff7cbee349955e8e3cbf47882, type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: -4186979094318452625, guid: 343ce957b98081f41be1d7d67828eda9, type: 2}
+    - target: {fileID: 7622626000620367323, guid: e117b75ff7cbee349955e8e3cbf47882, type: 3}
+      propertyPath: m_fontColor32.rgba
+      value: 4294967295
+      objectReference: {fileID: 0}
+    - target: {fileID: 7622626000620367323, guid: e117b75ff7cbee349955e8e3cbf47882, type: 3}
+      propertyPath: m_hasFontAssetChanged
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 9219106366742600217, guid: e117b75ff7cbee349955e8e3cbf47882, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -2541,6 +2569,18 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 3177045585795780290, guid: f1f3f8879cd03c443a836bad2567d82a, type: 3}
+      propertyPath: m_fontAsset
+      value: 
+      objectReference: {fileID: 11400000, guid: 343ce957b98081f41be1d7d67828eda9, type: 2}
+    - target: {fileID: 3177045585795780290, guid: f1f3f8879cd03c443a836bad2567d82a, type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: -4186979094318452625, guid: 343ce957b98081f41be1d7d67828eda9, type: 2}
+    - target: {fileID: 3177045585795780290, guid: f1f3f8879cd03c443a836bad2567d82a, type: 3}
+      propertyPath: m_hasFontAssetChanged
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8631616907432377679, guid: f1f3f8879cd03c443a836bad2567d82a, type: 3}
       propertyPath: m_Name
       value: OpenSettingsButton
@@ -2666,6 +2706,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 6219713680129929065}
     m_Modifications:
+    - target: {fileID: 165843342529429819, guid: 918fd0351db819548bc0100d4d8ba45a, type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: -4186979094318452625, guid: 343ce957b98081f41be1d7d67828eda9, type: 2}
+    - target: {fileID: 165843342529429819, guid: 918fd0351db819548bc0100d4d8ba45a, type: 3}
+      propertyPath: m_hasFontAssetChanged
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 765612136571567669, guid: 918fd0351db819548bc0100d4d8ba45a, type: 3}
       propertyPath: m_Pivot.x
       value: -0.57
