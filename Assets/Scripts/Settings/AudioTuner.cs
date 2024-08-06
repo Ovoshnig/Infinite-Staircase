@@ -4,9 +4,6 @@ using Zenject;
 
 public class AudioTuner : IInitializable, IDisposable
 {
-    private const string SoundsVolumeKey = "SoundsVolume";
-    private const string MusicVolumeKey = "MusicVolume";
-
     private readonly SettingsSaver _settingsSaver;
     private readonly GameSettingsInstaller.AudioSettings _audioSettings;
 
@@ -47,15 +44,15 @@ public class AudioTuner : IInitializable, IDisposable
             if (value >= _audioSettings.MinVolume && value <= _audioSettings.MaxVolume)
             {
                 _musicVolume = value;
-                _audioMixerGroup.audioMixer.SetFloat(MusicVolumeKey, value);
+                _audioMixerGroup.audioMixer.SetFloat(SettingsConstants.MusicVolumeKey, value);
             }
         }
     }
 
     public void Initialize()
     {
-        _soundsVolume = _settingsSaver.LoadData(SoundsVolumeKey, _audioSettings.DefaultVolume);
-        _musicVolume = _settingsSaver.LoadData(MusicVolumeKey, _audioSettings.DefaultVolume);
+        _soundsVolume = _settingsSaver.LoadData(SettingsConstants.SoundsVolumeKey, _audioSettings.DefaultVolume);
+        _musicVolume = _settingsSaver.LoadData(SettingsConstants.MusicVolumeKey, _audioSettings.DefaultVolume);
         SoundsVolume = _soundsVolume;
         MusicVolume = _musicVolume;
     }
@@ -68,15 +65,15 @@ public class AudioTuner : IInitializable, IDisposable
 
     private void SaveVolumeData()
     {
-        _settingsSaver.SaveData(SoundsVolumeKey, _soundsVolume);
-        _settingsSaver.SaveData(MusicVolumeKey, _musicVolume);
+        _settingsSaver.SaveData(SettingsConstants.SoundsVolumeKey, _soundsVolume);
+        _settingsSaver.SaveData(SettingsConstants.MusicVolumeKey, _musicVolume);
     }
 
     private void SetSoundSourcesPauseState(bool pause)
     {
         if (pause)
-            _audioMixerGroup.audioMixer.SetFloat(SoundsVolumeKey, _audioSettings.MinVolume);
+            _audioMixerGroup.audioMixer.SetFloat(SettingsConstants.SoundsVolumeKey, _audioSettings.MinVolume);
         else
-            _audioMixerGroup.audioMixer.SetFloat(SoundsVolumeKey, _soundsVolume);
+            _audioMixerGroup.audioMixer.SetFloat(SettingsConstants.SoundsVolumeKey, _soundsVolume);
     }
 }

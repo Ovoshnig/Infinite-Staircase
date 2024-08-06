@@ -3,8 +3,6 @@ using Zenject;
 
 public class LookTuner : IInitializable, IDisposable
 {
-    private const string SensitivityKey = "Sensitivity";
-
     private readonly SettingsSaver _settingsSaver;
     private readonly GameSettingsInstaller.ControlSettings _controlSettings;
     private float _sensitivity;
@@ -29,7 +27,8 @@ public class LookTuner : IInitializable, IDisposable
         }
     }
 
-    public void Initialize() => _sensitivity = _settingsSaver.LoadData(SensitivityKey, _controlSettings.DefaultSensitivity);
+    public void Initialize() => _sensitivity = _settingsSaver.LoadData(SettingsConstants.SensitivityKey, 
+        _controlSettings.DefaultSensitivity);
 
-    public void Dispose() => _settingsSaver.SaveData(SensitivityKey, _sensitivity);
+    public void Dispose() => _settingsSaver.SaveData(SettingsConstants.SensitivityKey, _sensitivity);
 }

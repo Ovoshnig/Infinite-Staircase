@@ -4,8 +4,6 @@ using Zenject;
 
 public class ResetWarning : MonoBehaviour
 {
-    private const string SaveCreatedKey = "SaveCreated";
-
     [SerializeField] private GameObject _menuPanel;
     [SerializeField] private GameObject _gameCreationPanel;
     [SerializeField] private Button _yesButton;
@@ -31,7 +29,7 @@ public class ResetWarning : MonoBehaviour
     private void OnYesButtonClicked() 
     {
         _saveSaver.Reset();
-        _saveSaver.SaveData(SaveCreatedKey, false);
+        _saveSaver.SaveData(SaveConstants.SaveCreatedKey, false);
 
         _gameCreationPanel.SetActive(true);
         gameObject.SetActive(false);

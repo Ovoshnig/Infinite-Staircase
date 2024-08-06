@@ -4,9 +4,8 @@ using Zenject;
 
 public class SlotKeeper : IInitializable, IDisposable
 {
-    private const string MouseBinding = "<Mouse>/leftButton";
-
-    private readonly InputAction _mouseClickAction = new(type: InputActionType.Button, binding: MouseBinding);
+    private readonly InputAction _mouseClickAction = new(type: InputActionType.Button, 
+        binding: InputConstants.MouseLeftButtonBinding);
 
     public SlotView StartingSlot { get; set; }
     public SlotView SelectedSlot { get; set; }

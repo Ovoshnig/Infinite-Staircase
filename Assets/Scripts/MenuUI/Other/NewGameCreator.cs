@@ -8,9 +8,6 @@ using TMPro;
 
 public class NewGameCreator : MonoBehaviour
 {
-    private const string SaveCreatedKey = "SaveCreated";
-    private const string SeedKey = "Seed";
-
     [SerializeField] private GameObject _menuPanel;
     [SerializeField] private Button _closeGameCreationButton;
     [SerializeField] private Button _startGameButton;
@@ -58,8 +55,8 @@ public class NewGameCreator : MonoBehaviour
         else 
             seed = Convert.ToInt32(_seedInputField.text); 
 
-        _saveSaver.SaveData(SaveCreatedKey, true);
-        _saveSaver.SaveData(SeedKey, seed);
+        _saveSaver.SaveData(SaveConstants.SaveCreatedKey, true);
+        _saveSaver.SaveData(SaveConstants.SeedKey, seed);
         _sceneSwitch.LoadFirstLevel().Forget();
     }
 
@@ -68,7 +65,7 @@ public class NewGameCreator : MonoBehaviour
         if (int.TryParse(input, out int value))
         {
             if (value < 0)
-                _seedInputField.text = "0";
+                _seedInputField.text = 0.ToString();
         }
         else
         {

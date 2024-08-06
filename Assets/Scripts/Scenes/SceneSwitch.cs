@@ -13,8 +13,6 @@ public class SceneSwitch : IInitializable, IDisposable
         Credits
     }
 
-    private const string AchievedLevelKey = "AchievedLevel";
-
     private readonly SaveSaver _saveSaver;
     private readonly GameSettingsInstaller.LevelSettings _levelSettings;
     private uint _achievedLevel;
@@ -35,7 +33,7 @@ public class SceneSwitch : IInitializable, IDisposable
 
     public void Initialize()
     {
-        _achievedLevel = _saveSaver.LoadData(AchievedLevelKey, _levelSettings.FirstGameplayLevel);
+        _achievedLevel = _saveSaver.LoadData(SaveConstants.AchievedLevelKey, _levelSettings.FirstGameplayLevel);
         _currentLevel = (uint)SceneManager.GetActiveScene().buildIndex;
 
         if (_currentLevel > _achievedLevel && _currentLevel <= _levelSettings.LastGameplayLevel)
@@ -44,7 +42,7 @@ public class SceneSwitch : IInitializable, IDisposable
         WaitForFirstSceneLoad().Forget();
     }
 
-    public void Dispose() => _saveSaver.SaveData(AchievedLevelKey, _achievedLevel);
+    public void Dispose() => _saveSaver.SaveData(SaveConstants.AchievedLevelKey, _achievedLevel);
 
     public async UniTask LoadAchievedLevel() => await LoadLevel(_achievedLevel);
 

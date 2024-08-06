@@ -7,10 +7,6 @@ using Zenject;
 
 public class StaircaseGenerator : MonoBehaviour
 {
-    private const string SeedKey = "Seed";
-    private const string StairPrefabsPath = "Prefabs/Staircase/Stairs";
-    private const string StairConnectionsPath = "Prefabs/Staircase/Stair Connections";
-
     [SerializeField] private Transform _startTransform;
     [SerializeField] private int _partsCount;
 
@@ -27,10 +23,10 @@ public class StaircaseGenerator : MonoBehaviour
 
     private void Start()
     {
-        _seed = _saveSaver.LoadData<int>(SeedKey);
-        _stairs = Resources.LoadAll<GameObject>(StairPrefabsPath);
+        _seed = _saveSaver.LoadData<int>(SaveConstants.SeedKey);
+        _stairs = Resources.LoadAll<GameObject>(ResourcesConstants.StairPrefabsPath);
         _size = _stairs[0].GetComponent<Stair>().Size;
-        _stairConnections = Resources.LoadAll<StairConnection>(StairConnectionsPath);
+        _stairConnections = Resources.LoadAll<StairConnection>(ResourcesConstants.StairConnectionsPath);
 
         Generate().Forget();
     }

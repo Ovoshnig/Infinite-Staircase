@@ -20,5 +20,5 @@ public sealed class SaveSaver : DataSaver
         foreach(var key in _defaultStore.Keys)
             DataStore[key] = _defaultStore[key];
     }
-    protected override void SetFileName() => SaveFileName = "save.json";
+    protected override void SetFileName() => SaveFileName = SaveConstants.SaveFileName;
 }

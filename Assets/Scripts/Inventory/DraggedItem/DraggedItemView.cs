@@ -6,8 +6,8 @@ using UnityEngine.InputSystem;
                   typeof(CanvasGroup))]
 public class DraggedItemView : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDragHandler
 {
-    private const float TransparentValue = 0.8f;
-    private const float OpaqueValue = 1f;
+    [SerializeField, Range(0f, 1f)] private float _transparentValue = 0.8f;
+    [SerializeField, Range(0f, 1f)] private float _opaqueValue = 1f;
 
     private CanvasGroup _canvasGroup;
 
@@ -15,7 +15,7 @@ public class DraggedItemView : MonoBehaviour, IBeginDragHandler, IEndDragHandler
 
     public void OnBeginDrag(PointerEventData _)
     {
-        _canvasGroup.alpha = TransparentValue;
+        _canvasGroup.alpha = _transparentValue;
         _canvasGroup.blocksRaycasts = false;
     }
 
@@ -23,7 +23,7 @@ public class DraggedItemView : MonoBehaviour, IBeginDragHandler, IEndDragHandler
 
     public void OnEndDrag(PointerEventData _)
     {
-        _canvasGroup.alpha = OpaqueValue;
+        _canvasGroup.alpha = _opaqueValue;
         _canvasGroup.blocksRaycasts = true;
     }
 }

@@ -5,8 +5,6 @@ using Zenject;
 
 public sealed class MainMenu : Menu
 {
-    private const string SaveCreatedKey = "SaveCreated";
-
     [SerializeField] private Button _continueGameButton;
     [SerializeField] private Button _newGameButton;
     [SerializeField] private Button _quitGameButton;
@@ -21,7 +19,7 @@ public sealed class MainMenu : Menu
     {
         base.OnEnable();
 
-        _continueGameButton.interactable = _saveSaver.LoadData(SaveCreatedKey, false);
+        _continueGameButton.interactable = _saveSaver.LoadData(SaveConstants.SaveCreatedKey, false);
     }
 
     protected override void InitializeSettings()

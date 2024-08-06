@@ -3,8 +3,6 @@ using Zenject;
 
 public class InventorySaver : MonoBehaviour
 {
-    private const string InventoryKey = "Inventory";
-
     private SlotView[] _slots;
     private SaveSaver _saveSaver;
     private ItemDataRepository _itemDataRepository;
@@ -20,7 +18,7 @@ public class InventorySaver : MonoBehaviour
 
     private void Start()
     {
-        SlotData[] slotDataArray = _saveSaver.LoadData(InventoryKey, new SlotData[_slots.Length]);
+        SlotData[] slotDataArray = _saveSaver.LoadData(SaveConstants.InventoryKey, new SlotData[_slots.Length]);
 
         for (int i = 0; i < _slots.Length; i++)
             _slots[i].Load(slotDataArray[i], _itemDataRepository);
@@ -33,7 +31,7 @@ public class InventorySaver : MonoBehaviour
         for (int i = 0; i < _slots.Length; i++)
             slotDataArray[i] = _slots[i].Save();
 
-        _saveSaver.SaveData(InventoryKey, slotDataArray);
+        _saveSaver.SaveData(SaveConstants.InventoryKey, slotDataArray);
     }
 
     public bool AddItem(ItemModel itemModel)
