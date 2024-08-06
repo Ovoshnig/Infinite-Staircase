@@ -3,22 +3,25 @@ using UnityEngine;
 [CreateAssetMenu(fileName = nameof(StairConnection), menuName = "Scriptable Objects/StairConnection")]
 public class StairConnection : ScriptableObject
 {
-    public GameObject Prefab;
-    public int MinCount;
-    public int MaxCount;
-    public bool CanBeInStart;
-    public GameObject Stair1;
-    public GameObject Stair2;
+    [SerializeField] private GameObject _prefab;
+    [SerializeField] private GameObject _stair1;
+    [SerializeField] private GameObject _stair2;
 
     private Vector3 _positionDifference;
     private Vector3 _rotationDifference;
+
+    [field: SerializeField] public bool CanBeInStart { get; private set; }
+    [field: SerializeField] public int MinCount { get; private set; }
+    [field: SerializeField] public int MaxCount { get; private set; }
 
     public Vector3 PositionDifference
     {
         get
         {
+            GetStairs();
+
             if (_positionDifference == default)
-                _positionDifference = Stair2.transform.position - Stair1.transform.position;
+                _positionDifference = _stair2.transform.position - _stair1.transform.position;
 
             return _positionDifference;
         }
@@ -28,19 +31,21 @@ public class StairConnection : ScriptableObject
     {
         get
         {
+            GetStairs();
+
             if (_rotationDifference == default)
-                _rotationDifference = Stair2.transform.rotation.eulerAngles - Stair1.transform.rotation.eulerAngles;
+                _rotationDifference = _stair2.transform.rotation.eulerAngles - _stair1.transform.rotation.eulerAngles;
 
             return _rotationDifference;
         }
     }
 
-    private void OnValidate()
+    private void GetStairs()
     {
-        if (Stair1 == null)
-            Stair1 = Prefab.transform.GetChild(0).gameObject;
+        if (_stair1 == null)
+            _stair1 = _prefab.transform.GetChild(0).gameObject;
 
-        if (Stair2 == null)
-            Stair2 = Prefab.transform.GetChild(1).gameObject;
+        if (_stair2 == null)
+            _stair2 = _prefab.transform.GetChild(1).gameObject;
     }
 }

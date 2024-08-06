@@ -12,11 +12,10 @@ public class StaircaseGenerator : MonoBehaviour
 
     private readonly CancellationTokenSource _cts = new();
     private SaveSaver _saveSaver;
-    private int _seed;
     private GameObject[] _stairs;
     private StairConnection[] _stairConnections;
     private Vector3 _size;
-
+    private int _seed;
 
     [Inject]
     private void Construct(SaveSaver saveSaver) => _saveSaver = saveSaver;

@@ -10,20 +10,13 @@ public class Stair : MonoBehaviour
     {
         get
         {
+            if (_meshRenderer == null)
+                _meshRenderer = GetComponent<MeshRenderer>();
+
             if (_size == default)
                 _size = _meshRenderer.bounds.size;
 
             return _size;
         }
-        private set
-        {
-            _size = value;
-        }
-    }
-
-    private void OnValidate()
-    {
-        if (_meshRenderer == null)
-            _meshRenderer = GetComponent<MeshRenderer>();
     }
 }
