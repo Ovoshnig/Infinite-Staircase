@@ -1,16 +1,32 @@
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.UI;
+using Zenject;
 
 public sealed class MainMenu : Menu
 {
+    private const string SaveCreatedKey = "SaveCreated";
+
     [SerializeField] private Button _continueGameButton;
     [SerializeField] private Button _newGameButton;
     [SerializeField] private Button _quitGameButton;
     [SerializeField] private GameObject _resetWarningPanel;
 
+    private SaveSaver _saveSaver;
+
+    [Inject]
+    private void Construct(SaveSaver saveSaver) => _saveSaver = saveSaver;
+
+    protected override void OnEnable()
+    {
+        base.OnEnable();
+
+        _continueGameButton.interactable = _saveSaver.LoadData(SaveCreatedKey, false);
+    }
+
     protected override void InitializeSettings()
     {
+        gameObject.SetActive(true);
         SettingsPanel.SetActive(false);
         _resetWarningPanel.SetActive(false);
     }

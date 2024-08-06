@@ -8,6 +8,7 @@ using TMPro;
 
 public class NewGameCreator : MonoBehaviour
 {
+    private const string SaveCreatedKey = "SaveCreated";
     private const string SeedKey = "Seed";
 
     [SerializeField] private GameObject _menuPanel;
@@ -57,6 +58,7 @@ public class NewGameCreator : MonoBehaviour
         else 
             seed = Convert.ToInt32(_seedInputField.text); 
 
+        _saveSaver.SaveData(SaveCreatedKey, true);
         _saveSaver.SaveData(SeedKey, seed);
         _sceneSwitch.LoadFirstLevel().Forget();
     }
@@ -70,7 +72,7 @@ public class NewGameCreator : MonoBehaviour
         }
         else
         {
-            if (long.TryParse(input, out long longValue))
+            if (long.TryParse(input, out long _))
                 _seedInputField.text = int.MaxValue.ToString();
 
             _seedInputField.text = string.Empty;
