@@ -33,7 +33,12 @@ public sealed class PauseMenu : Menu
 
     private void OnDestroy() => _playerInput.Disable();
 
-    protected override void InitializeSettings() => Resume();
+    protected override void InitializeSettings()
+    {
+        gameObject.SetActive(false);
+        SettingsPanel.SetActive(false);
+        _playerPoint.SetActive(true);
+    }
 
     protected override void AddListeners()
     {
@@ -67,38 +72,30 @@ public sealed class PauseMenu : Menu
 
     private void OnOpenOrClose(InputAction.CallbackContext _)
     {
-        _paused = !_paused;
-
         if (_paused)
-            Pause();
-        else
             Resume();
+        else
+            Pause();
     }
 
-    private void OnResumeClicked()
-    {
-        _paused = false;
-        Resume();
-    }
+    private void OnResumeClicked() => Resume();
 
     private void Pause()
     {
         if (!_windowTracker.TryOpenWindow(gameObject))
-        {
-            _paused = false;
             return;
-        }
 
-        gameObject.SetActive(true);
+        _paused = true;
         _playerPoint.SetActive(false);
         Paused?.Invoke();
     }
 
     private void Resume()
     {
-        _windowTracker.CloseWindow();
+        if (!_windowTracker.TryCloseWindow())
+            return;
 
-        gameObject.SetActive(false);
+        _paused = false;
         SettingsPanel.SetActive(false);
         _playerPoint.SetActive(true);
         Resumed?.Invoke();

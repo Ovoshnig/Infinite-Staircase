@@ -27,21 +27,24 @@ public class InventorySwitch : MonoBehaviour
 
     private void OpenOrClosePerformed(InputAction.CallbackContext _)
     {
-        _isOpen = !_isOpen;
-
         if (_isOpen)
-        {
-            if (!_windowTracker.TryOpenWindow(_panel))
-            {
-                _isOpen = false;
-                return;
-            }
-        }
+            Close();
         else
-        {
-            _windowTracker.CloseWindow();
-        }
+            Open();
+    }
 
-        _panel.SetActive(_isOpen);
+    private void Open()
+    {
+        if (!_windowTracker.TryOpenWindow(_panel))
+            return;
+
+        _isOpen = true;
+    }
+
+    private void Close() 
+    {
+        _windowTracker.TryCloseWindow();
+
+        _isOpen = false; 
     }
 }

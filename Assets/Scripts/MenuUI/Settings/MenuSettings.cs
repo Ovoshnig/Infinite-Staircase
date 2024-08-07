@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using Zenject;
 
-public class MenuSettings : MonoBehaviour
+public abstract class MenuSettings : MonoBehaviour
 {
     [SerializeField] private GameObject _menuPanel;
     [SerializeField] private Button _closeSettingsPanelButton;

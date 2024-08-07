@@ -3,31 +3,37 @@ using UnityEngine;
 
 public class WindowTracker
 {
-    private bool _isWindowOpened = false;
+    private GameObject _openedWindow = null;
+    private bool _opened = false;
 
     public event Action WindowOpened;
     public event Action WindowClosed;
 
     public bool TryOpenWindow(GameObject window)
     {
-        if (_isWindowOpened)
+        if (_opened)
             return false;
 
-        _isWindowOpened = true;
+        _openedWindow = window;
+        _openedWindow.SetActive(true);
+        _opened = true;
         SetCursor(true);
         WindowOpened?.Invoke();
 
         return true;
     }
 
-    public void CloseWindow()
+    public bool TryCloseWindow()
     {
-        if (!_isWindowOpened)
-            return;
+        if (!_opened)
+            return false;
 
-        _isWindowOpened = false;
+        _openedWindow.SetActive(false);
+        _opened = false;
         SetCursor(false);
         WindowClosed?.Invoke();
+
+        return true;
     }
 
     private void SetCursor(bool show)
