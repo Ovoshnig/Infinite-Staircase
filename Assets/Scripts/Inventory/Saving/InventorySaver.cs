@@ -39,14 +39,16 @@ public class InventorySaver : MonoBehaviour
         _saveSaver.SaveData(SaveConstants.InventoryKey, slotDataArray);
     }
 
-    public bool AddItem(ItemModel itemModel)
+    public bool TryAddItem(ItemModel itemModel)
     {
         foreach (var slot in _slots)
         {
             if (!slot.SlotModel.HasItem)
+            {
                 slot.PlaceItem(itemModel);
 
-            return true;
+                return true;
+            }
         }
 
         return false;

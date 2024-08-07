@@ -43,7 +43,8 @@ public class InventorySwitch : MonoBehaviour
 
     private void Close() 
     {
-        _windowTracker.TryCloseWindow();
+        if (!_windowTracker.TryCloseWindow())
+            return;
 
         _isOpen = false; 
     }

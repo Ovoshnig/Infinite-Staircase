@@ -4,15 +4,15 @@ using Zenject;
 
 public class WindowTracker
 {
+    private readonly GameObject _playerScope;
     private GameObject _openedWindow = null;
-    private GameObject _playerScope;
     private bool _opened = false;
 
     public event Action WindowOpened;
     public event Action WindowClosed;
 
     [Inject]
-    private void Construct([Inject(Id = BindingConstants.PlayerScopeId)] GameObject playerScope) => 
+    public WindowTracker([Inject(Id = BindingConstants.PlayerScopeId)] GameObject playerScope) => 
         _playerScope = playerScope;
 
     public bool TryOpenWindow(GameObject window)
@@ -37,6 +37,7 @@ public class WindowTracker
 
         _openedWindow.SetActive(false);
         _playerScope.SetActive(true);
+        _openedWindow = null;
         _opened = false;
         SetCursor(false);
         WindowClosed?.Invoke();

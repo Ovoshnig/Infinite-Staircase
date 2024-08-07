@@ -13,17 +13,32 @@ public class DraggedItemView : MonoBehaviour, IBeginDragHandler, IEndDragHandler
 
     private void Awake() => _canvasGroup = GetComponent<CanvasGroup>();
 
-    public void OnBeginDrag(PointerEventData _)
+    public void OnBeginDrag(PointerEventData eventData)
     {
+        if (!IsLeftButtonClicked(eventData))
+            return;
+
         _canvasGroup.alpha = _transparentValue;
         _canvasGroup.blocksRaycasts = false;
     }
 
-    public void OnDrag(PointerEventData _) => transform.position = Mouse.current.position.ReadValue();
-
-    public void OnEndDrag(PointerEventData _)
+    public void OnDrag(PointerEventData eventData)
     {
+        if (!IsLeftButtonClicked(eventData))
+            return;
+
+        transform.position = Mouse.current.position.ReadValue();
+    }
+
+    public void OnEndDrag(PointerEventData eventData)
+    {
+        if (!IsLeftButtonClicked(eventData))
+            return;
+
         _canvasGroup.alpha = _opaqueValue;
         _canvasGroup.blocksRaycasts = true;
     }
+
+    private bool IsLeftButtonClicked(PointerEventData eventData) => 
+        eventData.button == PointerEventData.InputButton.Left;
 }

@@ -8,20 +8,13 @@ public class InventoryInstaller : MonoInstaller
 
     public override void InstallBindings()
     {
+        Container.Bind<InventorySaver>()
+            .FromComponentInNewPrefab(_inventoryCanvas)
+            .AsSingle();
+
         Container.BindInterfacesAndSelfTo<SlotKeeper>().FromNew().AsSingle();
         Container.BindInterfacesAndSelfTo<DraggedItemHolder>().FromNew().AsSingle();
 
         Container.Bind<ItemDataRepository>().FromInstance(_itemDataRepository).AsSingle();
     }
-
-    [Inject]
-    public void PostInstallBindings()
-    {
-        var slotViews = FindObjectsByType<SlotView>(FindObjectsSortMode.None);
-
-        foreach (var slotView in slotViews)
-            Container.Inject(slotView);
-    }
-
-    public override void Start() => Container.InstantiatePrefab(_inventoryCanvas);
 }

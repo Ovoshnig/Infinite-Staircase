@@ -28,7 +28,13 @@ public class SlotView : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 
     public void OnPointerExit(PointerEventData _) => _slotKeeper.SelectedSlot = null;
 
-    public void OnPointerDown(PointerEventData _) => TakeItem();
+    public void OnPointerDown(PointerEventData eventData)
+    {
+        if (eventData.button != PointerEventData.InputButton.Left)
+            return;
+
+        TakeItem();
+    }
 
     public void PlaceItem()
     {
