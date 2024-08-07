@@ -28,7 +28,7 @@ public class ResetWarning : MonoBehaviour
 
     private void OnYesButtonClicked() 
     {
-        _saveSaver.Reset();
+        _saveSaver.ResetData();
         _saveSaver.SaveData(SaveConstants.SaveCreatedKey, false);
 
         _gameCreationPanel.SetActive(true);

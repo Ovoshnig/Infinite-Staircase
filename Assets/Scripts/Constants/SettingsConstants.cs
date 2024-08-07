@@ -1,4 +1,4 @@
-public class SettingsConstants
+public static class SettingsConstants
 {
     public const string SaveFileName = "playerSettings.json";
     public const string SoundsVolumeKey = "SoundsVolume";

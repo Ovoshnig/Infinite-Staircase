@@ -5,24 +5,23 @@ using System.IO;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
-public class DataSaver : IDisposable
+public abstract class DataSaver : IDisposable
 {
+    private readonly Dictionary<string, object> _defaultDataStore = new();
     private Dictionary<string, object> _dataStore;
 
-    public DataSaver()
-    {
-        SetFileName();
-        LoadDataStore();
-    }
+    public DataSaver() => LoadDataStore();
 
-    protected string SaveFileName { get; set; }
+    protected virtual string SaveFileName { get; } = string.Empty;
     protected string FilePath => Path.Combine(Application.persistentDataPath, SaveFileName);
-    protected Dictionary<string, object> DataStore { get => _dataStore; }
+    protected Dictionary<string, object> DataStore => _dataStore;
 
     public void Dispose() => SaveDataStore();
 
-    public virtual T LoadData<T>(string key, T defaultValue)
+    public T LoadData<T>(string key, T defaultValue)
     {
+        _defaultDataStore[key] = defaultValue;
+
         if (_dataStore.TryGetValue(key, out object storedValue))
         {
             try
@@ -44,7 +43,11 @@ public class DataSaver : IDisposable
 
     public void SaveData<T>(string key, T value) => _dataStore[key] = value;
 
-    protected virtual void SetFileName() => SaveFileName = string.Empty;
+    public void ResetData()
+    {
+        foreach (var key in _defaultDataStore.Keys)
+            DataStore[key] = _defaultDataStore[key];
+    }
 
     private void LoadDataStore()
     {
