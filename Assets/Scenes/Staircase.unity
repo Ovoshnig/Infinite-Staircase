@@ -444,6 +444,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b3be3ba0bcde1534ab63bf1f0f2e5839, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _playerScopeCanvas: {fileID: 1283321312898739173, guid: e376e9960ca0c174fbb9bda18060c6b2, type: 3}
 --- !u!1 &977685680
 GameObject:
   m_ObjectHideFlags: 0
@@ -509,7 +510,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _startTransform: {fileID: 481872785}
   _partsCount: 100
-  _seed: 83
 --- !u!4 &1166965747
 Transform:
   m_ObjectHideFlags: 0

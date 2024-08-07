@@ -7,7 +7,6 @@ using Zenject;
 
 public sealed class PauseMenu : Menu
 {
-    [SerializeField] private GameObject _playerPoint;
     [SerializeField] private Button _resumeButton;
     [SerializeField] private Button _resetLevelButton;
     [SerializeField] private Button _loadNextLevelButton;
@@ -37,7 +36,6 @@ public sealed class PauseMenu : Menu
     {
         gameObject.SetActive(false);
         SettingsPanel.SetActive(false);
-        _playerPoint.SetActive(true);
     }
 
     protected override void AddListeners()
@@ -86,7 +84,6 @@ public sealed class PauseMenu : Menu
             return;
 
         _paused = true;
-        _playerPoint.SetActive(false);
         Paused?.Invoke();
     }
 
@@ -97,7 +94,6 @@ public sealed class PauseMenu : Menu
 
         _paused = false;
         SettingsPanel.SetActive(false);
-        _playerPoint.SetActive(true);
         Resumed?.Invoke();
     }
 }

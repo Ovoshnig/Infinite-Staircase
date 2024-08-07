@@ -1,6 +1,18 @@
+using UnityEngine;
 using Zenject;
 
 public class WindowsInstaller : MonoInstaller
 {
-    public override void InstallBindings() => Container.Bind<WindowTracker>().FromNew().AsSingle();
+    [SerializeField] private GameObject _playerScopeCanvas;
+
+    public override void InstallBindings()
+    {
+        GameObject playerScopeCanvas = Container.InstantiatePrefab(_playerScopeCanvas);
+        Container.Bind<GameObject>()
+            .WithId(BindingConstants.PlayerScopeId)
+            .FromInstance(playerScopeCanvas)
+            .AsTransient();
+
+        Container.BindInterfacesAndSelfTo<WindowTracker>().FromNew().AsSingle();
+    }
 }
