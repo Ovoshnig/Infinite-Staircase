@@ -9,14 +9,14 @@ public class SlotView : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     private readonly Vector2 _halfVector2 = Vector2.one / 2f;
     private RectTransform _storedItem;
     private DraggedItemHolder _draggedItemHolder;
-    private SlotKeeper _slotKeeper;
+    private InventoryView _inventoryView;
     private SlotModel _slotModel;
 
     [Inject]
-    private void Construct(DraggedItemHolder draggedItemHolder, SlotKeeper slotKeeper)
+    private void Construct(DraggedItemHolder draggedItemHolder, InventoryView inventoryView)
     {
         _draggedItemHolder = draggedItemHolder;
-        _slotKeeper = slotKeeper;
+        _inventoryView = inventoryView;
         _slotModel = new SlotModel();
     }
 
@@ -24,9 +24,9 @@ public class SlotView : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 
     private Transform CanvasTransform => transform.parent.parent;
 
-    public void OnPointerEnter(PointerEventData _) => _slotKeeper.SelectedSlot = this;
+    public void OnPointerEnter(PointerEventData _) => _inventoryView.SelectedSlot = this;
 
-    public void OnPointerExit(PointerEventData _) => _slotKeeper.SelectedSlot = null;
+    public void OnPointerExit(PointerEventData _) => _inventoryView.SelectedSlot = null;
 
     public void OnPointerDown(PointerEventData eventData)
     {
@@ -63,19 +63,19 @@ public class SlotView : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
             _draggedItemHolder.DraggedItem = _storedItem;
             _slotModel.TakeItem();
             _storedItem = null;
-            _slotKeeper.StartingSlot = this;
+            _inventoryView.StartingSlot = this;
         }
     }
 
     public SlotData Save() => _slotModel.Save();
 
-    public void Load(SlotData data, ItemDataRepository itemDataRepository)
+    public void Load(SlotData slotData, ItemDataRepository itemDataRepository)
     {
-        _slotModel.Load(data, itemDataRepository);
+        _slotModel.Load(slotData, itemDataRepository);
 
         if (_slotModel.HasItem)
         {
-            GameObject itemObject = InstantiateItem(_slotModel.StoredItem);
+            GameObject itemObject = InstantiateItem(_slotModel.ItemModel);
             _storedItem = itemObject.GetComponent<RectTransform>();
             _storedItem.transform.SetParent(transform);
             _storedItem.anchorMax = _halfVector2;

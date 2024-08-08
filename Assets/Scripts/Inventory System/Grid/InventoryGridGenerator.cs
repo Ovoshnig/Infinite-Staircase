@@ -3,7 +3,7 @@ using UnityEngine.UI;
 
 [RequireComponent(typeof(GridLayoutGroup), 
                   typeof(Image))]
-public class InventoryGridCreator : MonoBehaviour
+public class InventoryGridGenerator : MonoBehaviour
 {
     [SerializeField] private GameObject _slotPrefab;
     [SerializeField] private GameSettingsInstaller _settings;

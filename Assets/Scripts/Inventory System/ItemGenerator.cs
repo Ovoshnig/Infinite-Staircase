@@ -5,23 +5,23 @@ using Zenject;
 public class ItemGenerator : MonoBehaviour
 {
     private readonly string[] _itemNames = new string[] { "Gear", "Music", "Play" };
-    private InventorySaver _inventorySaver;
+    private InventoryView _inventoryView;
     private ItemDataRepository _itemDataRepository;
     private Random _random;
 
     private void Awake() => _random = new Random();
 
     [Inject]
-    private void Construct(InventorySaver inventorySaver, ItemDataRepository itemDataRepository)
+    private void Construct(InventoryView inventoryView, ItemDataRepository itemDataRepository)
     {
-        _inventorySaver = inventorySaver;
+        _inventoryView = inventoryView;
         _itemDataRepository = itemDataRepository;
     }
 
     private void OnTriggerEnter(Collider other)
     {
         ItemModel itemModel = GenerateRandomItem();
-        _inventorySaver.TryAddItem(itemModel);
+        _inventoryView.TryAddItem(itemModel);
     }
 
     private ItemModel GenerateRandomItem()
