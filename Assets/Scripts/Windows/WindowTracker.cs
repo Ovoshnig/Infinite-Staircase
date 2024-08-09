@@ -2,7 +2,7 @@ using System;
 using UnityEngine;
 using Zenject;
 
-public class WindowTracker
+public class WindowTracker : IInitializable
 {
     private readonly GameObject _playerScope;
     private GameObject _openedWindow = null;
@@ -14,6 +14,8 @@ public class WindowTracker
     [Inject]
     public WindowTracker([Inject(Id = BindingConstants.PlayerScopeId)] GameObject playerScope) => 
         _playerScope = playerScope;
+
+    public void Initialize() => SetCursor(false);
 
     public bool TryOpenWindow(GameObject window)
     {

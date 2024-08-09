@@ -1,44 +1,43 @@
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 [RequireComponent(typeof(Animator))]
 public class PlayerAnimator : MonoBehaviour
 {
+    [SerializeField] private PlayerState _playerState;
+
     private Animator _animator;
-    private PlayerInput _playerInput;
 
     private void Awake()
     {
         _animator = GetComponent<Animator>();
 
-        _playerInput = new PlayerInput();
-        _playerInput.Player.Move.performed += OnMovePerformed;
-        _playerInput.Player.Run.performed += OnRunPerformed;
-        _playerInput.Player.Jump.performed += OnJumpPerformed;
-        _playerInput.Player.Move.canceled += OnMoveCanceled;
-        _playerInput.Player.Run.canceled += OnRunCanceled;
-        _playerInput.Player.Jump.canceled += OnJumpCancelled;
+        _playerState.WalkStarted += OnWalkStarted;
+        _playerState.RunStarted += OnRunStarted;
+        _playerState.JumpStarted += OnJumpStarted;
+        _playerState.WalkEnded += OnWalkEnded;
+        _playerState.RunEnded += OnRunEnded;
+        _playerState.JumpEnded += OnJumpEnded;
     }
 
-    private void OnEnable() => _playerInput.Enable();
+    private void OnDestroy()
+    {
+        _playerState.WalkStarted -= OnWalkStarted;
+        _playerState.RunStarted -= OnRunStarted;
+        _playerState.JumpStarted -= OnJumpStarted;
+        _playerState.WalkEnded -= OnWalkEnded;
+        _playerState.RunEnded -= OnRunEnded;
+        _playerState.JumpEnded -= OnJumpEnded;
+    }
 
-    private void OnDisable() => _playerInput.Disable();
+    private void OnWalkStarted() => _animator.SetBool(AnimatorConstants.IsWalking, true);
 
-    private void OnMovePerformed(InputAction.CallbackContext _) => 
-        _animator.SetBool(PlayerAnimatorConstants.IsWalking, true);
+    private void OnRunStarted() => _animator.SetBool(AnimatorConstants.IsRunning, true);
 
-    private void OnRunPerformed(InputAction.CallbackContext _) => 
-        _animator.SetBool(PlayerAnimatorConstants.IsRunning, true);
+    private void OnJumpStarted() => _animator.SetBool("isJumping", true);
 
-    private void OnJumpPerformed(InputAction.CallbackContext _) => 
-        _animator.SetBool(PlayerAnimatorConstants.IsJumping, true);
+    private void OnWalkEnded() => _animator.SetBool(AnimatorConstants.IsWalking, false);
 
-    private void OnMoveCanceled(InputAction.CallbackContext _) => 
-        _animator.SetBool(PlayerAnimatorConstants.IsWalking, false);
+    private void OnRunEnded() => _animator.SetBool(AnimatorConstants.IsRunning, false);
 
-    private void OnRunCanceled(InputAction.CallbackContext _) => 
-        _animator.SetBool(PlayerAnimatorConstants.IsRunning, false);
-
-    private void OnJumpCancelled(InputAction.CallbackContext _) => 
-        _animator.SetBool(PlayerAnimatorConstants.IsJumping, false);
+    private void OnJumpEnded() => _animator.SetBool("isJumping", false);
 }
