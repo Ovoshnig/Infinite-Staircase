@@ -10,16 +10,12 @@ public class PlayerMover : MonoBehaviour
     [SerializeField] private float _runSpeed;
     [SerializeField] private float _jumpForce;
     [SerializeField] private float _gravity;
-    [SerializeField] private float _rotationSpeed;
-    [SerializeField] private float _xRotationLimit;
-    [SerializeField] private bool _canMove = true;
-    [SerializeField] private Transform _cameraTransform;
 
     private CharacterController _characterController;
     private PlayerState _playerState;
     private LookTuner _lookTuner;
     private Vector3 _moveDirection;
-    private float _rotationX;
+    private float _rotationSpeed;
     private float _currentSpeedX;
     private float _currentSpeedZ;
     private float _movementDirectionY;
@@ -46,12 +42,9 @@ public class PlayerMover : MonoBehaviour
 
     private void Update()
     {
-        if (_canMove)
-        {
-            Move();
-            Jump();
-            Look();
-        }
+        Move();
+        Jump();
+        Look();
     }
 
     private void Move()
@@ -78,13 +71,8 @@ public class PlayerMover : MonoBehaviour
         _characterController.Move(_moveDirection * Time.deltaTime);
     }
 
-    private void Look()
-    {
-        _rotationX += -_playerState.LookInput.y * _rotationSpeed;
-        _rotationX = Mathf.Clamp(_rotationX, -_xRotationLimit, _xRotationLimit);
-        _cameraTransform.localRotation = Quaternion.Euler(_rotationX, 0f, 0f);
-        transform.rotation *= Quaternion.Euler(0f, _playerState.LookInput.x * _rotationSpeed, 0f);
-    }
+    private void Look() => transform.rotation *= 
+        Quaternion.Euler(0f, _playerState.LookInput.x * _rotationSpeed, 0f);
 
     private void OnJumpStarted() => _moveDirection.y = _jumpForce;
 

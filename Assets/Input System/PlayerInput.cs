@@ -63,6 +63,15 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""TogglePerspective"",
+                    ""type"": ""Button"",
+                    ""id"": ""c9b3e105-a3e7-4f6a-a270-641362b97fda"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -219,6 +228,17 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
                     ""action"": ""Run"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""6df3f7a2-ada2-4740-927b-2f19910c6fe9"",
+                    ""path"": ""<Keyboard>/r"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""TogglePerspective"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         },
@@ -371,6 +391,7 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
         m_Player_Look = m_Player.FindAction("Look", throwIfNotFound: true);
         m_Player_Jump = m_Player.FindAction("Jump", throwIfNotFound: true);
         m_Player_Run = m_Player.FindAction("Run", throwIfNotFound: true);
+        m_Player_TogglePerspective = m_Player.FindAction("TogglePerspective", throwIfNotFound: true);
         // PauseMenu
         m_PauseMenu = asset.FindActionMap("PauseMenu", throwIfNotFound: true);
         m_PauseMenu_OpenOrClose = m_PauseMenu.FindAction("OpenOrClose", throwIfNotFound: true);
@@ -457,6 +478,7 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_Look;
     private readonly InputAction m_Player_Jump;
     private readonly InputAction m_Player_Run;
+    private readonly InputAction m_Player_TogglePerspective;
     public struct PlayerActions
     {
         private @PlayerInput m_Wrapper;
@@ -465,6 +487,7 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
         public InputAction @Look => m_Wrapper.m_Player_Look;
         public InputAction @Jump => m_Wrapper.m_Player_Jump;
         public InputAction @Run => m_Wrapper.m_Player_Run;
+        public InputAction @TogglePerspective => m_Wrapper.m_Player_TogglePerspective;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -486,6 +509,9 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
             @Run.started += instance.OnRun;
             @Run.performed += instance.OnRun;
             @Run.canceled += instance.OnRun;
+            @TogglePerspective.started += instance.OnTogglePerspective;
+            @TogglePerspective.performed += instance.OnTogglePerspective;
+            @TogglePerspective.canceled += instance.OnTogglePerspective;
         }
 
         private void UnregisterCallbacks(IPlayerActions instance)
@@ -502,6 +528,9 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
             @Run.started -= instance.OnRun;
             @Run.performed -= instance.OnRun;
             @Run.canceled -= instance.OnRun;
+            @TogglePerspective.started -= instance.OnTogglePerspective;
+            @TogglePerspective.performed -= instance.OnTogglePerspective;
+            @TogglePerspective.canceled -= instance.OnTogglePerspective;
         }
 
         public void RemoveCallbacks(IPlayerActions instance)
@@ -727,6 +756,7 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
         void OnLook(InputAction.CallbackContext context);
         void OnJump(InputAction.CallbackContext context);
         void OnRun(InputAction.CallbackContext context);
+        void OnTogglePerspective(InputAction.CallbackContext context);
     }
     public interface IPauseMenuActions
     {

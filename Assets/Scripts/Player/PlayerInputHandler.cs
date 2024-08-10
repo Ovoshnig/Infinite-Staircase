@@ -10,6 +10,7 @@ public class PlayerInputHandler : IInitializable, IDisposable
 
     public event Action WalkPerformed;
     public event Action RunPerformed;
+    public event Action TogglePerspectivePerformed;
     public event Action WalkCanceled;
     public event Action RunCanceled;
 
@@ -32,12 +33,14 @@ public class PlayerInputHandler : IInitializable, IDisposable
         _playerInput.Player.Look.performed += OnLookPerformed;
         _playerInput.Player.Jump.performed += OnJumpPerformed;
         _playerInput.Player.Run.performed += OnRunPerformed;
+        _playerInput.Player.TogglePerspective.performed += OnTogglePerspectivePerformed;
         _playerInput.Player.Walk.canceled += OnWalkCanceled;
         _playerInput.Player.Look.canceled += OnLookCanceled;
         _playerInput.Player.Jump.canceled += OnJumpCanceled;
         _playerInput.Player.Run.canceled += OnRunCanceled;
         _playerInput.Enable();
     }
+
 
     public void Dispose() => _playerInput.Disable();
 
@@ -65,6 +68,8 @@ public class PlayerInputHandler : IInitializable, IDisposable
         IsRunPressed = true;
         RunPerformed?.Invoke();
     }
+    private void OnTogglePerspectivePerformed(InputAction.CallbackContext context) => 
+        TogglePerspectivePerformed?.Invoke();
 
     private void OnWalkCanceled(InputAction.CallbackContext _)
     {
