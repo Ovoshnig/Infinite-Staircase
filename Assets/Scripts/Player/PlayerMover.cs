@@ -1,3 +1,4 @@
+using System.ComponentModel;
 using UnityEngine;
 using Zenject;
 
@@ -32,7 +33,7 @@ public class PlayerMover : MonoBehaviour
         _playerState = GetComponent<PlayerState>();
 
         _playerState.JumpStarted += OnJumpStarted;
-        _playerState.WindowClosed += OnWindowClosed;
+        _lookTuner.PropertyChanged += OnPropertyChanged;
     }
 
     private void Start() => _rotationSpeed = _lookTuner.Sensitivity;
@@ -40,10 +41,8 @@ public class PlayerMover : MonoBehaviour
     private void OnDisable()
     {
         _playerState.JumpStarted -= OnJumpStarted;
-        _playerState.WindowClosed -= OnWindowClosed;
+        _lookTuner.PropertyChanged -= OnPropertyChanged;
     }
-
-    private void OnWindowClosed() => _rotationSpeed = _lookTuner.Sensitivity;
 
     private void Update()
     {
@@ -88,4 +87,7 @@ public class PlayerMover : MonoBehaviour
     }
 
     private void OnJumpStarted() => _moveDirection.y = _jumpForce;
+
+    private void OnPropertyChanged(object sender, PropertyChangedEventArgs e) => 
+        _rotationSpeed = _lookTuner.Sensitivity;
 }

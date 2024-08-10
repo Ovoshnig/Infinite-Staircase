@@ -12,8 +12,6 @@ public class PlayerInputHandler : IInitializable, IDisposable
     public event Action RunPerformed;
     public event Action WalkCanceled;
     public event Action RunCanceled;
-    public event Action JumpPerformed;
-    public event Action WindowClosed;
 
     public Vector2 WalkInput { get; private set; } = Vector2.zero;
     public Vector2 LookInput { get; private set; } = Vector2.zero;
@@ -45,11 +43,7 @@ public class PlayerInputHandler : IInitializable, IDisposable
 
     private void OnWindowOpened() => _playerInput.Disable();
 
-    private void OnWindowClosed()
-    {
-        _playerInput.Enable();
-        WindowClosed?.Invoke();
-    }
+    private void OnWindowClosed() => _playerInput.Enable();
 
     private void OnWalkPerformed(InputAction.CallbackContext context)
     {
@@ -64,11 +58,7 @@ public class PlayerInputHandler : IInitializable, IDisposable
         IsLookPressed = true;
     }
 
-    private void OnJumpPerformed(InputAction.CallbackContext _)
-    {
-        IsJumpPressed = true;
-        JumpPerformed?.Invoke();
-    }
+    private void OnJumpPerformed(InputAction.CallbackContext _) => IsJumpPressed = true;
 
     private void OnRunPerformed(InputAction.CallbackContext _)
     {
