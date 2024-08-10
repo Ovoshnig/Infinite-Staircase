@@ -20,6 +20,7 @@ public class PlayerSoundPlayer : MonoBehaviour
 
         _playerState.WalkStarted += OnWalkStarted;
         _playerState.WalkEnded += OnWalkEnded;
+        _playerState.GroundEntered += OnGroundEntered;
 
         _random = new Random();
     }
@@ -34,29 +35,59 @@ public class PlayerSoundPlayer : MonoBehaviour
         CancellToken();
     }
 
-    private void OnWalkStarted() => PlayFootsteps().Forget();
+    private void OnWalkStarted()
+    {
+        _cts = new CancellationTokenSource();
+        PlayFootsteps().Forget();
+    }
 
     private void OnWalkEnded() => CancellToken();
 
+    private void OnGroundEntered() => PlayLanding();
+
     private async UniTask PlayFootsteps()
     {
-        _cts = new CancellationTokenSource();
-
-        while (isActiveAndEnabled)
+        while (isActiveAndEnabled && !_playerState.IsInAir)
         {
-            int index = _random.Next(0, _footstepClips.Length);
-            AudioClip clip = _footstepClips[index];
+            AudioClip clip = GetRandomClip();
             _audioSource.clip = clip;
             _audioSource.Play();
+
+            if (_cts == null || _cts.Token.IsCancellationRequested)
+                return;
+
             await UniTask.WaitWhile(() => _audioSource.isPlaying, cancellationToken: _cts.Token);
             float delay = _playerState.IsRunning ? clip.length / 5f : clip.length;
+
+            if (_cts == null || _cts.Token.IsCancellationRequested)
+                return;
+
             await UniTask.WaitForSeconds(delay, cancellationToken: _cts.Token);
         }
     }
 
+    private void PlayLanding()
+    {
+        AudioClip clip = GetRandomClip();
+        _audioSource.clip = clip;
+        _audioSource.Play();
+    }
+
+    private AudioClip GetRandomClip()
+    {
+        int index = _random.Next(0, _footstepClips.Length);
+        AudioClip clip = _footstepClips[index];
+
+        return clip;
+    }
+
     private void CancellToken()
     { 
-        _cts.Cancel(); 
-        _cts.Dispose();
+        if (_cts != null)
+        {
+            _cts.Cancel(); 
+            _cts.Dispose();
+            _cts = null;
+        }
     }
 }

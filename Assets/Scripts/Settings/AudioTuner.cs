@@ -29,7 +29,10 @@ public class AudioTuner : IInitializable, IDisposable
         set
         {
             if (value >= _audioSettings.MinVolume && value <= _audioSettings.MaxVolume)
+            { 
                 _soundsVolume = value;
+                _audioMixerGroup.audioMixer.SetFloat(SettingsConstants.SoundsVolumeKey, value);
+            }
         }
     }
     
