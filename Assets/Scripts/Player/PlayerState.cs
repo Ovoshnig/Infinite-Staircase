@@ -1,4 +1,3 @@
-using Cysharp.Threading.Tasks;
 using System;
 using UnityEngine;
 using Zenject;
@@ -21,10 +20,8 @@ public class PlayerState : MonoBehaviour
 
     public Vector2 WalkInput => _inputHandler.WalkInput;
     public Vector2 LookInput => _inputHandler.LookInput;
-    public bool IsWalking => _characterController.isGrounded && 
-        _inputHandler.IsWalkPressed;
-    public bool IsRunning => _characterController.isGrounded &&
-        _inputHandler.IsWalkPressed && _inputHandler.IsRunPressed;
+    public bool IsWalking => _inputHandler.IsWalkPressed;
+    public bool IsRunning => _inputHandler.IsWalkPressed && _inputHandler.IsRunPressed;
     public bool IsInAir => !_characterController.isGrounded;
     public bool IsLooking => _inputHandler.IsLookPressed;
 
@@ -40,6 +37,8 @@ public class PlayerState : MonoBehaviour
         _inputHandler.WalkCanceled += OnWalkCanceled;
         _inputHandler.RunCanceled += OnRunCanceled;
     }
+
+    private void Start() => _wasGrounded = _characterController.isGrounded;
 
     private void OnDestroy()
     {
