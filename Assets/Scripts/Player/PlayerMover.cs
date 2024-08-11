@@ -1,3 +1,4 @@
+using System;
 using System.ComponentModel;
 using UnityEngine;
 using Zenject;
@@ -29,6 +30,7 @@ public class PlayerMover : MonoBehaviour
         _playerState = GetComponent<PlayerState>();
 
         _playerState.JumpStarted += OnJumpStarted;
+        _playerState.GroundEntered += OnGroundEntered;
         _lookTuner.PropertyChanged += OnPropertyChanged;
     }
 
@@ -37,6 +39,7 @@ public class PlayerMover : MonoBehaviour
     private void OnDisable()
     {
         _playerState.JumpStarted -= OnJumpStarted;
+        _playerState.GroundEntered -= OnGroundEntered;
         _lookTuner.PropertyChanged -= OnPropertyChanged;
     }
 
@@ -75,6 +78,8 @@ public class PlayerMover : MonoBehaviour
         Quaternion.Euler(0f, _playerState.LookInput.x * _rotationSpeed, 0f);
 
     private void OnJumpStarted() => _moveDirection.y = _jumpForce;
+
+    private void OnGroundEntered() => _moveDirection.y = -_gravity;
 
     private void OnPropertyChanged(object sender, PropertyChangedEventArgs e) => 
         _rotationSpeed = _lookTuner.Sensitivity;
