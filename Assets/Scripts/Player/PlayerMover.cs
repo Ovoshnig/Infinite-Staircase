@@ -14,6 +14,7 @@ public class PlayerMover : MonoBehaviour
     private CharacterController _characterController;
     private PlayerState _playerState;
     private LookTuner _lookTuner;
+    private PauseMenu _pauseMenu;
     private Vector3 _moveDirection;
     private float _rotationSpeed;
     private float _currentSpeedX;
@@ -21,7 +22,11 @@ public class PlayerMover : MonoBehaviour
     private float _movementDirectionY;
 
     [Inject]
-    private void Construct(LookTuner lookTuner) => _lookTuner = lookTuner;
+    private void Construct(LookTuner lookTuner, PauseMenu pauseMenu)
+    {
+        _lookTuner = lookTuner;
+        _pauseMenu = pauseMenu;
+    }
 
     private void Awake()
     {
@@ -30,7 +35,7 @@ public class PlayerMover : MonoBehaviour
 
         _playerState.JumpStarted += OnJumpStarted;
         _playerState.GroundEntered += OnGroundEntered;
-        _lookTuner.PropertyChanged += OnPropertyChanged;
+        _pauseMenu.Resumed += OnResumed;
     }
 
     private void Start() => _rotationSpeed = _lookTuner.Sensitivity;
@@ -39,7 +44,7 @@ public class PlayerMover : MonoBehaviour
     {
         _playerState.JumpStarted -= OnJumpStarted;
         _playerState.GroundEntered -= OnGroundEntered;
-        _lookTuner.PropertyChanged -= OnPropertyChanged;
+        _pauseMenu.Resumed -= OnResumed;
     }
 
     private void Update()
@@ -80,6 +85,5 @@ public class PlayerMover : MonoBehaviour
 
     private void OnGroundEntered() => _moveDirection.y = -_gravity;
 
-    private void OnPropertyChanged(object sender, PropertyChangedEventArgs e) => 
-        _rotationSpeed = _lookTuner.Sensitivity;
+    private void OnResumed() => _rotationSpeed = _lookTuner.Sensitivity;
 }

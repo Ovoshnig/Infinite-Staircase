@@ -9,17 +9,22 @@ public class CameraRotator : MonoBehaviour
     [SerializeField] private PlayerState _playerState;
 
     private LookTuner _lookTuner;
+    private PauseMenu _pauseMenu;
     private float _rotationSpeed;
     private float _rotationX;
 
     [Inject]
-    private void Construct(LookTuner lookTuner) => _lookTuner = lookTuner;
+    private void Construct(LookTuner lookTuner, PauseMenu pauseMenu)
+    {
+        _lookTuner = lookTuner;
+        _pauseMenu = pauseMenu;
+    }
 
-    private void Awake() => _lookTuner.PropertyChanged += OnPropertyChanged;
+    private void Awake() => _pauseMenu.Resumed += OnResumed;
 
     private void Start() => _rotationSpeed = _lookTuner.Sensitivity;
 
-    private void OnDestroy() => _lookTuner.PropertyChanged -= OnPropertyChanged;
+    private void OnDestroy() => _pauseMenu.Resumed -= OnResumed;
 
     private void Update() => Look();
 
@@ -30,6 +35,5 @@ public class CameraRotator : MonoBehaviour
         transform.localRotation = Quaternion.Euler(_rotationX, 0f, 0f);
     }
 
-    private void OnPropertyChanged(object sender, PropertyChangedEventArgs e) => 
-        _rotationSpeed = _lookTuner.Sensitivity;
+    private void OnResumed() => _rotationSpeed = _lookTuner.Sensitivity;
 }

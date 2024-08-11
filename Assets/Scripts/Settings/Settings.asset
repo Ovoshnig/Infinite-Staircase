@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Settings
   m_EditorClassIdentifier: 
   _controlSettings:
-    <MaxSensitivity>k__BackingField: 2
+    <MaxSensitivity>k__BackingField: 1
   _levelSettings:
     <FirstGameplayLevel>k__BackingField: 1
     <GameplayLevelsCount>k__BackingField: 1
