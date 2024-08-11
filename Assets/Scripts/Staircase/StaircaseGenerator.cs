@@ -10,15 +10,17 @@ public class StaircaseGenerator : MonoBehaviour
     [SerializeField] private Transform _startTransform;
     [SerializeField] private int _partsCount;
 
-    private readonly CancellationTokenSource _cts = new();
     private SaveSaver _saveSaver;
     private GameObject[] _stairs;
     private StairConnection[] _stairConnections;
+    private CancellationTokenSource _cts;
     private Vector3 _size;
     private int _seed;
 
     [Inject]
     private void Construct(SaveSaver saveSaver) => _saveSaver = saveSaver;
+
+    private void Awake() => _cts = new CancellationTokenSource();
 
     private void Start()
     {
@@ -30,14 +32,7 @@ public class StaircaseGenerator : MonoBehaviour
         Generate().Forget();
     }
 
-    private void OnDisable()
-    {
-        if (_cts != null)
-        {
-            _cts.Cancel();
-            _cts.Dispose();
-        }
-    }
+    private void OnDisable() => _cts.CancelAndDispose(ref _cts);
 
     private async UniTask Generate()
     {

@@ -33,7 +33,7 @@ public class PlayerSoundPlayer : MonoBehaviour
         _playerState.WalkEnded -= OnWalkEnded;
         _playerState.GroundEntered -= OnGroundEntered;
 
-        CancellToken();
+        _cts?.CancelAndDispose(ref _cts);
     }
 
     private void OnWalkStarted()
@@ -42,7 +42,7 @@ public class PlayerSoundPlayer : MonoBehaviour
         PlayFootsteps().Forget();
     }
 
-    private void OnWalkEnded() => CancellToken();
+    private void OnWalkEnded() => _cts?.CancelAndDispose(ref _cts);
 
     private void OnGroundEntered() => PlayLanding();
 
@@ -54,13 +54,13 @@ public class PlayerSoundPlayer : MonoBehaviour
             _audioSource.clip = clip;
             _audioSource.Play();
 
-            if (_cts == null || _cts.Token.IsCancellationRequested)
+            if (_cts.IsNullOrCanceled())
                 return;
 
             await UniTask.WaitWhile(() => _audioSource.isPlaying, cancellationToken: _cts.Token);
             float delay = _playerState.IsRunning ? clip.length / 5f : clip.length;
 
-            if (_cts == null || _cts.Token.IsCancellationRequested)
+            if (_cts.IsNullOrCanceled())
                 return;
 
             await UniTask.WaitForSeconds(delay, cancellationToken: _cts.Token);
@@ -80,15 +80,5 @@ public class PlayerSoundPlayer : MonoBehaviour
         AudioClip clip = _footstepClips[index];
 
         return clip;
-    }
-
-    private void CancellToken()
-    { 
-        if (_cts != null)
-        {
-            _cts.Cancel(); 
-            _cts.Dispose();
-            _cts = null;
-        }
     }
 }

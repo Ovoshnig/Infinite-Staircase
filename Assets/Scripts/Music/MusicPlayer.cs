@@ -42,7 +42,7 @@ public class MusicPlayer : MonoBehaviour
     private void OnDestroy()
     {
         _sceneSwitch.SceneLoaded -= OnSceneLoaded;
-        CancelToken();
+        _cts.CancelAndDispose(ref _cts);
     }
 
     private async UniTask LoadMusicTrackKeys()
@@ -74,7 +74,7 @@ public class MusicPlayer : MonoBehaviour
 
     private void OnSceneLoaded(SceneSwitch.SceneType scene)
     {
-        CancelToken();
+        _cts.CancelAndDispose(ref _cts);
         _cts = new CancellationTokenSource();
 
         Dictionary<SceneSwitch.SceneType, MusicCategory> sceneToMusicCategory = new()
@@ -188,22 +188,6 @@ public class MusicPlayer : MonoBehaviour
             }
 
             PlayNextTrack(category).Forget();
-        }
-    }
-
-    private void CancelToken()
-    {
-        if (_cts != null)
-        {
-            _cts.Cancel();
-            _cts.Dispose();
-            _cts = null;
-        }
-
-        if (_currentTrackHandle.HasValue)
-        {
-            ReleaseTrack(_currentTrackHandle.Value);
-            _currentTrackHandle = null;
         }
     }
 }
