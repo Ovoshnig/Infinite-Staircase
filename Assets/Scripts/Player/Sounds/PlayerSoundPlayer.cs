@@ -31,6 +31,7 @@ public class PlayerSoundPlayer : MonoBehaviour
     {
         _playerState.WalkStarted -= OnWalkStarted;
         _playerState.WalkEnded -= OnWalkEnded;
+        _playerState.GroundEntered -= OnGroundEntered;
 
         CancellToken();
     }

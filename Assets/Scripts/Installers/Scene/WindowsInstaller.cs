@@ -7,7 +7,7 @@ public class WindowsInstaller : MonoInstaller
 
     public override void InstallBindings()
     {
-        GameObject playerScopeCanvas = Container.InstantiatePrefab(_playerScopeCanvas);
+        GameObject playerScopeCanvas = Instantiate(_playerScopeCanvas);
         Container.Bind<GameObject>()
             .WithId(BindingConstants.PlayerScopeId)
             .FromInstance(playerScopeCanvas)
