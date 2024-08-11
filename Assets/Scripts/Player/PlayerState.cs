@@ -64,7 +64,6 @@ public class PlayerState : MonoBehaviour
         else if (isGrounded && _wasGrounded && _inputHandler.IsJumpPressed)
         {
             JumpStarted?.Invoke();
-            GroundLeft?.Invoke();
         }
 
         _wasGrounded = isGrounded;

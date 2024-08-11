@@ -57,7 +57,7 @@ public class StaircaseGenerator : MonoBehaviour
         }
     }
 
-    private async UniTask<(Vector3, Vector3)> GenerateSegment(System.Random random, StairConnection stairConnection, 
+    private async UniTask<(Vector3, Vector3)> GenerateSegment(Random random, StairConnection stairConnection, 
         Vector3 position, Vector3 rotation, Vector3 positionDifference, Vector3 rotationDifference)
     {
         int count = random.Next(stairConnection.MinCount, stairConnection.MaxCount + 1);

@@ -8,10 +8,16 @@ public class CameraSwitch : MonoBehaviour
     [SerializeField] private CinemachineCamera _thirdPersonCamera;
 
     private PlayerInputHandler _inputHandler;
+    private GameObject _playerScope;
     private bool _isFirstPerson = true;
 
     [Inject]
-    private void Construct(PlayerInputHandler inputHandler) => _inputHandler = inputHandler;
+    private void Construct(PlayerInputHandler inputHandler, 
+        [Inject(Id = BindingConstants.PlayerScopeId)] GameObject playerScope)
+    {
+        _inputHandler = inputHandler;
+        _playerScope = playerScope;
+    }
 
     private void Awake() => _inputHandler.TogglePerspectivePerformed += OnTogglePerspectivePerformed;
 
@@ -29,5 +35,6 @@ public class CameraSwitch : MonoBehaviour
     {
         _firstPersonCamera.Priority = isFirstPerson ? 1 : 0;
         _thirdPersonCamera.Priority = isFirstPerson ? 0 : 1;
+        _playerScope.SetActive(isFirstPerson);
     }
 }
