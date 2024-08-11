@@ -11,6 +11,4 @@ public class PauseMenuInstaller : MonoInstaller
             .FromComponentInNewPrefab(_pauseMenuCanvas)
             .AsSingle();
     }
-
-    public override void Start() => Container.InstantiatePrefab(_pauseMenuCanvas);
 }

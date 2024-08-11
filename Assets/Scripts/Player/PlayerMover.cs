@@ -35,7 +35,7 @@ public class PlayerMover : MonoBehaviour
 
         _playerState.JumpStarted += OnJumpStarted;
         _playerState.GroundEntered += OnGroundEntered;
-        _pauseMenu.Resumed += OnResumed;
+        _pauseMenu.Closed += OnPauseMenuClosed;
     }
 
     private void Start() => _rotationSpeed = _lookTuner.Sensitivity;
@@ -44,7 +44,7 @@ public class PlayerMover : MonoBehaviour
     {
         _playerState.JumpStarted -= OnJumpStarted;
         _playerState.GroundEntered -= OnGroundEntered;
-        _pauseMenu.Resumed -= OnResumed;
+        _pauseMenu.Closed -= OnPauseMenuClosed;
     }
 
     private void Update()
@@ -85,5 +85,5 @@ public class PlayerMover : MonoBehaviour
 
     private void OnGroundEntered() => _moveDirection.y = -_gravity;
 
-    private void OnResumed() => _rotationSpeed = _lookTuner.Sensitivity;
+    private void OnPauseMenuClosed() => _rotationSpeed = _lookTuner.Sensitivity;
 }

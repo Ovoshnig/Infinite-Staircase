@@ -14,19 +14,24 @@ public sealed class PauseMenu : Menu
     [SerializeField] private Button _loadMainMenuButton;
 
     private WindowTracker _windowTracker;
+    private GamePauser _gamePauser;
     private PlayerInput _playerInput;
-    private bool _paused = false;
+    private bool _opened = false;
 
-    public event Action Paused;
-    public event Action Resumed;
+    public event Action Opened;
+    public event Action Closed;
 
     [Inject]
-    private void Construct(WindowTracker windowTracker) => _windowTracker = windowTracker;
+    private void Construct(WindowTracker windowTracker, GamePauser gamePauser)
+    {
+        _windowTracker = windowTracker;
+        _gamePauser = gamePauser;
+    }
 
     private void Awake()
     {
         _playerInput = new PlayerInput();
-        _playerInput.PauseMenu.OpenOrClose.performed += OnOpenOrClose;
+        _playerInput.PauseMenu.OpenOrClose.performed += OnOpenOrClosePerformed;
         _playerInput.Enable();
     }
 
@@ -68,32 +73,35 @@ public sealed class PauseMenu : Menu
 
     private void OnLoadMainMenuButtonClicked() => SceneSwitch.LoadLevel(0).Forget();
 
-    private void OnOpenOrClose(InputAction.CallbackContext _)
+    private void OnOpenOrClosePerformed(InputAction.CallbackContext _)
     {
-        if (_paused)
-            Resume();
+        if (_opened)
+            Close();
         else
-            Pause();
+            Open();
     }
 
-    private void OnResumeClicked() => Resume();
+    private void OnResumeClicked() => Close();
 
-    private void Pause()
+    private void Open()
     {
         if (!_windowTracker.TryOpenWindow(gameObject))
             return;
 
-        _paused = true;
-        Paused?.Invoke();
+        _opened = true;
+        gameObject.SetActive(true);
+        _gamePauser.Pause();
+        Opened?.Invoke();
     }
 
-    private void Resume()
+    private void Close()
     {
-        if (!_windowTracker.TryCloseWindow())
-            return;
+        _windowTracker.TryCloseWindow();
 
-        _paused = false;
+        _opened = false;
+        gameObject.SetActive(false);
         SettingsPanel.SetActive(false);
-        Resumed?.Invoke();
+        _gamePauser.Unpause();
+        Closed?.Invoke();
     }
 }

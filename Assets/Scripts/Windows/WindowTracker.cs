@@ -5,7 +5,6 @@ using Zenject;
 public class WindowTracker : IInitializable
 {
     private readonly GameObject _playerScope;
-    private GameObject _openedWindow = null;
     private bool _opened = false;
 
     public event Action WindowOpened;
@@ -22,8 +21,6 @@ public class WindowTracker : IInitializable
         if (_opened)
             return false;
 
-        _openedWindow = window;
-        _openedWindow.SetActive(true);
         _playerScope.SetActive(false);
         _opened = true;
         SetCursor(true);
@@ -37,9 +34,7 @@ public class WindowTracker : IInitializable
         if (!_opened)
             return false;
 
-        _openedWindow.SetActive(false);
         _playerScope.SetActive(true);
-        _openedWindow = null;
         _opened = false;
         SetCursor(false);
         WindowClosed?.Invoke();

@@ -20,11 +20,11 @@ public class CameraRotator : MonoBehaviour
         _pauseMenu = pauseMenu;
     }
 
-    private void Awake() => _pauseMenu.Resumed += OnResumed;
+    private void Awake() => _pauseMenu.Closed += OnPauseMenuClosed;
 
     private void Start() => _rotationSpeed = _lookTuner.Sensitivity;
 
-    private void OnDestroy() => _pauseMenu.Resumed -= OnResumed;
+    private void OnDestroy() => _pauseMenu.Closed -= OnPauseMenuClosed;
 
     private void Update() => Look();
 
@@ -35,5 +35,5 @@ public class CameraRotator : MonoBehaviour
         transform.localRotation = Quaternion.Euler(_rotationX, 0f, 0f);
     }
 
-    private void OnResumed() => _rotationSpeed = _lookTuner.Sensitivity;
+    private void OnPauseMenuClosed() => _rotationSpeed = _lookTuner.Sensitivity;
 }

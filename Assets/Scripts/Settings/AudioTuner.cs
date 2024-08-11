@@ -8,16 +8,18 @@ public class AudioTuner : IInitializable, IDisposable
     private readonly GameSettingsInstaller.AudioSettings _audioSettings;
 
     private readonly AudioMixerGroup _audioMixerGroup;
+    private readonly GamePauser _gamePauser;
     private float _soundsVolume;
     private float _musicVolume;
 
     [Inject]
     public AudioTuner(SettingsSaver settingsSaver, GameSettingsInstaller.AudioSettings audioSettings,
-                         AudioMixerGroup audioMixerGroup)
+                         AudioMixerGroup audioMixerGroup, GamePauser gamePauser)
     {
         _settingsSaver = settingsSaver;
         _audioSettings = audioSettings;
         _audioMixerGroup = audioMixerGroup;
+        _gamePauser = gamePauser;
     }
 
     public float SoundsVolume
@@ -58,25 +60,25 @@ public class AudioTuner : IInitializable, IDisposable
         _musicVolume = _settingsSaver.LoadData(SettingsConstants.MusicVolumeKey, _audioSettings.DefaultVolume);
         SoundsVolume = _soundsVolume;
         MusicVolume = _musicVolume;
+
+        _gamePauser.Paused += OnPaused;
+        _gamePauser.Unpaused += OnUnpaused;
     }
 
-    public void Dispose() => SaveVolumeData();
-
-    public void PauseSoundSources() => SetSoundSourcesPauseState(pause: true);
-
-    public void UnpauseSoundSources() => SetSoundSourcesPauseState(pause: false);
-
-    private void SaveVolumeData()
+    public void Dispose()
     {
         _settingsSaver.SaveData(SettingsConstants.SoundsVolumeKey, _soundsVolume);
         _settingsSaver.SaveData(SettingsConstants.MusicVolumeKey, _musicVolume);
+
+        _gamePauser.Paused -= OnPaused;
+        _gamePauser.Unpaused -= OnUnpaused;
     }
 
-    private void SetSoundSourcesPauseState(bool pause)
-    {
-        if (pause)
-            _audioMixerGroup.audioMixer.SetFloat(SettingsConstants.SoundsVolumeKey, _audioSettings.MinVolume);
-        else
-            _audioMixerGroup.audioMixer.SetFloat(SettingsConstants.SoundsVolumeKey, _soundsVolume);
-    }
+    private void OnPaused() => SetSoundSourcesPause(true);
+
+    private void OnUnpaused() => SetSoundSourcesPause(false);
+
+    private void SetSoundSourcesPause(bool pause) => _audioMixerGroup.audioMixer
+        .SetFloat(SettingsConstants.SoundsVolumeKey,
+        pause ? _audioSettings.MinVolume : _soundsVolume);
 }

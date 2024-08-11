@@ -38,6 +38,7 @@ public class InventorySwitch : MonoBehaviour
         if (!_windowTracker.TryOpenWindow(_panel))
             return;
 
+        _panel.SetActive(true);
         _isOpen = true;
     }
 
@@ -46,6 +47,7 @@ public class InventorySwitch : MonoBehaviour
         if (!_windowTracker.TryCloseWindow())
             return;
 
+        _panel.SetActive(false);
         _isOpen = false; 
     }
 }
