@@ -41,7 +41,7 @@ public abstract class MenuSettings : MonoBehaviour
 
         _soundsVolumeSlider.minValue = _audioSettings.MinVolume;
         _soundsVolumeSlider.maxValue = _audioSettings.MaxVolume;
-        _soundsVolumeSlider.value = _audioTuner.SoundsVolume;
+        _soundsVolumeSlider.value = _audioTuner.SoundVolume;
 
         _musicVolumeSlider.minValue = _audioSettings.MinVolume;
         _musicVolumeSlider.maxValue = _audioSettings.MaxVolume;
@@ -74,7 +74,7 @@ public abstract class MenuSettings : MonoBehaviour
 
     private void OnSensitivitySliderValueChanged(float value) => _lookTuner.Sensitivity = value;
 
-    private void OnSoundsVolumeSliderValueChanged(float value) => _audioTuner.SoundsVolume = value;
+    private void OnSoundsVolumeSliderValueChanged(float value) => _audioTuner.SoundVolume = value;
 
     private void OnMusicVolumeSliderValueChanged(float value) => _audioTuner.MusicVolume = value;
 }

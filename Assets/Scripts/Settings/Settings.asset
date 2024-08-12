@@ -21,7 +21,7 @@ MonoBehaviour:
   _audioSettings:
     <MinVolume>k__BackingField: -80
     <MaxVolume>k__BackingField: 0
-    <MusicFadeInDuration>k__BackingField: 5
+    <SnapshotTransitionDuration>k__BackingField: 1
   _inventorySettings:
     <RowCount>k__BackingField: 4
     <ColumnCount>k__BackingField: 6

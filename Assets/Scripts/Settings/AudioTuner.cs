@@ -9,7 +9,7 @@ public class AudioTuner : IInitializable, IDisposable
 
     private readonly AudioMixerGroup _audioMixerGroup;
     private readonly GamePauser _gamePauser;
-    private float _soundsVolume;
+    private float _soundVolume;
     private float _musicVolume;
 
     [Inject]
@@ -22,18 +22,18 @@ public class AudioTuner : IInitializable, IDisposable
         _gamePauser = gamePauser;
     }
 
-    public float SoundsVolume
+    public float SoundVolume
     {
         get
         {
-            return _soundsVolume;
+            return _soundVolume;
         }
         set
         {
             if (value >= _audioSettings.MinVolume && value <= _audioSettings.MaxVolume)
             { 
-                _soundsVolume = value;
-                _audioMixerGroup.audioMixer.SetFloat(SettingsConstants.SoundsVolumeKey, value);
+                _soundVolume = value;
+                _audioMixerGroup.audioMixer.SetFloat(AudioMixerConstants.SoundGroupName, value);
             }
         }
     }
@@ -49,16 +49,16 @@ public class AudioTuner : IInitializable, IDisposable
             if (value >= _audioSettings.MinVolume && value <= _audioSettings.MaxVolume)
             {
                 _musicVolume = value;
-                _audioMixerGroup.audioMixer.SetFloat(SettingsConstants.MusicVolumeKey, value);
+                _audioMixerGroup.audioMixer.SetFloat(AudioMixerConstants.MusicGroupName, value);
             }
         }
     }
 
     public void Initialize()
     {
-        _soundsVolume = _settingsSaver.LoadData(SettingsConstants.SoundsVolumeKey, _audioSettings.DefaultVolume);
+        _soundVolume = _settingsSaver.LoadData(SettingsConstants.SoundVolumeKey, _audioSettings.DefaultVolume);
         _musicVolume = _settingsSaver.LoadData(SettingsConstants.MusicVolumeKey, _audioSettings.DefaultVolume);
-        SoundsVolume = _soundsVolume;
+        SoundVolume = _soundVolume;
         MusicVolume = _musicVolume;
 
         _gamePauser.Paused += OnPaused;
@@ -67,18 +67,22 @@ public class AudioTuner : IInitializable, IDisposable
 
     public void Dispose()
     {
-        _settingsSaver.SaveData(SettingsConstants.SoundsVolumeKey, _soundsVolume);
+        _settingsSaver.SaveData(SettingsConstants.SoundVolumeKey, _soundVolume);
         _settingsSaver.SaveData(SettingsConstants.MusicVolumeKey, _musicVolume);
 
         _gamePauser.Paused -= OnPaused;
         _gamePauser.Unpaused -= OnUnpaused;
     }
 
-    private void OnPaused() => SetSoundSourcesPause(true);
+    private void OnPaused() => SetSoundPause(true);
 
-    private void OnUnpaused() => SetSoundSourcesPause(false);
+    private void OnUnpaused() => SetSoundPause(false);
 
-    private void SetSoundSourcesPause(bool pause) => _audioMixerGroup.audioMixer
-        .SetFloat(SettingsConstants.SoundsVolumeKey,
-        pause ? _audioSettings.MinVolume : _soundsVolume);
+    private void SetSoundPause(bool pause)
+    {
+        var snapshot = _audioMixerGroup
+            .audioMixer.FindSnapshot(
+            pause ? AudioMixerConstants.PauseSnapshotName : AudioMixerConstants.NormalSnapshotName);
+        snapshot.TransitionTo(_audioSettings.SnapshotTransitionDuration);
+    }
 }
