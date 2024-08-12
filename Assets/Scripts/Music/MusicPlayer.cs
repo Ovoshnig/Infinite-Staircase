@@ -6,7 +6,7 @@ using System.Threading;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
-using VContainer;
+using Zenject;
 
 [RequireComponent(typeof(AudioSource))]
 public class MusicPlayer : MonoBehaviour
@@ -27,7 +27,7 @@ public class MusicPlayer : MonoBehaviour
     private CancellationTokenSource _cts = default;
 
     [Inject]
-    public void Construct(SceneSwitch sceneSwitch) => _sceneSwitch = sceneSwitch;
+    private void Construct(SceneSwitch sceneSwitch) => _sceneSwitch = sceneSwitch;
 
     private void Awake() => _audioSource = gameObject.GetComponent<AudioSource>();
 

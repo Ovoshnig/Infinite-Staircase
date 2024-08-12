@@ -3,7 +3,7 @@ using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
-using VContainer;
+using Zenject;
 
 public sealed class PauseMenu : Menu
 {
@@ -22,7 +22,7 @@ public sealed class PauseMenu : Menu
     public event Action Closed;
 
     [Inject]
-    public void Construct(WindowTracker windowTracker, GamePauser gamePauser)
+    private void Construct(WindowTracker windowTracker, GamePauser gamePauser)
     {
         _windowTracker = windowTracker;
         _gamePauser = gamePauser;

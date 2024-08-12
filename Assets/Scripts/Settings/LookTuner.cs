@@ -1,13 +1,14 @@
 using System;
-using VContainer.Unity;
+using Zenject;
 
 public class LookTuner : IInitializable, IDisposable
 {
     private readonly SettingsSaver _settingsSaver;
-    private readonly ControlSettings _controlSettings;
+    private readonly GameSettingsInstaller.ControlSettings _controlSettings;
     private float _sensitivity;
 
-    public LookTuner(SettingsSaver settingsSaver, ControlSettings controlSettings)
+    [Inject]
+    public LookTuner(SettingsSaver settingsSaver, GameSettingsInstaller.ControlSettings controlSettings)
     {
         _settingsSaver = settingsSaver;
         _controlSettings = controlSettings;

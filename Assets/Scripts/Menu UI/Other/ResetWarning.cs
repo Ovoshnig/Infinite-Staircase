@@ -1,6 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
-using VContainer;
+using Zenject;
 
 public class ResetWarning : MonoBehaviour
 {
@@ -12,7 +12,7 @@ public class ResetWarning : MonoBehaviour
     private SaveSaver _saveSaver;
 
     [Inject]
-    public void Construct(SaveSaver saveSaver) => _saveSaver = saveSaver;
+    private void Construct(SaveSaver saveSaver) => _saveSaver = saveSaver;
 
     private void OnEnable()
     {

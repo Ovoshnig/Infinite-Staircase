@@ -1,6 +1,6 @@
 using System;
 using UnityEngine;
-using VContainer.Unity;
+using Zenject;
 
 public class GamePauser : IInitializable
 {

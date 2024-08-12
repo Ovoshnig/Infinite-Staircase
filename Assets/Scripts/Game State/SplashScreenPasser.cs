@@ -1,7 +1,7 @@
 using System;
 using UnityEngine.InputSystem;
 using UnityEngine.Rendering;
-using VContainer.Unity;
+using Zenject;
 
 public class SplashScreenPasser : IInitializable, IDisposable
 {
