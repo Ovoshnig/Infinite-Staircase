@@ -1,6 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
-using Zenject;
+using VContainer;
 
 public abstract class MenuSettings : MonoBehaviour
 {
@@ -12,13 +12,12 @@ public abstract class MenuSettings : MonoBehaviour
 
     private LookTuner _lookTuner;
     private AudioTuner _audioTuner;
-    private GameSettingsInstaller.ControlSettings _controlSettings;
-    private GameSettingsInstaller.AudioSettings _audioSettings;
+    private ControlSettings _controlSettings;
+    private AudioSettings _audioSettings;
 
     [Inject]
     protected void Construct(LookTuner lookTuner, AudioTuner audioTuner, 
-        GameSettingsInstaller.ControlSettings controlSettings,
-        GameSettingsInstaller.AudioSettings audioSettings)
+        ControlSettings controlSettings, AudioSettings audioSettings)
     {
         _lookTuner = lookTuner;
         _audioTuner = audioTuner;

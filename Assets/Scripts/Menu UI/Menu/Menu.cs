@@ -1,6 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
-using Zenject;
+using VContainer;
 
 public abstract class Menu : MonoBehaviour
 {
@@ -8,7 +8,7 @@ public abstract class Menu : MonoBehaviour
     [SerializeField] private Button _openSettingsButton;
 
     [Inject]
-    private void Construct(SceneSwitch sceneSwitch) => SceneSwitch = sceneSwitch;
+    public void Construct(SceneSwitch sceneSwitch) => SceneSwitch = sceneSwitch;
 
     protected GameObject SettingsPanel => _settingsPanel;
     protected SceneSwitch SceneSwitch { get; private set; }

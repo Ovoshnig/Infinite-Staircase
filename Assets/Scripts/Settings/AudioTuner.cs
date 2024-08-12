@@ -1,19 +1,18 @@
 using System;
 using UnityEngine.Audio;
-using Zenject;
+using VContainer.Unity;
 
 public class AudioTuner : IInitializable, IDisposable
 {
     private readonly SettingsSaver _settingsSaver;
-    private readonly GameSettingsInstaller.AudioSettings _audioSettings;
+    private readonly AudioSettings _audioSettings;
 
     private readonly AudioMixerGroup _audioMixerGroup;
     private readonly GamePauser _gamePauser;
     private float _soundVolume;
     private float _musicVolume;
-
-    [Inject]
-    public AudioTuner(SettingsSaver settingsSaver, GameSettingsInstaller.AudioSettings audioSettings,
+    
+    public AudioTuner(SettingsSaver settingsSaver, AudioSettings audioSettings,
                          AudioMixerGroup audioMixerGroup, GamePauser gamePauser)
     {
         _settingsSaver = settingsSaver;

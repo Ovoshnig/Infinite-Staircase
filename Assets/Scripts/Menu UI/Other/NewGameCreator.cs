@@ -1,10 +1,10 @@
 using Cysharp.Threading.Tasks;
 using Random = System.Random;
-using UnityEngine;
-using UnityEngine.UI;
-using Zenject;
 using System;
 using TMPro;
+using UnityEngine;
+using UnityEngine.UI;
+using VContainer;
 
 public class NewGameCreator : MonoBehaviour
 {
@@ -18,7 +18,7 @@ public class NewGameCreator : MonoBehaviour
     private SaveSaver _saveSaver;
 
     [Inject]
-    private void Construct(SceneSwitch sceneSwitch, SaveSaver saveSaver)
+    public void Construct(SceneSwitch sceneSwitch, SaveSaver saveSaver)
     {
         _sceneSwitch = sceneSwitch;
         _saveSaver = saveSaver;

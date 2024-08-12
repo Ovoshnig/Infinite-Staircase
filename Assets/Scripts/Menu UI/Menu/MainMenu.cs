@@ -1,7 +1,7 @@
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.UI;
-using Zenject;
+using VContainer;
 
 public sealed class MainMenu : Menu
 {
@@ -14,7 +14,7 @@ public sealed class MainMenu : Menu
     private SaveSaver _saveSaver;
 
     [Inject]
-    private void Construct(SaveSaver saveSaver) => _saveSaver = saveSaver;
+    public void Construct(SaveSaver saveSaver) => _saveSaver = saveSaver;
 
     protected override void OnEnable()
     {
