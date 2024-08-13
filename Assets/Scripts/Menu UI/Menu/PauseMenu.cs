@@ -9,8 +9,6 @@ public sealed class PauseMenu : Menu
 {
     [SerializeField] private Button _resumeButton;
     [SerializeField] private Button _resetLevelButton;
-    [SerializeField] private Button _loadNextLevelButton;
-    [SerializeField] private Button _loadPreviousLevelButton;
     [SerializeField] private Button _loadMainMenuButton;
 
     private WindowTracker _windowTracker;
@@ -49,8 +47,6 @@ public sealed class PauseMenu : Menu
 
         _resumeButton.onClick.AddListener(OnResumeClicked);
         _resetLevelButton.onClick.AddListener(OnResetButtonClicked);
-        _loadPreviousLevelButton.onClick.AddListener(OnPreviousLevelButtonClicked);
-        _loadNextLevelButton.onClick.AddListener(OnNextLevelButtonClicked);
         _loadMainMenuButton.onClick.AddListener(OnLoadMainMenuButtonClicked);
     }
 
@@ -60,16 +56,10 @@ public sealed class PauseMenu : Menu
 
         _resumeButton.onClick.RemoveListener(OnResumeClicked);
         _resetLevelButton.onClick.RemoveListener(OnResetButtonClicked);
-        _loadPreviousLevelButton.onClick.RemoveListener(OnPreviousLevelButtonClicked);
-        _loadNextLevelButton.onClick.RemoveListener(OnNextLevelButtonClicked);
         _loadMainMenuButton.onClick.RemoveListener(OnLoadMainMenuButtonClicked);
     }
 
     private void OnResetButtonClicked() => SceneSwitch.LoadCurrentLevel();
-
-    private void OnPreviousLevelButtonClicked() => SceneSwitch.LoadPreviousLevel().Forget();
-
-    private void OnNextLevelButtonClicked() => SceneSwitch.LoadNextLevel().Forget();
 
     private void OnLoadMainMenuButtonClicked() => SceneSwitch.LoadLevel(0).Forget();
 

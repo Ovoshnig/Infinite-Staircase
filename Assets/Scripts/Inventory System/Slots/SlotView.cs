@@ -22,7 +22,7 @@ public class SlotView : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 
     public SlotModel SlotModel => _slotModel;
 
-    private Transform CanvasTransform => transform.parent.parent;
+    private Transform CanvasTransform => transform.parent.parent.parent;
 
     public void OnPointerEnter(PointerEventData _) => _inventoryView.SelectedSlot = this;
 

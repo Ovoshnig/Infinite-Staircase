@@ -17,7 +17,6 @@ public class SceneSwitch : IInitializable, IDisposable
     private readonly GameSettingsInstaller.LevelSettings _levelSettings;
     private uint _achievedLevel;
     private uint _currentLevel;
-    private bool _isLevelLoading = false;
 
     public event Action<SceneType> SceneLoading;
     public event Action<SceneType> SceneLoaded;
@@ -54,52 +53,15 @@ public class SceneSwitch : IInitializable, IDisposable
 
     public void ResetProgress() => _achievedLevel = _levelSettings.FirstGameplayLevel;
 
-    public async UniTask LoadNextLevel()
-    {
-        if (_currentLevel < _achievedLevel)
-            await LoadLevel(_currentLevel + 1);
-    }
-
-    public async UniTask<bool> TryLoadNextLevelFirstTime()
-    {
-        if (_isLevelLoading)
-            return false;
-
-        bool isAchievedNextLevel = _currentLevel == _achievedLevel;
-
-        if (isAchievedNextLevel)
-        {
-            if (_achievedLevel < _levelSettings.LastGameplayLevel)
-                _achievedLevel++;
-
-            await LoadLevel(_currentLevel + 1);
-        }
-        else
-        {
-            LoadNextLevel().Forget();
-        }
-
-        return isAchievedNextLevel;
-    }
-
-    public async UniTask LoadPreviousLevel()
-    {
-        if (_currentLevel > _levelSettings.FirstGameplayLevel)
-            await LoadLevel(_currentLevel - 1);
-    }
-
     public void LoadCurrentLevel() => LoadLevel(_currentLevel).Forget();
 
     public async UniTask LoadLevel(uint index)
     {
         SceneType sceneType = GetSceneTypeByIndex(index);
-
-        _isLevelLoading = true;
         SceneLoading?.Invoke(sceneType);
 
         await SceneManager.LoadSceneAsync((int)index);
 
-        _isLevelLoading = false;
         _currentLevel = index;
         CurrentSceneType = sceneType;
         SceneLoaded?.Invoke(sceneType);

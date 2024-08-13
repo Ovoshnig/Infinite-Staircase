@@ -5,9 +5,9 @@ using Zenject;
 public abstract class MenuSettings : MonoBehaviour
 {
     [SerializeField] private GameObject _menuPanel;
-    [SerializeField] private Button _closeSettingsPanelButton;
+    [SerializeField] private Button _closeSettingsButton;
     [SerializeField] private Slider _sensitivitySlider;
-    [SerializeField] private Slider _soundsVolumeSlider;
+    [SerializeField] private Slider _soundVolumeSlider;
     [SerializeField] private Slider _musicVolumeSlider;
 
     private LookTuner _lookTuner;
@@ -39,9 +39,9 @@ public abstract class MenuSettings : MonoBehaviour
         _sensitivitySlider.maxValue = _controlSettings.MaxSensitivity;
         _sensitivitySlider.value = _lookTuner.Sensitivity;
 
-        _soundsVolumeSlider.minValue = _audioSettings.MinVolume;
-        _soundsVolumeSlider.maxValue = _audioSettings.MaxVolume;
-        _soundsVolumeSlider.value = _audioTuner.SoundVolume;
+        _soundVolumeSlider.minValue = _audioSettings.MinVolume;
+        _soundVolumeSlider.maxValue = _audioSettings.MaxVolume;
+        _soundVolumeSlider.value = _audioTuner.SoundVolume;
 
         _musicVolumeSlider.minValue = _audioSettings.MinVolume;
         _musicVolumeSlider.maxValue = _audioSettings.MaxVolume;
@@ -50,19 +50,19 @@ public abstract class MenuSettings : MonoBehaviour
 
     private void AddListeners()
     {
-        _closeSettingsPanelButton.onClick.AddListener(CloseSettingsPanel);
+        _closeSettingsButton.onClick.AddListener(CloseSettingsPanel);
 
         _sensitivitySlider.onValueChanged.AddListener(OnSensitivitySliderValueChanged);
-        _soundsVolumeSlider.onValueChanged.AddListener(OnSoundsVolumeSliderValueChanged);
+        _soundVolumeSlider.onValueChanged.AddListener(OnSoundsVolumeSliderValueChanged);
         _musicVolumeSlider.onValueChanged.AddListener(OnMusicVolumeSliderValueChanged);
     }
 
     private void RemoveListeners()
     {
-        _closeSettingsPanelButton.onClick.RemoveListener(CloseSettingsPanel);
+        _closeSettingsButton.onClick.RemoveListener(CloseSettingsPanel);
 
         _sensitivitySlider.onValueChanged.RemoveListener(OnSensitivitySliderValueChanged);
-        _soundsVolumeSlider.onValueChanged.RemoveListener(OnSoundsVolumeSliderValueChanged);
+        _soundVolumeSlider.onValueChanged.RemoveListener(OnSoundsVolumeSliderValueChanged);
         _musicVolumeSlider.onValueChanged.RemoveListener(OnMusicVolumeSliderValueChanged);
     }
 

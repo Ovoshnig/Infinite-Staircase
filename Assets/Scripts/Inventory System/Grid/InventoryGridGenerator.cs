@@ -1,15 +1,13 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-[RequireComponent(typeof(GridLayoutGroup), 
-                  typeof(Image))]
+[RequireComponent(typeof(GridLayoutGroup))]
 public class InventoryGridGenerator : MonoBehaviour
 {
     [SerializeField] private GameObject _slotPrefab;
     [SerializeField] private GameSettingsInstaller _settings;
 
     private GridLayoutGroup _gridLayoutGroup;
-    private Image _panelImage;
 
     private GameSettingsInstaller.InventorySettings InventorySettings => _settings.InventorySettings1;
 
@@ -17,9 +15,6 @@ public class InventoryGridGenerator : MonoBehaviour
     {
         if (_gridLayoutGroup == null)
             _gridLayoutGroup = GetComponent<GridLayoutGroup>();
-
-        if (_panelImage == null)
-            _panelImage = GetComponent<Image>();
     }
 
     [ContextMenu(nameof(PlaceSlots))]

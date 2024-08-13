@@ -403,7 +403,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 664c542fa6f168b499f5caeee2a8c992, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _inventoryCanvas: {fileID: 9071114180932561489, guid: bdbf62912e381bb48b8ce2d9c21bcc7a, type: 3}
+  _inventoryCanvas: {fileID: 4226562664426079170, guid: ff63e6bdb3799b74fabe58bfac3240a1, type: 3}
   _itemDataRepository: {fileID: 11400000, guid: 5d610a8efaa825046b5d945a2b98fdfe, type: 2}
 --- !u!114 &900829435
 MonoBehaviour:
@@ -417,7 +417,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e9ddd6a2aec43594aa5750a8e652736e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _pauseMenuCanvas: {fileID: 8778363911021503472, guid: ad8138a2df2ccaf48ac9c3ea265f6b3a, type: 3}
+  _pauseMenuCanvas: {fileID: 556110117597708177, guid: 430f92455e684724abfd5d02368be160, type: 3}
 --- !u!114 &900829436
 MonoBehaviour:
   m_ObjectHideFlags: 0
