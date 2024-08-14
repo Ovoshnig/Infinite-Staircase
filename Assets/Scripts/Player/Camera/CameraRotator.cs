@@ -1,4 +1,3 @@
-using System.ComponentModel;
 using UnityEngine;
 using Zenject;
 
@@ -9,22 +8,22 @@ public class CameraRotator : MonoBehaviour
     [SerializeField] private PlayerState _playerState;
 
     private LookTuner _lookTuner;
-    private PauseMenu _pauseMenu;
+    private PauseMenuSwitch _pauseMenuSwitch;
     private float _rotationSpeed;
     private float _rotationX;
 
     [Inject]
-    private void Construct(LookTuner lookTuner, PauseMenu pauseMenu)
+    private void Construct(LookTuner lookTuner, PauseMenuSwitch pauseMenuSwitch)
     {
         _lookTuner = lookTuner;
-        _pauseMenu = pauseMenu;
+        _pauseMenuSwitch = pauseMenuSwitch;
     }
 
-    private void Awake() => _pauseMenu.Closed += OnPauseMenuClosed;
+    private void Awake() => _pauseMenuSwitch.Closed += OnPauseMenuClosed;
 
     private void Start() => _rotationSpeed = _lookTuner.Sensitivity;
 
-    private void OnDestroy() => _pauseMenu.Closed -= OnPauseMenuClosed;
+    private void OnDestroy() => _pauseMenuSwitch.Closed -= OnPauseMenuClosed;
 
     private void Update() => Look();
 

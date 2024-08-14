@@ -832,7 +832,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _settingsPanel: {fileID: 2360525206223505507}
   _openSettingsButton: {fileID: 3380098079841197798}
-  _resumeButton: {fileID: 2441706583183188250}
   _resetLevelButton: {fileID: 6537419134926580450}
   _loadMainMenuButton: {fileID: 826342905247494487}
 --- !u!1001 &4269947981055021015
@@ -1094,8 +1093,31 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 7467374396927711317, guid: d8e105ccc665eef4a95eee3e8aba6541, type: 3}
       insertIndex: -1
       addedObject: {fileID: 331522231580109693}
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 5070337348088267490, guid: d8e105ccc665eef4a95eee3e8aba6541, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 6408046153877070787}
   m_SourcePrefab: {fileID: 100100000, guid: d8e105ccc665eef4a95eee3e8aba6541, type: 3}
+--- !u!1 &556110117597708177 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5070337348088267490, guid: d8e105ccc665eef4a95eee3e8aba6541, type: 3}
+  m_PrefabInstance: {fileID: 4749828388009278835}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &6408046153877070787
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 556110117597708177}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d8d72819a4ea2c049b3d7530de0b7fd0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _menuPanel: {fileID: 3057947109209986913}
+  _settingsPanel: {fileID: 2360525206223505507}
+  _resumeButton: {fileID: 2441706583183188250}
 --- !u!224 &2759500080617809190 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 7467374396927711317, guid: d8e105ccc665eef4a95eee3e8aba6541, type: 3}

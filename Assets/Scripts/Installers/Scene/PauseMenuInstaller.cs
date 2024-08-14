@@ -7,7 +7,7 @@ public class PauseMenuInstaller : MonoInstaller
 
     public override void InstallBindings()
     {
-        Container.Bind<PauseMenu>()
+        Container.Bind<PauseMenuSwitch>()
             .FromComponentInNewPrefab(_pauseMenuCanvas)
             .AsSingle();
     }

@@ -25,8 +25,9 @@ public sealed class MainMenu : Menu
 
     protected override void InitializeSettings()
     {
+        base.InitializeSettings();
+
         gameObject.SetActive(true);
-        SettingsPanel.SetActive(false);
         _resetWarningPanel.SetActive(false);
     }
 

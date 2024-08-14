@@ -16,7 +16,7 @@ public class InventorySwitch : MonoBehaviour
     private void Awake()
     {
         _playerInput = new PlayerInput();
-        _playerInput.Inventory.OpenOrClose.performed += OpenOrClosePerformed;
+        _playerInput.Inventory.Switch.performed += OnSwitchPerformed;
     }
 
     private void Start() => _panel.SetActive(false);
@@ -25,7 +25,7 @@ public class InventorySwitch : MonoBehaviour
 
     private void OnDisable() => _playerInput.Disable();
 
-    private void OpenOrClosePerformed(InputAction.CallbackContext _)
+    private void OnSwitchPerformed(InputAction.CallbackContext _)
     {
         if (_isOpen)
             Close();

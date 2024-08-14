@@ -1,4 +1,3 @@
-using System.ComponentModel;
 using UnityEngine;
 using Zenject;
 
@@ -14,7 +13,7 @@ public class PlayerMover : MonoBehaviour
     private CharacterController _characterController;
     private PlayerState _playerState;
     private LookTuner _lookTuner;
-    private PauseMenu _pauseMenu;
+    private PauseMenuSwitch _pauseMenuSwitch;
     private Vector3 _moveDirection;
     private float _rotationSpeed;
     private float _currentSpeedX;
@@ -22,10 +21,10 @@ public class PlayerMover : MonoBehaviour
     private float _movementDirectionY;
 
     [Inject]
-    private void Construct(LookTuner lookTuner, PauseMenu pauseMenu)
+    private void Construct(LookTuner lookTuner, PauseMenuSwitch pauseMenuSwitch)
     {
         _lookTuner = lookTuner;
-        _pauseMenu = pauseMenu;
+        _pauseMenuSwitch = pauseMenuSwitch;
     }
 
     private void Awake()
@@ -35,7 +34,7 @@ public class PlayerMover : MonoBehaviour
 
         _playerState.JumpStarted += OnJumpStarted;
         _playerState.GroundEntered += OnGroundEntered;
-        _pauseMenu.Closed += OnPauseMenuClosed;
+        _pauseMenuSwitch.Closed += OnPauseMenuClosed;
     }
 
     private void Start() => _rotationSpeed = _lookTuner.Sensitivity;
@@ -44,7 +43,7 @@ public class PlayerMover : MonoBehaviour
     {
         _playerState.JumpStarted -= OnJumpStarted;
         _playerState.GroundEntered -= OnGroundEntered;
-        _pauseMenu.Closed -= OnPauseMenuClosed;
+        _pauseMenuSwitch.Closed -= OnPauseMenuClosed;
     }
 
     private void Update()

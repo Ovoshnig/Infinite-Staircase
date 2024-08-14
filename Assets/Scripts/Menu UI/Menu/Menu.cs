@@ -10,7 +10,6 @@ public abstract class Menu : MonoBehaviour
     [Inject]
     private void Construct(SceneSwitch sceneSwitch) => SceneSwitch = sceneSwitch;
 
-    protected GameObject SettingsPanel => _settingsPanel;
     protected SceneSwitch SceneSwitch { get; private set; }
 
     protected void Start() => InitializeSettings();
@@ -19,7 +18,7 @@ public abstract class Menu : MonoBehaviour
 
     protected virtual void OnDisable() => RemoveListeners();
 
-    protected abstract void InitializeSettings();
+    protected virtual void InitializeSettings() => _settingsPanel.SetActive(false);
 
     protected virtual void AddListeners() => 
         _openSettingsButton.onClick.AddListener(OnOpenSettingsButtonClicked);

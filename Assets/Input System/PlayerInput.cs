@@ -247,7 +247,7 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
             ""id"": ""a45349ce-b576-4d1a-9622-9dffb3c11a02"",
             ""actions"": [
                 {
-                    ""name"": ""OpenOrClose"",
+                    ""name"": ""Switch"",
                     ""type"": ""Button"",
                     ""id"": ""457c5597-75dd-4544-b674-41484284c01c"",
                     ""expectedControlType"": """",
@@ -264,7 +264,7 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Keyboard and Mouse"",
-                    ""action"": ""OpenOrClose"",
+                    ""action"": ""Switch"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -331,7 +331,7 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
             ""id"": ""eff85bad-07a5-4c85-b8cb-02ebcc7c7679"",
             ""actions"": [
                 {
-                    ""name"": ""OpenOrClose"",
+                    ""name"": ""Switch"",
                     ""type"": ""Button"",
                     ""id"": ""c1734492-2167-4ee8-9518-fbb0da7f129d"",
                     ""expectedControlType"": """",
@@ -348,7 +348,7 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": "";Keyboard and Mouse"",
-                    ""action"": ""OpenOrClose"",
+                    ""action"": ""Switch"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -394,7 +394,7 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
         m_Player_TogglePerspective = m_Player.FindAction("TogglePerspective", throwIfNotFound: true);
         // PauseMenu
         m_PauseMenu = asset.FindActionMap("PauseMenu", throwIfNotFound: true);
-        m_PauseMenu_OpenOrClose = m_PauseMenu.FindAction("OpenOrClose", throwIfNotFound: true);
+        m_PauseMenu_Switch = m_PauseMenu.FindAction("Switch", throwIfNotFound: true);
         // SplashScreen
         m_SplashScreen = asset.FindActionMap("SplashScreen", throwIfNotFound: true);
         m_SplashScreen_Pass = m_SplashScreen.FindAction("Pass", throwIfNotFound: true);
@@ -403,7 +403,7 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
         m_Credits_SpeedUp = m_Credits.FindAction("SpeedUp", throwIfNotFound: true);
         // Inventory
         m_Inventory = asset.FindActionMap("Inventory", throwIfNotFound: true);
-        m_Inventory_OpenOrClose = m_Inventory.FindAction("OpenOrClose", throwIfNotFound: true);
+        m_Inventory_Switch = m_Inventory.FindAction("Switch", throwIfNotFound: true);
     }
 
     ~@PlayerInput()
@@ -552,12 +552,12 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
     // PauseMenu
     private readonly InputActionMap m_PauseMenu;
     private List<IPauseMenuActions> m_PauseMenuActionsCallbackInterfaces = new List<IPauseMenuActions>();
-    private readonly InputAction m_PauseMenu_OpenOrClose;
+    private readonly InputAction m_PauseMenu_Switch;
     public struct PauseMenuActions
     {
         private @PlayerInput m_Wrapper;
         public PauseMenuActions(@PlayerInput wrapper) { m_Wrapper = wrapper; }
-        public InputAction @OpenOrClose => m_Wrapper.m_PauseMenu_OpenOrClose;
+        public InputAction @Switch => m_Wrapper.m_PauseMenu_Switch;
         public InputActionMap Get() { return m_Wrapper.m_PauseMenu; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -567,16 +567,16 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
         {
             if (instance == null || m_Wrapper.m_PauseMenuActionsCallbackInterfaces.Contains(instance)) return;
             m_Wrapper.m_PauseMenuActionsCallbackInterfaces.Add(instance);
-            @OpenOrClose.started += instance.OnOpenOrClose;
-            @OpenOrClose.performed += instance.OnOpenOrClose;
-            @OpenOrClose.canceled += instance.OnOpenOrClose;
+            @Switch.started += instance.OnSwitch;
+            @Switch.performed += instance.OnSwitch;
+            @Switch.canceled += instance.OnSwitch;
         }
 
         private void UnregisterCallbacks(IPauseMenuActions instance)
         {
-            @OpenOrClose.started -= instance.OnOpenOrClose;
-            @OpenOrClose.performed -= instance.OnOpenOrClose;
-            @OpenOrClose.canceled -= instance.OnOpenOrClose;
+            @Switch.started -= instance.OnSwitch;
+            @Switch.performed -= instance.OnSwitch;
+            @Switch.canceled -= instance.OnSwitch;
         }
 
         public void RemoveCallbacks(IPauseMenuActions instance)
@@ -690,12 +690,12 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
     // Inventory
     private readonly InputActionMap m_Inventory;
     private List<IInventoryActions> m_InventoryActionsCallbackInterfaces = new List<IInventoryActions>();
-    private readonly InputAction m_Inventory_OpenOrClose;
+    private readonly InputAction m_Inventory_Switch;
     public struct InventoryActions
     {
         private @PlayerInput m_Wrapper;
         public InventoryActions(@PlayerInput wrapper) { m_Wrapper = wrapper; }
-        public InputAction @OpenOrClose => m_Wrapper.m_Inventory_OpenOrClose;
+        public InputAction @Switch => m_Wrapper.m_Inventory_Switch;
         public InputActionMap Get() { return m_Wrapper.m_Inventory; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -705,16 +705,16 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
         {
             if (instance == null || m_Wrapper.m_InventoryActionsCallbackInterfaces.Contains(instance)) return;
             m_Wrapper.m_InventoryActionsCallbackInterfaces.Add(instance);
-            @OpenOrClose.started += instance.OnOpenOrClose;
-            @OpenOrClose.performed += instance.OnOpenOrClose;
-            @OpenOrClose.canceled += instance.OnOpenOrClose;
+            @Switch.started += instance.OnSwitch;
+            @Switch.performed += instance.OnSwitch;
+            @Switch.canceled += instance.OnSwitch;
         }
 
         private void UnregisterCallbacks(IInventoryActions instance)
         {
-            @OpenOrClose.started -= instance.OnOpenOrClose;
-            @OpenOrClose.performed -= instance.OnOpenOrClose;
-            @OpenOrClose.canceled -= instance.OnOpenOrClose;
+            @Switch.started -= instance.OnSwitch;
+            @Switch.performed -= instance.OnSwitch;
+            @Switch.canceled -= instance.OnSwitch;
         }
 
         public void RemoveCallbacks(IInventoryActions instance)
@@ -760,7 +760,7 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
     }
     public interface IPauseMenuActions
     {
-        void OnOpenOrClose(InputAction.CallbackContext context);
+        void OnSwitch(InputAction.CallbackContext context);
     }
     public interface ISplashScreenActions
     {
@@ -772,6 +772,6 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
     }
     public interface IInventoryActions
     {
-        void OnOpenOrClose(InputAction.CallbackContext context);
+        void OnSwitch(InputAction.CallbackContext context);
     }
 }
