@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 93665caa1b29ce34083907800829c47c, type: 3}
   m_Name: SharpCornerRight
   m_EditorClassIdentifier: 
-  _prefab: {fileID: 523713080736793696, guid: 68f53b1c5b29df7418ebab7fbfec3538, type: 3}
+  _prefab: {fileID: 523713080736793696, guid: b6791567448b49a46b0aa76f2a4a830e, type: 3}
   _stair1: {fileID: 0}
   _stair2: {fileID: 0}
   <CanBeInStart>k__BackingField: 0
