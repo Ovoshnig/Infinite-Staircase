@@ -14,7 +14,6 @@ public abstract class DataSaver : IDisposable
 
     protected virtual string SaveFileName { get; } = string.Empty;
     protected string FilePath => Path.Combine(Application.persistentDataPath, SaveFileName);
-    protected Dictionary<string, object> DataStore => _dataStore;
 
     public void Dispose() => SaveDataStore();
 
@@ -46,10 +45,10 @@ public abstract class DataSaver : IDisposable
     public void ResetData()
     {
         foreach (var key in _defaultDataStore.Keys)
-            DataStore[key] = _defaultDataStore[key];
+            _dataStore[key] = _defaultDataStore[key];
     }
 
-    private void LoadDataStore()
+    protected virtual void LoadDataStore()
     {
         if (File.Exists(FilePath))
         {
@@ -65,7 +64,7 @@ public abstract class DataSaver : IDisposable
         }
     }
 
-    private void SaveDataStore()
+    protected virtual void SaveDataStore()
     {
         string json = JsonConvert.SerializeObject(_dataStore, Formatting.Indented, new JsonSerializerSettings
         {
