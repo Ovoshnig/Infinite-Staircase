@@ -1,11 +1,12 @@
+using R3;
 using System;
 using Zenject;
 
 public class LookTuner : IInitializable, IDisposable
 {
+    private readonly ReactiveProperty<float> _sensitivity = new();
     private readonly SettingsSaver _settingsSaver;
     private readonly GameSettingsInstaller.ControlSettings _controlSettings;
-    private float _sensitivity;
 
     [Inject]
     public LookTuner(SettingsSaver settingsSaver, GameSettingsInstaller.ControlSettings controlSettings)
@@ -14,21 +15,14 @@ public class LookTuner : IInitializable, IDisposable
         _controlSettings = controlSettings;
     }
 
-    public float Sensitivity
+    public ReactiveProperty<float> Sensitivity
     {
-        get
-        {
-            return _sensitivity;
-        }
-        set
-        {
-            if (value >= 0 && value <= _controlSettings.MaxSensitivity)
-                _sensitivity = value;
-        }
+        get => _sensitivity;
+        set => _sensitivity.Value = Math.Clamp(value.Value, 0f, _controlSettings.MaxSensitivity);
     }
 
-    public void Initialize() => _sensitivity = _settingsSaver.LoadData(SettingsConstants.SensitivityKey, 
-        _controlSettings.DefaultSensitivity);
+    public void Initialize() => Sensitivity.Value = _settingsSaver.LoadData(SettingsConstants.SensitivityKey,
+            _controlSettings.DefaultSensitivity);
 
-    public void Dispose() => _settingsSaver.SaveData(SettingsConstants.SensitivityKey, _sensitivity);
+    public void Dispose() => _settingsSaver.SaveData(SettingsConstants.SensitivityKey, Sensitivity.Value);
 }

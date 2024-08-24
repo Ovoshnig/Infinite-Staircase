@@ -1,3 +1,5 @@
+using R3;
+using System;
 using UnityEngine;
 using Zenject;
 
@@ -13,19 +15,15 @@ public class PlayerMover : MonoBehaviour
     private CharacterController _characterController;
     private PlayerState _playerState;
     private LookTuner _lookTuner;
-    private PauseMenuSwitch _pauseMenuSwitch;
     private Vector3 _moveDirection;
     private float _rotationSpeed;
     private float _currentSpeedX;
     private float _currentSpeedZ;
     private float _movementDirectionY;
+    private IDisposable _sensitivityDisposable;
 
     [Inject]
-    private void Construct(LookTuner lookTuner, PauseMenuSwitch pauseMenuSwitch)
-    {
-        _lookTuner = lookTuner;
-        _pauseMenuSwitch = pauseMenuSwitch;
-    }
+    private void Construct(LookTuner lookTuner) => _lookTuner = lookTuner;
 
     private void Awake()
     {
@@ -34,16 +32,17 @@ public class PlayerMover : MonoBehaviour
 
         _playerState.JumpStarted += OnJumpStarted;
         _playerState.GroundEntered += OnGroundEntered;
-        _pauseMenuSwitch.Closed += OnPauseMenuClosed;
-    }
 
-    private void Start() => _rotationSpeed = _lookTuner.Sensitivity;
+        _sensitivityDisposable = _lookTuner.Sensitivity
+            .Subscribe(value => _rotationSpeed = value);
+    }
 
     private void OnDisable()
     {
         _playerState.JumpStarted -= OnJumpStarted;
         _playerState.GroundEntered -= OnGroundEntered;
-        _pauseMenuSwitch.Closed -= OnPauseMenuClosed;
+
+        _sensitivityDisposable.Dispose();
     }
 
     private void Update()
@@ -83,6 +82,4 @@ public class PlayerMover : MonoBehaviour
     private void OnJumpStarted() => _moveDirection.y = _jumpForce;
 
     private void OnGroundEntered() => _moveDirection.y = -_gravity;
-
-    private void OnPauseMenuClosed() => _rotationSpeed = _lookTuner.Sensitivity;
 }

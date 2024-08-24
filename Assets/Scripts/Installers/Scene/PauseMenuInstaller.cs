@@ -9,6 +9,7 @@ public class PauseMenuInstaller : MonoInstaller
     {
         Container.Bind<PauseMenuSwitch>()
             .FromComponentInNewPrefab(_pauseMenuCanvas)
-            .AsSingle();
+            .AsSingle()
+            .NonLazy();
     }
 }

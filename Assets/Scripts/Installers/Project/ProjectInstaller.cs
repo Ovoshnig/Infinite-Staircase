@@ -24,5 +24,6 @@ public class ProjectInstaller : MonoInstaller
     {
         Container.BindInterfacesAndSelfTo<LookTuner>().FromNew().AsSingle();
         Container.BindInterfacesAndSelfTo<AudioTuner>().FromNew().AsSingle();
+        Container.BindInterfacesAndSelfTo<AudioMixerTuner>().FromNew().AsSingle();
     }
 }

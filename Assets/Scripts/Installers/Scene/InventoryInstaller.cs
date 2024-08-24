@@ -10,7 +10,8 @@ public class InventoryInstaller : MonoInstaller
     {
         Container.Bind<InventoryView>()
             .FromComponentInNewPrefab(_inventoryCanvas)
-            .AsSingle();
+            .AsSingle()
+            .NonLazy();
 
         Container.BindInterfacesAndSelfTo<InventorySaver>().FromNew().AsSingle();
         Container.BindInterfacesAndSelfTo<DraggedItemHolder>().FromNew().AsSingle();
