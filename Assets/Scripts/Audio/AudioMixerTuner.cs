@@ -9,7 +9,7 @@ public class AudioMixerTuner : IInitializable, IDisposable
     private readonly AudioTuner _audioTuner;
     private readonly GameSettingsInstaller.AudioSettings _audioSettings;
     private readonly GamePauser _gamePauser;
-    private readonly CompositeDisposable _audioDisposable = new();
+    private CompositeDisposable _compositeDisposable;
 
     [Inject]
     public AudioMixerTuner(AudioMixerGroup audioMixerGroup, AudioTuner audioTuner, 
@@ -25,30 +25,28 @@ public class AudioMixerTuner : IInitializable, IDisposable
 
     public void Initialize()
     {
-        _audioDisposable.Add(_audioTuner.SoundVolume
+        var soundDisposable = _audioTuner.SoundVolumeReactive
             .Subscribe(value => 
-            AudioMixer.SetFloat(AudioMixerConstants.SoundGroupName, value)));
-        _audioDisposable.Add(_audioTuner.MusicVolume
+            AudioMixer.SetFloat(AudioMixerConstants.SoundGroupName, value));
+
+        var musicDisposable = _audioTuner.MusicVolumeReactive
             .Subscribe(value =>
-            AudioMixer.SetFloat(AudioMixerConstants.MusicGroupName, value)));
+            AudioMixer.SetFloat(AudioMixerConstants.MusicGroupName, value));
 
-        _gamePauser.Paused += OnPaused;
-        _gamePauser.Unpaused += OnUnpaused;
+        var pauseDisposable = _gamePauser.IsPause
+            .Subscribe(value => SetSnapshot(value));
+
+        _compositeDisposable = new CompositeDisposable()
+        {
+            soundDisposable,
+            musicDisposable,
+            pauseDisposable
+        };
     }
 
-    public void Dispose()
-    {
-        _audioDisposable?.Dispose();
+    public void Dispose() => _compositeDisposable?.Dispose();
 
-        _gamePauser.Paused -= OnPaused;
-        _gamePauser.Unpaused -= OnUnpaused;
-    }
-
-    private void OnPaused() => SetPause(true);
-
-    private void OnUnpaused() => SetPause(false);
-
-    private void SetPause(bool pause)
+    private void SetSnapshot(bool pause)
     {
         var snapshot = AudioMixer.FindSnapshot(
             pause ? AudioMixerConstants.PauseSnapshotName : AudioMixerConstants.NormalSnapshotName);

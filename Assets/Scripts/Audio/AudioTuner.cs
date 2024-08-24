@@ -17,29 +17,32 @@ public class AudioTuner : IInitializable, IDisposable
         _audioSettings = audioSettings;
     }
 
-    public ReactiveProperty<float> SoundVolume
+    public float SoundVolume
     {
-        get => _soundVolume;
-        set => _soundVolume.Value = Math.Clamp(value.Value, _audioSettings.MinVolume, _audioSettings.MaxVolume);
+        get => _soundVolume.Value;
+        set => _soundVolume.Value = Math.Clamp(value, _audioSettings.MinVolume, _audioSettings.MaxVolume);
     }
 
-    public ReactiveProperty<float> MusicVolume
+    public float MusicVolume
     {
-        get => _musicVolume;
-        set => _musicVolume.Value = Math.Clamp(value.Value, _audioSettings.MinVolume, _audioSettings.MaxVolume);
+        get => _musicVolume.Value;
+        set => _musicVolume.Value = Math.Clamp(value, _audioSettings.MinVolume, _audioSettings.MaxVolume);
     }
+
+    public ReadOnlyReactiveProperty<float> SoundVolumeReactive => _soundVolume;
+    public ReadOnlyReactiveProperty<float> MusicVolumeReactive => _musicVolume;
 
     public void Initialize()
     {
-        SoundVolume.Value = _settingsSaver.LoadData(SettingsConstants.SoundVolumeKey, 
+        SoundVolume = _settingsSaver.LoadData(SettingsConstants.SoundVolumeKey, 
             _audioSettings.DefaultVolume);
-        MusicVolume.Value = _settingsSaver.LoadData(SettingsConstants.MusicVolumeKey, 
+        MusicVolume = _settingsSaver.LoadData(SettingsConstants.MusicVolumeKey, 
             _audioSettings.DefaultVolume);
     }
 
     public void Dispose()
     {
-        _settingsSaver.SaveData(SettingsConstants.SoundVolumeKey, SoundVolume.Value);
-        _settingsSaver.SaveData(SettingsConstants.MusicVolumeKey, MusicVolume.Value);
+        _settingsSaver.SaveData(SettingsConstants.SoundVolumeKey, SoundVolume);
+        _settingsSaver.SaveData(SettingsConstants.MusicVolumeKey, MusicVolume);
     }
 }

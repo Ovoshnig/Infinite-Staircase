@@ -18,7 +18,7 @@ public class CameraRotator : MonoBehaviour
 
     private void Awake()
     {
-        var sensitivityDisposable = _lookTuner.Sensitivity
+        var sensitivityDisposable = _lookTuner.SensitivityReactive
             .Subscribe(value => _rotationSpeed = value);
 
         var lookDisposable = _playerState.IsLooking

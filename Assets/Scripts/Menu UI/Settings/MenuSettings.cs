@@ -37,15 +37,15 @@ public abstract class MenuSettings : MonoBehaviour
     private void InitializeSliders()
     {
         _sensitivitySlider.maxValue = _controlSettings.MaxSensitivity;
-        _sensitivitySlider.value = _lookTuner.Sensitivity.Value;
+        _sensitivitySlider.value = _lookTuner.Sensitivity;
 
         _soundVolumeSlider.minValue = _audioSettings.MinVolume;
         _soundVolumeSlider.maxValue = _audioSettings.MaxVolume;
-        _soundVolumeSlider.value = _audioTuner.SoundVolume.Value;
+        _soundVolumeSlider.value = _audioTuner.SoundVolume;
 
         _musicVolumeSlider.minValue = _audioSettings.MinVolume;
         _musicVolumeSlider.maxValue = _audioSettings.MaxVolume;
-        _musicVolumeSlider.value = _audioTuner.MusicVolume.Value;
+        _musicVolumeSlider.value = _audioTuner.MusicVolume;
     }
 
     private void AddListeners()
@@ -73,11 +73,11 @@ public abstract class MenuSettings : MonoBehaviour
     }
 
     private void OnSensitivitySliderValueChanged(float value) => 
-        _lookTuner.Sensitivity = new R3.ReactiveProperty<float> { Value = value };
+        _lookTuner.Sensitivity = value;
 
     private void OnSoundsVolumeSliderValueChanged(float value) => 
-        _audioTuner.SoundVolume = new R3.ReactiveProperty<float> { Value = value };
+        _audioTuner.SoundVolume = value;
 
     private void OnMusicVolumeSliderValueChanged(float value) => 
-        _audioTuner.MusicVolume = new R3.ReactiveProperty<float> { Value = value };
+        _audioTuner.MusicVolume = value;
 }

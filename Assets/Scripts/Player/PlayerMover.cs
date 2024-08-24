@@ -41,7 +41,7 @@ public class PlayerMover : MonoBehaviour
             .Where(value => !value)
             .Subscribe(_ => _moveDirection.y = -_gravity);
 
-        var sensitivityDisposable = _lookTuner.Sensitivity
+        var sensitivityDisposable = _lookTuner.SensitivityReactive
             .Subscribe(value => _rotationSpeed = value);
 
         _compositiveDisposable = new CompositeDisposable
