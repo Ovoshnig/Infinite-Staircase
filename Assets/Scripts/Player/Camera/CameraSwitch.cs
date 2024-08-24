@@ -1,6 +1,8 @@
+using R3;
 using UnityEngine;
 using Unity.Cinemachine;
 using Zenject;
+using System;
 
 public class CameraSwitch : MonoBehaviour
 {
@@ -11,6 +13,7 @@ public class CameraSwitch : MonoBehaviour
     private PlayerInputHandler _inputHandler;
     private WindowTracker _windowTracker;
     private bool _isFirstPerson = true;
+    private IDisposable _disposable;
 
     [Inject]
     private void Construct(PlayerInputHandler inputHandler, WindowTracker windowTracker)
@@ -21,7 +24,13 @@ public class CameraSwitch : MonoBehaviour
 
     private void Awake()
     {
-        _inputHandler.TogglePerspectivePerformed += OnTogglePerspectivePerformed;
+        _disposable = _inputHandler.IsTogglePerspectivePressed
+            .Where(value => value)
+            .Subscribe(_ =>
+            {
+                _isFirstPerson = !_isFirstPerson;
+                SetCamera(_isFirstPerson);
+            });
 
         _windowTracker.WindowOpened += OnWindowOpened;
         _windowTracker.WindowClosed += OnWindowClosed;
@@ -31,16 +40,10 @@ public class CameraSwitch : MonoBehaviour
 
     private void OnDestroy()
     {
-        _inputHandler.TogglePerspectivePerformed -= OnTogglePerspectivePerformed;
+        _disposable?.Dispose();
 
         _windowTracker.WindowOpened -= OnWindowOpened;
         _windowTracker.WindowClosed -= OnWindowClosed;
-    }
-
-    private void OnTogglePerspectivePerformed()
-    {
-        _isFirstPerson = !_isFirstPerson;
-        SetCamera(_isFirstPerson);
     }
 
     private void OnWindowOpened()

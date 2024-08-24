@@ -11,13 +11,13 @@ public class GamePauser : IInitializable
 
     public void Pause()
     {
-        //SetPauseState(pause: true);
+        SetPauseState(pause: true);
         Paused?.Invoke();
     }
 
     public void Unpause()
     {
-        //SetPauseState(pause: false);
+        SetPauseState(pause: false);
         Unpaused?.Invoke();
     }
 

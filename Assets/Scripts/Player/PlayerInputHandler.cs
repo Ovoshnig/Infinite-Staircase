@@ -1,3 +1,4 @@
+using R3;
 using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -8,87 +9,71 @@ public class PlayerInputHandler : IInitializable, IDisposable
     private readonly WindowTracker _windowTracker;
     private readonly PlayerInput _playerInput = new();
 
-    public event Action WalkPerformed;
-    public event Action RunPerformed;
-    public event Action TogglePerspectivePerformed;
-    public event Action WalkCanceled;
-    public event Action RunCanceled;
+    [Inject]
+    public PlayerInputHandler(WindowTracker windowTracker) => _windowTracker = windowTracker;
 
     public Vector2 WalkInput { get; private set; } = Vector2.zero;
     public Vector2 LookInput { get; private set; } = Vector2.zero;
-    public bool IsWalkPressed { get; private set; } = false;
-    public bool IsLookPressed { get; private set; } = false;
-    public bool IsJumpPressed { get; private set; } = false;
-    public bool IsRunPressed { get; private set; } = false;
-
-    [Inject]
-    public PlayerInputHandler(WindowTracker windowTracker) => _windowTracker = windowTracker;
+    public ReactiveProperty<bool> IsWalkPressed { get; private set; } = 
+        new ReactiveProperty<bool>(false);
+    public ReactiveProperty<bool> IsRunPressed { get; private set; } = 
+        new ReactiveProperty<bool>(false);
+    public ReactiveProperty<bool> IsLookPressed { get; private set; } = 
+        new ReactiveProperty<bool>(false);
+    public ReactiveProperty<bool> IsJumpPressed { get; private set; } = 
+        new ReactiveProperty<bool>(false);
+    public ReactiveProperty<bool> IsTogglePerspectivePressed { get; private set; } = 
+        new ReactiveProperty<bool>(false);
 
     public void Initialize()
     {
         _windowTracker.WindowOpened += OnWindowOpened;
         _windowTracker.WindowClosed += OnWindowClosed;
 
-        _playerInput.Player.Walk.performed += OnWalkPerformed;
-        _playerInput.Player.Look.performed += OnLookPerformed;
-        _playerInput.Player.Jump.performed += OnJumpPerformed;
-        _playerInput.Player.Run.performed += OnRunPerformed;
-        _playerInput.Player.TogglePerspective.performed += OnTogglePerspectivePerformed;
-        _playerInput.Player.Walk.canceled += OnWalkCanceled;
-        _playerInput.Player.Look.canceled += OnLookCanceled;
-        _playerInput.Player.Jump.canceled += OnJumpCanceled;
-        _playerInput.Player.Run.canceled += OnRunCanceled;
+        _playerInput.Player.Walk.performed += OnWalk;
+        _playerInput.Player.Walk.canceled += OnWalk;
+        _playerInput.Player.Run.performed += OnRun;
+        _playerInput.Player.Run.canceled += OnRun;
+        _playerInput.Player.Look.performed += OnLook;
+        _playerInput.Player.Look.canceled += OnLook;
+        _playerInput.Player.Jump.performed += OnJump;
+        _playerInput.Player.Jump.canceled += OnJump;
+        _playerInput.Player.TogglePerspective.performed += OnTogglePerspective;
+        _playerInput.Player.TogglePerspective.canceled += OnTogglePerspective;
+
         _playerInput.Enable();
     }
 
+    public void Dispose()
+    {
+        _windowTracker.WindowOpened -= OnWindowOpened;
+        _windowTracker.WindowClosed -= OnWindowClosed;
 
-    public void Dispose() => _playerInput.Disable();
+        _playerInput.Disable();
+    }
 
     private void OnWindowOpened() => _playerInput.Disable();
 
     private void OnWindowClosed() => _playerInput.Enable();
 
-    private void OnWalkPerformed(InputAction.CallbackContext context)
+    private void OnWalk(InputAction.CallbackContext context)
     {
         WalkInput = context.ReadValue<Vector2>();
-        IsWalkPressed = true;
-        WalkPerformed?.Invoke();
+        IsWalkPressed.Value = WalkInput != Vector2.zero;
     }
 
-    private void OnLookPerformed(InputAction.CallbackContext context)
+    private void OnRun(InputAction.CallbackContext context) =>
+        IsRunPressed.Value = context.ReadValueAsButton();
+
+    private void OnLook(InputAction.CallbackContext context)
     {
         LookInput = context.ReadValue<Vector2>();
-        IsLookPressed = true;
+        IsLookPressed.Value = LookInput != Vector2.zero;
     }
 
-    private void OnJumpPerformed(InputAction.CallbackContext _) => IsJumpPressed = true;
+    private void OnJump(InputAction.CallbackContext context) => 
+        IsJumpPressed.Value = context.ReadValueAsButton();
 
-    private void OnRunPerformed(InputAction.CallbackContext _)
-    {
-        IsRunPressed = true;
-        RunPerformed?.Invoke();
-    }
-    private void OnTogglePerspectivePerformed(InputAction.CallbackContext context) => 
-        TogglePerspectivePerformed?.Invoke();
-
-    private void OnWalkCanceled(InputAction.CallbackContext _)
-    {
-        WalkInput = Vector2.zero;
-        IsWalkPressed = false;
-        WalkCanceled?.Invoke();
-    }
-
-    private void OnLookCanceled(InputAction.CallbackContext _)
-    {
-        LookInput = Vector2.zero;
-        IsLookPressed = false;
-    }
-
-    private void OnJumpCanceled(InputAction.CallbackContext _) => IsJumpPressed = false;
-
-    private void OnRunCanceled(InputAction.CallbackContext _)
-    {
-        IsRunPressed = false;
-        RunCanceled?.Invoke();
-    }
+    private void OnTogglePerspective(InputAction.CallbackContext context) => 
+        IsTogglePerspectivePressed.Value = context.ReadValueAsButton();
 }

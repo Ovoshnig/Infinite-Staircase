@@ -1,4 +1,6 @@
+using R3;
 using Random = System.Random;
+using System;
 using UnityEngine;
 
 [RequireComponent(typeof(AudioSource))]
@@ -10,31 +12,29 @@ public class PlayerSoundPlayer : MonoBehaviour
     private AudioClip[] _footstepClips;
     private AudioClip[] _landClips;
     private Random _random;
+    private IDisposable _disposable;
 
     private void Awake()
     {
         _audioSource = GetComponent<AudioSource>();
 
-        _playerState.GroundEntered += OnGroundEntered;
-
-        _random = new Random();
-    }
-
-    private void Start()
-    {
         _footstepClips = Resources.LoadAll<AudioClip>(ResourcesConstants.PlayerFootstepPath);
         _landClips = Resources.LoadAll<AudioClip>(ResourcesConstants.PlayerLandPath);
+
+        _random = new Random();
+
+        _disposable = _playerState.IsInAir
+            .Where(value => !value)
+            .Subscribe(_ => PlayLandingSound());
     }
 
-    private void OnDestroy() => _playerState.GroundEntered -= OnGroundEntered;
+    private void OnDestroy() => _disposable?.Dispose();
 
     public void PlayStepSound()
     {
         AudioClip clip = GetRandomClip(_footstepClips);
         _audioSource.PlayOneShot(clip);
     }
-
-    private void OnGroundEntered() => PlayLandingSound();
 
     private void PlayLandingSound()
     {

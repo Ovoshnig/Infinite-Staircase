@@ -1,4 +1,4 @@
-using System;
+using R3;
 using UnityEngine;
 using Zenject;
 
@@ -7,87 +7,58 @@ public class PlayerState : MonoBehaviour
 {
     private PlayerInputHandler _inputHandler;
     private CharacterController _characterController;
-    private bool _wasGrounded;
-
-    public event Action WalkStarted;
-    public event Action RunStarted;
-    public event Action JumpStarted;
-    public event Action GroundLeft;
-    public event Action WalkEnded;
-    public event Action RunEnded;
-    public event Action JumpEnded;
-    public event Action GroundEntered;
-
-    public Vector2 WalkInput => _inputHandler.WalkInput;
-    public Vector2 LookInput => _inputHandler.LookInput;
-    public bool IsWalking => _inputHandler.IsWalkPressed;
-    public bool IsRunning => _inputHandler.IsWalkPressed && _inputHandler.IsRunPressed;
-    public bool IsInAir => !_characterController.isGrounded;
-    public bool IsLooking => _inputHandler.IsLookPressed;
+    private CompositeDisposable _compositeDisposable;
 
     [Inject]
     private void Construct(PlayerInputHandler inputHandler) => _inputHandler = inputHandler;
+
+    public Vector2 WalkInput => _inputHandler.WalkInput;
+    public Vector2 LookInput => _inputHandler.LookInput;
+    public ReactiveProperty<bool> IsWalking { get; private set; } 
+    public ReactiveProperty<bool> IsRunning { get; private set; } 
+    public ReactiveProperty<bool> IsJumping { get; private set; } 
+    public ReactiveProperty<bool> IsLooking { get; private set; } 
+    public ReadOnlyReactiveProperty<bool> IsInAir { get; private set; } 
 
     private void Awake()
     {
         _characterController = GetComponent<CharacterController>();
 
-        _inputHandler.WalkPerformed += OnWalkPerformed;
-        _inputHandler.RunPerformed += OnRunPerformed;
-        _inputHandler.WalkCanceled += OnWalkCanceled;
-        _inputHandler.RunCanceled += OnRunCanceled;
-    }
+        IsWalking = new ReactiveProperty<bool>(false);
+        IsRunning = new ReactiveProperty<bool>(false);
+        IsJumping = new ReactiveProperty<bool>(false);
+        IsLooking = new ReactiveProperty<bool>(false);
+        IsInAir = new ReactiveProperty<bool>(false);
 
-    private void Start() => _wasGrounded = _characterController.isGrounded;
+        var moveDisposable = _inputHandler.IsWalkPressed
+            .Subscribe(value =>
+            {
+                IsWalking.Value = value;
+                IsRunning.Value = value && _inputHandler.IsRunPressed.Value;
+            });
 
-    private void OnDestroy()
-    {
-        _inputHandler.WalkPerformed -= OnWalkPerformed;
-        _inputHandler.RunPerformed -= OnRunPerformed;
-        _inputHandler.WalkCanceled -= OnWalkCanceled;
-        _inputHandler.RunCanceled -= OnRunCanceled;
-    }
+        var runDisposable = _inputHandler.IsRunPressed
+            .Subscribe(value => IsRunning.Value = value && IsWalking.Value);
 
-    private void Update()
-    {
-        bool isGrounded = _characterController.isGrounded;
+        var lookDisposable = _inputHandler.IsLookPressed
+            .Subscribe(value => IsLooking.Value = value);
 
-        if (isGrounded && !_wasGrounded)
+        var jumpDisposable = _inputHandler.IsJumpPressed
+            .Subscribe(value => IsJumping.Value = value && _characterController.isGrounded);
+
+        IsInAir = Observable.EveryUpdate()
+            .Select(_ => _characterController != null && !_characterController.isGrounded)
+            .DistinctUntilChanged()
+            .ToReadOnlyReactiveProperty();
+
+        _compositeDisposable = new CompositeDisposable
         {
-            JumpEnded?.Invoke();
-            GroundEntered?.Invoke();
-        }
-        else if (!isGrounded && _wasGrounded)
-        {
-            GroundLeft?.Invoke();
-        }
-        else if (isGrounded && _wasGrounded && _inputHandler.IsJumpPressed)
-        {
-            JumpStarted?.Invoke();
-        }
-
-        _wasGrounded = isGrounded;
+            moveDisposable,
+            runDisposable,
+            jumpDisposable,
+            lookDisposable
+        };
     }
 
-    private void OnWalkPerformed()
-    {
-        WalkStarted?.Invoke();
-
-        if (IsRunning)
-            RunStarted?.Invoke();
-    }
-
-    private void OnRunPerformed()
-    {
-        if (IsRunning)
-            RunStarted?.Invoke();
-    }
-
-    private void OnWalkCanceled()
-    {
-        WalkEnded?.Invoke();
-        RunEnded?.Invoke();
-    }
-
-    private void OnRunCanceled() => RunEnded?.Invoke();
+    private void OnDestroy() => _compositeDisposable?.Dispose();
 }

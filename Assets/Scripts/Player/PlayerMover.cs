@@ -1,5 +1,4 @@
 using R3;
-using System;
 using UnityEngine;
 using Zenject;
 
@@ -17,10 +16,8 @@ public class PlayerMover : MonoBehaviour
     private LookTuner _lookTuner;
     private Vector3 _moveDirection;
     private float _rotationSpeed;
-    private float _currentSpeedX;
-    private float _currentSpeedZ;
     private float _movementDirectionY;
-    private IDisposable _sensitivityDisposable;
+    private CompositeDisposable _compositiveDisposable;
 
     [Inject]
     private void Construct(LookTuner lookTuner) => _lookTuner = lookTuner;
@@ -30,26 +27,37 @@ public class PlayerMover : MonoBehaviour
         _characterController = GetComponent<CharacterController>();
         _playerState = GetComponent<PlayerState>();
 
-        _playerState.JumpStarted += OnJumpStarted;
-        _playerState.GroundEntered += OnGroundEntered;
+        var lookDisposable = _playerState.IsLooking
+            .Where(value => value)
+            .Subscribe(_ =>
+                transform.rotation *= Quaternion.Euler(0f, _playerState.LookInput.x * _rotationSpeed, 0f)
+            );
 
-        _sensitivityDisposable = _lookTuner.Sensitivity
+        var jumpDisposable = _playerState.IsJumping
+            .Where(value => value)
+            .Subscribe(_ => _moveDirection.y = _jumpForce);
+
+        var groundEnterDisposable = _playerState.IsInAir
+            .Where(value => !value)
+            .Subscribe(_ => _moveDirection.y = -_gravity);
+
+        var sensitivityDisposable = _lookTuner.Sensitivity
             .Subscribe(value => _rotationSpeed = value);
+
+        _compositiveDisposable = new CompositeDisposable
+        {
+            jumpDisposable,
+            groundEnterDisposable,
+            sensitivityDisposable,
+        };
     }
 
-    private void OnDisable()
-    {
-        _playerState.JumpStarted -= OnJumpStarted;
-        _playerState.GroundEntered -= OnGroundEntered;
-
-        _sensitivityDisposable.Dispose();
-    }
+    private void OnDestroy() => _compositiveDisposable?.Dispose();
 
     private void Update()
     {
         Move();
-        Jump();
-        Look();
+        Fall();
     }
 
     private void Move()
@@ -57,29 +65,22 @@ public class PlayerMover : MonoBehaviour
         Vector3 forward = transform.TransformDirection(Vector3.forward);
         Vector3 right = transform.TransformDirection(Vector3.right);
 
-        _currentSpeedX = _playerState.WalkInput.y;
-        _currentSpeedX *= _playerState.IsRunning ? _runSpeed : _walkSpeed;
-        _currentSpeedZ = _playerState.WalkInput.x;
-        _currentSpeedZ *= _playerState.IsRunning ? _runSpeed : _walkSpeed;
+        var currentSpeedX = _playerState.WalkInput.y;
+        currentSpeedX *= _playerState.IsRunning.Value ? _runSpeed : _walkSpeed;
+        var currentSpeedZ = _playerState.WalkInput.x;
+        currentSpeedZ *= _playerState.IsRunning.Value ? _runSpeed : _walkSpeed;
 
         _movementDirectionY = _moveDirection.y;
-        _moveDirection = (forward * _currentSpeedX) + (right * _currentSpeedZ);
+        _moveDirection = (forward * currentSpeedX) + (right * currentSpeedZ);
     }
 
-    private void Jump()
+    private void Fall()
     {
         _moveDirection.y = _movementDirectionY;
 
-        if (_playerState.IsInAir)
+        if (_playerState.IsInAir.CurrentValue)
             _moveDirection.y -= _gravity * Time.deltaTime;
 
         _characterController.Move(_moveDirection * Time.deltaTime);
     }
-
-    private void Look() => transform.rotation *= 
-        Quaternion.Euler(0f, _playerState.LookInput.x * _rotationSpeed, 0f);
-
-    private void OnJumpStarted() => _moveDirection.y = _jumpForce;
-
-    private void OnGroundEntered() => _moveDirection.y = -_gravity;
 }
