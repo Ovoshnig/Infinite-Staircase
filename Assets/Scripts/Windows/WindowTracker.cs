@@ -1,36 +1,31 @@
-using System;
+using R3;
 using UnityEngine;
 using Zenject;
 
 public class WindowTracker : IInitializable
 {
-    private bool _opened = false;
-
-    public event Action WindowOpened;
-    public event Action WindowClosed;
+    public ReactiveProperty<bool> IsOpen { get; private set; } = new(false);
 
     public void Initialize() => SetCursor(false);
 
     public bool TryOpenWindow(GameObject window)
     {
-        if (_opened)
+        if (IsOpen.Value)
             return false;
 
-        _opened = true;
+        IsOpen.Value = true;
         SetCursor(true);
-        WindowOpened?.Invoke();
 
         return true;
     }
 
     public bool TryCloseWindow()
     {
-        if (!_opened)
+        if (!IsOpen.Value)
             return false;
 
-        _opened = false;
+        IsOpen.Value = false;
         SetCursor(false);
-        WindowClosed?.Invoke();
 
         return true;
     }

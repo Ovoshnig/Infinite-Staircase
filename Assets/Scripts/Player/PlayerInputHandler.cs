@@ -8,27 +8,29 @@ public class PlayerInputHandler : IInitializable, IDisposable
 {
     private readonly WindowTracker _windowTracker;
     private readonly PlayerInput _playerInput = new();
+    private IDisposable _disposable;
 
     [Inject]
     public PlayerInputHandler(WindowTracker windowTracker) => _windowTracker = windowTracker;
 
     public Vector2 WalkInput { get; private set; } = Vector2.zero;
     public Vector2 LookInput { get; private set; } = Vector2.zero;
-    public ReactiveProperty<bool> IsWalkPressed { get; private set; } = 
-        new ReactiveProperty<bool>(false);
-    public ReactiveProperty<bool> IsRunPressed { get; private set; } = 
-        new ReactiveProperty<bool>(false);
-    public ReactiveProperty<bool> IsLookPressed { get; private set; } = 
-        new ReactiveProperty<bool>(false);
-    public ReactiveProperty<bool> IsJumpPressed { get; private set; } = 
-        new ReactiveProperty<bool>(false);
-    public ReactiveProperty<bool> IsTogglePerspectivePressed { get; private set; } = 
-        new ReactiveProperty<bool>(false);
+    public ReactiveProperty<bool> IsWalkPressed { get; private set; } = new(false);
+    public ReactiveProperty<bool> IsRunPressed { get; private set; } = new(false);
+    public ReactiveProperty<bool> IsLookPressed { get; private set; } = new(false);
+    public ReactiveProperty<bool> IsJumpPressed { get; private set; } = new(false);
+    public ReactiveProperty<bool> IsTogglePerspectivePressed { get; private set; } = new(false);
 
     public void Initialize()
     {
-        _windowTracker.WindowOpened += OnWindowOpened;
-        _windowTracker.WindowClosed += OnWindowClosed;
+        _disposable = _windowTracker.IsOpen
+            .Subscribe(value =>
+            {
+                if (value)
+                    _playerInput.Disable();
+                else
+                    _playerInput.Enable();
+            });
 
         _playerInput.Player.Walk.performed += OnWalk;
         _playerInput.Player.Walk.canceled += OnWalk;
@@ -46,15 +48,10 @@ public class PlayerInputHandler : IInitializable, IDisposable
 
     public void Dispose()
     {
-        _windowTracker.WindowOpened -= OnWindowOpened;
-        _windowTracker.WindowClosed -= OnWindowClosed;
+        _disposable?.Dispose();
 
         _playerInput.Disable();
     }
-
-    private void OnWindowOpened() => _playerInput.Disable();
-
-    private void OnWindowClosed() => _playerInput.Enable();
 
     private void OnWalk(InputAction.CallbackContext context)
     {

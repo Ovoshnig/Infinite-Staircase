@@ -2,7 +2,6 @@ using R3;
 using UnityEngine;
 using Unity.Cinemachine;
 using Zenject;
-using System;
 
 public class CameraSwitch : MonoBehaviour
 {
@@ -12,8 +11,8 @@ public class CameraSwitch : MonoBehaviour
 
     private PlayerInputHandler _inputHandler;
     private WindowTracker _windowTracker;
+    private CompositeDisposable _compositeDisposable;
     private bool _isFirstPerson = true;
-    private IDisposable _disposable;
 
     [Inject]
     private void Construct(PlayerInputHandler inputHandler, WindowTracker windowTracker)
@@ -24,7 +23,7 @@ public class CameraSwitch : MonoBehaviour
 
     private void Awake()
     {
-        _disposable = _inputHandler.IsTogglePerspectivePressed
+        var togglePerspectiveDisposable = _inputHandler.IsTogglePerspectivePressed
             .Where(value => value)
             .Subscribe(_ =>
             {
@@ -32,31 +31,21 @@ public class CameraSwitch : MonoBehaviour
                 SetCamera(_isFirstPerson);
             });
 
-        _windowTracker.WindowOpened += OnWindowOpened;
-        _windowTracker.WindowClosed += OnWindowClosed;
+        var windowDisposable = _windowTracker.IsOpen
+            .Subscribe(value => 
+            {
+                if (_isFirstPerson)
+                    _playerScope.SetActive(!value);
+            });
+
+        _compositeDisposable = new CompositeDisposable()
+        {
+            togglePerspectiveDisposable,
+            windowDisposable
+        };
     }
 
-    private void Start() => SetCamera(_isFirstPerson);
-
-    private void OnDestroy()
-    {
-        _disposable?.Dispose();
-
-        _windowTracker.WindowOpened -= OnWindowOpened;
-        _windowTracker.WindowClosed -= OnWindowClosed;
-    }
-
-    private void OnWindowOpened()
-    {
-        if (_isFirstPerson)
-            _playerScope.SetActive(false);
-    }
-
-    private void OnWindowClosed()
-    {
-        if (_isFirstPerson)
-            _playerScope.SetActive(true);
-    }
+    private void OnDestroy() => _compositeDisposable?.Dispose();
 
     private void SetCamera(bool isFirstPerson)
     {
