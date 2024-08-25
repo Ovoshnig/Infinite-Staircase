@@ -12,14 +12,14 @@ public class GamePauser : IInitializable
 
     public void Pause()
     {
-        //SetPauseState(pause: true);
         _isPause.Value = true;
+        SetPauseState(pause: true);
     }
 
     public void Unpause()
     {
-        //SetPauseState(pause: false);
         _isPause.Value = false;
+        SetPauseState(pause: false);
     }
 
     private void SetPauseState(bool pause) => Time.timeScale = pause ? 0f : 1f;
