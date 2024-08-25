@@ -54,12 +54,17 @@ public class PlayerState : MonoBehaviour
             .DistinctUntilChanged()
             .ToReadOnlyReactiveProperty();
 
+        var groundEnterDisposable = IsGrounded
+            .Where(value => value)
+            .Subscribe(_ => _isJumping.Value = false);
+
         _compositeDisposable = new CompositeDisposable
         {
             moveDisposable,
             runDisposable,
             jumpDisposable,
-            lookDisposable
+            lookDisposable,
+            groundEnterDisposable
         };
     }
 
