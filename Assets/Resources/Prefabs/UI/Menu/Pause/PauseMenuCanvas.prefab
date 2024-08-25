@@ -1115,7 +1115,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d8d72819a4ea2c049b3d7530de0b7fd0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _menuPanel: {fileID: 3057947109209986913}
+  Panel: {fileID: 3057947109209986913}
   _settingsPanel: {fileID: 2360525206223505507}
   _resumeButton: {fileID: 2441706583183188250}
 --- !u!224 &2759500080617809190 stripped

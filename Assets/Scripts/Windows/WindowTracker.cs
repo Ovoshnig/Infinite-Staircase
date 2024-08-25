@@ -1,31 +1,39 @@
 using R3;
+using System;
 using UnityEngine;
 using Zenject;
 
-public class WindowTracker : IInitializable
+public class WindowTracker : IInitializable, IDisposable
 {
-    public ReactiveProperty<bool> IsOpen { get; private set; } = new(false);
+    private readonly ReactiveProperty<bool> _isOpen = new(false);
+    private IDisposable _disposable;
 
-    public void Initialize() => SetCursor(false);
+    public ReadOnlyReactiveProperty<bool> IsOpen => _isOpen;
 
-    public bool TryOpenWindow(GameObject window)
+    public void Initialize()
     {
-        if (IsOpen.Value)
+        _disposable = _isOpen
+            .Subscribe(value => SetCursor(value));
+    }
+
+    public void Dispose() => _disposable?.Dispose();
+
+    public bool TryOpenWindow()
+    {
+        if (_isOpen.Value)
             return false;
 
-        IsOpen.Value = true;
-        SetCursor(true);
+        _isOpen.Value = true;
 
         return true;
     }
 
     public bool TryCloseWindow()
     {
-        if (!IsOpen.Value)
+        if (!_isOpen.Value)
             return false;
 
-        IsOpen.Value = false;
-        SetCursor(false);
+        _isOpen.Value = false;
 
         return true;
     }

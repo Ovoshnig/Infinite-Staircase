@@ -7,13 +7,6 @@ public sealed class PauseMenu : Menu
     [SerializeField] private Button _resetLevelButton;
     [SerializeField] private Button _loadMainMenuButton;
 
-    protected override void InitializeSettings()
-    {
-        base.InitializeSettings();
-
-        gameObject.SetActive(false);
-    }
-
     protected override void AddListeners()
     {
         base.AddListeners();

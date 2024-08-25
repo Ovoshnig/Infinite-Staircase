@@ -34,7 +34,7 @@ public abstract class MenuSettings : MonoBehaviour
 
     protected virtual void OnDisable() => RemoveListeners();
 
-    private void InitializeSliders()
+    protected virtual void InitializeSliders()
     {
         _sensitivitySlider.maxValue = _controlSettings.MaxSensitivity;
         _sensitivitySlider.value = _lookTuner.Sensitivity;
@@ -48,7 +48,7 @@ public abstract class MenuSettings : MonoBehaviour
         _musicVolumeSlider.value = _audioTuner.MusicVolume;
     }
 
-    private void AddListeners()
+    protected virtual void AddListeners()
     {
         _closeSettingsButton.onClick.AddListener(CloseSettingsPanel);
 
@@ -57,7 +57,7 @@ public abstract class MenuSettings : MonoBehaviour
         _musicVolumeSlider.onValueChanged.AddListener(OnMusicVolumeSliderValueChanged);
     }
 
-    private void RemoveListeners()
+    protected virtual void RemoveListeners()
     {
         _closeSettingsButton.onClick.RemoveListener(CloseSettingsPanel);
 
