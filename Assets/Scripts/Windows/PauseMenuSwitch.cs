@@ -8,7 +8,6 @@ public class PauseMenuSwitch : MonoBehaviour
 {
     [SerializeField] private GameObject _menuPanel;
     [SerializeField] private GameObject _settingsPanel;
-    [SerializeField] private Button _resumeButton;
 
     private PlayerInput _playerInput;
     private WindowTracker _windowTracker;

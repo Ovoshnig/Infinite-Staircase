@@ -6,6 +6,10 @@ using Zenject;
 public class PlayerState : MonoBehaviour
 {
     private PlayerInputHandler _inputHandler;
+    private ReactiveProperty<bool> _isWalking;
+    private ReactiveProperty<bool> _isRunning;
+    private ReactiveProperty<bool> _isJumping;
+    private ReactiveProperty<bool> _isLooking;
     private CharacterController _characterController;
     private CompositeDisposable _compositeDisposable;
 
@@ -14,40 +18,39 @@ public class PlayerState : MonoBehaviour
 
     public Vector2 WalkInput => _inputHandler.WalkInput;
     public Vector2 LookInput => _inputHandler.LookInput;
-    public ReactiveProperty<bool> IsWalking { get; private set; } 
-    public ReactiveProperty<bool> IsRunning { get; private set; } 
-    public ReactiveProperty<bool> IsJumping { get; private set; } 
-    public ReactiveProperty<bool> IsLooking { get; private set; } 
-    public ReadOnlyReactiveProperty<bool> IsInAir { get; private set; } 
+    public ReadOnlyReactiveProperty<bool> IsWalking => _isWalking;
+    public ReadOnlyReactiveProperty<bool> IsRunning => _isRunning;
+    public ReadOnlyReactiveProperty<bool> IsJumping => _isJumping;
+    public ReadOnlyReactiveProperty<bool> IsLooking => _isLooking;
+    public ReadOnlyReactiveProperty<bool> IsGrounded { get; private set; }
 
     private void Awake()
     {
         _characterController = GetComponent<CharacterController>();
 
-        IsWalking = new ReactiveProperty<bool>(false);
-        IsRunning = new ReactiveProperty<bool>(false);
-        IsJumping = new ReactiveProperty<bool>(false);
-        IsLooking = new ReactiveProperty<bool>(false);
-        IsInAir = new ReactiveProperty<bool>(false);
+        _isWalking = new ReactiveProperty<bool>(false);
+        _isRunning = new ReactiveProperty<bool>(false);
+        _isJumping = new ReactiveProperty<bool>(false);
+        _isLooking = new ReactiveProperty<bool>(false);
 
         var moveDisposable = _inputHandler.IsWalkPressed
             .Subscribe(value =>
             {
-                IsWalking.Value = value;
-                IsRunning.Value = value && _inputHandler.IsRunPressed.Value;
+                _isWalking.Value = value;
+                _isRunning.Value = value && _inputHandler.IsRunPressed.CurrentValue;
             });
 
         var runDisposable = _inputHandler.IsRunPressed
-            .Subscribe(value => IsRunning.Value = value && IsWalking.Value);
+            .Subscribe(value => _isRunning.Value = value && _isWalking.Value);
 
         var lookDisposable = _inputHandler.IsLookPressed
-            .Subscribe(value => IsLooking.Value = value);
+            .Subscribe(value => _isLooking.Value = value);
 
         var jumpDisposable = _inputHandler.IsJumpPressed
-            .Subscribe(value => IsJumping.Value = value && _characterController.isGrounded);
+            .Subscribe(value => _isJumping.Value = value && _characterController.isGrounded);
 
-        IsInAir = Observable.EveryUpdate()
-            .Select(_ => _characterController != null && !_characterController.isGrounded)
+        IsGrounded = Observable.EveryUpdate()
+            .Select(_ => _characterController != null && _characterController.isGrounded)
             .DistinctUntilChanged()
             .ToReadOnlyReactiveProperty();
 

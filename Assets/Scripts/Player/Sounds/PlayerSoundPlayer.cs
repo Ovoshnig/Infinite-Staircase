@@ -23,14 +23,14 @@ public class PlayerSoundPlayer : MonoBehaviour
 
         _random = new Random();
 
-        _disposable = _playerState.IsInAir
+        _disposable = _playerState.IsGrounded
             .Where(value => !value)
             .Subscribe(_ => PlayLandingSound());
     }
 
     private void OnDestroy() => _disposable?.Dispose();
 
-    public void PlayStepSound()
+    private void PlayStepSound()
     {
         AudioClip clip = GetRandomClip(_footstepClips);
         _audioSource.PlayOneShot(clip);

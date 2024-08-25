@@ -22,15 +22,15 @@ public class PlayerAnimator : MonoBehaviour
         var jumpDisposable = _playerState.IsJumping
             .Subscribe(value => _animator.SetBool(AnimatorConstants.IsJumping, value));
 
-        var inAirDisposable = _playerState.IsInAir
-            .Subscribe(value => _animator.SetBool(AnimatorConstants.IsGrounded, !value));
+        var groundDisposable = _playerState.IsGrounded
+            .Subscribe(value => _animator.SetBool(AnimatorConstants.IsGrounded, value));
 
         _compositeDisposable = new CompositeDisposable()
         {
             walkDisposable,
             runDisposable,
             jumpDisposable,
-            inAirDisposable
+            groundDisposable
         };
     }
 

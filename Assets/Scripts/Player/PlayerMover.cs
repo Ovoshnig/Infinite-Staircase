@@ -37,8 +37,8 @@ public class PlayerMover : MonoBehaviour
             .Where(value => value)
             .Subscribe(_ => _moveDirection.y = _jumpForce);
 
-        var groundEnterDisposable = _playerState.IsInAir
-            .Where(value => !value)
+        var groundEnterDisposable = _playerState.IsGrounded
+            .Where(value => value)
             .Subscribe(_ => _moveDirection.y = -_gravity);
 
         var sensitivityDisposable = _lookTuner.SensitivityReactive
@@ -66,9 +66,9 @@ public class PlayerMover : MonoBehaviour
         Vector3 right = transform.TransformDirection(Vector3.right);
 
         var currentSpeedX = _playerState.WalkInput.y;
-        currentSpeedX *= _playerState.IsRunning.Value ? _runSpeed : _walkSpeed;
+        currentSpeedX *= _playerState.IsRunning.CurrentValue ? _runSpeed : _walkSpeed;
         var currentSpeedZ = _playerState.WalkInput.x;
-        currentSpeedZ *= _playerState.IsRunning.Value ? _runSpeed : _walkSpeed;
+        currentSpeedZ *= _playerState.IsRunning.CurrentValue ? _runSpeed : _walkSpeed;
 
         _movementDirectionY = _moveDirection.y;
         _moveDirection = (forward * currentSpeedX) + (right * currentSpeedZ);
@@ -78,7 +78,7 @@ public class PlayerMover : MonoBehaviour
     {
         _moveDirection.y = _movementDirectionY;
 
-        if (_playerState.IsInAir.CurrentValue)
+        if (!_playerState.IsGrounded.CurrentValue)
             _moveDirection.y -= _gravity * Time.deltaTime;
 
         _characterController.Move(_moveDirection * Time.deltaTime);

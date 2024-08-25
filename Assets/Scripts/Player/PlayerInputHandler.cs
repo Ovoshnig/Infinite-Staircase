@@ -6,8 +6,13 @@ using Zenject;
 
 public class PlayerInputHandler : IInitializable, IDisposable
 {
-    private readonly WindowTracker _windowTracker;
     private readonly PlayerInput _playerInput = new();
+    private readonly WindowTracker _windowTracker;
+    private readonly ReactiveProperty<bool> _isWalkPressed = new(false);
+    private readonly ReactiveProperty<bool> _isRunPressed = new(false);
+    private readonly ReactiveProperty<bool> _isLookPressed = new(false);
+    private readonly ReactiveProperty<bool> _isJumpPressed = new(false);
+    private readonly ReactiveProperty<bool> _isTogglePerspectivePressed = new(false);
     private IDisposable _disposable;
 
     [Inject]
@@ -15,11 +20,11 @@ public class PlayerInputHandler : IInitializable, IDisposable
 
     public Vector2 WalkInput { get; private set; } = Vector2.zero;
     public Vector2 LookInput { get; private set; } = Vector2.zero;
-    public ReactiveProperty<bool> IsWalkPressed { get; private set; } = new(false);
-    public ReactiveProperty<bool> IsRunPressed { get; private set; } = new(false);
-    public ReactiveProperty<bool> IsLookPressed { get; private set; } = new(false);
-    public ReactiveProperty<bool> IsJumpPressed { get; private set; } = new(false);
-    public ReactiveProperty<bool> IsTogglePerspectivePressed { get; private set; } = new(false);
+    public ReadOnlyReactiveProperty<bool> IsWalkPressed => _isWalkPressed;
+    public ReadOnlyReactiveProperty<bool> IsRunPressed => _isRunPressed;
+    public ReadOnlyReactiveProperty<bool> IsLookPressed => _isLookPressed;
+    public ReadOnlyReactiveProperty<bool> IsJumpPressed => _isJumpPressed;
+    public ReadOnlyReactiveProperty<bool> IsTogglePerspectivePressed => _isTogglePerspectivePressed;
 
     public void Initialize()
     {
@@ -42,8 +47,6 @@ public class PlayerInputHandler : IInitializable, IDisposable
         _playerInput.Player.Jump.canceled += OnJump;
         _playerInput.Player.TogglePerspective.performed += OnTogglePerspective;
         _playerInput.Player.TogglePerspective.canceled += OnTogglePerspective;
-
-        _playerInput.Enable();
     }
 
     public void Dispose()
@@ -56,21 +59,21 @@ public class PlayerInputHandler : IInitializable, IDisposable
     private void OnWalk(InputAction.CallbackContext context)
     {
         WalkInput = context.ReadValue<Vector2>();
-        IsWalkPressed.Value = WalkInput != Vector2.zero;
+        _isWalkPressed.Value = WalkInput != Vector2.zero;
     }
 
     private void OnRun(InputAction.CallbackContext context) =>
-        IsRunPressed.Value = context.ReadValueAsButton();
+        _isRunPressed.Value = context.ReadValueAsButton();
 
     private void OnLook(InputAction.CallbackContext context)
     {
         LookInput = context.ReadValue<Vector2>();
-        IsLookPressed.Value = LookInput != Vector2.zero;
+        _isLookPressed.Value = LookInput != Vector2.zero;
     }
 
     private void OnJump(InputAction.CallbackContext context) => 
-        IsJumpPressed.Value = context.ReadValueAsButton();
+        _isJumpPressed.Value = context.ReadValueAsButton();
 
     private void OnTogglePerspective(InputAction.CallbackContext context) => 
-        IsTogglePerspectivePressed.Value = context.ReadValueAsButton();
+        _isTogglePerspectivePressed.Value = context.ReadValueAsButton();
 }
