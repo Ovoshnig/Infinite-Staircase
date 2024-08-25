@@ -2,11 +2,11 @@ using Cysharp.Threading.Tasks;
 using Random = System.Random;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Threading;
 using UnityEngine;
-using UnityEngine.AddressableAssets;
-using UnityEngine.ResourceManagement.AsyncOperations;
 using Zenject;
+using System.Linq;
 
 [RequireComponent(typeof(AudioSource))]
 public class MusicPlayer : MonoBehaviour
@@ -18,25 +18,24 @@ public class MusicPlayer : MonoBehaviour
         Credits
     }
 
-    private readonly Dictionary<MusicCategory, List<string>> _musicTrackKeys = new();
+    private readonly Dictionary<MusicCategory, List<string>> _musicClipKeys = new();
     private readonly Random _random = new();
-    private Queue<string> _trackKeysQueue = new();
+    private Queue<string> _clipPathsQueue = new();
     private AudioSource _audioSource;
     private SceneSwitch _sceneSwitch;
-    private AsyncOperationHandle<AudioClip>? _currentTrackHandle = null;
     private CancellationTokenSource _cts = default;
 
     [Inject]
     private void Construct(SceneSwitch sceneSwitch) => _sceneSwitch = sceneSwitch;
 
-    private void Awake() => _audioSource = gameObject.GetComponent<AudioSource>();
-
-    private async void Start()
+    private void Awake()
     {
+        _audioSource = gameObject.GetComponent<AudioSource>();
+
         _cts = new CancellationTokenSource();
-        await LoadMusicTrackKeys();
+
+        LoadMusicClipNames();
         _sceneSwitch.SceneLoaded += OnSceneLoaded;
-        OnSceneLoaded(_sceneSwitch.CurrentSceneType);
     }
 
     private void OnDestroy()
@@ -45,30 +44,24 @@ public class MusicPlayer : MonoBehaviour
         _cts.CancelAndDispose(ref _cts);
     }
 
-    private async UniTask LoadMusicTrackKeys()
+    private void LoadMusicClipNames()
     {
         foreach (MusicCategory category in Enum.GetValues(typeof(MusicCategory)))
         {
-            string label = category.ToString();
-            var handle = Addressables.LoadResourceLocationsAsync(label, typeof(AudioClip));
-            await handle.ToUniTask(cancellationToken: _cts.Token);
+            var resourcesPath = "Assets/Resources";
+            var categoryPath = $"{resourcesPath}/{ResourcesConstants.MusicPath}/{category}";
+            var extension = ".mp3";
 
-            if (handle.Status == AsyncOperationStatus.Succeeded)
-            {
-                List<string> keys = new();
+            if (!Directory.Exists(categoryPath))
+                throw new DirectoryNotFoundException(categoryPath);
 
-                foreach (var location in handle.Result)
-                    keys.Add(location.PrimaryKey);
+            List<string> clipNames = Directory.GetFiles(categoryPath).ToList();
+            clipNames = clipNames
+                .Where(x => x.EndsWith(extension))
+                .Select(x => x[(resourcesPath.Length + 1)..^extension.Length])
+                .ToList();
 
-                _musicTrackKeys[category] = keys;
-            }
-            else
-            {
-                Debug.LogWarning($"Failed to load music track keys for label: {label}");
-                _musicTrackKeys[category] = new List<string>();
-            }
-
-            Addressables.Release(handle);
+            _musicClipKeys[category] = clipNames;
         }
     }
 
@@ -91,103 +84,75 @@ public class MusicPlayer : MonoBehaviour
         else
             category = MusicCategory.MainMenu;
 
-        PlayNextTrack(category).Forget();
+        PlayNextClip(category).Forget();
     }
 
-    private bool TrySetCurrentTracks(MusicCategory category)
+    private bool TrySetCurrentClips(MusicCategory category)
     {
-        if (!_musicTrackKeys.ContainsKey(category))
+        if (!_musicClipKeys.ContainsKey(category))
         {
-            Debug.LogError($"Music category '{category}' not found in _musicTrackKeys dictionary.");
+            Debug.LogError($"Music category '{category}' not found in {nameof(_musicClipKeys)} dictionary.");
 
             return false;
         }
 
-        if (_musicTrackKeys[category].Count == 0)
+        if (_musicClipKeys[category].Count == 0)
         {
-            Debug.LogWarning($"There are no tracks for category {category}");
+            Debug.LogWarning($"There are no clips for category {category}");
 
             return false;
         }
 
-        _trackKeysQueue.Clear();
-        _trackKeysQueue = new Queue<string>(_musicTrackKeys[category]);
+        _clipPathsQueue.Clear();
+        _clipPathsQueue = new Queue<string>(_musicClipKeys[category]);
 
         return true;
     }
 
-    private void ShuffleAndQueueTracks()
+    private void ShuffleAndQueueClips()
     {
-        int tracksCount = _trackKeysQueue.Count;
-        List<string> temporaryList = new(_trackKeysQueue);
-        _trackKeysQueue.Clear();
+        int clipsCount = _clipPathsQueue.Count;
+        List<string> temporaryList = new(_clipPathsQueue);
+        _clipPathsQueue.Clear();
 
-        for (int i = 0; i < tracksCount; i++)
+        for (int i = 0; i < clipsCount; i++)
         {
             int index = _random.Next(temporaryList.Count);
-            _trackKeysQueue.Enqueue(temporaryList[index]);
+            _clipPathsQueue.Enqueue(temporaryList[index]);
             temporaryList.RemoveAt(index);
         }
     }
 
-    private async UniTask<AsyncOperationHandle<AudioClip>> LoadTrack(string key)
+    private async UniTask<AudioClip> LoadClip(string path)
     {
-        var handle = Addressables.LoadAssetAsync<AudioClip>(key);
-        await handle.ToUniTask(cancellationToken: _cts.Token);
+        var request = Resources.LoadAsync<AudioClip>(path);
+        var clip = await request.ToUniTask(cancellationToken: _cts.Token);
 
-        if (handle.Status == AsyncOperationStatus.Succeeded)
-        {
-            return handle;
-        }
-        else
-        {
-            Debug.LogError($"Failed to load track with key: {key}");
-
-            return default;
-        }
+        return (AudioClip)clip;
     }
 
-    private void ReleaseTrack(AsyncOperationHandle<AudioClip> handle)
-    {
-        if (handle.IsValid())
-            Addressables.Release(handle);
-    }
+    private void ReleaseClip(AudioClip clip) => Resources.UnloadAsset(clip);
 
-    private async UniTask PlayNextTrack(MusicCategory category)
+    private async UniTask PlayNextClip(MusicCategory category)
     {
-        if (_trackKeysQueue.Count == 0)
+        if (_clipPathsQueue.Count == 0)
         {
-            if (TrySetCurrentTracks(category))
-                ShuffleAndQueueTracks();
+            if (TrySetCurrentClips(category))
+                ShuffleAndQueueClips();
             else
                 return;
         }
 
-        if (_currentTrackHandle.HasValue)
-        {
-            _audioSource.Stop();
-            _audioSource.clip = null;
-            ReleaseTrack(_currentTrackHandle.Value);
-            _currentTrackHandle = null;
-        }
+        var clipPath = _clipPathsQueue.Dequeue();
+        var clip = await LoadClip(clipPath);
+        _audioSource.clip = clip;
+        _audioSource.Play();
+        await UniTask.WaitWhile(() => _audioSource.isPlaying, cancellationToken: _cts.Token);
+        ReleaseClip(clip);
 
-        string trackKey = _trackKeysQueue.Dequeue();
-        var trackHandle = await LoadTrack(trackKey);
+        if (_cts.Token.IsCancellationRequested)
+            return;
 
-        if (trackHandle.Status == AsyncOperationStatus.Succeeded)
-        {
-            _currentTrackHandle = trackHandle;
-            _audioSource.clip = trackHandle.Result;
-            _audioSource.Play();
-            await UniTask.WaitWhile(() => _audioSource.isPlaying, cancellationToken: _cts.Token);
-
-            if (_cts.Token.IsCancellationRequested)
-            {
-                ReleaseTrack(trackHandle);
-                return;
-            }
-
-            PlayNextTrack(category).Forget();
-        }
+        PlayNextClip(category).Forget();
     }
 }

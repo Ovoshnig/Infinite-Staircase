@@ -15,7 +15,7 @@ MonoBehaviour:
   m_DefaultGroup: 62ded741060b6ab44b3dbc8dd2b981bf
   m_currentHash:
     serializedVersion: 2
-    Hash: d438aa1d744ae0023e45c775ef5da56a
+    Hash: 1608273dad6b0cad022bfc3be41999e0
   m_OptimizeCatalogSize: 0
   m_BuildRemoteCatalog: 0
   m_CatalogRequestsTimeout: 0
@@ -59,7 +59,6 @@ MonoBehaviour:
   m_BuildAddressablesWithPlayerBuild: 0
   m_overridePlayerVersion: '[UnityEditor.PlayerSettings.bundleVersion]'
   m_GroupAssets:
-  - {fileID: 11400000, guid: 7eb86ad968c2e02478d3e785f6747c94, type: 2}
   - {fileID: 11400000, guid: 2ac95595c3320bb4ca33c2e72b319304, type: 2}
   m_BuildSettings:
     m_LogResourceManagerExceptions: 1
@@ -98,11 +97,7 @@ MonoBehaviour:
       m_InlineUsage: 0
     m_ProfileVersion: 1
   m_LabelTable:
-    m_LabelNames:
-    - MainMenu
-    - GameLevel
-    - Credits
-    - New Label
+    m_LabelNames: []
   m_SchemaTemplates: []
   m_GroupTemplateObjects:
   - {fileID: 11400000, guid: b6f7fb7da7e9ee144aa20150c06060d2, type: 2}
