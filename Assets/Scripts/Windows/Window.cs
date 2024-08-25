@@ -4,11 +4,10 @@ using Zenject;
 
 public abstract class Window : MonoBehaviour, IWindow
 {
-    [SerializeField] protected GameObject Panel;
+    [SerializeField] private GameObject _panel;
 
-    protected WindowTracker _windowTracker;
-    protected PlayerInput PlayerInput;
-
+    private PlayerInput _playerInput;
+    private WindowTracker _windowTracker;
     private bool _isOpen = false;
 
     [Inject]
@@ -16,9 +15,12 @@ public abstract class Window : MonoBehaviour, IWindow
 
     public bool IsOpen => _isOpen;
 
+    protected GameObject Panel => _panel;
+    protected PlayerInput PlayerInput => _playerInput;
+
     protected virtual void Awake()
     {
-        PlayerInput = new PlayerInput();
+        _playerInput = new PlayerInput();
         InitializeInput();
     }
 
