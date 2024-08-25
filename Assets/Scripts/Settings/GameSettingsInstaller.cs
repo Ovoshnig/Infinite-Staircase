@@ -44,7 +44,7 @@ public class GameSettingsInstaller : ScriptableObjectInstaller<GameSettingsInsta
     {
         [field: SerializeField] public float MinVolume { get; private set; }
         [field: SerializeField] public float MaxVolume { get; private set; }
-        [field: SerializeField] public float MusicFadeInDuration { get; private set; }
+        [field: SerializeField] public float SnapshotTransitionDuration { get; private set; }
 
         public float DefaultVolume => (MinVolume + MaxVolume) / 2f;
     }

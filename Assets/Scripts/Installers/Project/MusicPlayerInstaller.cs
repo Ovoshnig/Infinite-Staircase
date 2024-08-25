@@ -12,6 +12,4 @@ public class MusicPlayerInstaller : MonoInstaller
             .AsSingle()
             .NonLazy();
     }
-
-    //public override void Start() => Container.InstantiatePrefab(_musicPlayer);
 }

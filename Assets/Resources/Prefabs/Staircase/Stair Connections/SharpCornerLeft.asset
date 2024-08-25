@@ -12,11 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 93665caa1b29ce34083907800829c47c, type: 3}
   m_Name: SharpCornerLeft
   m_EditorClassIdentifier: 
-  Prefab: {fileID: 523713080736793696, guid: a68fb2ebf557b5941a485bed04c096d5, type: 3}
-  MinCount: 5
-  MaxCount: 10
-  CanBeInStart: 0
-  Stair1: {fileID: 5747487624539764512, guid: a68fb2ebf557b5941a485bed04c096d5, type: 3}
-  Stair2: {fileID: 8582038576156830903, guid: a68fb2ebf557b5941a485bed04c096d5, type: 3}
-  PositionDifference: {x: 0.069, y: 0.2, z: -0.293}
-  RotationDifference: {x: 0, y: 343, z: -0}
+  _prefab: {fileID: 523713080736793696, guid: a68fb2ebf557b5941a485bed04c096d5, type: 3}
+  _stair1: {fileID: 0}
+  _stair2: {fileID: 0}
+  <CanBeInStart>k__BackingField: 0
+  <MinCount>k__BackingField: 5
+  <MaxCount>k__BackingField: 20

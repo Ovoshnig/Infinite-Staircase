@@ -12,7 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 93665caa1b29ce34083907800829c47c, type: 3}
   m_Name: SmoothCornerLeft
   m_EditorClassIdentifier: 
-  Prefab: {fileID: 523713080736793696, guid: 8204cbe76c3fa0a4f947177e875846a2, type: 3}
-  MinCount: 8
-  MaxCount: 10
-  CanBeInStart: 0
+  _prefab: {fileID: 523713080736793696, guid: 505e9a2aa941ee84a8edb3bfc06224a0, type: 3}
+  _stair1: {fileID: 0}
+  _stair2: {fileID: 0}
+  <CanBeInStart>k__BackingField: 0
+  <MinCount>k__BackingField: 15
+  <MaxCount>k__BackingField: 30

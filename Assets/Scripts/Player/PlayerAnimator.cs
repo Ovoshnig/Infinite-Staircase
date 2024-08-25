@@ -1,44 +1,38 @@
+using R3;
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 [RequireComponent(typeof(Animator))]
 public class PlayerAnimator : MonoBehaviour
 {
+    [SerializeField] private PlayerState _playerState;
+
     private Animator _animator;
-    private PlayerInput _playerInput;
+    private CompositeDisposable _compositeDisposable;
 
     private void Awake()
     {
         _animator = GetComponent<Animator>();
 
-        _playerInput = new PlayerInput();
-        _playerInput.Player.Move.performed += OnMovePerformed;
-        _playerInput.Player.Run.performed += OnRunPerformed;
-        _playerInput.Player.Jump.performed += OnJumpPerformed;
-        _playerInput.Player.Move.canceled += OnMoveCanceled;
-        _playerInput.Player.Run.canceled += OnRunCanceled;
-        _playerInput.Player.Jump.canceled += OnJumpCancelled;
+        var walkDisposable = _playerState.IsWalking
+            .Subscribe(value => _animator.SetBool(AnimatorConstants.IsWalking, value));
+
+        var runDisposable = _playerState.IsRunning
+            .Subscribe(value => _animator.SetBool(AnimatorConstants.IsRunning, value));
+
+        var jumpDisposable = _playerState.IsJumping
+            .Subscribe(value => _animator.SetBool(AnimatorConstants.IsJumping, value));
+
+        var groundDisposable = _playerState.IsGrounded
+            .Subscribe(value => _animator.SetBool(AnimatorConstants.IsGrounded, value));
+
+        _compositeDisposable = new CompositeDisposable()
+        {
+            walkDisposable,
+            runDisposable,
+            jumpDisposable,
+            groundDisposable
+        };
     }
 
-    private void OnEnable() => _playerInput.Enable();
-
-    private void OnDisable() => _playerInput.Disable();
-
-    private void OnMovePerformed(InputAction.CallbackContext _) => 
-        _animator.SetBool(PlayerAnimatorConstants.IsWalking, true);
-
-    private void OnRunPerformed(InputAction.CallbackContext _) => 
-        _animator.SetBool(PlayerAnimatorConstants.IsRunning, true);
-
-    private void OnJumpPerformed(InputAction.CallbackContext _) => 
-        _animator.SetBool(PlayerAnimatorConstants.IsJumping, true);
-
-    private void OnMoveCanceled(InputAction.CallbackContext _) => 
-        _animator.SetBool(PlayerAnimatorConstants.IsWalking, false);
-
-    private void OnRunCanceled(InputAction.CallbackContext _) => 
-        _animator.SetBool(PlayerAnimatorConstants.IsRunning, false);
-
-    private void OnJumpCancelled(InputAction.CallbackContext _) => 
-        _animator.SetBool(PlayerAnimatorConstants.IsJumping, false);
+    private void OnDestroy() => _compositeDisposable?.Dispose();
 }

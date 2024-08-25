@@ -12,7 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 93665caa1b29ce34083907800829c47c, type: 3}
   m_Name: Straight
   m_EditorClassIdentifier: 
-  Prefab: {fileID: 523713080736793696, guid: b17df4bdf50112a4d8c11af1f4d9193c, type: 3}
-  MinCount: 5
-  MaxCount: 15
-  CanBeInStart: 1
+  _prefab: {fileID: 523713080736793696, guid: b17df4bdf50112a4d8c11af1f4d9193c, type: 3}
+  _stair1: {fileID: 0}
+  _stair2: {fileID: 0}
+  <CanBeInStart>k__BackingField: 1
+  <MinCount>k__BackingField: 5
+  <MaxCount>k__BackingField: 15

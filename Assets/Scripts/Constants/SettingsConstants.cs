@@ -1,7 +1,7 @@
-public class SettingsConstants
+public static class SettingsConstants
 {
     public const string SaveFileName = "playerSettings.json";
-    public const string SoundsVolumeKey = "SoundsVolume";
+    public const string SoundVolumeKey = "SoundVolume";
     public const string MusicVolumeKey = "MusicVolume";
     public const string SensitivityKey = "Sensitivity";
 }

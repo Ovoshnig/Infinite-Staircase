@@ -29,7 +29,7 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
             ""id"": ""b5f27395-9b66-4c9d-9e35-e20fbd5c257c"",
             ""actions"": [
                 {
-                    ""name"": ""Move"",
+                    ""name"": ""Walk"",
                     ""type"": ""Value"",
                     ""id"": ""5a638295-529c-4ed3-81e2-64796ff6972a"",
                     ""expectedControlType"": ""Vector2"",
@@ -63,6 +63,15 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""TogglePerspective"",
+                    ""type"": ""Button"",
+                    ""id"": ""c9b3e105-a3e7-4f6a-a270-641362b97fda"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -73,7 +82,7 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Move"",
+                    ""action"": ""Walk"",
                     ""isComposite"": true,
                     ""isPartOfComposite"": false
                 },
@@ -84,7 +93,7 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Keyboard and Mouse"",
-                    ""action"": ""Move"",
+                    ""action"": ""Walk"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
@@ -95,7 +104,7 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Keyboard and Mouse"",
-                    ""action"": ""Move"",
+                    ""action"": ""Walk"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
@@ -106,7 +115,7 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Keyboard and Mouse"",
-                    ""action"": ""Move"",
+                    ""action"": ""Walk"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
@@ -117,7 +126,7 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Keyboard and Mouse"",
-                    ""action"": ""Move"",
+                    ""action"": ""Walk"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
@@ -128,7 +137,7 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Move"",
+                    ""action"": ""Walk"",
                     ""isComposite"": true,
                     ""isPartOfComposite"": false
                 },
@@ -139,7 +148,7 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Keyboard and Mouse"",
-                    ""action"": ""Move"",
+                    ""action"": ""Walk"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
@@ -150,7 +159,7 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Keyboard and Mouse"",
-                    ""action"": ""Move"",
+                    ""action"": ""Walk"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
@@ -161,7 +170,7 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Keyboard and Mouse"",
-                    ""action"": ""Move"",
+                    ""action"": ""Walk"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
@@ -172,7 +181,7 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Keyboard and Mouse"",
-                    ""action"": ""Move"",
+                    ""action"": ""Walk"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
@@ -219,6 +228,17 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
                     ""action"": ""Run"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""6df3f7a2-ada2-4740-927b-2f19910c6fe9"",
+                    ""path"": ""<Keyboard>/r"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""TogglePerspective"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         },
@@ -227,7 +247,7 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
             ""id"": ""a45349ce-b576-4d1a-9622-9dffb3c11a02"",
             ""actions"": [
                 {
-                    ""name"": ""OpenOrClose"",
+                    ""name"": ""Switch"",
                     ""type"": ""Button"",
                     ""id"": ""457c5597-75dd-4544-b674-41484284c01c"",
                     ""expectedControlType"": """",
@@ -244,7 +264,7 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Keyboard and Mouse"",
-                    ""action"": ""OpenOrClose"",
+                    ""action"": ""Switch"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -311,7 +331,7 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
             ""id"": ""eff85bad-07a5-4c85-b8cb-02ebcc7c7679"",
             ""actions"": [
                 {
-                    ""name"": ""OpenOrClose"",
+                    ""name"": ""Switch"",
                     ""type"": ""Button"",
                     ""id"": ""c1734492-2167-4ee8-9518-fbb0da7f129d"",
                     ""expectedControlType"": """",
@@ -328,7 +348,7 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": "";Keyboard and Mouse"",
-                    ""action"": ""OpenOrClose"",
+                    ""action"": ""Switch"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -367,13 +387,14 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
 }");
         // Player
         m_Player = asset.FindActionMap("Player", throwIfNotFound: true);
-        m_Player_Move = m_Player.FindAction("Move", throwIfNotFound: true);
+        m_Player_Walk = m_Player.FindAction("Walk", throwIfNotFound: true);
         m_Player_Look = m_Player.FindAction("Look", throwIfNotFound: true);
         m_Player_Jump = m_Player.FindAction("Jump", throwIfNotFound: true);
         m_Player_Run = m_Player.FindAction("Run", throwIfNotFound: true);
+        m_Player_TogglePerspective = m_Player.FindAction("TogglePerspective", throwIfNotFound: true);
         // PauseMenu
         m_PauseMenu = asset.FindActionMap("PauseMenu", throwIfNotFound: true);
-        m_PauseMenu_OpenOrClose = m_PauseMenu.FindAction("OpenOrClose", throwIfNotFound: true);
+        m_PauseMenu_Switch = m_PauseMenu.FindAction("Switch", throwIfNotFound: true);
         // SplashScreen
         m_SplashScreen = asset.FindActionMap("SplashScreen", throwIfNotFound: true);
         m_SplashScreen_Pass = m_SplashScreen.FindAction("Pass", throwIfNotFound: true);
@@ -382,7 +403,7 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
         m_Credits_SpeedUp = m_Credits.FindAction("SpeedUp", throwIfNotFound: true);
         // Inventory
         m_Inventory = asset.FindActionMap("Inventory", throwIfNotFound: true);
-        m_Inventory_OpenOrClose = m_Inventory.FindAction("OpenOrClose", throwIfNotFound: true);
+        m_Inventory_Switch = m_Inventory.FindAction("Switch", throwIfNotFound: true);
     }
 
     ~@PlayerInput()
@@ -453,18 +474,20 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
     // Player
     private readonly InputActionMap m_Player;
     private List<IPlayerActions> m_PlayerActionsCallbackInterfaces = new List<IPlayerActions>();
-    private readonly InputAction m_Player_Move;
+    private readonly InputAction m_Player_Walk;
     private readonly InputAction m_Player_Look;
     private readonly InputAction m_Player_Jump;
     private readonly InputAction m_Player_Run;
+    private readonly InputAction m_Player_TogglePerspective;
     public struct PlayerActions
     {
         private @PlayerInput m_Wrapper;
         public PlayerActions(@PlayerInput wrapper) { m_Wrapper = wrapper; }
-        public InputAction @Move => m_Wrapper.m_Player_Move;
+        public InputAction @Walk => m_Wrapper.m_Player_Walk;
         public InputAction @Look => m_Wrapper.m_Player_Look;
         public InputAction @Jump => m_Wrapper.m_Player_Jump;
         public InputAction @Run => m_Wrapper.m_Player_Run;
+        public InputAction @TogglePerspective => m_Wrapper.m_Player_TogglePerspective;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -474,9 +497,9 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
         {
             if (instance == null || m_Wrapper.m_PlayerActionsCallbackInterfaces.Contains(instance)) return;
             m_Wrapper.m_PlayerActionsCallbackInterfaces.Add(instance);
-            @Move.started += instance.OnMove;
-            @Move.performed += instance.OnMove;
-            @Move.canceled += instance.OnMove;
+            @Walk.started += instance.OnWalk;
+            @Walk.performed += instance.OnWalk;
+            @Walk.canceled += instance.OnWalk;
             @Look.started += instance.OnLook;
             @Look.performed += instance.OnLook;
             @Look.canceled += instance.OnLook;
@@ -486,13 +509,16 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
             @Run.started += instance.OnRun;
             @Run.performed += instance.OnRun;
             @Run.canceled += instance.OnRun;
+            @TogglePerspective.started += instance.OnTogglePerspective;
+            @TogglePerspective.performed += instance.OnTogglePerspective;
+            @TogglePerspective.canceled += instance.OnTogglePerspective;
         }
 
         private void UnregisterCallbacks(IPlayerActions instance)
         {
-            @Move.started -= instance.OnMove;
-            @Move.performed -= instance.OnMove;
-            @Move.canceled -= instance.OnMove;
+            @Walk.started -= instance.OnWalk;
+            @Walk.performed -= instance.OnWalk;
+            @Walk.canceled -= instance.OnWalk;
             @Look.started -= instance.OnLook;
             @Look.performed -= instance.OnLook;
             @Look.canceled -= instance.OnLook;
@@ -502,6 +528,9 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
             @Run.started -= instance.OnRun;
             @Run.performed -= instance.OnRun;
             @Run.canceled -= instance.OnRun;
+            @TogglePerspective.started -= instance.OnTogglePerspective;
+            @TogglePerspective.performed -= instance.OnTogglePerspective;
+            @TogglePerspective.canceled -= instance.OnTogglePerspective;
         }
 
         public void RemoveCallbacks(IPlayerActions instance)
@@ -523,12 +552,12 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
     // PauseMenu
     private readonly InputActionMap m_PauseMenu;
     private List<IPauseMenuActions> m_PauseMenuActionsCallbackInterfaces = new List<IPauseMenuActions>();
-    private readonly InputAction m_PauseMenu_OpenOrClose;
+    private readonly InputAction m_PauseMenu_Switch;
     public struct PauseMenuActions
     {
         private @PlayerInput m_Wrapper;
         public PauseMenuActions(@PlayerInput wrapper) { m_Wrapper = wrapper; }
-        public InputAction @OpenOrClose => m_Wrapper.m_PauseMenu_OpenOrClose;
+        public InputAction @Switch => m_Wrapper.m_PauseMenu_Switch;
         public InputActionMap Get() { return m_Wrapper.m_PauseMenu; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -538,16 +567,16 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
         {
             if (instance == null || m_Wrapper.m_PauseMenuActionsCallbackInterfaces.Contains(instance)) return;
             m_Wrapper.m_PauseMenuActionsCallbackInterfaces.Add(instance);
-            @OpenOrClose.started += instance.OnOpenOrClose;
-            @OpenOrClose.performed += instance.OnOpenOrClose;
-            @OpenOrClose.canceled += instance.OnOpenOrClose;
+            @Switch.started += instance.OnSwitch;
+            @Switch.performed += instance.OnSwitch;
+            @Switch.canceled += instance.OnSwitch;
         }
 
         private void UnregisterCallbacks(IPauseMenuActions instance)
         {
-            @OpenOrClose.started -= instance.OnOpenOrClose;
-            @OpenOrClose.performed -= instance.OnOpenOrClose;
-            @OpenOrClose.canceled -= instance.OnOpenOrClose;
+            @Switch.started -= instance.OnSwitch;
+            @Switch.performed -= instance.OnSwitch;
+            @Switch.canceled -= instance.OnSwitch;
         }
 
         public void RemoveCallbacks(IPauseMenuActions instance)
@@ -661,12 +690,12 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
     // Inventory
     private readonly InputActionMap m_Inventory;
     private List<IInventoryActions> m_InventoryActionsCallbackInterfaces = new List<IInventoryActions>();
-    private readonly InputAction m_Inventory_OpenOrClose;
+    private readonly InputAction m_Inventory_Switch;
     public struct InventoryActions
     {
         private @PlayerInput m_Wrapper;
         public InventoryActions(@PlayerInput wrapper) { m_Wrapper = wrapper; }
-        public InputAction @OpenOrClose => m_Wrapper.m_Inventory_OpenOrClose;
+        public InputAction @Switch => m_Wrapper.m_Inventory_Switch;
         public InputActionMap Get() { return m_Wrapper.m_Inventory; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -676,16 +705,16 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
         {
             if (instance == null || m_Wrapper.m_InventoryActionsCallbackInterfaces.Contains(instance)) return;
             m_Wrapper.m_InventoryActionsCallbackInterfaces.Add(instance);
-            @OpenOrClose.started += instance.OnOpenOrClose;
-            @OpenOrClose.performed += instance.OnOpenOrClose;
-            @OpenOrClose.canceled += instance.OnOpenOrClose;
+            @Switch.started += instance.OnSwitch;
+            @Switch.performed += instance.OnSwitch;
+            @Switch.canceled += instance.OnSwitch;
         }
 
         private void UnregisterCallbacks(IInventoryActions instance)
         {
-            @OpenOrClose.started -= instance.OnOpenOrClose;
-            @OpenOrClose.performed -= instance.OnOpenOrClose;
-            @OpenOrClose.canceled -= instance.OnOpenOrClose;
+            @Switch.started -= instance.OnSwitch;
+            @Switch.performed -= instance.OnSwitch;
+            @Switch.canceled -= instance.OnSwitch;
         }
 
         public void RemoveCallbacks(IInventoryActions instance)
@@ -723,14 +752,15 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
     }
     public interface IPlayerActions
     {
-        void OnMove(InputAction.CallbackContext context);
+        void OnWalk(InputAction.CallbackContext context);
         void OnLook(InputAction.CallbackContext context);
         void OnJump(InputAction.CallbackContext context);
         void OnRun(InputAction.CallbackContext context);
+        void OnTogglePerspective(InputAction.CallbackContext context);
     }
     public interface IPauseMenuActions
     {
-        void OnOpenOrClose(InputAction.CallbackContext context);
+        void OnSwitch(InputAction.CallbackContext context);
     }
     public interface ISplashScreenActions
     {
@@ -742,6 +772,6 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
     }
     public interface IInventoryActions
     {
-        void OnOpenOrClose(InputAction.CallbackContext context);
+        void OnSwitch(InputAction.CallbackContext context);
     }
 }
