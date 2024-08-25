@@ -24,7 +24,7 @@ public class PlayerSoundPlayer : MonoBehaviour
         _random = new Random();
 
         _disposable = _playerState.IsGrounded
-            .Where(value => !value)
+            .Where(value => value)
             .Subscribe(_ => PlayLandingSound());
     }
 
