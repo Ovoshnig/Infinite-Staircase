@@ -10,11 +10,11 @@ public class InventoryView : MonoBehaviour
     private SlotView[] _slotViews;
     private InventorySaver _inventorySaver;
 
-    public SlotView StartingSlot { get; set; }
-    public SlotView SelectedSlot { get; set; }
-
     [Inject]
     private void Construct(InventorySaver inventorySaver) => _inventorySaver = inventorySaver;
+
+    public SlotView StartingSlot { get; set; } = null;
+    public SlotView SelectedSlot { get; set; } = null;
 
     private void Awake()
     {
@@ -64,10 +64,13 @@ public class InventoryView : MonoBehaviour
 
     private void OnMouseClickCanceled(InputAction.CallbackContext _)
     {
-        if (StartingSlot == null) return;
+        if (StartingSlot == null) 
+            return;
 
         if (SelectedSlot == null)
+        {
             StartingSlot.PlaceItem();
+        }
         else
         {
             if (SelectedSlot.SlotModel.HasItem)

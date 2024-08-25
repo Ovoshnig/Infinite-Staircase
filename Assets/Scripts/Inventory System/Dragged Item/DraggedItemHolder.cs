@@ -5,9 +5,12 @@ public class DraggedItemHolder
 {
     private RectTransform _draggedItem = null;
 
-    public RectTransform DraggedItem 
+    public RectTransform DraggedItem
     {
-        get => _draggedItem;
+        get
+        {
+            return _draggedItem;
+        }
         set
         {
             if (value == null && _draggedItem == null)
