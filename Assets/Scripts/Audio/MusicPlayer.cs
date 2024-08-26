@@ -3,10 +3,10 @@ using Random = System.Random;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Threading;
 using UnityEngine;
 using Zenject;
-using System.Linq;
 
 [RequireComponent(typeof(AudioSource))]
 public class MusicPlayer : MonoBehaviour
@@ -48,8 +48,7 @@ public class MusicPlayer : MonoBehaviour
     {
         foreach (MusicCategory category in Enum.GetValues(typeof(MusicCategory)))
         {
-            var resourcesPath = "Assets/Resources";
-            var categoryPath = $"{resourcesPath}/{ResourcesConstants.MusicPath}/{category}";
+            var categoryPath = $"{ResourcesConstants.ResourcesPath}/{ResourcesConstants.MusicPath}/{category}";
             var extension = ".mp3";
 
             if (!Directory.Exists(categoryPath))
@@ -58,7 +57,7 @@ public class MusicPlayer : MonoBehaviour
             List<string> clipNames = Directory.GetFiles(categoryPath).ToList();
             clipNames = clipNames
                 .Where(x => x.EndsWith(extension))
-                .Select(x => x[(resourcesPath.Length + 1)..^extension.Length])
+                .Select(x => x[(ResourcesConstants.ResourcesPath.Length + 1)..^extension.Length])
                 .ToList();
 
             _musicClipKeys[category] = clipNames;
@@ -131,7 +130,12 @@ public class MusicPlayer : MonoBehaviour
         return (AudioClip)clip;
     }
 
-    private void ReleaseClip(AudioClip clip) => Resources.UnloadAsset(clip);
+    private void ReleaseClip(AudioClip clip)
+    {
+        _audioSource.Stop();
+        _audioSource.clip = null;
+        Resources.UnloadAsset(clip);
+    }
 
     private async UniTask PlayNextClip(MusicCategory category)
     {
