@@ -25,11 +25,11 @@ public class AudioMixerTuner : IInitializable, IDisposable
 
     public void Initialize()
     {
-        var soundDisposable = _audioTuner.SoundVolumeReactive
+        var soundDisposable = _audioTuner.SoundVolume
             .Subscribe(value => 
             AudioMixer.SetFloat(AudioMixerConstants.SoundGroupName, value));
 
-        var musicDisposable = _audioTuner.MusicVolumeReactive
+        var musicDisposable = _audioTuner.MusicVolume
             .Subscribe(value =>
             AudioMixer.SetFloat(AudioMixerConstants.MusicGroupName, value));
 
