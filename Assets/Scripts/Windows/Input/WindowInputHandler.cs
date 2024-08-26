@@ -1,15 +1,14 @@
 using R3;
 using System;
 using UnityEngine.InputSystem;
+using Zenject;
 
-public class WindowInputHandler : IDisposable
+public class WindowInputHandler : IInitializable, IDisposable
 {
     private readonly PlayerInput _playerInput = new();
     private readonly ReactiveProperty<bool> _closeCurrentPressed = new(false);
     private readonly ReactiveProperty<bool> _pauseMenuSwitchPressed = new(false);
     private readonly ReactiveProperty<bool> _inventorySwitchPressed = new(false);
-
-    public WindowInputHandler() => Initialize();
 
     public ReadOnlyReactiveProperty<bool> CloseCurrentPressed => _closeCurrentPressed;
     public ReadOnlyReactiveProperty<bool> PauseMenuSwitchPressed => _pauseMenuSwitchPressed;

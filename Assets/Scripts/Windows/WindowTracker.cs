@@ -3,7 +3,7 @@ using System;
 using UnityEngine;
 using Zenject;
 
-public class WindowTracker : IDisposable
+public class WindowTracker : IInitializable, IDisposable
 {
     private readonly WindowInputHandler _inputHandler;
     private readonly ReactiveProperty<bool> _isOpen = new(false);
@@ -12,11 +12,7 @@ public class WindowTracker : IDisposable
     private CompositeDisposable _compositeDisposable;
 
     [Inject]
-    public WindowTracker(WindowInputHandler inputHandler)
-    {
-        _inputHandler = inputHandler;
-        Initialize();
-    }
+    public WindowTracker(WindowInputHandler inputHandler) => _inputHandler = inputHandler;
 
     public ReadOnlyReactiveProperty<bool> IsOpen => _isOpen;
 
