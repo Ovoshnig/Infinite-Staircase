@@ -21,6 +21,7 @@ public class MusicPlayer : MonoBehaviour
     private readonly Dictionary<MusicCategory, List<string>> _musicClipKeys = new();
     private readonly Random _random = new();
     private Queue<string> _clipPathsQueue = new();
+    private AudioClip _pastClip = null;
     private AudioSource _audioSource;
     private SceneSwitch _sceneSwitch;
     private CancellationTokenSource _cts = default;
@@ -83,6 +84,7 @@ public class MusicPlayer : MonoBehaviour
         else
             category = MusicCategory.MainMenu;
 
+        _clipPathsQueue.Clear();
         PlayNextClip(category).Forget();
     }
 
@@ -102,7 +104,6 @@ public class MusicPlayer : MonoBehaviour
             return false;
         }
 
-        _clipPathsQueue.Clear();
         _clipPathsQueue = new Queue<string>(_musicClipKeys[category]);
 
         return true;
@@ -147,15 +148,18 @@ public class MusicPlayer : MonoBehaviour
                 return;
         }
 
+        if (_pastClip != null)
+        {
+            ReleaseClip(_pastClip);
+            _pastClip = null;
+        }
+
         var clipPath = _clipPathsQueue.Dequeue();
         var clip = await LoadClip(clipPath);
+        _pastClip = clip;
         _audioSource.clip = clip;
         _audioSource.Play();
         await UniTask.WaitWhile(() => _audioSource.isPlaying, cancellationToken: _cts.Token);
-        ReleaseClip(clip);
-
-        if (_cts.Token.IsCancellationRequested)
-            return;
 
         PlayNextClip(category).Forget();
     }

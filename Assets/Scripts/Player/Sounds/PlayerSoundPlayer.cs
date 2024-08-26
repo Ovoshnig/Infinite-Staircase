@@ -25,7 +25,7 @@ public class PlayerSoundPlayer : MonoBehaviour
 
         _disposable = _playerState.IsGrounded
             .Where(value => value)
-            .Subscribe(_ => PlayLandingSound());
+            .Subscribe(_ => PlayLandSound());
     }
 
     private void OnDestroy() => _disposable?.Dispose();
@@ -36,7 +36,7 @@ public class PlayerSoundPlayer : MonoBehaviour
         _audioSource.PlayOneShot(clip);
     }
 
-    private void PlayLandingSound()
+    private void PlayLandSound()
     {
         AudioClip clip = GetRandomClip(_landClips);
         _audioSource.PlayOneShot(clip);
