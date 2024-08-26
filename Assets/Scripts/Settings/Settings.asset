@@ -16,7 +16,7 @@ MonoBehaviour:
     <MaxSensitivity>k__BackingField: 1
   _levelSettings:
     <FirstGameplayLevel>k__BackingField: 1
-    <GameplayLevelsCount>k__BackingField: 1
+    <GameplayLevelsCount>k__BackingField: 3
     <LevelTransitionDuration>k__BackingField: 5
   _audioSettings:
     <MinVolume>k__BackingField: -80

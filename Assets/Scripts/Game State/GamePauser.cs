@@ -1,26 +1,30 @@
 using R3;
+using System;
 using UnityEngine;
 using Zenject;
 
-public class GamePauser : IInitializable
+public class GamePauser : IInitializable, IDisposable
 {
+    private readonly SceneSwitch _sceneSwitch;
     private readonly ReactiveProperty<bool> _isPause = new(false);
+
+    public GamePauser(SceneSwitch sceneSwitch) => _sceneSwitch = sceneSwitch;
 
     public ReadOnlyReactiveProperty<bool> IsPause => _isPause;
 
-    public void Initialize() => SetPauseState(pause: false);
+    public void Initialize() => _sceneSwitch.SceneLoaded += OnSceneLoaded;
 
-    public void Pause()
+    public void Dispose() => _sceneSwitch.SceneLoaded -= OnSceneLoaded;
+
+    private void OnSceneLoaded(SceneSwitch.SceneType type) => Unpause();
+
+    public void Pause() => SetPauseState(true);
+
+    public void Unpause() => SetPauseState(false);
+
+    private void SetPauseState(bool pause)
     {
-        _isPause.Value = true;
-        SetPauseState(pause: true);
+        _isPause.Value = pause;
+        Time.timeScale = pause ? 0f : 1f;
     }
-
-    public void Unpause()
-    {
-        _isPause.Value = false;
-        SetPauseState(pause: false);
-    }
-
-    private void SetPauseState(bool pause) => Time.timeScale = pause ? 0f : 1f;
 }
