@@ -1,8 +1,9 @@
+using R3;
 using UnityEngine;
 using UnityEngine.UI;
 using Zenject;
 
-public class PauseMenuSwitch : Window
+public class PauseMenuSwitch : WindowSwitch
 {
     [SerializeField] private GameObject _settingsPanel;
     [SerializeField] private Button _resumeButton;
@@ -12,8 +13,12 @@ public class PauseMenuSwitch : Window
     [Inject]
     private void Construct(GamePauser gamePauser) => _gamePauser = gamePauser;
 
-    protected override void InitializeInput() => 
-        PlayerInput.PauseMenu.Switch.performed += OnSwitchPerformed;
+    protected override void InitializeInput()
+    {
+        InputHandler.PauseMenuSwitchPressed
+            .Where(value => value)
+            .Subscribe(_ => Switch());
+    }
 
     protected override void Awake()
     {
@@ -24,23 +29,31 @@ public class PauseMenuSwitch : Window
     private void OnDestroy() => 
         _resumeButton.onClick.RemoveListener(OnResumeClicked);
 
-    public override void Open()
+    public override bool Open()
     {
-        base.Open();
+        if (!base.Open())
+            return false;
+        
         _gamePauser.Pause();
+
+        return true;
     }
 
-    public override void Close()
+    public override bool Close()
     {
         if (_settingsPanel.activeSelf)
         {
             Panel.SetActive(true);
             _settingsPanel.SetActive(false);
-            return;
+            return false;
         }
 
-        base.Close();
+        if (!base.Close())
+            return false;
+
         _gamePauser.Unpause();
+
+        return true;
     }
 
     private void OnResumeClicked() => Close();

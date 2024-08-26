@@ -220,34 +220,6 @@
             ]
         },
         {
-            "name": "PauseMenu",
-            "id": "a45349ce-b576-4d1a-9622-9dffb3c11a02",
-            "actions": [
-                {
-                    "name": "Switch",
-                    "type": "Button",
-                    "id": "457c5597-75dd-4544-b674-41484284c01c",
-                    "expectedControlType": "",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                }
-            ],
-            "bindings": [
-                {
-                    "name": "",
-                    "id": "ff5af124-c0e9-44a4-b5a9-b9b63a865b35",
-                    "path": "<Keyboard>/escape",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "Keyboard and Mouse",
-                    "action": "Switch",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                }
-            ]
-        },
-        {
             "name": "SplashScreen",
             "id": "cde6829d-0a91-4a24-bfe5-04f83f85fae6",
             "actions": [
@@ -304,13 +276,31 @@
             ]
         },
         {
-            "name": "Inventory",
-            "id": "eff85bad-07a5-4c85-b8cb-02ebcc7c7679",
+            "name": "Windows",
+            "id": "e99e2a38-1195-4e44-b2ca-4dd6dd13629e",
             "actions": [
                 {
-                    "name": "Switch",
+                    "name": "CloseCurrent",
                     "type": "Button",
-                    "id": "c1734492-2167-4ee8-9518-fbb0da7f129d",
+                    "id": "19555a62-9b11-41c5-8f8e-18b1a6cbacb7",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "PauseMenuSwitch",
+                    "type": "Button",
+                    "id": "b9c92f4c-fb4b-49da-8aa9-a8d94b521b58",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "InventorySwitch",
+                    "type": "Button",
+                    "id": "420eedbb-c8ae-4eda-9478-6505fc58de15",
                     "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
@@ -320,12 +310,34 @@
             "bindings": [
                 {
                     "name": "",
-                    "id": "97dd5ac4-f3ac-4ec0-99c5-438750ac5241",
+                    "id": "718c3ea6-0d5a-435c-a742-6559e6e5c133",
+                    "path": "<Keyboard>/escape",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "PauseMenuSwitch",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "61c6cc35-dd32-4e3a-91ae-ccfef614bae2",
                     "path": "<Keyboard>/e",
                     "interactions": "",
                     "processors": "",
-                    "groups": ";Keyboard and Mouse",
-                    "action": "Switch",
+                    "groups": "",
+                    "action": "InventorySwitch",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "84e489b7-172d-462e-80df-e3e0c74043b6",
+                    "path": "<Keyboard>/escape",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "CloseCurrent",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

@@ -243,34 +243,6 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
             ]
         },
         {
-            ""name"": ""PauseMenu"",
-            ""id"": ""a45349ce-b576-4d1a-9622-9dffb3c11a02"",
-            ""actions"": [
-                {
-                    ""name"": ""Switch"",
-                    ""type"": ""Button"",
-                    ""id"": ""457c5597-75dd-4544-b674-41484284c01c"",
-                    ""expectedControlType"": """",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
-                }
-            ],
-            ""bindings"": [
-                {
-                    ""name"": """",
-                    ""id"": ""ff5af124-c0e9-44a4-b5a9-b9b63a865b35"",
-                    ""path"": ""<Keyboard>/escape"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""Keyboard and Mouse"",
-                    ""action"": ""Switch"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                }
-            ]
-        },
-        {
             ""name"": ""SplashScreen"",
             ""id"": ""cde6829d-0a91-4a24-bfe5-04f83f85fae6"",
             ""actions"": [
@@ -327,13 +299,31 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
             ]
         },
         {
-            ""name"": ""Inventory"",
-            ""id"": ""eff85bad-07a5-4c85-b8cb-02ebcc7c7679"",
+            ""name"": ""Windows"",
+            ""id"": ""e99e2a38-1195-4e44-b2ca-4dd6dd13629e"",
             ""actions"": [
                 {
-                    ""name"": ""Switch"",
+                    ""name"": ""CloseCurrent"",
                     ""type"": ""Button"",
-                    ""id"": ""c1734492-2167-4ee8-9518-fbb0da7f129d"",
+                    ""id"": ""19555a62-9b11-41c5-8f8e-18b1a6cbacb7"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""PauseMenuSwitch"",
+                    ""type"": ""Button"",
+                    ""id"": ""b9c92f4c-fb4b-49da-8aa9-a8d94b521b58"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""InventorySwitch"",
+                    ""type"": ""Button"",
+                    ""id"": ""420eedbb-c8ae-4eda-9478-6505fc58de15"",
                     ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """",
@@ -343,12 +333,34 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
             ""bindings"": [
                 {
                     ""name"": """",
-                    ""id"": ""97dd5ac4-f3ac-4ec0-99c5-438750ac5241"",
+                    ""id"": ""718c3ea6-0d5a-435c-a742-6559e6e5c133"",
+                    ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""PauseMenuSwitch"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""61c6cc35-dd32-4e3a-91ae-ccfef614bae2"",
                     ""path"": ""<Keyboard>/e"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": "";Keyboard and Mouse"",
-                    ""action"": ""Switch"",
+                    ""groups"": """",
+                    ""action"": ""InventorySwitch"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""84e489b7-172d-462e-80df-e3e0c74043b6"",
+                    ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""CloseCurrent"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -392,27 +404,25 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
         m_Player_Jump = m_Player.FindAction("Jump", throwIfNotFound: true);
         m_Player_Run = m_Player.FindAction("Run", throwIfNotFound: true);
         m_Player_TogglePerspective = m_Player.FindAction("TogglePerspective", throwIfNotFound: true);
-        // PauseMenu
-        m_PauseMenu = asset.FindActionMap("PauseMenu", throwIfNotFound: true);
-        m_PauseMenu_Switch = m_PauseMenu.FindAction("Switch", throwIfNotFound: true);
         // SplashScreen
         m_SplashScreen = asset.FindActionMap("SplashScreen", throwIfNotFound: true);
         m_SplashScreen_Pass = m_SplashScreen.FindAction("Pass", throwIfNotFound: true);
         // Credits
         m_Credits = asset.FindActionMap("Credits", throwIfNotFound: true);
         m_Credits_SpeedUp = m_Credits.FindAction("SpeedUp", throwIfNotFound: true);
-        // Inventory
-        m_Inventory = asset.FindActionMap("Inventory", throwIfNotFound: true);
-        m_Inventory_Switch = m_Inventory.FindAction("Switch", throwIfNotFound: true);
+        // Windows
+        m_Windows = asset.FindActionMap("Windows", throwIfNotFound: true);
+        m_Windows_CloseCurrent = m_Windows.FindAction("CloseCurrent", throwIfNotFound: true);
+        m_Windows_PauseMenuSwitch = m_Windows.FindAction("PauseMenuSwitch", throwIfNotFound: true);
+        m_Windows_InventorySwitch = m_Windows.FindAction("InventorySwitch", throwIfNotFound: true);
     }
 
     ~@PlayerInput()
     {
         Debug.Assert(!m_Player.enabled, "This will cause a leak and performance issues, PlayerInput.Player.Disable() has not been called.");
-        Debug.Assert(!m_PauseMenu.enabled, "This will cause a leak and performance issues, PlayerInput.PauseMenu.Disable() has not been called.");
         Debug.Assert(!m_SplashScreen.enabled, "This will cause a leak and performance issues, PlayerInput.SplashScreen.Disable() has not been called.");
         Debug.Assert(!m_Credits.enabled, "This will cause a leak and performance issues, PlayerInput.Credits.Disable() has not been called.");
-        Debug.Assert(!m_Inventory.enabled, "This will cause a leak and performance issues, PlayerInput.Inventory.Disable() has not been called.");
+        Debug.Assert(!m_Windows.enabled, "This will cause a leak and performance issues, PlayerInput.Windows.Disable() has not been called.");
     }
 
     public void Dispose()
@@ -549,52 +559,6 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
     }
     public PlayerActions @Player => new PlayerActions(this);
 
-    // PauseMenu
-    private readonly InputActionMap m_PauseMenu;
-    private List<IPauseMenuActions> m_PauseMenuActionsCallbackInterfaces = new List<IPauseMenuActions>();
-    private readonly InputAction m_PauseMenu_Switch;
-    public struct PauseMenuActions
-    {
-        private @PlayerInput m_Wrapper;
-        public PauseMenuActions(@PlayerInput wrapper) { m_Wrapper = wrapper; }
-        public InputAction @Switch => m_Wrapper.m_PauseMenu_Switch;
-        public InputActionMap Get() { return m_Wrapper.m_PauseMenu; }
-        public void Enable() { Get().Enable(); }
-        public void Disable() { Get().Disable(); }
-        public bool enabled => Get().enabled;
-        public static implicit operator InputActionMap(PauseMenuActions set) { return set.Get(); }
-        public void AddCallbacks(IPauseMenuActions instance)
-        {
-            if (instance == null || m_Wrapper.m_PauseMenuActionsCallbackInterfaces.Contains(instance)) return;
-            m_Wrapper.m_PauseMenuActionsCallbackInterfaces.Add(instance);
-            @Switch.started += instance.OnSwitch;
-            @Switch.performed += instance.OnSwitch;
-            @Switch.canceled += instance.OnSwitch;
-        }
-
-        private void UnregisterCallbacks(IPauseMenuActions instance)
-        {
-            @Switch.started -= instance.OnSwitch;
-            @Switch.performed -= instance.OnSwitch;
-            @Switch.canceled -= instance.OnSwitch;
-        }
-
-        public void RemoveCallbacks(IPauseMenuActions instance)
-        {
-            if (m_Wrapper.m_PauseMenuActionsCallbackInterfaces.Remove(instance))
-                UnregisterCallbacks(instance);
-        }
-
-        public void SetCallbacks(IPauseMenuActions instance)
-        {
-            foreach (var item in m_Wrapper.m_PauseMenuActionsCallbackInterfaces)
-                UnregisterCallbacks(item);
-            m_Wrapper.m_PauseMenuActionsCallbackInterfaces.Clear();
-            AddCallbacks(instance);
-        }
-    }
-    public PauseMenuActions @PauseMenu => new PauseMenuActions(this);
-
     // SplashScreen
     private readonly InputActionMap m_SplashScreen;
     private List<ISplashScreenActions> m_SplashScreenActionsCallbackInterfaces = new List<ISplashScreenActions>();
@@ -687,51 +651,67 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
     }
     public CreditsActions @Credits => new CreditsActions(this);
 
-    // Inventory
-    private readonly InputActionMap m_Inventory;
-    private List<IInventoryActions> m_InventoryActionsCallbackInterfaces = new List<IInventoryActions>();
-    private readonly InputAction m_Inventory_Switch;
-    public struct InventoryActions
+    // Windows
+    private readonly InputActionMap m_Windows;
+    private List<IWindowsActions> m_WindowsActionsCallbackInterfaces = new List<IWindowsActions>();
+    private readonly InputAction m_Windows_CloseCurrent;
+    private readonly InputAction m_Windows_PauseMenuSwitch;
+    private readonly InputAction m_Windows_InventorySwitch;
+    public struct WindowsActions
     {
         private @PlayerInput m_Wrapper;
-        public InventoryActions(@PlayerInput wrapper) { m_Wrapper = wrapper; }
-        public InputAction @Switch => m_Wrapper.m_Inventory_Switch;
-        public InputActionMap Get() { return m_Wrapper.m_Inventory; }
+        public WindowsActions(@PlayerInput wrapper) { m_Wrapper = wrapper; }
+        public InputAction @CloseCurrent => m_Wrapper.m_Windows_CloseCurrent;
+        public InputAction @PauseMenuSwitch => m_Wrapper.m_Windows_PauseMenuSwitch;
+        public InputAction @InventorySwitch => m_Wrapper.m_Windows_InventorySwitch;
+        public InputActionMap Get() { return m_Wrapper.m_Windows; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
         public bool enabled => Get().enabled;
-        public static implicit operator InputActionMap(InventoryActions set) { return set.Get(); }
-        public void AddCallbacks(IInventoryActions instance)
+        public static implicit operator InputActionMap(WindowsActions set) { return set.Get(); }
+        public void AddCallbacks(IWindowsActions instance)
         {
-            if (instance == null || m_Wrapper.m_InventoryActionsCallbackInterfaces.Contains(instance)) return;
-            m_Wrapper.m_InventoryActionsCallbackInterfaces.Add(instance);
-            @Switch.started += instance.OnSwitch;
-            @Switch.performed += instance.OnSwitch;
-            @Switch.canceled += instance.OnSwitch;
+            if (instance == null || m_Wrapper.m_WindowsActionsCallbackInterfaces.Contains(instance)) return;
+            m_Wrapper.m_WindowsActionsCallbackInterfaces.Add(instance);
+            @CloseCurrent.started += instance.OnCloseCurrent;
+            @CloseCurrent.performed += instance.OnCloseCurrent;
+            @CloseCurrent.canceled += instance.OnCloseCurrent;
+            @PauseMenuSwitch.started += instance.OnPauseMenuSwitch;
+            @PauseMenuSwitch.performed += instance.OnPauseMenuSwitch;
+            @PauseMenuSwitch.canceled += instance.OnPauseMenuSwitch;
+            @InventorySwitch.started += instance.OnInventorySwitch;
+            @InventorySwitch.performed += instance.OnInventorySwitch;
+            @InventorySwitch.canceled += instance.OnInventorySwitch;
         }
 
-        private void UnregisterCallbacks(IInventoryActions instance)
+        private void UnregisterCallbacks(IWindowsActions instance)
         {
-            @Switch.started -= instance.OnSwitch;
-            @Switch.performed -= instance.OnSwitch;
-            @Switch.canceled -= instance.OnSwitch;
+            @CloseCurrent.started -= instance.OnCloseCurrent;
+            @CloseCurrent.performed -= instance.OnCloseCurrent;
+            @CloseCurrent.canceled -= instance.OnCloseCurrent;
+            @PauseMenuSwitch.started -= instance.OnPauseMenuSwitch;
+            @PauseMenuSwitch.performed -= instance.OnPauseMenuSwitch;
+            @PauseMenuSwitch.canceled -= instance.OnPauseMenuSwitch;
+            @InventorySwitch.started -= instance.OnInventorySwitch;
+            @InventorySwitch.performed -= instance.OnInventorySwitch;
+            @InventorySwitch.canceled -= instance.OnInventorySwitch;
         }
 
-        public void RemoveCallbacks(IInventoryActions instance)
+        public void RemoveCallbacks(IWindowsActions instance)
         {
-            if (m_Wrapper.m_InventoryActionsCallbackInterfaces.Remove(instance))
+            if (m_Wrapper.m_WindowsActionsCallbackInterfaces.Remove(instance))
                 UnregisterCallbacks(instance);
         }
 
-        public void SetCallbacks(IInventoryActions instance)
+        public void SetCallbacks(IWindowsActions instance)
         {
-            foreach (var item in m_Wrapper.m_InventoryActionsCallbackInterfaces)
+            foreach (var item in m_Wrapper.m_WindowsActionsCallbackInterfaces)
                 UnregisterCallbacks(item);
-            m_Wrapper.m_InventoryActionsCallbackInterfaces.Clear();
+            m_Wrapper.m_WindowsActionsCallbackInterfaces.Clear();
             AddCallbacks(instance);
         }
     }
-    public InventoryActions @Inventory => new InventoryActions(this);
+    public WindowsActions @Windows => new WindowsActions(this);
     private int m_KeyboardandMouseSchemeIndex = -1;
     public InputControlScheme KeyboardandMouseScheme
     {
@@ -758,10 +738,6 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
         void OnRun(InputAction.CallbackContext context);
         void OnTogglePerspective(InputAction.CallbackContext context);
     }
-    public interface IPauseMenuActions
-    {
-        void OnSwitch(InputAction.CallbackContext context);
-    }
     public interface ISplashScreenActions
     {
         void OnPass(InputAction.CallbackContext context);
@@ -770,8 +746,10 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
     {
         void OnSpeedUp(InputAction.CallbackContext context);
     }
-    public interface IInventoryActions
+    public interface IWindowsActions
     {
-        void OnSwitch(InputAction.CallbackContext context);
+        void OnCloseCurrent(InputAction.CallbackContext context);
+        void OnPauseMenuSwitch(InputAction.CallbackContext context);
+        void OnInventorySwitch(InputAction.CallbackContext context);
     }
 }

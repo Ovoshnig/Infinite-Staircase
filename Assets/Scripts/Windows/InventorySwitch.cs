@@ -1,5 +1,11 @@
-public class InventorySwitch : Window
+using R3;
+
+public class InventorySwitch : WindowSwitch
 {
-    protected override void InitializeInput() => 
-        PlayerInput.Inventory.Switch.performed += OnSwitchPerformed;
+    protected override void InitializeInput()
+    {
+        InputHandler.InventorySwitchPressed
+            .Where(value => value)
+            .Subscribe(_ => Switch());
+    }
 }
