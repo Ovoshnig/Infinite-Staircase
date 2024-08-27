@@ -126,9 +126,9 @@ public class MusicPlayer : MonoBehaviour
     private async UniTask<AudioClip> LoadClip(string path)
     {
         var request = Resources.LoadAsync<AudioClip>(path);
-        var clip = await request.ToUniTask(cancellationToken: _cts.Token);
+        var clip = await request.ToUniTask(cancellationToken: _cts.Token) as AudioClip;
 
-        return (AudioClip)clip;
+        return clip;
     }
 
     private void ReleaseClip(AudioClip clip)
