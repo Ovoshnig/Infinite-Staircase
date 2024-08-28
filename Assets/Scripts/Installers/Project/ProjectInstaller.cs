@@ -11,8 +11,8 @@ public class ProjectInstaller : MonoInstaller
 #if !UNITY_EDITOR
         Container.BindInterfacesAndSelfTo<SplashScreenPasser>().FromNew().AsSingle();
 #endif
-        Container.BindInterfacesAndSelfTo<SaveSaver>().FromNew().AsSingle();
-        Container.BindInterfacesAndSelfTo<SettingsSaver>().FromNew().AsSingle();
+        Container.BindInterfacesAndSelfTo<SaveStorage>().FromNew().AsSingle();
+        Container.BindInterfacesAndSelfTo<SettingsStorage>().FromNew().AsSingle();
         Container.BindInterfacesAndSelfTo<SceneSwitch>().FromNew().AsSingle();
         Container.BindInterfacesAndSelfTo<GamePauser>().FromNew().AsSingle();
         Container.BindInterfacesAndSelfTo<AudioMixerGroup>().FromInstance(_audioMixerGroup).AsSingle();

@@ -9,10 +9,10 @@ public class ResetWarning : MonoBehaviour
     [SerializeField] private Button _yesButton;
     [SerializeField] private Button _noButton;
 
-    private SaveSaver _saveSaver;
+    private SaveStorage _saveStorage;
 
     [Inject]
-    private void Construct(SaveSaver saveSaver) => _saveSaver = saveSaver;
+    private void Construct(SaveStorage saveStorage) => _saveStorage = saveStorage;
 
     private void OnEnable()
     {
@@ -28,8 +28,8 @@ public class ResetWarning : MonoBehaviour
 
     private void OnYesButtonClicked() 
     {
-        _saveSaver.ResetData();
-        _saveSaver.SaveData(SaveConstants.SaveCreatedKey, false);
+        _saveStorage.ResetData();
+        _saveStorage.Set(SaveConstants.SaveCreatedKey, false);
 
         _gameCreationPanel.SetActive(true);
         gameObject.SetActive(false);

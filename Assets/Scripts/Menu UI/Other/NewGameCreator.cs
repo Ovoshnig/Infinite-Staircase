@@ -15,13 +15,13 @@ public class NewGameCreator : MonoBehaviour
 
     private readonly Random _random = new();
     private SceneSwitch _sceneSwitch;
-    private SaveSaver _saveSaver;
+    private SaveStorage _saveStorage;
 
     [Inject]
-    private void Construct(SceneSwitch sceneSwitch, SaveSaver saveSaver)
+    private void Construct(SceneSwitch sceneSwitch, SaveStorage saveStorage)
     {
         _sceneSwitch = sceneSwitch;
-        _saveSaver = saveSaver;
+        _saveStorage = saveStorage;
     }
 
     private void OnEnable()
@@ -55,8 +55,8 @@ public class NewGameCreator : MonoBehaviour
         else 
             seed = Convert.ToInt32(_seedInputField.text); 
 
-        _saveSaver.SaveData(SaveConstants.SaveCreatedKey, true);
-        _saveSaver.SaveData(SaveConstants.SeedKey, seed);
+        _saveStorage.Set(SaveConstants.SaveCreatedKey, true);
+        _saveStorage.Set(SaveConstants.SeedKey, seed);
         _sceneSwitch.LoadFirstLevel().Forget();
     }
 

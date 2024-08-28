@@ -11,16 +11,16 @@ public sealed class MainMenu : Menu
     [SerializeField] private GameObject _resetWarningPanel;
     [SerializeField] private GameObject _gameCreationPanel;
 
-    private SaveSaver _saveSaver;
+    private SaveStorage _saveStorage;
 
     [Inject]
-    private void Construct(SaveSaver saveSaver) => _saveSaver = saveSaver;
+    private void Construct(SaveStorage saveStorage) => _saveStorage = saveStorage;
 
     protected override void OnEnable()
     {
         base.OnEnable();
 
-        _continueGameButton.interactable = _saveSaver.LoadData(SaveConstants.SaveCreatedKey, false);
+        _continueGameButton.interactable = _saveStorage.Get(SaveConstants.SaveCreatedKey, false);
     }
 
     protected override void InitializeSettings()
@@ -53,7 +53,7 @@ public sealed class MainMenu : Menu
 
     private void OnNewGameButtonClicked()
     {
-        if (_saveSaver.LoadData(SaveConstants.SaveCreatedKey, false))
+        if (_saveStorage.Get(SaveConstants.SaveCreatedKey, false))
             _resetWarningPanel.SetActive(true);
         else
             _gameCreationPanel.SetActive(true);

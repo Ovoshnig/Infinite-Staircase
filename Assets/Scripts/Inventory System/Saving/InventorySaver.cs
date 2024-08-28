@@ -3,20 +3,20 @@ using Zenject;
 
 public class InventorySaver
 {
-    private readonly SaveSaver _saveSaver;
+    private readonly SaveStorage _saveStorage;
     private readonly ItemDataRepository _itemDataRepository;
 
     [Inject]
-    public InventorySaver(SaveSaver saveSaver, ItemDataRepository itemDataRepository)
+    public InventorySaver(SaveStorage saveStorage, ItemDataRepository itemDataRepository)
     {
-        _saveSaver = saveSaver;
+        _saveStorage = saveStorage;
         _itemDataRepository = itemDataRepository;
     }
 
     public void LoadSlots(SlotView[] slotViews)
     {
         SlotData[] defaultSlotArray = slotViews.Select(_ => new SlotData()).ToArray();
-        SlotData[] slotDataArray = _saveSaver.LoadData(SaveConstants.InventoryKey, defaultSlotArray);
+        SlotData[] slotDataArray = _saveStorage.Get(SaveConstants.InventoryKey, defaultSlotArray);
 
         for (int i = 0; i < slotViews.Length; i++)
             slotViews[i].Load(slotDataArray[i], _itemDataRepository);
@@ -26,6 +26,6 @@ public class InventorySaver
     {
         for (int i = 0; i < slotViews.Length; i++)
             slotDataArray[i] = slotViews[i].Save();
-        _saveSaver.SaveData(SaveConstants.InventoryKey, slotDataArray);
+        _saveStorage.Set(SaveConstants.InventoryKey, slotDataArray);
     }
 }
