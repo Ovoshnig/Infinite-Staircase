@@ -1,3 +1,4 @@
+using Cryptography = System.Security.Cryptography;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -14,6 +15,10 @@ public sealed class SaveStorage : DataStorage
     protected override void LoadData()
     {
         base.LoadData();
+
+#if UNITY_EDITOR
+        return;
+#endif
 
         if (File.Exists(FilePath) && File.Exists(HashFilePath))
         {
@@ -75,7 +80,7 @@ public sealed class SaveStorage : DataStorage
 
     private string CalculateHash(string filePath)
     {
-        using var sha256 = System.Security.Cryptography.SHA256.Create();
+        using var sha256 = Cryptography.SHA256.Create();
         byte[] fileBytes = File.ReadAllBytes(filePath);
         byte[] hashBytes = sha256.ComputeHash(fileBytes);
 
