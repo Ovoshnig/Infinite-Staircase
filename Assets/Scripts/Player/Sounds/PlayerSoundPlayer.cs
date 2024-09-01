@@ -2,17 +2,21 @@ using R3;
 using Random = System.Random;
 using System;
 using UnityEngine;
+using Zenject;
 
 [RequireComponent(typeof(AudioSource))]
 public class PlayerSoundPlayer : MonoBehaviour
 {
-    [SerializeField] private PlayerState _playerState;
-
+    private PlayerState _playerState;
     private AudioSource _audioSource;
     private AudioClip[] _footstepClips;
     private AudioClip[] _landClips;
     private Random _random;
     private IDisposable _disposable;
+
+
+    [Inject]
+    private void Construct(PlayerState playerState) => _playerState = playerState;
 
     private void Awake()
     {

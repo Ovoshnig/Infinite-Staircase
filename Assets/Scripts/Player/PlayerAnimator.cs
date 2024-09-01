@@ -1,13 +1,16 @@
 using R3;
 using UnityEngine;
+using Zenject;
 
 [RequireComponent(typeof(Animator))]
 public class PlayerAnimator : MonoBehaviour
 {
-    [SerializeField] private PlayerState _playerState;
-
+    private PlayerState _playerState;
     private Animator _animator;
     private CompositeDisposable _compositeDisposable;
+
+    [Inject]
+    private void Construct(PlayerState playerState) => _playerState = playerState;
 
     private void Awake()
     {

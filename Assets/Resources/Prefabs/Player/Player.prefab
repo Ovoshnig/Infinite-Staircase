@@ -27,7 +27,7 @@ Transform:
   m_GameObject: {fileID: 2471924201324521725}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -3.293185e-24, w: 1}
-  m_LocalPosition: {x: 0, y: 0.82819986, z: 0.307}
+  m_LocalPosition: {x: 0, y: 0.82819986, z: 0.079}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -53,7 +53,7 @@ MonoBehaviour:
   m_StreamingVersion: 20230301
   m_LegacyPriority: 0
   Target:
-    TrackingTarget: {fileID: 5774256678341045406}
+    TrackingTarget: {fileID: 0}
     LookAtTarget: {fileID: 0}
     CustomLookAtTarget: 0
   Lens:
@@ -88,9 +88,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8c09e2d4f386ba54d85e6f46e7059c67, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _camera: {fileID: 1444287498173384175}
   _xRotationLimitUp: 90
   _xRotationLimitDown: 90
-  _playerState: {fileID: 6779991525379536529}
 --- !u!1 &3472763440191899071
 GameObject:
   m_ObjectHideFlags: 0
@@ -101,8 +101,9 @@ GameObject:
   m_Component:
   - component: {fileID: 1473590532434987169}
   - component: {fileID: 9036547352052814359}
-  - component: {fileID: 6779991525379536529}
   - component: {fileID: 8294774075742948232}
+  - component: {fileID: 1982351336456751812}
+  - component: {fileID: 5356522404496909390}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -155,18 +156,6 @@ CharacterController:
   m_SkinWidth: 0.04
   m_MinMoveDistance: 0
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &6779991525379536529
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3472763440191899071}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3d5347a61d84f3d47b0e333d194cb7a9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &8294774075742948232
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -181,83 +170,34 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _walkSpeed: 3.5
   _runSpeed: 8
-  _jumpForce: 4
-  _gravity: 9.8
---- !u!1 &3678408579661314319
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 2442623955219880933}
-  - component: {fileID: 7154130814911805237}
-  m_Layer: 0
-  m_Name: ThirdCinemachineCamera
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &2442623955219880933
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3678408579661314319}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -3.293185e-24, w: 1}
-  m_LocalPosition: {x: 0.5709999, y: -0.00000035762787, z: -2.7999985}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 6591111226328415157}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &7154130814911805237
+--- !u!114 &1982351336456751812
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3678408579661314319}
+  m_GameObject: {fileID: 3472763440191899071}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f9dfa5b682dcd46bda6128250e975f58, type: 3}
+  m_Script: {fileID: 11500000, guid: ee8fe1cd06c20014da8a0dd234b7633e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Priority:
-    Enabled: 0
-    m_Value: 0
-  OutputChannel: 1
-  StandbyUpdate: 2
-  m_StreamingVersion: 20230301
-  m_LegacyPriority: 0
-  Target:
-    TrackingTarget: {fileID: 6591111226328415157}
-    LookAtTarget: {fileID: 0}
-    CustomLookAtTarget: 0
-  Lens:
-    FieldOfView: 60.000004
-    OrthographicSize: 10
-    NearClipPlane: 0.01
-    FarClipPlane: 150
-    Dutch: 0
-    ModeOverride: 0
-    PhysicalProperties:
-      GateFit: 2
-      SensorSize: {x: 21.946, y: 16.002}
-      LensShift: {x: 0, y: 0}
-      FocusDistance: 10
-      Iso: 200
-      ShutterSpeed: 0.005
-      Aperture: 16
-      BladeCount: 5
-      Curvature: {x: 2, y: 11}
-      BarrelClipping: 0.25
-      Anamorphism: 0
-  BlendHint: 0
+  _walkSpeed: 3.5
+  _runSpeed: 8
+--- !u!114 &5356522404496909390
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3472763440191899071}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2adc91573db404a458556a5e4e3c5563, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _jumpForce: 4
+  _gravity: 9.81
 --- !u!1 &5853495948714013122
 GameObject:
   m_ObjectHideFlags: 0
@@ -267,7 +207,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6591111226328415157}
-  - component: {fileID: 3873610932003152873}
   m_Layer: 0
   m_Name: HeadCenter
   m_TagString: Untagged
@@ -287,25 +226,9 @@ Transform:
   m_LocalPosition: {x: -0, y: 0.831, z: -0.056}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 2442623955219880933}
+  m_Children: []
   m_Father: {fileID: 1473590532434987169}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &3873610932003152873
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5853495948714013122}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8c09e2d4f386ba54d85e6f46e7059c67, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _xRotationLimitUp: 90
-  _xRotationLimitDown: 70
-  _playerState: {fileID: 6779991525379536529}
 --- !u!1 &6603589245619016148
 GameObject:
   m_ObjectHideFlags: 0
@@ -335,7 +258,7 @@ Transform:
   m_GameObject: {fileID: 6603589245619016148}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: -3.293185e-24, w: 1}
-  m_LocalPosition: {x: 0.5709999, y: 0.8309996, z: -2.8559985}
+  m_LocalPosition: {x: 0, y: 0.82819986, z: 0.079}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -372,7 +295,7 @@ Camera:
     y: 0
     width: 1
     height: 1
-  near clip plane: 0.01
+  near clip plane: 0.02
   far clip plane: 150
   field of view: 60.000004
   orthographic: 0
@@ -424,7 +347,7 @@ MonoBehaviour:
     DefaultMode: 2
   DefaultBlend:
     Style: 1
-    Time: 1
+    Time: 0.5
     CustomCurve:
       serializedVersion: 2
       m_Curve: []
@@ -445,7 +368,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _firstPersonCamera: {fileID: 1444287498173384175}
-  _thirdPersonCamera: {fileID: 7154130814911805237}
   _playerScope: {fileID: 531086607461266243}
 --- !u!1001 &1626232243208214694
 PrefabInstance:
@@ -1150,6 +1072,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: -49.74463
       objectReference: {fileID: 0}
+    - target: {fileID: 4285128077695161519, guid: d90ce7795ccb94d448599e87949aaeb4, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4714486289945551513, guid: d90ce7795ccb94d448599e87949aaeb4, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
       value: -3.68663
@@ -1392,7 +1318,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b80aa355acbd3424b84fc159f872fc79, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _playerState: {fileID: 6779991525379536529}
 --- !u!114 &7196659704494101821
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1405,9 +1330,3 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1c8fd97016a1fa04c8476abe0e71d550, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _playerState: {fileID: 6779991525379536529}
---- !u!4 &5774256678341045406 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: -688758972558235039, guid: d90ce7795ccb94d448599e87949aaeb4, type: 3}
-  m_PrefabInstance: {fileID: 2761637334255159039}
-  m_PrefabAsset: {fileID: 0}
