@@ -37,11 +37,8 @@ public class CameraSwitch : MonoBehaviour
             .Subscribe(value => SetCamera(value));
 
         var windowDisposable = _windowTracker.IsOpen
-            .Subscribe(value => 
-            {
-                if (_isFirstPerson.Value)
-                    _playerScope.SetActive(!value);
-            });
+            .Where(_ => _isFirstPerson.Value)
+            .Subscribe(value => _playerScope.SetActive(!value));
 
         _compositeDisposable = new CompositeDisposable()
         {

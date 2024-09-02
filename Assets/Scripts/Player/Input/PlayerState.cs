@@ -5,12 +5,12 @@ using Zenject;
 [RequireComponent(typeof(CharacterController))]
 public class PlayerState : MonoBehaviour
 {
-    private PlayerInputHandler _inputHandler;
     private readonly ReactiveProperty<bool> _isWalking = new(false);
     private readonly ReactiveProperty<bool> _isRunning = new(false);
     private readonly ReactiveProperty<bool> _isJumping = new(false);
     private readonly ReactiveProperty<bool> _isLooking = new(false);
     private readonly ReactiveProperty<bool> _isGrounded = new(false);
+    private PlayerInputHandler _inputHandler;
     private CharacterController _characterController;
     private CompositeDisposable _compositeDisposable;
 
