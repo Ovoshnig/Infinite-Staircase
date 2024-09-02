@@ -5,10 +5,10 @@ using Zenject;
 
 public class CameraSwitch : MonoBehaviour
 {
-    [SerializeField] private CinemachineCamera _firstPersonCamera;
     [SerializeField] private GameObject _playerScope;
 
     private readonly ReactiveProperty<bool> _isFirstPerson = new(true);
+    private CinemachineCamera _firstPersonCamera;
     private CinemachineCamera _thirdPersonCamera;
     private PlayerInputHandler _inputHandler;
     private WindowTracker _windowTracker;
@@ -16,10 +16,12 @@ public class CameraSwitch : MonoBehaviour
 
     [Inject]
     private void Construct(PlayerInputHandler inputHandler, WindowTracker windowTracker,
+        [Inject(Id = BindConstants.FirstPersonCameraId)] CinemachineCamera firstPersonCamera,
         [Inject(Id = BindConstants.ThirdPersonCameraId)] CinemachineCamera thirdPersonCamera)
     {
         _inputHandler = inputHandler;
         _windowTracker = windowTracker;
+        _firstPersonCamera = firstPersonCamera;
         _thirdPersonCamera = thirdPersonCamera;
     }
 

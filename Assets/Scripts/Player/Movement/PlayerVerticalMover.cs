@@ -10,7 +10,7 @@ public class PlayerVerticalMover : MonoBehaviour
 
     private PlayerState _playerState;
     private CharacterController _characterController;
-    private Vector3 _moveDirection;
+    private Vector3 _motion;
     private CompositeDisposable _compositiveDisposable;
 
     [Inject]
@@ -22,11 +22,11 @@ public class PlayerVerticalMover : MonoBehaviour
 
         var jumpDisposable = _playerState.IsJumping
             .Where(value => value)
-            .Subscribe(_ => _moveDirection.y = _jumpForce);
+            .Subscribe(_ => _motion.y = _jumpForce);
 
         var groundEnterDisposable = _playerState.IsGrounded
             .Where(value => value)
-            .Subscribe(_ => _moveDirection.y = -_gravity);
+            .Subscribe(_ => _motion.y = -_gravity);
 
         _compositiveDisposable = new CompositeDisposable()
         { 
@@ -42,8 +42,8 @@ public class PlayerVerticalMover : MonoBehaviour
     private void Fall()
     {
         if (!_playerState.IsGrounded.CurrentValue)
-            _moveDirection.y -= _gravity * Time.deltaTime;
+            _motion.y -= _gravity * Time.deltaTime;
 
-        _characterController.Move(_moveDirection * Time.deltaTime);
+        _characterController.Move(_motion * Time.deltaTime);
     }
 }

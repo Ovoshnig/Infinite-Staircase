@@ -5,6 +5,7 @@ using Zenject;
 public class PlayerInstaller : MonoInstaller
 {
     [SerializeField] private GameObject _playerPrefab;
+    [SerializeField] private GameObject _firstPersonCameraPrefab;
     [SerializeField] private GameObject _thirdPersonCameraPrefab;
     [SerializeField] private Transform _spawnPoint;
 
@@ -35,8 +36,14 @@ public class PlayerInstaller : MonoInstaller
 
         Container
             .Bind<CinemachineCamera>()
+            .WithId(BindConstants.FirstPersonCameraId)
+            .FromComponentInNewPrefab(_firstPersonCameraPrefab)
+            .AsTransient();
+
+        Container
+            .Bind<CinemachineCamera>()
             .WithId(BindConstants.ThirdPersonCameraId)
             .FromComponentInNewPrefab(_thirdPersonCameraPrefab)
-            .AsSingle();
+            .AsTransient();
     }
 }

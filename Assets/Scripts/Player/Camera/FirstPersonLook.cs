@@ -7,8 +7,12 @@ public sealed class FirstPersonLook : PersonLook
 {
     private IDisposable _cameraSwitchDisposable;
 
+    protected override Transform FollowPoint => PlayerTransform.Find(BindConstants.PlayerEyeCenterName);
+
     protected override void Awake()
     {
+        base.Awake();
+
         _cameraSwitchDisposable = CameraSwitch.IsFirstPerson
             .Subscribe(value =>
             {
@@ -17,25 +21,6 @@ public sealed class FirstPersonLook : PersonLook
                 if (value)
                     SkinnedMeshRenderer.shadowCastingMode = ShadowCastingMode.ShadowsOnly;
             });
-    }
-
-    protected override void OnEnable()
-    {
-        base.OnEnable();
-
-        var lookDisposable = PlayerState.IsLooking
-            .Where(value => value)
-            .Subscribe(_ =>
-            {
-                RotationX -= PlayerState.LookInput.y * RotationSpeed;
-                RotationX = Mathf.Clamp(RotationX, -XRotationLimitDown, XRotationLimitUp);
-                transform.localRotation = Quaternion.Euler(RotationX, 0f, 0f);
-
-                RotationY += PlayerState.LookInput.x * RotationSpeed;
-                PlayerTransform.localRotation = Quaternion.Euler(0f, RotationY, 0f);
-            });
-
-        CompositeDisposable.Add(lookDisposable);
     }
 
     protected override void OnDestroy() => _cameraSwitchDisposable?.Dispose();
