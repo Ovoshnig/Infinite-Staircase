@@ -36,14 +36,13 @@ public abstract class PersonLook : MonoBehaviour
     protected Transform PlayerTransform => _playerTransform;
     protected SkinnedMeshRenderer SkinnedMeshRenderer => _skinnedMeshRenderer;
     protected CameraSwitch CameraSwitch => _cameraSwitch;
-    protected CompositeDisposable CompositeDisposable { get; private set; }
+    protected bool IsSelected { get; set; } = false;
+    protected CompositeDisposable PermanentCompositeDisposable { get; private set; }
+    protected CompositeDisposable EnablingCompositeDisposable { get; private set; }
 
-    protected virtual void Awake() => _camera.Follow = FollowPoint;
-
-    protected virtual void OnEnable()
+    protected virtual void Awake()
     {
-        var sensitivityDisposable = _lookTuner.Sensitivity
-            .Subscribe(value => _rotationSpeed = value);
+        _camera.Follow = FollowPoint;
 
         var lookDisposable = _playerState.IsLooking
             .Where(value => value)
@@ -55,23 +54,37 @@ public abstract class PersonLook : MonoBehaviour
                 transform.localRotation = Quaternion.Euler(_rotationX, _rotationY, 0f);
             });
 
-        CompositeDisposable = new CompositeDisposable()
+        PermanentCompositeDisposable = new CompositeDisposable()
         {
-            sensitivityDisposable,
             lookDisposable
         };
     }
 
-    protected virtual void OnDisable() => CompositeDisposable?.Dispose();
-
-    protected virtual void OnDestroy()
+    protected virtual void OnEnable()
     {
+        var sensitivityDisposable = _lookTuner.Sensitivity
+            .Subscribe(value => _rotationSpeed = value);
+
+        EnablingCompositeDisposable = new CompositeDisposable()
+        {
+            sensitivityDisposable
+        };
     }
+
+    protected virtual void OnDisable() => EnablingCompositeDisposable?.Dispose();
+
+    protected virtual void OnDestroy() => PermanentCompositeDisposable?.Dispose();
 
     protected virtual void Update()
     {
         transform.position = FollowPoint.position;
 
+        if (IsSelected)
+            RotatePlayer();
+    }
+
+    protected virtual void RotatePlayer()
+    {
         if (_playerState.IsWalking.CurrentValue)
         {
             Vector3 inputDirection = new(_playerState.WalkInput.x, 0, _playerState.WalkInput.y);
