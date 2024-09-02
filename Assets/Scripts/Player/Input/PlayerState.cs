@@ -1,11 +1,11 @@
 using R3;
-using System;
 using UnityEngine;
 using Zenject;
 
-public class PlayerState : IInitializable, IDisposable
+[RequireComponent(typeof(CharacterController))]
+public class PlayerState : MonoBehaviour
 {
-    private readonly PlayerInputHandler _inputHandler;
+    private PlayerInputHandler _inputHandler;
     private readonly ReactiveProperty<bool> _isWalking = new(false);
     private readonly ReactiveProperty<bool> _isRunning = new(false);
     private readonly ReactiveProperty<bool> _isJumping = new(false);
@@ -15,7 +15,7 @@ public class PlayerState : IInitializable, IDisposable
     private CompositeDisposable _compositeDisposable;
 
     [Inject]
-    public PlayerState(PlayerInputHandler inputHandler) => _inputHandler = inputHandler;
+    private void Construct(PlayerInputHandler inputHandler) => _inputHandler = inputHandler;
 
     public Vector2 WalkInput => _inputHandler.WalkInput;
     public Vector2 LookInput => _inputHandler.LookInput;
@@ -25,9 +25,9 @@ public class PlayerState : IInitializable, IDisposable
     public ReadOnlyReactiveProperty<bool> IsLooking => _isLooking;
     public ReadOnlyReactiveProperty<bool> IsGrounded => _isGrounded;
 
-    public void Initialize()
+    public void Awake()
     {
-        _characterController = UnityEngine.Object.FindFirstObjectByType<CharacterController>();
+        _characterController = GetComponent<CharacterController>();
 
         var walkDisposable = _inputHandler.IsWalkPressed
             .Subscribe(value =>
@@ -46,7 +46,7 @@ public class PlayerState : IInitializable, IDisposable
             .Subscribe(value => _isLooking.Value = value);
 
         var groundDisposable = Observable.EveryUpdate()
-            .Select(_ => _characterController.isGrounded)
+            .Select(_ => _characterController != null && _characterController.isGrounded)
             .DistinctUntilChanged()
             .Subscribe(value => _isGrounded.Value = value);
 
@@ -65,5 +65,5 @@ public class PlayerState : IInitializable, IDisposable
         };
     }
 
-    public void Dispose() => _compositeDisposable?.Dispose();
+    public void Destroy() => _compositeDisposable?.Dispose();
 }

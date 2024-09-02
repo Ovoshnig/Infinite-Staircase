@@ -1,3 +1,4 @@
+using System;
 using Unity.Cinemachine;
 using UnityEngine;
 using Zenject;
@@ -17,14 +18,9 @@ public class PlayerInstaller : MonoInstaller
             .AsSingle();
 
         Container
-            .BindInterfacesAndSelfTo<PlayerState>()
-            .FromNew()
-            .AsSingle();
-
-        Container
-            .Bind(new System.Type[] 
-            { 
-                typeof(CharacterController), 
+            .Bind(new Type[] 
+            {
+                typeof(PlayerState),
                 typeof(CameraSwitch), 
                 typeof(SkinnedMeshRenderer) 
             })
@@ -35,15 +31,15 @@ public class PlayerInstaller : MonoInstaller
             .NonLazy();
 
         Container
-            .Bind<CinemachineCamera>()
+            .Bind<FirstPersonLook>()
             .WithId(BindConstants.FirstPersonCameraId)
             .FromComponentInNewPrefab(_firstPersonCameraPrefab)
-            .AsTransient();
+            .AsSingle();
 
         Container
-            .Bind<CinemachineCamera>()
+            .Bind<ThirdPersonLook>()
             .WithId(BindConstants.ThirdPersonCameraId)
             .FromComponentInNewPrefab(_thirdPersonCameraPrefab)
-            .AsTransient();
+            .AsSingle();
     }
 }

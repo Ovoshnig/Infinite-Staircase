@@ -16,13 +16,13 @@ public class CameraSwitch : MonoBehaviour
 
     [Inject]
     private void Construct(PlayerInputHandler inputHandler, WindowTracker windowTracker,
-        [Inject(Id = BindConstants.FirstPersonCameraId)] CinemachineCamera firstPersonCamera,
-        [Inject(Id = BindConstants.ThirdPersonCameraId)] CinemachineCamera thirdPersonCamera)
+        [Inject(Id = BindConstants.FirstPersonCameraId)] FirstPersonLook firstPersonLook,
+        [Inject(Id = BindConstants.ThirdPersonCameraId)] ThirdPersonLook thirdPersonLook)
     {
         _inputHandler = inputHandler;
         _windowTracker = windowTracker;
-        _firstPersonCamera = firstPersonCamera;
-        _thirdPersonCamera = thirdPersonCamera;
+        _firstPersonCamera = firstPersonLook.Camera;
+        _thirdPersonCamera = thirdPersonLook.Camera;
     }
 
     public ReadOnlyReactiveProperty<bool> IsFirstPerson => _isFirstPerson;

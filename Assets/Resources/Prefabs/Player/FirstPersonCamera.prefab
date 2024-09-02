@@ -91,4 +91,4 @@ MonoBehaviour:
   _camera: {fileID: 7151668548597097923}
   _xRotationLimitUp: 90
   _xRotationLimitDown: 90
-  _slewSpeed: 10
+  _slewSpeed: 7

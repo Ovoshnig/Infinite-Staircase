@@ -8,11 +8,10 @@ public abstract class PersonLook : MonoBehaviour
     [SerializeField] private CinemachineCamera _camera;
     [SerializeField, Range(0f, 180f)] private float _xRotationLimitUp;
     [SerializeField, Range(0f, 180f)] private float _xRotationLimitDown;
-    [SerializeField, Min(1f)] private float _slewSpeed = 1f;
 
+    private CameraSwitch _cameraSwitch;
     private Transform _playerTransform;
     private SkinnedMeshRenderer _skinnedMeshRenderer;
-    private CameraSwitch _cameraSwitch;
     private PlayerState _playerState;
     private LookTuner _lookTuner;
     private float _rotationSpeed = 1.0f;
@@ -21,29 +20,29 @@ public abstract class PersonLook : MonoBehaviour
 
     [Inject]
     protected void Construct([Inject(Id = BindConstants.PlayerId)] CameraSwitch cameraSwitch,
-        [Inject(Id = BindConstants.PlayerId)] CharacterController characterController,
+        [Inject(Id = BindConstants.PlayerId)] PlayerState playerState,
         [Inject(Id = BindConstants.PlayerId)] SkinnedMeshRenderer skinnedMeshRenderer,
-        PlayerState playerState, LookTuner lookTuner)
+        LookTuner lookTuner)
     {
         _cameraSwitch = cameraSwitch;
-        _playerTransform = characterController.transform;
-        _skinnedMeshRenderer = skinnedMeshRenderer;
         _playerState = playerState;
+        _playerTransform = playerState.transform;
+        _skinnedMeshRenderer = skinnedMeshRenderer;
         _lookTuner = lookTuner;
     }
+
+    public CinemachineCamera Camera => _camera;
+    public bool IsSelected { get; protected set; } = false;
 
     protected virtual Transform FollowPoint { get; } = null;
     protected Transform PlayerTransform => _playerTransform;
     protected SkinnedMeshRenderer SkinnedMeshRenderer => _skinnedMeshRenderer;
     protected CameraSwitch CameraSwitch => _cameraSwitch;
-    protected bool IsSelected { get; set; } = false;
     protected CompositeDisposable PermanentCompositeDisposable { get; private set; }
     protected CompositeDisposable EnablingCompositeDisposable { get; private set; }
 
     protected virtual void Awake()
     {
-        _camera.Follow = FollowPoint;
-
         var lookDisposable = _playerState.IsLooking
             .Where(value => value)
             .Subscribe(_ =>
@@ -71,27 +70,11 @@ public abstract class PersonLook : MonoBehaviour
         };
     }
 
+    protected virtual void Start() => _camera.Follow = FollowPoint;
+
     protected virtual void OnDisable() => EnablingCompositeDisposable?.Dispose();
 
     protected virtual void OnDestroy() => PermanentCompositeDisposable?.Dispose();
 
-    protected virtual void Update()
-    {
-        transform.position = FollowPoint.position;
-
-        if (IsSelected)
-            RotatePlayer();
-    }
-
-    protected virtual void RotatePlayer()
-    {
-        if (_playerState.IsWalking.CurrentValue)
-        {
-            Vector3 inputDirection = new(_playerState.WalkInput.x, 0, _playerState.WalkInput.y);
-            float targetAngle = Mathf.Atan2(inputDirection.x, inputDirection.z) * Mathf.Rad2Deg;
-            targetAngle += transform.eulerAngles.y;
-            float smoothedAngle = Mathf.LerpAngle(PlayerTransform.eulerAngles.y, targetAngle, Time.deltaTime * _slewSpeed);
-            PlayerTransform.rotation = Quaternion.Euler(0f, smoothedAngle, 0f);
-        }
-    }
+    protected virtual void Update() => transform.position = FollowPoint.position;
 }
