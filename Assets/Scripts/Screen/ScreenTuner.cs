@@ -1,20 +1,21 @@
+using R3;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using UnityEngine.InputSystem;
 using Zenject;
 
 public class ScreenTuner : IInitializable, IDisposable
 {
-    private readonly SettingsStorage _settingsStorage;
-    private readonly PlayerInput _playerInput = new();
+    private readonly ScreenInputHandler _inputHandler;
+    private readonly ReactiveProperty<bool> _isFullScreen = new(Screen.fullScreen);
+    private IDisposable _disposable;
 
     [Inject]
-    public ScreenTuner(SettingsStorage settingsStorage) => _settingsStorage = settingsStorage;
+    public ScreenTuner(ScreenInputHandler screenInputHandler) => _inputHandler = screenInputHandler;
 
     public int CurrentResolutionNumber { get; private set; } = 0;
-    public bool IsFullScreen => Screen.fullScreen;
+    public ReadOnlyReactiveProperty<bool> IsFullScreen => _isFullScreen;
 
     private (int width, int height) CurrentResolution
     {
@@ -28,19 +29,17 @@ public class ScreenTuner : IInitializable, IDisposable
 
     public void Initialize()
     {
-        var (width, height) = _settingsStorage.Get(SettingsConstants.ScreenResolutionKey, CurrentResolution);
-        
-        Screen.SetResolution(width, height, Screen.fullScreen);
-
-        _playerInput.Screen.SwitchFullscreen.performed += OnSwitchFullScreenPerformed;
-        _playerInput.Enable();
+        _disposable = _inputHandler.IsSwitchFullScreenPressed
+            .Where(value => value)
+            .Subscribe(_ => SwitchFullScreen());
     }
 
-    public void Dispose()
-    {
-        _settingsStorage.Set(SettingsConstants.ScreenResolutionKey, CurrentResolution);
+    public void Dispose() => _disposable?.Dispose();
 
-        _playerInput.Disable();
+    public void SwitchFullScreen()
+    {
+        _isFullScreen.Value = !_isFullScreen.Value;
+        Screen.fullScreen = _isFullScreen.Value;
     }
 
     public List<(int width, int height)> GetResolutions()
@@ -66,8 +65,6 @@ public class ScreenTuner : IInitializable, IDisposable
         return resolutions;
     }
 
-    public void SwitchFullScreen() => Screen.fullScreen = !Screen.fullScreen;
-
     public void SetResolution(int number)
     {
         var resolutions = Screen.resolutions;
@@ -82,6 +79,4 @@ public class ScreenTuner : IInitializable, IDisposable
         var resolution = resolutions[number];
         Screen.SetResolution(resolution.width, resolution.height, Screen.fullScreenMode);
     }
-
-    private void OnSwitchFullScreenPerformed(InputAction.CallbackContext _) => SwitchFullScreen();
 }

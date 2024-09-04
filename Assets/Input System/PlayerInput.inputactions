@@ -220,34 +220,6 @@
             ]
         },
         {
-            "name": "SplashScreen",
-            "id": "cde6829d-0a91-4a24-bfe5-04f83f85fae6",
-            "actions": [
-                {
-                    "name": "Pass",
-                    "type": "Button",
-                    "id": "8376583f-ae4e-49fa-ae63-62e7edb4f4fa",
-                    "expectedControlType": "",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                }
-            ],
-            "bindings": [
-                {
-                    "name": "",
-                    "id": "8ab6d183-5731-4ec8-96c6-8e137fae766d",
-                    "path": "<Keyboard>/space",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Pass",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                }
-            ]
-        },
-        {
             "name": "Credits",
             "id": "c70f53b1-65a5-4e4e-9d19-389e4aaafe0d",
             "actions": [
@@ -348,9 +320,18 @@
             "id": "4a6a1ede-c74b-43ed-938b-70cee49c018b",
             "actions": [
                 {
-                    "name": "SwitchFullscreen",
+                    "name": "SwitchFullScreen",
                     "type": "Button",
                     "id": "192f6986-3e29-4929-bc40-94233890cbb2",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "PassSplashImage",
+                    "type": "Button",
+                    "id": "40e8bbde-6c70-4583-a3b5-fc4f7bf85ae0",
                     "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
@@ -365,7 +346,18 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "SwitchFullscreen",
+                    "action": "SwitchFullScreen",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "a06a88c5-6e2d-4673-b6d2-84b397865ccb",
+                    "path": "<Keyboard>/space",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "PassSplashImage",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

@@ -16,7 +16,7 @@ public class ProjectInstaller : MonoInstaller
         Container.BindInterfacesAndSelfTo<SceneSwitch>().FromNew().AsSingle();
         Container.BindInterfacesAndSelfTo<GamePauser>().FromNew().AsSingle();
         Container.BindInterfacesAndSelfTo<AudioMixerGroup>().FromInstance(_audioMixerGroup).AsSingle();
-
+        Container.BindInterfacesAndSelfTo<ScreenInputHandler>().FromNew().AsSingle();
         Container.BindInterfacesAndSelfTo<ScreenTuner>().FromNew().AsSingle();
         Container.BindInterfacesAndSelfTo<LookTuner>().FromNew().AsSingle();
         Container.BindInterfacesAndSelfTo<AudioTuner>().FromNew().AsSingle();
