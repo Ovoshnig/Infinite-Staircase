@@ -1,11 +1,9 @@
 using Cysharp.Threading.Tasks;
 using System.Collections.Generic;
-using System.IO;
 using System.Threading;
 using System;
 using UnityEngine;
 using Zenject;
-using System.Linq;
 
 public class MusicPlayer : MonoBehaviour
 {
@@ -14,12 +12,12 @@ public class MusicPlayer : MonoBehaviour
     private IMusicLoader _musicLoader;
     private ISceneMusicMapper _sceneMusicMapper;
     private SceneSwitch _sceneSwitch;
-    private Dictionary<MusicCategory, List<string>> _musicClipKeys;
+    private Dictionary<MusicCategory, List<string>> _musicClipPaths;
     private CancellationTokenSource _cts = new();
     private AudioClip _pastClip = null;
 
     [Inject]
-    private void Construct(IMusicLoader musicLoader, MusicQueue musicQueue, 
+    private void Construct(IMusicLoader musicLoader, MusicQueue musicQueue,
         ISceneMusicMapper sceneMusicMapper, SceneSwitch sceneSwitch)
     {
         _musicLoader = musicLoader;
@@ -31,7 +29,7 @@ public class MusicPlayer : MonoBehaviour
     private void Awake()
     {
         _audioSource = GetComponent<AudioSource>();
-        _musicClipKeys = LoadMusicClipNames();
+        _musicClipPaths = LoadMusicClipPaths();
 
         _sceneSwitch.SceneLoaded += OnSceneLoaded;
     }
@@ -50,7 +48,7 @@ public class MusicPlayer : MonoBehaviour
 
         var category = _sceneMusicMapper.GetMusicCategory(sceneType);
 
-        if (_musicClipKeys.TryGetValue(category, out var clips))
+        if (_musicClipPaths.TryGetValue(category, out var clips))
             PlayMusic(clips);
         else
             Debug.LogWarning($"No music found for category {category}");
@@ -73,7 +71,7 @@ public class MusicPlayer : MonoBehaviour
 
         var nextClipPath = _musicQueue.GetNextClip();
 
-        if (nextClipPath == null) 
+        if (nextClipPath == null)
             return;
 
         var clip = await _musicLoader.LoadClipAsync(nextClipPath, _cts.Token);
@@ -92,24 +90,23 @@ public class MusicPlayer : MonoBehaviour
         Resources.UnloadAsset(clip);
     }
 
-    private Dictionary<MusicCategory, List<string>> LoadMusicClipNames()
+    private Dictionary<MusicCategory, List<string>> LoadMusicClipPaths()
     {
         var musicClipKeys = new Dictionary<MusicCategory, List<string>>();
 
         foreach (MusicCategory category in Enum.GetValues(typeof(MusicCategory)))
         {
-            var categoryPath = $"{ResourcesConstants.ResourcesPath}/{ResourcesConstants.MusicPath}/{category}";
-            var extension = ".mp3";
+            var categoryPath = $"{ResourcesConstants.MusicPath}/{category}/clipList";
 
-            if (!Directory.Exists(categoryPath))
-                throw new DirectoryNotFoundException(categoryPath);
+            TextAsset clipListAsset = Resources.Load<TextAsset>(categoryPath);
 
-            List<string> clipNames = Directory.GetFiles(categoryPath).ToList();
-            clipNames = clipNames
-                .Where(x => x.EndsWith(extension))
-                .Select(x => x[(ResourcesConstants.ResourcesPath.Length + 1)..^extension.Length])
-                .ToList();
+            if (clipListAsset == null)
+            {
+                Debug.LogError($"Ќе удалось загрузить список клипов дл€ категории {category}.");
+                continue;
+            }
 
+            List<string> clipNames = new(clipListAsset.text.Split(new[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries));
             musicClipKeys[category] = clipNames;
         }
 
