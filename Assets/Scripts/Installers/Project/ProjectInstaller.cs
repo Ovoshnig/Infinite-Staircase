@@ -17,11 +17,7 @@ public class ProjectInstaller : MonoInstaller
         Container.BindInterfacesAndSelfTo<GamePauser>().FromNew().AsSingle();
         Container.BindInterfacesAndSelfTo<AudioMixerGroup>().FromInstance(_audioMixerGroup).AsSingle();
 
-        BindSettings(); 
-    }
-
-    private void BindSettings()
-    {
+        Container.BindInterfacesAndSelfTo<ScreenTuner>().FromNew().AsSingle();
         Container.BindInterfacesAndSelfTo<LookTuner>().FromNew().AsSingle();
         Container.BindInterfacesAndSelfTo<AudioTuner>().FromNew().AsSingle();
         Container.BindInterfacesAndSelfTo<AudioMixerTuner>().FromNew().AsSingle();

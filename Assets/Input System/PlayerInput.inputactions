@@ -342,6 +342,34 @@
                     "isPartOfComposite": false
                 }
             ]
+        },
+        {
+            "name": "Screen",
+            "id": "4a6a1ede-c74b-43ed-938b-70cee49c018b",
+            "actions": [
+                {
+                    "name": "SwitchFullscreen",
+                    "type": "Button",
+                    "id": "192f6986-3e29-4929-bc40-94233890cbb2",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "0695aa78-ce8e-480f-ae45-19a60cf0e34d",
+                    "path": "<Keyboard>/f11",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "SwitchFullscreen",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
         }
     ],
     "controlSchemes": [

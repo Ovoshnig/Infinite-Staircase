@@ -23,10 +23,10 @@ public class AudioTuner : IInitializable, IDisposable
 
     public void Initialize()
     {
-        SoundVolume.Value = _settingsStorage.Get(SettingsConstants.SoundVolumeKey, 
+        _soundVolume.Value = _settingsStorage.Get(SettingsConstants.SoundVolumeKey, 
             _audioSettings.DefaultVolume);
 
-        MusicVolume.Value = _settingsStorage.Get(SettingsConstants.MusicVolumeKey, 
+        _musicVolume.Value = _settingsStorage.Get(SettingsConstants.MusicVolumeKey, 
             _audioSettings.DefaultVolume);
 
         var soundDisposable= SoundVolume
@@ -46,8 +46,8 @@ public class AudioTuner : IInitializable, IDisposable
 
     public void Dispose()
     {
-        _settingsStorage.Set(SettingsConstants.SoundVolumeKey, SoundVolume.Value);
-        _settingsStorage.Set(SettingsConstants.MusicVolumeKey, MusicVolume.Value);
+        _settingsStorage.Set(SettingsConstants.SoundVolumeKey, _soundVolume.Value);
+        _settingsStorage.Set(SettingsConstants.MusicVolumeKey, _musicVolume.Value);
 
         _compositeDisposable?.Dispose();
     }

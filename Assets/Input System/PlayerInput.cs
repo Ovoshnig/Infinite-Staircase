@@ -365,6 +365,34 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": false
                 }
             ]
+        },
+        {
+            ""name"": ""Screen"",
+            ""id"": ""4a6a1ede-c74b-43ed-938b-70cee49c018b"",
+            ""actions"": [
+                {
+                    ""name"": ""SwitchFullscreen"",
+                    ""type"": ""Button"",
+                    ""id"": ""192f6986-3e29-4929-bc40-94233890cbb2"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""0695aa78-ce8e-480f-ae45-19a60cf0e34d"",
+                    ""path"": ""<Keyboard>/f11"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""SwitchFullscreen"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
         }
     ],
     ""controlSchemes"": [
@@ -415,6 +443,9 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
         m_Windows_CloseCurrent = m_Windows.FindAction("CloseCurrent", throwIfNotFound: true);
         m_Windows_PauseMenuSwitch = m_Windows.FindAction("PauseMenuSwitch", throwIfNotFound: true);
         m_Windows_InventorySwitch = m_Windows.FindAction("InventorySwitch", throwIfNotFound: true);
+        // Screen
+        m_Screen = asset.FindActionMap("Screen", throwIfNotFound: true);
+        m_Screen_SwitchFullscreen = m_Screen.FindAction("SwitchFullscreen", throwIfNotFound: true);
     }
 
     ~@PlayerInput()
@@ -423,6 +454,7 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
         Debug.Assert(!m_SplashScreen.enabled, "This will cause a leak and performance issues, PlayerInput.SplashScreen.Disable() has not been called.");
         Debug.Assert(!m_Credits.enabled, "This will cause a leak and performance issues, PlayerInput.Credits.Disable() has not been called.");
         Debug.Assert(!m_Windows.enabled, "This will cause a leak and performance issues, PlayerInput.Windows.Disable() has not been called.");
+        Debug.Assert(!m_Screen.enabled, "This will cause a leak and performance issues, PlayerInput.Screen.Disable() has not been called.");
     }
 
     public void Dispose()
@@ -712,6 +744,52 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
         }
     }
     public WindowsActions @Windows => new WindowsActions(this);
+
+    // Screen
+    private readonly InputActionMap m_Screen;
+    private List<IScreenActions> m_ScreenActionsCallbackInterfaces = new List<IScreenActions>();
+    private readonly InputAction m_Screen_SwitchFullscreen;
+    public struct ScreenActions
+    {
+        private @PlayerInput m_Wrapper;
+        public ScreenActions(@PlayerInput wrapper) { m_Wrapper = wrapper; }
+        public InputAction @SwitchFullscreen => m_Wrapper.m_Screen_SwitchFullscreen;
+        public InputActionMap Get() { return m_Wrapper.m_Screen; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(ScreenActions set) { return set.Get(); }
+        public void AddCallbacks(IScreenActions instance)
+        {
+            if (instance == null || m_Wrapper.m_ScreenActionsCallbackInterfaces.Contains(instance)) return;
+            m_Wrapper.m_ScreenActionsCallbackInterfaces.Add(instance);
+            @SwitchFullscreen.started += instance.OnSwitchFullscreen;
+            @SwitchFullscreen.performed += instance.OnSwitchFullscreen;
+            @SwitchFullscreen.canceled += instance.OnSwitchFullscreen;
+        }
+
+        private void UnregisterCallbacks(IScreenActions instance)
+        {
+            @SwitchFullscreen.started -= instance.OnSwitchFullscreen;
+            @SwitchFullscreen.performed -= instance.OnSwitchFullscreen;
+            @SwitchFullscreen.canceled -= instance.OnSwitchFullscreen;
+        }
+
+        public void RemoveCallbacks(IScreenActions instance)
+        {
+            if (m_Wrapper.m_ScreenActionsCallbackInterfaces.Remove(instance))
+                UnregisterCallbacks(instance);
+        }
+
+        public void SetCallbacks(IScreenActions instance)
+        {
+            foreach (var item in m_Wrapper.m_ScreenActionsCallbackInterfaces)
+                UnregisterCallbacks(item);
+            m_Wrapper.m_ScreenActionsCallbackInterfaces.Clear();
+            AddCallbacks(instance);
+        }
+    }
+    public ScreenActions @Screen => new ScreenActions(this);
     private int m_KeyboardandMouseSchemeIndex = -1;
     public InputControlScheme KeyboardandMouseScheme
     {
@@ -751,5 +829,9 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
         void OnCloseCurrent(InputAction.CallbackContext context);
         void OnPauseMenuSwitch(InputAction.CallbackContext context);
         void OnInventorySwitch(InputAction.CallbackContext context);
+    }
+    public interface IScreenActions
+    {
+        void OnSwitchFullscreen(InputAction.CallbackContext context);
     }
 }

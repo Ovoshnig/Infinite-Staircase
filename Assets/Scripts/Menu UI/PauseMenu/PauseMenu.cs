@@ -1,29 +1,31 @@
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.UI;
+using Zenject;
 
-public sealed class PauseMenu : Menu
+public class PauseMenu : MonoBehaviour
 {
     [SerializeField] private Button _resetLevelButton;
     [SerializeField] private Button _loadMainMenuButton;
 
-    protected override void AddListeners()
-    {
-        base.AddListeners();
+    private SceneSwitch _sceneSwitch;
 
+    [Inject]
+    private void Construct(SceneSwitch sceneSwitch) => _sceneSwitch = sceneSwitch;
+
+    private void OnEnable()
+    {
         _resetLevelButton.onClick.AddListener(OnResetButtonClicked);
         _loadMainMenuButton.onClick.AddListener(OnLoadMainMenuButtonClicked);
     }
 
-    protected override void RemoveListeners()
+    private void OnDisable()
     {
-        base.RemoveListeners();
-
         _resetLevelButton.onClick.RemoveListener(OnResetButtonClicked);
         _loadMainMenuButton.onClick.RemoveListener(OnLoadMainMenuButtonClicked);
     }
 
-    private void OnResetButtonClicked() => SceneSwitch.LoadCurrentLevel();
+    private void OnResetButtonClicked() => _sceneSwitch.LoadCurrentLevel();
 
-    private void OnLoadMainMenuButtonClicked() => SceneSwitch.LoadLevel(0).Forget();
+    private void OnLoadMainMenuButtonClicked() => _sceneSwitch.LoadLevel(0).Forget();
 }

@@ -9,7 +9,6 @@ using TMPro;
 public class NewGameCreator : MonoBehaviour
 {
     [SerializeField] private GameObject _menuPanel;
-    [SerializeField] private Button _closeGameCreationButton;
     [SerializeField] private Button _startGameButton;
     [SerializeField] private TMP_InputField _seedInputField;
 
@@ -26,7 +25,6 @@ public class NewGameCreator : MonoBehaviour
 
     private void OnEnable()
     {
-        _closeGameCreationButton.onClick.AddListener(OnCloseGameCreationButtonClicked);
         _startGameButton.onClick.AddListener(OnStartNewGameButtonClicked);
 
         _seedInputField.onValueChanged.AddListener(OnSeedInputFieldValueChanged);
@@ -34,16 +32,9 @@ public class NewGameCreator : MonoBehaviour
 
     private void OnDisable()
     {
-        _closeGameCreationButton.onClick.RemoveListener(OnCloseGameCreationButtonClicked);
         _startGameButton.onClick.RemoveListener(OnStartNewGameButtonClicked);
 
         _seedInputField.onValueChanged.RemoveListener(OnSeedInputFieldValueChanged);
-    }
-
-    private void OnCloseGameCreationButtonClicked()
-    {
-        _menuPanel.SetActive(true);
-        gameObject.SetActive(false);
     }
 
     private void OnStartNewGameButtonClicked()

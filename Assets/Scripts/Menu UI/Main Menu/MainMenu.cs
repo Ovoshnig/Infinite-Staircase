@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using Zenject;
 
-public sealed class MainMenu : Menu
+public sealed class MainMenu : MonoBehaviour
 {
     [SerializeField] private Button _continueGameButton;
     [SerializeField] private Button _newGameButton;
@@ -12,44 +12,32 @@ public sealed class MainMenu : Menu
     [SerializeField] private GameObject _gameCreationPanel;
 
     private SaveStorage _saveStorage;
+    private SceneSwitch _sceneSwitch;
 
     [Inject]
-    private void Construct(SaveStorage saveStorage) => _saveStorage = saveStorage;
-
-    protected override void OnEnable()
+    private void Construct(SaveStorage saveStorage, SceneSwitch sceneSwitch)
     {
-        base.OnEnable();
+        _saveStorage = saveStorage;
+        _sceneSwitch = sceneSwitch;
+    }
 
+    private void OnEnable()
+    {
         _continueGameButton.interactable = _saveStorage.Get(SaveConstants.SaveCreatedKey, false);
-    }
-
-    protected override void InitializeSettings()
-    {
-        base.InitializeSettings();
-
-        gameObject.SetActive(true);
-        _resetWarningPanel.SetActive(false);
-    }
-
-    protected override void AddListeners()
-    {
-        base.AddListeners();
 
         _continueGameButton.onClick.AddListener(OnContinueGameButtonClicked);
         _newGameButton.onClick.AddListener(OnNewGameButtonClicked);
         _quitGameButton.onClick.AddListener(OnQuitGameButtonClicked);
     }
 
-    protected override void RemoveListeners()
+    private void OnDisable()
     {
-        base.RemoveListeners();
-
         _continueGameButton.onClick.RemoveListener(OnContinueGameButtonClicked);
         _newGameButton.onClick.RemoveListener(OnNewGameButtonClicked);
         _quitGameButton.onClick.RemoveListener(OnQuitGameButtonClicked);
     }
 
-    private void OnContinueGameButtonClicked() => SceneSwitch.LoadAchievedLevel().Forget();
+    private void OnContinueGameButtonClicked() => _sceneSwitch.LoadAchievedLevel().Forget();
 
     private void OnNewGameButtonClicked()
     {

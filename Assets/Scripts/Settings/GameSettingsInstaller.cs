@@ -23,9 +23,10 @@ public class GameSettingsInstaller : ScriptableObjectInstaller<GameSettingsInsta
     [Serializable]
     public class ControlSettings
     {
+        [field: SerializeField] public float MinSensitivity { get; private set; }
         [field: SerializeField] public float MaxSensitivity { get; private set; }
 
-        public float DefaultSensitivity => MaxSensitivity / 2f;
+        public float DefaultSensitivity => (MinSensitivity + MaxSensitivity) / 2f;
     }
 
     [Serializable]

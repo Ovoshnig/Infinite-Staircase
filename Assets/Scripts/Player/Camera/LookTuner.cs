@@ -20,7 +20,7 @@ public class LookTuner : IInitializable, IDisposable
 
     public void Initialize()
     {
-        Sensitivity.Value = _settingsStorage.Get(SettingsConstants.SensitivityKey,
+        _sensitivity.Value = _settingsStorage.Get(SettingsConstants.SensitivityKey,
             _controlSettings.DefaultSensitivity);
 
         _disposable = Sensitivity
@@ -30,7 +30,7 @@ public class LookTuner : IInitializable, IDisposable
 
     public void Dispose()
     {
-        _settingsStorage.Set(SettingsConstants.SensitivityKey, Sensitivity.Value);
+        _settingsStorage.Set(SettingsConstants.SensitivityKey, _sensitivity.Value);
 
         _disposable?.Dispose();
     }
