@@ -14,38 +14,26 @@ public class ScreenTuner : IInitializable, IDisposable
     [Inject]
     public ScreenTuner(ScreenInputHandler screenInputHandler) => _inputHandler = screenInputHandler;
 
-    public int CurrentResolutionNumber { get; private set; } = 0;
+    public List<(int width, int height)> Resolutions { get; private set; }
+    public int CurrentResolutionNumber { get; private set; }
     public ReadOnlyReactiveProperty<bool> IsFullScreen => _isFullScreen;
 
     private (int width, int height) CurrentResolution
     {
         get
         {
-            var resolution = Screen.currentResolution;
-
-            return (resolution.width, resolution.height);
+            if (_isFullScreen.Value)
+                return (Screen.currentResolution.width, Screen.currentResolution.height);
+            else
+                return (Screen.width, Screen.height);
         }
     }
 
     public void Initialize()
     {
-        _disposable = _inputHandler.IsSwitchFullScreenPressed
-            .Where(value => value)
-            .Subscribe(_ => SwitchFullScreen());
-    }
-
-    public void Dispose() => _disposable?.Dispose();
-
-    public void SwitchFullScreen()
-    {
-        _isFullScreen.Value = !_isFullScreen.Value;
-        Screen.fullScreen = _isFullScreen.Value;
-    }
-
-    public List<(int width, int height)> GetResolutions()
-    {
         var resolution = CurrentResolution;
         var resolutions = Screen.resolutions.Select(x => (x.width, x.height)).ToList();
+        Resolutions = resolutions;
 
         if (resolutions.Contains(resolution))
         {
@@ -62,21 +50,30 @@ public class ScreenTuner : IInitializable, IDisposable
             CurrentResolutionNumber = index;
         }
 
-        return resolutions;
+        _disposable = _inputHandler.IsSwitchFullScreenPressed
+            .Where(value => value)
+            .Subscribe(_ => SwitchFullScreen());
+    }
+
+    public void Dispose() => _disposable?.Dispose();
+
+    public void SwitchFullScreen()
+    {
+        _isFullScreen.Value = !_isFullScreen.Value;
+        Screen.fullScreen = _isFullScreen.Value;
     }
 
     public void SetResolution(int number)
     {
-        var resolutions = Screen.resolutions;
-
-        if (number < 0 || number >= resolutions.Length)
+        if (number < 0 || number >= Resolutions.Count)
         {
             Debug.LogError($"Resolution with index {number} not found");
 
             return;
         }
 
-        var resolution = resolutions[number];
-        Screen.SetResolution(resolution.width, resolution.height, Screen.fullScreenMode);
+        var (width, height) = Resolutions[number];
+        Screen.SetResolution(width, height, Screen.fullScreenMode);
+        CurrentResolutionNumber = number;
     }
 }

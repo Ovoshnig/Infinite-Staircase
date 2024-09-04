@@ -27,21 +27,19 @@ public class GraphicSettings : MonoBehaviour
             });
     }
 
-    private void Start()
-    {
-        var resolutions = _screenTuner.GetResolutions();
-
-        _resolutionDropdown.options = resolutions
-            .Select(x => new TMP_Dropdown.OptionData($"{x.width}x{x.height}"))
-            .ToList();
-
-        _resolutionDropdown.value = _screenTuner.CurrentResolutionNumber;
-    }
-
     private void OnEnable()
     {
         _fullScreenToggle.onValueChanged.AddListener(_ => _screenTuner.SwitchFullScreen());
         _resolutionDropdown.onValueChanged.AddListener(value => _screenTuner.SetResolution(value));
+    }
+
+    private void Start()
+    {
+        _resolutionDropdown.options = _screenTuner.Resolutions
+            .Select(x => new TMP_Dropdown.OptionData($"{x.width}x{x.height}"))
+            .ToList();
+
+        _resolutionDropdown.SetValueWithoutNotify(_screenTuner.CurrentResolutionNumber);
     }
 
     private void OnDisable()
