@@ -25,6 +25,10 @@ public abstract class WindowSwitch : MonoBehaviour, IWindowSwitch
 
     protected virtual void Start() => Panel.SetActive(false);
 
+    protected virtual void OnDestroy()
+    {
+    }
+
     protected abstract void InitializeInput();
 
     protected virtual void Switch()

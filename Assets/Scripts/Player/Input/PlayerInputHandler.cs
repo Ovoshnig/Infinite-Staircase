@@ -8,11 +8,11 @@ public class PlayerInputHandler : IInitializable, IDisposable
 {
     private readonly PlayerInput _playerInput = new();
     private readonly WindowTracker _windowTracker;
-    private readonly Subject<bool> _isWalkPressed = new();
-    private readonly Subject<bool> _isRunPressed = new();
-    private readonly Subject<bool> _isLookPressed = new();
-    private readonly Subject<bool> _isJumpPressed = new();
-    private readonly Subject<bool> _isTogglePerspectivePressed = new();
+    private readonly ReactiveProperty<bool> _isWalkPressed = new(false);
+    private readonly ReactiveProperty<bool> _isRunPressed = new(false);
+    private readonly ReactiveProperty<bool> _isLookPressed = new(false);
+    private readonly ReactiveProperty<bool> _isJumpPressed = new(false);
+    private readonly ReactiveProperty<bool> _isTogglePerspectivePressed = new(false);
     private IDisposable _disposable;
 
     [Inject]
@@ -20,11 +20,11 @@ public class PlayerInputHandler : IInitializable, IDisposable
 
     public Vector2 WalkInput { get; private set; } = Vector2.zero;
     public Vector2 LookInput { get; private set; } = Vector2.zero;
-    public ReadOnlyReactiveProperty<bool> IsWalkPressed => _isWalkPressed.ToReadOnlyReactiveProperty(false);
-    public ReadOnlyReactiveProperty<bool> IsRunPressed => _isRunPressed.ToReadOnlyReactiveProperty(false);
-    public ReadOnlyReactiveProperty<bool> IsLookPressed => _isLookPressed.ToReadOnlyReactiveProperty(false);
-    public ReadOnlyReactiveProperty<bool> IsJumpPressed => _isJumpPressed.ToReadOnlyReactiveProperty(false);
-    public ReadOnlyReactiveProperty<bool> IsTogglePerspectivePressed => _isTogglePerspectivePressed.ToReadOnlyReactiveProperty(false);
+    public ReadOnlyReactiveProperty<bool> IsWalkPressed => _isWalkPressed;
+    public ReadOnlyReactiveProperty<bool> IsRunPressed => _isRunPressed;
+    public ReadOnlyReactiveProperty<bool> IsLookPressed => _isLookPressed;
+    public ReadOnlyReactiveProperty<bool> IsJumpPressed => _isJumpPressed;
+    public ReadOnlyReactiveProperty<bool> IsTogglePerspectivePressed => _isTogglePerspectivePressed;
 
     public void Initialize()
     {

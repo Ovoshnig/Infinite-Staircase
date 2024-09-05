@@ -22,11 +22,16 @@ public class PauseMenuSwitch : WindowSwitch
     protected override void Awake()
     {
         base.Awake();
+
         _resumeButton.onClick.AddListener(OnResumeClicked);
     }
 
-    private void OnDestroy() => 
+    protected override void OnDestroy()
+    {
+        base.OnDestroy();
+
         _resumeButton.onClick.RemoveListener(OnResumeClicked);
+    }
 
     public override bool Open()
     {
