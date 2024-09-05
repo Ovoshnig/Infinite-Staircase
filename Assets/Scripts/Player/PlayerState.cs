@@ -21,9 +21,9 @@ public class PlayerState : MonoBehaviour
     public Vector2 LookInput => _inputHandler.LookInput;
     public ReadOnlyReactiveProperty<bool> IsWalking => _isWalking;
     public ReadOnlyReactiveProperty<bool> IsRunning => _isRunning;
+    public ReadOnlyReactiveProperty<bool> IsGrounded => _isGrounded;
     public ReadOnlyReactiveProperty<bool> IsJumping => _isJumping;
     public ReadOnlyReactiveProperty<bool> IsLooking => _isLooking;
-    public ReadOnlyReactiveProperty<bool> IsGrounded => _isGrounded;
 
     public void Awake()
     {
@@ -32,27 +32,27 @@ public class PlayerState : MonoBehaviour
         var walkDisposable = _inputHandler.IsWalkPressed
             .Subscribe(value =>
             {
-                _isWalking.Value = value;
-                _isRunning.Value = value && _inputHandler.IsRunPressed.CurrentValue;
+                _isWalking.OnNext(value);
+                _isRunning.OnNext(value && _inputHandler.IsRunPressed.CurrentValue);
             });
 
         var runDisposable = _inputHandler.IsRunPressed
-            .Subscribe(value => _isRunning.Value = value && _isWalking.Value);
+            .Subscribe(value => _isRunning.OnNext(value && IsWalking.CurrentValue));
 
         var jumpDisposable = _inputHandler.IsJumpPressed
-            .Subscribe(value => _isJumping.Value = value && _characterController.isGrounded);
+            .Subscribe(value => _isJumping.OnNext(value && _characterController.isGrounded));
 
         var lookDisposable = _inputHandler.IsLookPressed
-            .Subscribe(value => _isLooking.Value = value);
+            .Subscribe(value => _isLooking.OnNext(value));
 
         var groundDisposable = Observable.EveryUpdate()
             .Select(_ => _characterController != null && _characterController.isGrounded)
             .DistinctUntilChanged()
-            .Subscribe(value => _isGrounded.Value = value);
+            .Subscribe(value => _isGrounded.OnNext(value));
 
         var groundEnterDisposable = _isGrounded
             .Where(value => value)
-            .Subscribe(_ => _isJumping.Value = false);
+            .Subscribe(_ => _isJumping.OnNext(false));
 
         _compositeDisposable = new CompositeDisposable
         {

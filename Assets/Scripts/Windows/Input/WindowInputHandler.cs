@@ -7,12 +7,12 @@ public class WindowInputHandler : IInitializable, IDisposable
 {
     private readonly PlayerInput _playerInput = new();
     private readonly Subject<bool> _closeCurrentPressed = new();
-    private readonly ReactiveProperty<bool> _pauseMenuSwitchPressed = new(false);
-    private readonly ReactiveProperty<bool> _inventorySwitchPressed = new(false);
+    private readonly Subject<bool> _pauseMenuSwitchPressed = new();
+    private readonly Subject<bool> _inventorySwitchPressed = new();
 
     public Observable<bool> CloseCurrentPressed => _closeCurrentPressed;
-    public ReadOnlyReactiveProperty<bool> PauseMenuSwitchPressed => _pauseMenuSwitchPressed;
-    public ReadOnlyReactiveProperty<bool> InventorySwitchPressed => _inventorySwitchPressed;
+    public Observable<bool> PauseMenuSwitchPressed => _pauseMenuSwitchPressed;
+    public Observable<bool> InventorySwitchPressed => _inventorySwitchPressed;
 
     public void Initialize()
     {
@@ -32,8 +32,8 @@ public class WindowInputHandler : IInitializable, IDisposable
         _closeCurrentPressed.OnNext(context.ReadValueAsButton());
 
     private void OnPauseMenuSwitch(InputAction.CallbackContext context) =>
-        _pauseMenuSwitchPressed.Value = context.ReadValueAsButton();
+        _pauseMenuSwitchPressed.OnNext(context.ReadValueAsButton());
 
     private void OnInventorySwitch(InputAction.CallbackContext context) =>
-        _inventorySwitchPressed.Value = context.ReadValueAsButton();
+        _inventorySwitchPressed.OnNext(context.ReadValueAsButton());
 }

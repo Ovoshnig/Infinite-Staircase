@@ -6,17 +6,23 @@ using Zenject;
 public class GamePauser : IInitializable, IDisposable
 {
     private readonly SceneSwitch _sceneSwitch;
-    private readonly ReactiveProperty<bool> _isPause = new(false);
+    private GameSettingsInstaller.TimeSettings _timeSettings;
+    private readonly Subject<bool> _isPause = new();
 
-    public GamePauser(SceneSwitch sceneSwitch) => _sceneSwitch = sceneSwitch;
+    public GamePauser(SceneSwitch sceneSwitch, 
+        GameSettingsInstaller.TimeSettings timeSettings)
+    {
+        _sceneSwitch = sceneSwitch;
+        _timeSettings = timeSettings;
+    }
 
-    public ReadOnlyReactiveProperty<bool> IsPause => _isPause;
+    public Observable<bool> IsPause => _isPause;
 
     public void Initialize() => _sceneSwitch.SceneLoaded += OnSceneLoaded;
 
     public void Dispose() => _sceneSwitch.SceneLoaded -= OnSceneLoaded;
 
-    private void OnSceneLoaded(SceneSwitch.SceneType type) => Unpause();
+    private void OnSceneLoaded(SceneSwitch.SceneType _) => Unpause();
 
     public void Pause() => SetPauseState(true);
 
@@ -24,7 +30,7 @@ public class GamePauser : IInitializable, IDisposable
 
     private void SetPauseState(bool pause)
     {
-        _isPause.Value = pause;
-        Time.timeScale = pause ? 0f : 1f;
+        _isPause.OnNext(pause);
+        Time.timeScale = pause ? _timeSettings.PauseTimeScale : _timeSettings.NormalTimeScale;
     }
 }

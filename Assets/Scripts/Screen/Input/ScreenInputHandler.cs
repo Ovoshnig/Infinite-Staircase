@@ -6,11 +6,11 @@ using Zenject;
 public class ScreenInputHandler : IInitializable, IDisposable
 {
     private readonly PlayerInput _playerInput = new();
-    private readonly ReactiveProperty<bool> _isSwitchFullScreenPressed = new(false);
-    private readonly ReactiveProperty<bool> _isPassSplashImagePressed = new(false);
+    private readonly Subject<bool> _isSwitchFullScreenPressed = new();
+    private readonly Subject<bool> _isPassSplashImagePressed = new();
 
-    public ReadOnlyReactiveProperty<bool> IsSwitchFullScreenPressed => _isSwitchFullScreenPressed;
-    public ReadOnlyReactiveProperty<bool> IsPassSplashImagePressed => _isPassSplashImagePressed;
+    public Observable<bool> IsSwitchFullScreenPressed => _isSwitchFullScreenPressed;
+    public Observable<bool> IsPassSplashImagePressed => _isPassSplashImagePressed;
 
     public void Initialize()
     {
@@ -25,8 +25,8 @@ public class ScreenInputHandler : IInitializable, IDisposable
     public void Dispose() => _playerInput.Disable();
 
     private void OnFullScreenSwitch(InputAction.CallbackContext context) =>
-        _isSwitchFullScreenPressed.Value = context.ReadValueAsButton();
+        _isSwitchFullScreenPressed.OnNext(context.ReadValueAsButton());
 
     private void OnPassSplashImage(InputAction.CallbackContext context) =>
-        _isPassSplashImagePressed.Value = context.ReadValueAsButton();
+        _isPassSplashImagePressed.OnNext(context.ReadValueAsButton());
 }
