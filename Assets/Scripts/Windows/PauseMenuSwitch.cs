@@ -5,7 +5,6 @@ using Zenject;
 
 public class PauseMenuSwitch : WindowSwitch
 {
-    [SerializeField] private GameObject _settingsPanel;
     [SerializeField] private Button _resumeButton;
 
     private GamePauser _gamePauser;
@@ -41,14 +40,7 @@ public class PauseMenuSwitch : WindowSwitch
 
     public override bool Close()
     {
-        if (_settingsPanel.activeSelf)
-        {
-            Panel.SetActive(true);
-            _settingsPanel.SetActive(false);
-            return false;
-        }
-
-        if (!base.Close())
+        if (!Panel.activeSelf || !base.Close())
             return false;
 
         _gamePauser.Unpause();

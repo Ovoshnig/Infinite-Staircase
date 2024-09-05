@@ -2,22 +2,30 @@ using UnityEngine;
 using UnityEngine.UI;
 
 [RequireComponent(typeof(Button))]
-public class ButtonPanelChanger : MonoBehaviour
+public abstract class ButtonPanelChanger : MonoBehaviour
 {
     [SerializeField] private GameObject _currentPanel;
     [SerializeField] private GameObject _newPanel;
 
     private Button _button;
 
-    private void Awake() => _button = GetComponent<Button>();
+    protected virtual void Awake()
+    {
+        if (_currentPanel == null)
+            _currentPanel = transform.parent.gameObject;
 
-    private void OnEnable() => _button.onClick.AddListener(OnButtonClicked);
+        _button = GetComponent<Button>();
+    }
 
-    private void OnDisable() => _button.onClick.RemoveListener(OnButtonClicked);
+    protected virtual void OnEnable() => _button.onClick.AddListener(OnButtonClicked);
 
-    private void OnButtonClicked()
+    protected virtual void OnDisable() => _button.onClick.RemoveListener(OnButtonClicked);
+
+    protected void Change()
     {
         _newPanel.SetActive(true);
         _currentPanel.SetActive(false);
     }
+
+    private void OnButtonClicked() => Change();
 }

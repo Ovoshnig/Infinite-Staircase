@@ -731,6 +731,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: MenuPanel
       objectReference: {fileID: 0}
+    - target: {fileID: 1982606639225669556, guid: ec81da31f8785eb409787121824f6fba, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4600473913360934058, guid: ec81da31f8785eb409787121824f6fba, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -1124,7 +1128,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _panel: {fileID: 3057947109209986913}
-  _settingsPanel: {fileID: 2360525206223505507}
   _resumeButton: {fileID: 2441706583183188250}
 --- !u!224 &2759500080617809190 stripped
 RectTransform:
@@ -1504,10 +1507,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 2870408744764332878}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1f953028ad7d09d4fac711d7aec1e3bf, type: 3}
+  m_Script: {fileID: 11500000, guid: 46ac8798cbf09f9458f4a0dc6e540073, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _currentPanel: {fileID: 3057947109209986913}
+  _currentPanel: {fileID: 0}
   _newPanel: {fileID: 2360525206223505507}
 --- !u!224 &3095304879340145905 stripped
 RectTransform:
@@ -1995,7 +1998,7 @@ PrefabInstance:
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 4719504242064443458, guid: fc1720d6f5e120249915094b49aee582, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 8208262832408232029}
+      addedObject: {fileID: 1393426573023027189}
   m_SourcePrefab: {fileID: 100100000, guid: fc1720d6f5e120249915094b49aee582, type: 3}
 --- !u!224 &3723381107743258290 stripped
 RectTransform:
@@ -2007,7 +2010,7 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 4719504242064443458, guid: fc1720d6f5e120249915094b49aee582, type: 3}
   m_PrefabInstance: {fileID: 9219450702741154127}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &8208262832408232029
+--- !u!114 &1393426573023027189
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -2016,8 +2019,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 4507291285596397837}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1f953028ad7d09d4fac711d7aec1e3bf, type: 3}
+  m_Script: {fileID: 11500000, guid: 11d035ca93c68c74db568b64d66a6eea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _currentPanel: {fileID: 2360525206223505507}
+  _currentPanel: {fileID: 0}
   _newPanel: {fileID: 3057947109209986913}

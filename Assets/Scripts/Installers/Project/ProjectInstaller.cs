@@ -13,13 +13,16 @@ public class ProjectInstaller : MonoInstaller
 #endif
         Container.BindInterfacesAndSelfTo<SaveStorage>().FromNew().AsSingle();
         Container.BindInterfacesAndSelfTo<SettingsStorage>().FromNew().AsSingle();
+
         Container.BindInterfacesAndSelfTo<SceneSwitch>().FromNew().AsSingle();
         Container.BindInterfacesAndSelfTo<GamePauser>().FromNew().AsSingle();
-        Container.BindInterfacesAndSelfTo<AudioMixerGroup>().FromInstance(_audioMixerGroup).AsSingle();
+
         Container.BindInterfacesAndSelfTo<ScreenInputHandler>().FromNew().AsSingle();
+
         Container.BindInterfacesAndSelfTo<ScreenTuner>().FromNew().AsSingle();
         Container.BindInterfacesAndSelfTo<LookTuner>().FromNew().AsSingle();
         Container.BindInterfacesAndSelfTo<AudioTuner>().FromNew().AsSingle();
+        Container.BindInterfacesAndSelfTo<AudioMixerGroup>().FromInstance(_audioMixerGroup).AsSingle();
         Container.BindInterfacesAndSelfTo<AudioMixerTuner>().FromNew().AsSingle();
     }
 }
