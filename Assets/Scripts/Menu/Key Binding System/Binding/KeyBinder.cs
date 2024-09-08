@@ -20,7 +20,6 @@ public class KeyBinder : MonoBehaviour
     private TMP_Text _bindingButtonText;
     private Color _normalTextColor;
     private InputAction _anyKeyInputAction;
-    private ReadOnlyArray<InputControl> _allControls;
     private IDisposable _disposable;
 
     [Inject]
@@ -39,10 +38,6 @@ public class KeyBinder : MonoBehaviour
         _bindingButtonText = _bindingButton.GetComponentInChildren<TMP_Text>();
         _bindingButtonText.text = _inputAction.GetBindingDisplayString();
         _normalTextColor = _bindingButtonText.color;
-
-        _allControls = Keyboard.current.allControls
-            .Where(c => c != Keyboard.current.anyKey)
-            .ToArray();
 
         _anyKeyInputAction = new InputAction(type: InputActionType.PassThrough);
         _anyKeyInputAction.AddBinding(InputConstants.KeyboardAnyKeyPath);
@@ -86,7 +81,7 @@ public class KeyBinder : MonoBehaviour
 
     private void OnKeyPressed(InputAction.CallbackContext _)
     {
-        var pressedControl = _allControls.First(c => c.IsPressed());
+        var pressedControl = _bindingsTracker.AllControls.First(c => c.IsPressed());
 
         if (pressedControl == Keyboard.current.escapeKey)
         {

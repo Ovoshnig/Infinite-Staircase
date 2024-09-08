@@ -1,7 +1,10 @@
 using R3;
 using System;
+using UnityEngine.InputSystem.Utilities;
+using UnityEngine.InputSystem;
 using UnityEngine.UI;
 using Zenject;
+using System.Linq;
 
 public class KeyBindingsTracker : IInitializable, IDisposable
 {
@@ -16,6 +19,11 @@ public class KeyBindingsTracker : IInitializable, IDisposable
         _doneButtonCloser = buttonPanelCloser;
         _doneButton = buttonPanelCloser.GetComponent<Button>();
     }
+
+    public ReadOnlyArray<InputControl> AllControls { get; } =
+        Keyboard.current.allControls
+        .Where(c => c != Keyboard.current.anyKey)
+        .ToArray();
 
     public void Initialize()
     {
