@@ -1,6 +1,6 @@
+using System;
 using System.Linq;
 using UnityEngine;
-using UnityEngine.InputSystem;
 using Zenject;
 
 public class KeyBindingsInitialiser : MonoBehaviour
@@ -25,8 +25,15 @@ public class KeyBindingsInitialiser : MonoBehaviour
         {
             foreach (var action in actionMap.actions)
             {
-                var keyBinder = keyBinders.First(k => k.InputAction.name == action.name);
-                keyBinder.InputAction = action;
+                try
+                {
+                    var keyBinder = keyBinders.First(k => k.InputAction.name == action.name);
+                    keyBinder.InputAction = action;
+                }
+                catch (Exception)
+                {
+                    continue;
+                }
             }
         }
     }

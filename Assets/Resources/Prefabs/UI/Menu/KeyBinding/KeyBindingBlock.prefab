@@ -81,6 +81,7 @@ MonoBehaviour:
   _bindingButton: {fileID: 5215717425924694835}
   _bindingResetButton: {fileID: 7778082662215887520}
   _actionNameText: {fileID: 6599954011534530538}
+  _waitingTextColor: {r: 0.4339621, g: 0.104595244, b: 0.05526871, a: 1}
   _inputAction:
     m_Name: Input
     m_Type: 0
@@ -105,6 +106,10 @@ PrefabInstance:
     - target: {fileID: 2742781665675524894, guid: 530458200879ce544b4494f4f8612b17, type: 3}
       propertyPath: m_fontSize
       value: 50
+      objectReference: {fileID: 0}
+    - target: {fileID: 2742781665675524894, guid: 530458200879ce544b4494f4f8612b17, type: 3}
+      propertyPath: m_fontSizeMax
+      value: 65
       objectReference: {fileID: 0}
     - target: {fileID: 2742781665675524894, guid: 530458200879ce544b4494f4f8612b17, type: 3}
       propertyPath: m_fontSizeBase

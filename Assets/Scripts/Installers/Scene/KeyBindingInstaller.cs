@@ -14,6 +14,11 @@ public class KeyBindingInstaller : MonoInstaller
             .NonLazy();
 
         Container
+            .BindInterfacesAndSelfTo<KeyBindingsTracker>()
+            .FromNew()
+            .AsSingle();
+
+        Container
             .Bind<ButtonPanelCloser>()
             .WithId(ZenjectIdConstants.BindingDoneButtonId)
             .FromInstance(_buttonPanelCloser)

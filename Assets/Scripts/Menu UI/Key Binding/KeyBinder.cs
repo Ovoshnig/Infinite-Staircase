@@ -13,17 +13,18 @@ public class KeyBinder : MonoBehaviour
     [SerializeField] private Button _bindingButton;
     [SerializeField] private Button _bindingResetButton;
     [SerializeField] private TMP_Text _actionNameText;
+    [SerializeField] private Color _waitingTextColor;
     [SerializeField] private InputAction _inputAction;
 
-    private ButtonPanelCloser _doneButtonCloser;
+    private KeyBindingsTracker _bindingsTracker;
     private TMP_Text _bindingButtonText;
+    private Color _normalTextColor;
     private InputAction _anyKeyInputAction;
     private ReadOnlyArray<InputControl> _allControls;
     private IDisposable _disposable;
 
     [Inject]
-    private void Construct([Inject(Id = ZenjectIdConstants.BindingDoneButtonId)] ButtonPanelCloser buttonPanelCloser) =>
-        _doneButtonCloser = buttonPanelCloser;
+    private void Construct(KeyBindingsTracker bindingsTracker) => _bindingsTracker = bindingsTracker;
 
     public InputAction InputAction
     {
@@ -32,12 +33,12 @@ public class KeyBinder : MonoBehaviour
     }
 
     public TMP_Text ActionNameText => _actionNameText;
-    public TMP_Text BindingButtonText => _bindingButtonText;
 
     private void Awake()
     {
         _bindingButtonText = _bindingButton.GetComponentInChildren<TMP_Text>();
         _bindingButtonText.text = _inputAction.GetBindingDisplayString();
+        _normalTextColor = _bindingButtonText.color;
 
         _allControls = Keyboard.current.allControls
             .Where(c => c != Keyboard.current.anyKey)
@@ -52,9 +53,9 @@ public class KeyBinder : MonoBehaviour
 
         _disposable = R3.Observable
             .EveryUpdate()
-            .Select(_ => _inputAction.bindings[0].overridePath == null)
+            .Select(_ => _inputAction.bindings[0].hasOverrides)
             .DistinctUntilChanged()
-            .Subscribe(value => _bindingResetButton.interactable = !value);
+            .Subscribe(value => _bindingResetButton.interactable = value);
     }
 
     private void OnDestroy()
@@ -67,10 +68,12 @@ public class KeyBinder : MonoBehaviour
 
     private void OnBindingButtonPressed()
     {
-        _anyKeyInputAction.Enable();
-        _bindingButtonText.text = "Waiting any key";
+        if (!_bindingsTracker.TryStartListening())
+            return;
 
-        _doneButtonCloser.enabled = false;
+        _anyKeyInputAction.Enable();
+        _bindingButtonText.color = _waitingTextColor;
+        _bindingButtonText.text = "ќжидание ввода...";
     }
 
     private void OnBindingResetButtonClicked()
@@ -96,7 +99,8 @@ public class KeyBinder : MonoBehaviour
         }
 
         _anyKeyInputAction.Disable();
+        _bindingButtonText.color = _normalTextColor;
 
-        _doneButtonCloser.enabled = true;
+        _bindingsTracker.StopListening();
     }
 }
