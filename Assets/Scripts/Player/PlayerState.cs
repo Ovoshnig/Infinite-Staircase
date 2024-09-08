@@ -25,7 +25,7 @@ public class PlayerState : MonoBehaviour
     public ReadOnlyReactiveProperty<bool> IsJumping => _isJumping;
     public ReadOnlyReactiveProperty<bool> IsLooking => _isLooking;
 
-    public void Awake()
+    private void Awake()
     {
         _characterController = GetComponent<CharacterController>();
 
@@ -46,7 +46,7 @@ public class PlayerState : MonoBehaviour
             .Subscribe(value => _isLooking.OnNext(value));
 
         var groundDisposable = Observable.EveryUpdate()
-            .Select(_ => _characterController != null && _characterController.isGrounded)
+            .Select(_ => _characterController.isGrounded)
             .DistinctUntilChanged()
             .Subscribe(value => _isGrounded.OnNext(value));
 
@@ -65,5 +65,5 @@ public class PlayerState : MonoBehaviour
         };
     }
 
-    public void Destroy() => _compositeDisposable?.Dispose();
+    private void OnDestroy() => _compositeDisposable?.Dispose();
 }
