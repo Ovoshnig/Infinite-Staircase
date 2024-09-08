@@ -5,10 +5,13 @@ using Zenject;
 
 public class WindowInputHandler : IInitializable, IDisposable
 {
-    private readonly PlayerInput _playerInput = new();
+    private readonly PlayerInput _playerInput;
     private readonly Subject<bool> _closeCurrentPressed = new();
     private readonly Subject<bool> _pauseMenuSwitchPressed = new();
     private readonly Subject<bool> _inventorySwitchPressed = new();
+
+    [Inject]
+    public WindowInputHandler(PlayerInput playerInput) => _playerInput = playerInput;
 
     public Observable<bool> CloseCurrentPressed => _closeCurrentPressed;
     public Observable<bool> PauseMenuSwitchPressed => _pauseMenuSwitchPressed;
@@ -23,10 +26,10 @@ public class WindowInputHandler : IInitializable, IDisposable
         _playerInput.Windows.InventorySwitch.performed += OnInventorySwitch;
         _playerInput.Windows.InventorySwitch.canceled += OnInventorySwitch;
 
-        _playerInput.Enable();
+        _playerInput.Windows.Enable();
     }
 
-    public void Dispose() => _playerInput.Disable();
+    public void Dispose() => _playerInput.Windows.Disable();
 
     private void OnCloseCurrent(InputAction.CallbackContext context) => 
         _closeCurrentPressed.OnNext(context.ReadValueAsButton());

@@ -16,8 +16,8 @@ public class CameraSwitch : MonoBehaviour
 
     [Inject]
     private void Construct(PlayerInputHandler inputHandler, WindowTracker windowTracker,
-        [Inject(Id = BindConstants.FirstPersonCameraId)] FirstPersonLook firstPersonLook,
-        [Inject(Id = BindConstants.ThirdPersonCameraId)] ThirdPersonLook thirdPersonLook)
+        [Inject(Id = ZenjectIdConstants.FirstPersonCameraId)] FirstPersonLook firstPersonLook,
+        [Inject(Id = ZenjectIdConstants.ThirdPersonCameraId)] ThirdPersonLook thirdPersonLook)
     {
         _inputHandler = inputHandler;
         _windowTracker = windowTracker;

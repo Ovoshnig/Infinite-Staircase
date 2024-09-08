@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 5401941628872769425}
   - component: {fileID: 3995637903823181391}
   - component: {fileID: 3125105125876428416}
+  - component: {fileID: 3945197397790428804}
   m_Layer: 0
   m_Name: ProjectContext
   m_TagString: Untagged
@@ -51,6 +52,7 @@ MonoBehaviour:
   _monoInstallers:
   - {fileID: 3995637903823181391}
   - {fileID: 3125105125876428416}
+  - {fileID: 3945197397790428804}
   _installerPrefabs: []
   _parentNewObjectsUnderContext: 1
   _editorReflectionBakingCoverageMode: 0
@@ -78,7 +80,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _audioMixerGroup: {fileID: 24300002, guid: 4589c14a7bd6ca145b694b55f7a0bc4e, type: 2}
-  _musicSource: {fileID: 0}
 --- !u!114 &3125105125876428416
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -92,3 +93,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _musicPlayer: {fileID: 1569804765797662022, guid: 1bb08e8958a349646acc1b46149bbe5b, type: 3}
+--- !u!114 &3945197397790428804
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2273235031383442358}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0f8c55042cf68c74e977b0c2b5b9988e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

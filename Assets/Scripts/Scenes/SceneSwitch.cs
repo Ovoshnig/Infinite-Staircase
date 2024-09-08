@@ -84,6 +84,6 @@ public class SceneSwitch : IInitializable, IDisposable
         else if (index == _levelSettings.CreditsScene)
             return SceneType.Credits;
         else
-            throw new InvalidOperationException("Invalid level index");
+            throw new InvalidOperationException($"Invalid level index: {index}");
     }
 }

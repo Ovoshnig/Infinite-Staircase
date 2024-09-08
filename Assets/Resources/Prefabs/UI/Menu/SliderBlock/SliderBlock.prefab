@@ -36,7 +36,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 145, y: 100}
+  m_SizeDelta: {x: 340, y: 90}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &7420946494645382892
 MonoBehaviour:
@@ -55,8 +55,8 @@ MonoBehaviour:
     m_Right: 0
     m_Top: 0
     m_Bottom: 0
-  m_ChildAlignment: 0
-  m_Spacing: -87.37
+  m_ChildAlignment: 4
+  m_Spacing: 0
   m_ChildForceExpandWidth: 1
   m_ChildForceExpandHeight: 1
   m_ChildControlWidth: 0
@@ -100,7 +100,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 100, y: 100}
+  m_SizeDelta: {x: 151.2, y: 35}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2996477673537575858
 MonoBehaviour:
@@ -115,11 +115,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Padding:
-    m_Left: -64
+    m_Left: 0
     m_Right: 0
     m_Top: 0
     m_Bottom: 0
-  m_ChildAlignment: 0
+  m_ChildAlignment: 4
   m_Spacing: 0
   m_ChildForceExpandWidth: 1
   m_ChildForceExpandHeight: 1
@@ -275,6 +275,10 @@ PrefabInstance:
       value: 25
       objectReference: {fileID: 0}
     - target: {fileID: 4340154353747558020, guid: ada1e80840d50a740865295f82d3bbe8, type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: 416467011290700998, guid: 6aa730cf6ff0722459e6551d78702d11, type: 2}
+    - target: {fileID: 4340154353747558020, guid: ada1e80840d50a740865295f82d3bbe8, type: 3}
       propertyPath: m_fontColor32.rgba
       value: 4278190080
       objectReference: {fileID: 0}
@@ -316,7 +320,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8407699759676394508, guid: ada1e80840d50a740865295f82d3bbe8, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 200
+      value: 85.1
       objectReference: {fileID: 0}
     - target: {fileID: 8407699759676394508, guid: ada1e80840d50a740865295f82d3bbe8, type: 3}
       propertyPath: m_SizeDelta.y

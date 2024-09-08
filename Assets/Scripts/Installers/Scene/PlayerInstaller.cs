@@ -23,7 +23,7 @@ public class PlayerInstaller : MonoInstaller
                 typeof(CameraSwitch), 
                 typeof(SkinnedMeshRenderer) 
             })
-            .WithId(BindConstants.PlayerId)
+            .WithId(ZenjectIdConstants.PlayerId)
             .FromComponentsInNewPrefab(_playerPrefab)
             .UnderTransform(_spawnPoint)
             .AsSingle()
@@ -31,13 +31,13 @@ public class PlayerInstaller : MonoInstaller
 
         Container
             .Bind<FirstPersonLook>()
-            .WithId(BindConstants.FirstPersonCameraId)
+            .WithId(ZenjectIdConstants.FirstPersonCameraId)
             .FromComponentInNewPrefab(_firstPersonCameraPrefab)
             .AsSingle();
 
         Container
             .Bind<ThirdPersonLook>()
-            .WithId(BindConstants.ThirdPersonCameraId)
+            .WithId(ZenjectIdConstants.ThirdPersonCameraId)
             .FromComponentInNewPrefab(_thirdPersonCameraPrefab)
             .AsSingle();
     }

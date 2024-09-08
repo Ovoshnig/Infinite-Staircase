@@ -50,7 +50,7 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
                     ""name"": ""Jump"",
                     ""type"": ""Button"",
                     ""id"": ""b8deef5d-7f49-4e6f-9c2e-7839d651e13c"",
-                    ""expectedControlType"": ""Button"",
+                    ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
@@ -59,7 +59,7 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
                     ""name"": ""Run"",
                     ""type"": ""Button"",
                     ""id"": ""4496a6bb-c913-40fb-b8e7-a9d239cdcbf2"",
-                    ""expectedControlType"": ""Button"",
+                    ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
@@ -235,7 +235,7 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
                     ""path"": ""<Keyboard>/r"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": "";Keyboard and Mouse"",
                     ""action"": ""TogglePerspective"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -263,7 +263,7 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
                     ""path"": ""<Keyboard>/space"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": "";Keyboard and Mouse"",
                     ""action"": ""SpeedUp"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -309,7 +309,7 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
                     ""path"": ""<Keyboard>/escape"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": "";Keyboard and Mouse"",
                     ""action"": ""PauseMenuSwitch"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -320,7 +320,7 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
                     ""path"": ""<Keyboard>/e"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": "";Keyboard and Mouse"",
                     ""action"": ""InventorySwitch"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -331,7 +331,7 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
                     ""path"": ""<Keyboard>/escape"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": "";Keyboard and Mouse"",
                     ""action"": ""CloseCurrent"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -368,7 +368,7 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
                     ""path"": ""<Keyboard>/f11"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": "";Keyboard and Mouse"",
                     ""action"": ""SwitchFullScreen"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -379,7 +379,7 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
                     ""path"": ""<Keyboard>/space"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": "";Keyboard and Mouse"",
                     ""action"": ""PassSplashImage"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false

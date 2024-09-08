@@ -14,7 +14,7 @@ public class PlayerVerticalMover : MonoBehaviour
     private CompositeDisposable _compositiveDisposable;
 
     [Inject]
-    private void Construct([Inject(Id = BindConstants.PlayerId)] PlayerState playerState) => 
+    private void Construct([Inject(Id = ZenjectIdConstants.PlayerId)] PlayerState playerState) => 
         _playerState = playerState;
 
     private void Awake()

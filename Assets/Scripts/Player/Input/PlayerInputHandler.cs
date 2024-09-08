@@ -6,7 +6,7 @@ using Zenject;
 
 public class PlayerInputHandler : IInitializable, IDisposable
 {
-    private readonly PlayerInput _playerInput = new();
+    private readonly PlayerInput _playerInput;
     private readonly WindowTracker _windowTracker;
     private readonly ReactiveProperty<bool> _isWalkPressed = new(false);
     private readonly ReactiveProperty<bool> _isRunPressed = new(false);
@@ -16,7 +16,11 @@ public class PlayerInputHandler : IInitializable, IDisposable
     private IDisposable _disposable;
 
     [Inject]
-    public PlayerInputHandler(WindowTracker windowTracker) => _windowTracker = windowTracker;
+    public PlayerInputHandler(PlayerInput playerInput, WindowTracker windowTracker)
+    {
+        _playerInput = playerInput;
+        _windowTracker = windowTracker;
+    }
 
     public Vector2 WalkInput { get; private set; } = Vector2.zero;
     public Vector2 LookInput { get; private set; } = Vector2.zero;
@@ -32,9 +36,9 @@ public class PlayerInputHandler : IInitializable, IDisposable
             .Subscribe(value =>
             {
                 if (value)
-                    _playerInput.Disable();
+                    _playerInput.Player.Disable();
                 else
-                    _playerInput.Enable();
+                    _playerInput.Player.Enable();
             });
 
         _playerInput.Player.Walk.performed += OnWalk;
@@ -53,7 +57,7 @@ public class PlayerInputHandler : IInitializable, IDisposable
     {
         _disposable?.Dispose();
 
-        _playerInput.Disable();
+        _playerInput.Player.Disable();
     }
 
     private void OnWalk(InputAction.CallbackContext context)

@@ -4,7 +4,7 @@ using UnityEngine.Rendering;
 
 public sealed class ThirdPersonLook : PersonLook
 {
-    protected override Transform FollowPoint => PlayerTransform.Find(BindConstants.PlayerHeadCenterName);
+    protected override Transform FollowPoint => PlayerTransform.Find(ZenjectIdConstants.PlayerHeadCenterName);
 
     protected override void Awake()
     {

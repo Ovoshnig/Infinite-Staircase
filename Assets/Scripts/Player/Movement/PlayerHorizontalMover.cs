@@ -14,9 +14,9 @@ public class PlayerHorizontalMover : MonoBehaviour
     private CharacterController _characterController;
 
     [Inject]
-    protected void Construct([Inject(Id = BindConstants.PlayerId)] PlayerState playerState,
-        [Inject(Id = BindConstants.FirstPersonCameraId)] FirstPersonLook firstPersonLook,
-        [Inject(Id = BindConstants.ThirdPersonCameraId)] ThirdPersonLook thirdPersonLook)
+    protected void Construct([Inject(Id = ZenjectIdConstants.PlayerId)] PlayerState playerState,
+        [Inject(Id = ZenjectIdConstants.FirstPersonCameraId)] FirstPersonLook firstPersonLook,
+        [Inject(Id = ZenjectIdConstants.ThirdPersonCameraId)] ThirdPersonLook thirdPersonLook)
     {
         _playerState = playerState;
         _firstPersonLook = firstPersonLook;
@@ -31,17 +31,17 @@ public class PlayerHorizontalMover : MonoBehaviour
     {
         if (_playerState.IsWalking.CurrentValue)
         {
-            float targetAngle = CalculateTargetAngel();
-            float smoothedAngle = CalculateSmothedVector(targetAngle);
+            float targetAngle = CalculateTargetAngle();
+            float smoothedAngle = CalculateSmothedAngle(targetAngle);
             transform.eulerAngles = new Vector3(0f, smoothedAngle, 0f);
 
             Vector3 targetForward = CalculateForwardVector(targetAngle);
             Vector3 motion = CalculateMotionVector(targetForward);
-            _characterController.Move(motion * Time.deltaTime);
+            _characterController.Move(motion);
         }
     }
 
-    private float CalculateTargetAngel()
+    private float CalculateTargetAngle()
     {
         Vector3 inputDirection = new(_playerState.WalkInput.x, 0f, _playerState.WalkInput.y);
         float targetAngle = Mathf.Atan2(inputDirection.x, inputDirection.z) * Mathf.Rad2Deg;
@@ -53,7 +53,7 @@ public class PlayerHorizontalMover : MonoBehaviour
         return targetAngle;
     }
 
-    private float CalculateSmothedVector(float angel) =>
+    private float CalculateSmothedAngle(float angel) =>
         Mathf.LerpAngle(transform.eulerAngles.y, angel, Time.deltaTime * _slewSpeed);
 
     private Vector3 CalculateForwardVector(float angel)
@@ -67,7 +67,7 @@ public class PlayerHorizontalMover : MonoBehaviour
     private Vector3 CalculateMotionVector(Vector3 direction)
     {
         float speed = _playerState.IsRunning.CurrentValue ? _runSpeed : _walkSpeed;
-        Vector3 motion = direction * speed;
+        Vector3 motion = speed * Time.deltaTime * direction;
 
         return motion;
     }

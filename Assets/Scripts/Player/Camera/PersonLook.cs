@@ -19,9 +19,9 @@ public abstract class PersonLook : MonoBehaviour
     private float _rotationY = 0f;
 
     [Inject]
-    protected void Construct([Inject(Id = BindConstants.PlayerId)] CameraSwitch cameraSwitch,
-        [Inject(Id = BindConstants.PlayerId)] PlayerState playerState,
-        [Inject(Id = BindConstants.PlayerId)] SkinnedMeshRenderer skinnedMeshRenderer,
+    protected void Construct([Inject(Id = ZenjectIdConstants.PlayerId)] CameraSwitch cameraSwitch,
+        [Inject(Id = ZenjectIdConstants.PlayerId)] PlayerState playerState,
+        [Inject(Id = ZenjectIdConstants.PlayerId)] SkinnedMeshRenderer skinnedMeshRenderer,
         LookTuner lookTuner)
     {
         _cameraSwitch = cameraSwitch;

@@ -32,7 +32,7 @@ public class PreBuildMusicListGenerator : IPreprocessBuildWithReport
             {
                 string relativePath = filePath
                     .Replace(ResourcesConstants.ResourcesPath + '/', "")
-                    .Replace('\'', '/')
+                    .Replace('\\', '/')
                     .Replace(Path.GetExtension(filePath), "");
 
                 clipNames.Add(relativePath);

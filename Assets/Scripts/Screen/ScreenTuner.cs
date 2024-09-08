@@ -31,6 +31,8 @@ public class ScreenTuner : IInitializable, IDisposable
 
     public void Initialize()
     {
+        Application.targetFrameRate = -1;
+
         var resolution = CurrentResolution;
         var resolutions = Screen.resolutions.Select(x => (x.width, x.height)).ToList();
         Resolutions = resolutions;
