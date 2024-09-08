@@ -4,7 +4,7 @@ public class InventorySwitch : WindowSwitch
 {
     protected override void InitializeInput()
     {
-        InputHandler.InventorySwitchPressed
+        Disposable = InputHandler.InventorySwitchPressed
             .Where(value => value)
             .Subscribe(_ => Switch());
     }

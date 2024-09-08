@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using Zenject;
 
 public abstract class WindowSwitch : MonoBehaviour, IWindowSwitch
@@ -18,6 +19,7 @@ public abstract class WindowSwitch : MonoBehaviour, IWindowSwitch
 
     public bool IsOpen => _isOpen;
 
+    protected IDisposable Disposable { get; set; }
     protected GameObject Panel => _panel;
     protected WindowInputHandler InputHandler => _inputHandler;
 
@@ -25,9 +27,7 @@ public abstract class WindowSwitch : MonoBehaviour, IWindowSwitch
 
     protected virtual void Start() => Panel.SetActive(false);
 
-    protected virtual void OnDestroy()
-    {
-    }
+    protected virtual void OnDestroy() => Disposable?.Dispose();
 
     protected abstract void InitializeInput();
 

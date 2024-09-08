@@ -14,7 +14,7 @@ public class PauseMenuSwitch : WindowSwitch
 
     protected override void InitializeInput()
     {
-        InputHandler.PauseMenuSwitchPressed
+        Disposable = InputHandler.PauseMenuSwitchPressed
             .Where(value => value)
             .Subscribe(_ => Switch());
     }
