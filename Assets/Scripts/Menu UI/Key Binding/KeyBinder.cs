@@ -1,3 +1,5 @@
+using R3;
+using System;
 using System.Linq;
 using TMPro;
 using UnityEngine;
@@ -17,7 +19,7 @@ public class KeyBinder : MonoBehaviour
     private TMP_Text _bindingButtonText;
     private InputAction _anyKeyInputAction;
     private ReadOnlyArray<InputControl> _allControls;
-
+    private IDisposable _disposable;
 
     [Inject]
     private void Construct([Inject(Id = ZenjectIdConstants.BindingDoneButtonId)] ButtonPanelCloser buttonPanelCloser) =>
@@ -35,23 +37,32 @@ public class KeyBinder : MonoBehaviour
     private void Awake()
     {
         _bindingButtonText = _bindingButton.GetComponentInChildren<TMP_Text>();
+        _bindingButtonText.text = _inputAction.GetBindingDisplayString();
 
         _allControls = Keyboard.current.allControls
             .Where(c => c != Keyboard.current.anyKey)
             .ToArray();
 
-        _bindingButton.onClick.AddListener(OnBindingButtonPressed);
-        _bindingResetButton.onClick.AddListener(OnBindingResetButtonClicked);
-
         _anyKeyInputAction = new InputAction(type: InputActionType.PassThrough);
         _anyKeyInputAction.AddBinding(InputConstants.KeyboardAnyKeyPath);
         _anyKeyInputAction.performed += OnKeyPressed;
+
+        _bindingButton.onClick.AddListener(OnBindingButtonPressed);
+        _bindingResetButton.onClick.AddListener(OnBindingResetButtonClicked);
+
+        _disposable = R3.Observable
+            .EveryUpdate()
+            .Select(_ => _inputAction.bindings[0].overridePath == null)
+            .DistinctUntilChanged()
+            .Subscribe(value => _bindingResetButton.interactable = !value);
     }
 
     private void OnDestroy()
     {
         _bindingButton.onClick.RemoveListener(OnBindingButtonPressed);
         _bindingResetButton.onClick.RemoveListener(OnBindingResetButtonClicked);
+
+        _disposable?.Dispose();
     }
 
     private void OnBindingButtonPressed()

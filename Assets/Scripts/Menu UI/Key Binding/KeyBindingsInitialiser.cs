@@ -8,9 +8,14 @@ public class KeyBindingsInitialiser : MonoBehaviour
     private PlayerInput _playerInput;
 
     [Inject]
-    private void Construct(PlayerInput playerInput) => _playerInput = playerInput;
+    private void Construct(PlayerInput playerInput)
+    {
+        _playerInput = playerInput;
 
-    private void Start()
+        Initialise();
+    }
+
+    private void Initialise()
     {
         KeyBinder[] keyBinders = GetComponentsInChildren<KeyBinder>();
 
@@ -22,7 +27,6 @@ public class KeyBindingsInitialiser : MonoBehaviour
             {
                 var keyBinder = keyBinders.First(k => k.InputAction.name == action.name);
                 keyBinder.InputAction = action;
-                keyBinder.BindingButtonText.text = action.GetBindingDisplayString();
             }
         }
     }

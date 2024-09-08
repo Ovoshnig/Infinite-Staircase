@@ -45,7 +45,8 @@ public class PlayerState : MonoBehaviour
         var lookDisposable = _inputHandler.IsLookPressed
             .Subscribe(value => _isLooking.OnNext(value));
 
-        var groundDisposable = Observable.EveryUpdate()
+        var groundDisposable = Observable
+            .EveryUpdate()
             .Select(_ => _characterController.isGrounded)
             .DistinctUntilChanged()
             .Subscribe(value => _isGrounded.OnNext(value));
