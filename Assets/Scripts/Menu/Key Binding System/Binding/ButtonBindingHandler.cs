@@ -1,4 +1,6 @@
+using System.Linq;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -10,10 +12,32 @@ public class ButtonBindingHandler : BindingHandler
     {
     }
 
-    public override void Bind()
+    public override void StartListening()
     {
-        base.Bind();
+        if (!BindingsTracker.TryStartListening())
+            return;
 
-        Debug.Log("Bind button");
+        base.StartListening();
+
+        BindingText.text = "ќжидание ввода...";
     }
+
+    protected override void OnAnyKeyPerformed(InputAction.CallbackContext _)
+    {
+        var pressedControl = BindingsTracker.AllControls.First(c => c.IsPressed());
+
+        if (pressedControl == Keyboard.current.escapeKey)
+            CancelBinding();
+        else
+            CompleteBinding(pressedControl);
+    }
+
+    protected override void CompleteBinding(InputControl control)
+    {
+        InputAction.ApplyBindingOverride(control.path);
+
+        base.CompleteBinding(control);
+    }
+
+    protected override string GetActionDisplayName() => InputAction.controls[0].name.FirstCharacterToUpper();
 }

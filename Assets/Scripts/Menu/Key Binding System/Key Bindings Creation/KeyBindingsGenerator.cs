@@ -1,3 +1,4 @@
+using System.Linq;
 using System.Text.RegularExpressions;
 using TMPro;
 using UnityEngine;
@@ -23,6 +24,9 @@ public class KeyBindingsGenerator : MonoBehaviour
 
             foreach (var action in actionMap.actions)
             {
+                if (action.controls.All(c => !c.path.ToLower().Contains("keyboard")))
+                    continue;
+
                 var keyBinder = Instantiate(_keyBindingBlockPrefab, transform).GetComponent<KeyBinder>();
                 var actionName = Regex.Replace(action.name, "([A-Z])", " $1").ToLower();
                 keyBinder.ActionNameText.text = actionName;

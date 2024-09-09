@@ -2,7 +2,7 @@ using System;
 using UnityEngine.InputSystem;
 using Zenject;
 
-public class BindingOverridesSaver : IInitializable, IDisposable
+public class BindingOverridesSaver : IDisposable
 {
     private readonly PlayerInput _playerInput;
     private readonly SettingsStorage _settingsStorage;
@@ -12,6 +12,8 @@ public class BindingOverridesSaver : IInitializable, IDisposable
     {
         _playerInput = playerInput;
         _settingsStorage = settingsStorage;
+
+        Initialize();
     }
 
     public void Initialize()

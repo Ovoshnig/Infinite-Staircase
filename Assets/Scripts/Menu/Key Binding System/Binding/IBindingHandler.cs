@@ -1,5 +1,5 @@
 public interface IBindingHandler
 {
-    void Bind();
+    void StartListening();
     void Reset();
 }

@@ -3,7 +3,7 @@ using System.Linq;
 using UnityEngine;
 using Zenject;
 
-public class KeyBindingsInitialiser : MonoBehaviour
+public class KeyBindingsInitializer : MonoBehaviour
 {
     private PlayerInput _playerInput;
 
@@ -12,10 +12,10 @@ public class KeyBindingsInitialiser : MonoBehaviour
     {
         _playerInput = playerInput;
 
-        Initialise();
+        Initialize();
     }
 
-    private void Initialise()
+    private void Initialize()
     {
         var keyBinders = GetComponentsInChildren<KeyBinder>();
         var actionAsset = _playerInput.asset;

@@ -1,4 +1,3 @@
-using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -22,49 +21,56 @@ public abstract class BindingHandler : IBindingHandler
         _inputAction = inputAction;
 
         _anyKeyInputAction = new InputAction(type: InputActionType.PassThrough);
+        Initialize();
+    }
+
+    protected KeyBindingsTracker BindingsTracker => _bindingsTracker;
+    protected TMP_Text BindingText => _bindingText;
+    protected InputAction InputAction => _inputAction;
+
+    public void Initialize()
+    {
+        _bindingText.text = GetActionDisplayName();
+
         _anyKeyInputAction.AddBinding(InputConstants.KeyboardAnyKeyPath);
         _anyKeyInputAction.performed += OnAnyKeyPerformed;
     }
 
-    protected TMP_Text BindingText => _bindingText;
-    protected InputAction InputAction => _inputAction;
-
-    public virtual void OnAnyKeyPerformed(InputAction.CallbackContext _)
+    public virtual void StartListening()
     {
-        var pressedControl = _bindingsTracker.AllControls.First(c => c.IsPressed());
+        _anyKeyInputAction.Enable();
+        _bindingText.color = _waitingTextColor;
+    }
 
-        if (pressedControl == Keyboard.current.escapeKey)
-            CancelBinding();
-        else
-            CompleteBinding(pressedControl);
+    public virtual void Reset()
+    {
+        _inputAction.RemoveAllBindingOverrides();
+        _bindingText.text = GetActionDisplayName();
+    }
 
+    protected abstract void OnAnyKeyPerformed(InputAction.CallbackContext _);
+
+    protected virtual void CompleteBinding(InputControl _)
+    {
+        _bindingText.text = GetActionDisplayName();
+
+        StopListening();
+    }
+
+    protected void CancelBinding()
+    {
+        _bindingText.text = GetActionDisplayName();
+
+        StopListening();
+    }
+
+    protected virtual void StopListening()
+    {
         _bindingText.color = _normalTextColor;
 
         _anyKeyInputAction.Disable();
         _bindingsTracker.StopListening();
     }
 
-    public virtual void Bind()
-    {
-        if (!_bindingsTracker.TryStartListening())
-            return;
-
-        _anyKeyInputAction.Enable();
-        _bindingText.text = "ќжидание ввода...";
-        _bindingText.color = _waitingTextColor;
-    }
-
-    public virtual void Reset()
-    {
-        _inputAction.RemoveBindingOverride(0);
-        _bindingText.text = _inputAction.GetBindingDisplayString();
-    }
-
-    protected virtual void CompleteBinding(InputControl control)
-    {
-        _inputAction.ApplyBindingOverride(control.path);
-        _bindingText.text = control.displayName;
-    }
-
-    private void CancelBinding() => _bindingText.text = _inputAction.GetBindingDisplayString();
+    protected abstract string GetActionDisplayName();
 }

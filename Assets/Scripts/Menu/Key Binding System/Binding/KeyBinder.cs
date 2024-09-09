@@ -5,6 +5,7 @@ using UnityEngine;
 using Zenject;
 using UnityEngine.UI;
 using System;
+using System.Linq;
 
 public class KeyBinder : MonoBehaviour
 {
@@ -33,7 +34,6 @@ public class KeyBinder : MonoBehaviour
     private void Awake()
     {
         _bindingButtonText = _bindingButton.GetComponentInChildren<TMP_Text>();
-        _bindingButtonText.text = _inputAction.GetBindingDisplayString();
         var normalTextColor = _bindingButtonText.color;
 
         if (_inputAction.type == InputActionType.Button)
@@ -53,7 +53,7 @@ public class KeyBinder : MonoBehaviour
 
         _disposable = Observable
             .EveryUpdate()
-            .Select(_ => _inputAction.bindings[0].hasOverrides)
+            .Select(_ => _inputAction.bindings.Any(b => b.hasOverrides))
             .DistinctUntilChanged()
             .Subscribe(value => _bindingResetButton.interactable = value);
     }
@@ -66,7 +66,7 @@ public class KeyBinder : MonoBehaviour
         _disposable?.Dispose();
     }
 
-    private void OnBindingButtonPressed() => _bindingHandler.Bind();
+    private void OnBindingButtonPressed() => _bindingHandler.StartListening();
 
     private void OnBindingResetButtonClicked() => _bindingHandler.Reset();
 }

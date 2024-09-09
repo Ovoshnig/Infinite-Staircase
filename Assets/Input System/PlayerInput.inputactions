@@ -131,17 +131,6 @@
                 },
                 {
                     "name": "",
-                    "id": "b28faa86-e51f-4546-b93c-9cff5b7b04ae",
-                    "path": "<Touchscreen>/delta",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "Mobile",
-                    "action": "Look",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
                     "id": "4894aae8-540b-4489-9c5d-c342e7bde184",
                     "path": "<Keyboard>/leftShift",
                     "interactions": "",
