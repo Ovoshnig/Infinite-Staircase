@@ -17,8 +17,7 @@ public class KeyBindingsInitialiser : MonoBehaviour
 
     private void Initialise()
     {
-        KeyBinder[] keyBinders = GetComponentsInChildren<KeyBinder>();
-
+        var keyBinders = GetComponentsInChildren<KeyBinder>();
         var actionAsset = _playerInput.asset;
 
         foreach (var actionMap in actionAsset.actionMaps)
