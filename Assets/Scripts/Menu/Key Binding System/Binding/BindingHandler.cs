@@ -20,7 +20,7 @@ public abstract class BindingHandler : IBindingHandler
         _waitingTextColor = waitingTextColor;
         _inputAction = inputAction;
 
-        _anyKeyInputAction = new InputAction(type: InputActionType.PassThrough);
+        _anyKeyInputAction = new InputAction(type: InputActionType.Button);
         Initialize();
     }
 

@@ -38,28 +38,21 @@ public class Vector2BindingHandler : BindingHandler
 
     protected override void OnAnyKeyPerformed(InputAction.CallbackContext _)
     {
-        try
+        var pressedControl = BindingsTracker.AllControls.First(c => c.IsPressed());
+
+        if (pressedControl == Keyboard.current.escapeKey)
         {
-            var pressedControl = BindingsTracker.AllControls.First(c => c.IsPressed());
-
-            if (pressedControl == Keyboard.current.escapeKey)
-            {
-                CancelBinding();
-            }
-            else
-            {
-                _temporaryControls[_keyInputNumber] = pressedControl;
-                _keyInputNumber++;
-
-                if (_keyInputNumber == 4)
-                    CompleteBinding(pressedControl);
-                else
-                    DisplayWaitingMessage();
-            }
+            CancelBinding();
         }
-        catch (Exception e)
+        else
         {
-            Debug.Log(e.Message);
+            _temporaryControls[_keyInputNumber] = pressedControl;
+            _keyInputNumber++;
+
+            if (_keyInputNumber == 4)
+                CompleteBinding(pressedControl);
+            else
+                DisplayWaitingMessage();
         }
     }
 
