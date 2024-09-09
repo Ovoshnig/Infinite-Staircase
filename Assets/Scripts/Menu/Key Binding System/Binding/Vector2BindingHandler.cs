@@ -67,8 +67,24 @@ public class Vector2BindingHandler : BindingHandler
     {
         (_temporaryControls[1], _temporaryControls[2]) = (_temporaryControls[2], _temporaryControls[1]);
 
+        bool hasDuplicates = _temporaryControls.GroupBy(c => c.path).Any(g => g.Count() > 1);
+        bool hasChanges = false;
+
         for (int i = 0; i < 4; i++)
-            InputAction.ApplyBindingOverride(i + 1, _temporaryControls[i].path);
+        {
+            var actionKeyName = InputAction.bindings[i + 1].path.Split('/')[^1];
+            var controlKeyName = _temporaryControls[i].path.Split('/')[^1];
+
+            if (actionKeyName != controlKeyName)
+            {
+                hasChanges = true;
+                break;
+            }
+        }
+
+        if (hasChanges && !hasDuplicates)
+            for (int i = 0; i < 4; i++)
+                InputAction.ApplyBindingOverride(i + 1, _temporaryControls[i].path);
 
         base.CompleteBinding(control);
     }

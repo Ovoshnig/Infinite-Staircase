@@ -34,7 +34,8 @@ public class ButtonBindingHandler : BindingHandler
 
     protected override void CompleteBinding(InputControl control)
     {
-        InputAction.ApplyBindingOverride(control.path);
+        if (InputAction.controls[0].path != control.path)
+            InputAction.ApplyBindingOverride(control.path);
 
         base.CompleteBinding(control);
     }
