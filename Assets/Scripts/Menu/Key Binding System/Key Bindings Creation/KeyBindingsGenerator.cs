@@ -24,7 +24,10 @@ public class KeyBindingsGenerator : MonoBehaviour
 
             foreach (var action in actionMap.actions)
             {
-                if (action.controls.All(c => !c.path.ToLower().Contains("keyboard")))
+                bool isKeyboardUsing = action.controls.Any(c => c.path.ToLower().Contains("keyboard"));
+                bool hasEscapeKey = action.controls.Any(c => c.path.ToLower().Contains("escape"));
+
+                if (!isKeyboardUsing || hasEscapeKey)
                     continue;
 
                 var keyBinder = Instantiate(_keyBindingBlockPrefab, transform).GetComponent<KeyBinder>();
