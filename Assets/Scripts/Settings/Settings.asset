@@ -26,6 +26,9 @@ MonoBehaviour:
     <MinVolume>k__BackingField: -80
     <MaxVolume>k__BackingField: 0
     <SnapshotTransitionDuration>k__BackingField: 0
+  _worldGeneration:
+    <MinSeed>k__BackingField: -99999999
+    <MaxSeed>k__BackingField: 999999999
   _inventorySettings:
     <RowCount>k__BackingField: 4
     <ColumnCount>k__BackingField: 6

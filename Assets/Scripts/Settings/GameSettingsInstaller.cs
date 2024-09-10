@@ -9,6 +9,7 @@ public class GameSettingsInstaller : ScriptableObjectInstaller<GameSettingsInsta
     [SerializeField] private ControlSettings _controlSettings;
     [SerializeField] private LevelSettings _levelSettings;
     [SerializeField] private AudioSettings _audioSettings;
+    [SerializeField] private WorldGenerationSettings _worldGeneration;
     [SerializeField] private InventorySettings _inventorySettings;
 
     public InventorySettings InventorySettings1 { get => _inventorySettings; }
@@ -19,6 +20,7 @@ public class GameSettingsInstaller : ScriptableObjectInstaller<GameSettingsInsta
         Container.BindInstance(_controlSettings);
         Container.BindInstance(_levelSettings);
         Container.BindInstance(_audioSettings);
+        Container.BindInstance(_worldGeneration);
         Container.BindInstance(_inventorySettings);
     }
 
@@ -57,6 +59,13 @@ public class GameSettingsInstaller : ScriptableObjectInstaller<GameSettingsInsta
         [field: SerializeField, Min(0f)] public float SnapshotTransitionDuration { get; private set; }
 
         public float DefaultVolume => (MinVolume + MaxVolume) / 2f;
+    }
+
+    [Serializable]
+    public class WorldGenerationSettings
+    {
+        [field: SerializeField] public int MinSeed { get; private set; }
+        [field: SerializeField] public int MaxSeed { get; private set; }
     }
 
     [Serializable]

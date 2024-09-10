@@ -168,7 +168,7 @@ MonoBehaviour:
   m_CaretWidth: 1
   m_ReadOnly: 0
   m_RichText: 1
-  m_GlobalFontAsset: {fileID: 11400000, guid: 343ce957b98081f41be1d7d67828eda9, type: 2}
+  m_GlobalFontAsset: {fileID: 11400000, guid: 6aa730cf6ff0722459e6551d78702d11, type: 2}
   m_OnFocusSelectAll: 1
   m_ResetOnDeActivation: 1
   m_KeepTextSelectionVisible: 0
@@ -270,6 +270,10 @@ PrefabInstance:
       propertyPath: m_fontSizeBase
       value: 14
       objectReference: {fileID: 0}
+    - target: {fileID: 4340154353747558020, guid: ada1e80840d50a740865295f82d3bbe8, type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: 416467011290700998, guid: 6aa730cf6ff0722459e6551d78702d11, type: 2}
     - target: {fileID: 4340154353747558020, guid: ada1e80840d50a740865295f82d3bbe8, type: 3}
       propertyPath: m_TextWrappingMode
       value: 0
@@ -447,6 +451,10 @@ PrefabInstance:
       propertyPath: m_fontSizeBase
       value: 14
       objectReference: {fileID: 0}
+    - target: {fileID: 4340154353747558020, guid: ada1e80840d50a740865295f82d3bbe8, type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: 416467011290700998, guid: 6aa730cf6ff0722459e6551d78702d11, type: 2}
     - target: {fileID: 4340154353747558020, guid: ada1e80840d50a740865295f82d3bbe8, type: 3}
       propertyPath: m_TextWrappingMode
       value: 3

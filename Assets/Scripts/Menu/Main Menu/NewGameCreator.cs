@@ -1,10 +1,9 @@
 using Cysharp.Threading.Tasks;
 using Random = System.Random;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using Zenject;
-using System;
-using TMPro;
 
 public class NewGameCreator : MonoBehaviour
 {
@@ -15,55 +14,32 @@ public class NewGameCreator : MonoBehaviour
     private readonly Random _random = new();
     private SceneSwitch _sceneSwitch;
     private SaveStorage _saveStorage;
+    private GameSettingsInstaller.WorldGenerationSettings _generationSettings;
 
     [Inject]
-    private void Construct(SceneSwitch sceneSwitch, SaveStorage saveStorage)
+    private void Construct(SceneSwitch sceneSwitch, SaveStorage saveStorage,
+        GameSettingsInstaller.WorldGenerationSettings generationSettings)
     {
         _sceneSwitch = sceneSwitch;
         _saveStorage = saveStorage;
+        _generationSettings = generationSettings;
     }
 
-    private void OnEnable()
-    {
-        _startGameButton.onClick.AddListener(OnStartNewGameButtonClicked);
+    private void OnEnable() => _startGameButton.onClick.AddListener(OnStartNewGameButtonClicked);
 
-        _seedInputField.onValueChanged.AddListener(OnSeedInputFieldValueChanged);
-    }
-
-    private void OnDisable()
-    {
-        _startGameButton.onClick.RemoveListener(OnStartNewGameButtonClicked);
-
-        _seedInputField.onValueChanged.RemoveListener(OnSeedInputFieldValueChanged);
-    }
+    private void OnDisable() => _startGameButton.onClick.RemoveListener(OnStartNewGameButtonClicked);
 
     private void OnStartNewGameButtonClicked()
     {
         int seed;
 
-        if (_seedInputField.text == string.Empty)
-            seed = _random.Next();
-        else 
-            seed = Convert.ToInt32(_seedInputField.text); 
+        if (int.TryParse(_seedInputField.text, out int value))
+            seed = value; 
+        else
+            seed = _random.Next(_generationSettings.MinSeed, _generationSettings.MaxSeed);
 
         _saveStorage.Set(SaveConstants.SaveCreatedKey, true);
         _saveStorage.Set(SaveConstants.SeedKey, seed);
         _sceneSwitch.LoadFirstLevel().Forget();
-    }
-
-    private void OnSeedInputFieldValueChanged(string input)
-    {
-        if (int.TryParse(input, out int value))
-        {
-            if (value < 0)
-                _seedInputField.text = 0.ToString();
-        }
-        else
-        {
-            if (long.TryParse(input, out long _))
-                _seedInputField.text = int.MaxValue.ToString();
-
-            _seedInputField.text = string.Empty;
-        }
     }
 }
