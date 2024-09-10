@@ -21,10 +21,10 @@ public class WindowInputHandler : IInitializable, IDisposable
     {
         _playerInput.Windows.CloseCurrent.performed += OnCloseCurrent;
         _playerInput.Windows.CloseCurrent.canceled += OnCloseCurrent;
-        _playerInput.Windows.PauseMenuSwitch.performed += OnPauseMenuSwitch;
-        _playerInput.Windows.PauseMenuSwitch.canceled += OnPauseMenuSwitch;
-        _playerInput.Windows.InventorySwitch.performed += OnInventorySwitch;
-        _playerInput.Windows.InventorySwitch.canceled += OnInventorySwitch;
+        _playerInput.Windows.SwitchPauseMenu.performed += OnPauseMenuSwitch;
+        _playerInput.Windows.SwitchPauseMenu.canceled += OnPauseMenuSwitch;
+        _playerInput.Windows.SwitchInventory.performed += OnInventorySwitch;
+        _playerInput.Windows.SwitchInventory.canceled += OnInventorySwitch;
 
         _playerInput.Windows.Enable();
     }

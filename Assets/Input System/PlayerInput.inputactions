@@ -195,7 +195,7 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "PauseMenuSwitch",
+                    "name": "SwitchPauseMenu",
                     "type": "Button",
                     "id": "b9c92f4c-fb4b-49da-8aa9-a8d94b521b58",
                     "expectedControlType": "",
@@ -204,7 +204,7 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "InventorySwitch",
+                    "name": "SwitchInventory",
                     "type": "Button",
                     "id": "420eedbb-c8ae-4eda-9478-6505fc58de15",
                     "expectedControlType": "",
@@ -221,7 +221,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": ";Keyboard and Mouse",
-                    "action": "PauseMenuSwitch",
+                    "action": "SwitchPauseMenu",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -232,7 +232,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": ";Keyboard and Mouse",
-                    "action": "InventorySwitch",
+                    "action": "SwitchInventory",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },

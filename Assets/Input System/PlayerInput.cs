@@ -218,7 +218,7 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""PauseMenuSwitch"",
+                    ""name"": ""SwitchPauseMenu"",
                     ""type"": ""Button"",
                     ""id"": ""b9c92f4c-fb4b-49da-8aa9-a8d94b521b58"",
                     ""expectedControlType"": """",
@@ -227,7 +227,7 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""InventorySwitch"",
+                    ""name"": ""SwitchInventory"",
                     ""type"": ""Button"",
                     ""id"": ""420eedbb-c8ae-4eda-9478-6505fc58de15"",
                     ""expectedControlType"": """",
@@ -244,7 +244,7 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": "";Keyboard and Mouse"",
-                    ""action"": ""PauseMenuSwitch"",
+                    ""action"": ""SwitchPauseMenu"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -255,7 +255,7 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": "";Keyboard and Mouse"",
-                    ""action"": ""InventorySwitch"",
+                    ""action"": ""SwitchInventory"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -364,8 +364,8 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
         // Windows
         m_Windows = asset.FindActionMap("Windows", throwIfNotFound: true);
         m_Windows_CloseCurrent = m_Windows.FindAction("CloseCurrent", throwIfNotFound: true);
-        m_Windows_PauseMenuSwitch = m_Windows.FindAction("PauseMenuSwitch", throwIfNotFound: true);
-        m_Windows_InventorySwitch = m_Windows.FindAction("InventorySwitch", throwIfNotFound: true);
+        m_Windows_SwitchPauseMenu = m_Windows.FindAction("SwitchPauseMenu", throwIfNotFound: true);
+        m_Windows_SwitchInventory = m_Windows.FindAction("SwitchInventory", throwIfNotFound: true);
         // Screen
         m_Screen = asset.FindActionMap("Screen", throwIfNotFound: true);
         m_Screen_SwitchFullScreen = m_Screen.FindAction("SwitchFullScreen", throwIfNotFound: true);
@@ -564,15 +564,15 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
     private readonly InputActionMap m_Windows;
     private List<IWindowsActions> m_WindowsActionsCallbackInterfaces = new List<IWindowsActions>();
     private readonly InputAction m_Windows_CloseCurrent;
-    private readonly InputAction m_Windows_PauseMenuSwitch;
-    private readonly InputAction m_Windows_InventorySwitch;
+    private readonly InputAction m_Windows_SwitchPauseMenu;
+    private readonly InputAction m_Windows_SwitchInventory;
     public struct WindowsActions
     {
         private @PlayerInput m_Wrapper;
         public WindowsActions(@PlayerInput wrapper) { m_Wrapper = wrapper; }
         public InputAction @CloseCurrent => m_Wrapper.m_Windows_CloseCurrent;
-        public InputAction @PauseMenuSwitch => m_Wrapper.m_Windows_PauseMenuSwitch;
-        public InputAction @InventorySwitch => m_Wrapper.m_Windows_InventorySwitch;
+        public InputAction @SwitchPauseMenu => m_Wrapper.m_Windows_SwitchPauseMenu;
+        public InputAction @SwitchInventory => m_Wrapper.m_Windows_SwitchInventory;
         public InputActionMap Get() { return m_Wrapper.m_Windows; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -585,12 +585,12 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
             @CloseCurrent.started += instance.OnCloseCurrent;
             @CloseCurrent.performed += instance.OnCloseCurrent;
             @CloseCurrent.canceled += instance.OnCloseCurrent;
-            @PauseMenuSwitch.started += instance.OnPauseMenuSwitch;
-            @PauseMenuSwitch.performed += instance.OnPauseMenuSwitch;
-            @PauseMenuSwitch.canceled += instance.OnPauseMenuSwitch;
-            @InventorySwitch.started += instance.OnInventorySwitch;
-            @InventorySwitch.performed += instance.OnInventorySwitch;
-            @InventorySwitch.canceled += instance.OnInventorySwitch;
+            @SwitchPauseMenu.started += instance.OnSwitchPauseMenu;
+            @SwitchPauseMenu.performed += instance.OnSwitchPauseMenu;
+            @SwitchPauseMenu.canceled += instance.OnSwitchPauseMenu;
+            @SwitchInventory.started += instance.OnSwitchInventory;
+            @SwitchInventory.performed += instance.OnSwitchInventory;
+            @SwitchInventory.canceled += instance.OnSwitchInventory;
         }
 
         private void UnregisterCallbacks(IWindowsActions instance)
@@ -598,12 +598,12 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
             @CloseCurrent.started -= instance.OnCloseCurrent;
             @CloseCurrent.performed -= instance.OnCloseCurrent;
             @CloseCurrent.canceled -= instance.OnCloseCurrent;
-            @PauseMenuSwitch.started -= instance.OnPauseMenuSwitch;
-            @PauseMenuSwitch.performed -= instance.OnPauseMenuSwitch;
-            @PauseMenuSwitch.canceled -= instance.OnPauseMenuSwitch;
-            @InventorySwitch.started -= instance.OnInventorySwitch;
-            @InventorySwitch.performed -= instance.OnInventorySwitch;
-            @InventorySwitch.canceled -= instance.OnInventorySwitch;
+            @SwitchPauseMenu.started -= instance.OnSwitchPauseMenu;
+            @SwitchPauseMenu.performed -= instance.OnSwitchPauseMenu;
+            @SwitchPauseMenu.canceled -= instance.OnSwitchPauseMenu;
+            @SwitchInventory.started -= instance.OnSwitchInventory;
+            @SwitchInventory.performed -= instance.OnSwitchInventory;
+            @SwitchInventory.canceled -= instance.OnSwitchInventory;
         }
 
         public void RemoveCallbacks(IWindowsActions instance)
@@ -708,8 +708,8 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
     public interface IWindowsActions
     {
         void OnCloseCurrent(InputAction.CallbackContext context);
-        void OnPauseMenuSwitch(InputAction.CallbackContext context);
-        void OnInventorySwitch(InputAction.CallbackContext context);
+        void OnSwitchPauseMenu(InputAction.CallbackContext context);
+        void OnSwitchInventory(InputAction.CallbackContext context);
     }
     public interface IScreenActions
     {
