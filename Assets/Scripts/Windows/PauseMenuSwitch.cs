@@ -1,10 +1,10 @@
+using R3;
 using UnityEngine;
 using UnityEngine.UI;
 using Zenject;
 
-public class PauseMenuSwitch : Window
+public class PauseMenuSwitch : WindowSwitch
 {
-    [SerializeField] private GameObject _settingsPanel;
     [SerializeField] private Button _resumeButton;
 
     private GamePauser _gamePauser;
@@ -12,35 +12,45 @@ public class PauseMenuSwitch : Window
     [Inject]
     private void Construct(GamePauser gamePauser) => _gamePauser = gamePauser;
 
-    protected override void InitializeInput() => 
-        PlayerInput.PauseMenu.Switch.performed += OnSwitchPerformed;
+    protected override void InitializeInput()
+    {
+        Disposable = InputHandler.PauseMenuSwitchPressed
+            .Where(value => value)
+            .Subscribe(_ => Switch());
+    }
 
     protected override void Awake()
     {
         base.Awake();
+
         _resumeButton.onClick.AddListener(OnResumeClicked);
     }
 
-    private void OnDestroy() => 
-        _resumeButton.onClick.RemoveListener(OnResumeClicked);
-
-    public override void Open()
+    protected override void OnDestroy()
     {
-        base.Open();
-        _gamePauser.Pause();
+        base.OnDestroy();
+
+        _resumeButton.onClick.RemoveListener(OnResumeClicked);
     }
 
-    public override void Close()
+    public override bool Open()
     {
-        if (_settingsPanel.activeSelf)
-        {
-            Panel.SetActive(true);
-            _settingsPanel.SetActive(false);
-            return;
-        }
+        if (!base.Open())
+            return false;
+        
+        _gamePauser.Pause();
 
-        base.Close();
+        return true;
+    }
+
+    public override bool Close()
+    {
+        if (!Panel.activeSelf || !base.Close())
+            return false;
+
         _gamePauser.Unpause();
+
+        return true;
     }
 
     private void OnResumeClicked() => Close();

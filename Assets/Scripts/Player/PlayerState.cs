@@ -5,11 +5,12 @@ using Zenject;
 [RequireComponent(typeof(CharacterController))]
 public class PlayerState : MonoBehaviour
 {
+    private readonly ReactiveProperty<bool> _isWalking = new(false);
+    private readonly ReactiveProperty<bool> _isRunning = new(false);
+    private readonly ReactiveProperty<bool> _isJumping = new(false);
+    private readonly ReactiveProperty<bool> _isLooking = new(false);
+    private readonly ReactiveProperty<bool> _isGrounded = new(false);
     private PlayerInputHandler _inputHandler;
-    private ReactiveProperty<bool> _isWalking;
-    private ReactiveProperty<bool> _isRunning;
-    private ReactiveProperty<bool> _isJumping;
-    private ReactiveProperty<bool> _isLooking;
     private CharacterController _characterController;
     private CompositeDisposable _compositeDisposable;
 
@@ -20,50 +21,47 @@ public class PlayerState : MonoBehaviour
     public Vector2 LookInput => _inputHandler.LookInput;
     public ReadOnlyReactiveProperty<bool> IsWalking => _isWalking;
     public ReadOnlyReactiveProperty<bool> IsRunning => _isRunning;
+    public ReadOnlyReactiveProperty<bool> IsGrounded => _isGrounded;
     public ReadOnlyReactiveProperty<bool> IsJumping => _isJumping;
     public ReadOnlyReactiveProperty<bool> IsLooking => _isLooking;
-    public ReadOnlyReactiveProperty<bool> IsGrounded { get; private set; }
 
     private void Awake()
     {
         _characterController = GetComponent<CharacterController>();
 
-        _isWalking = new ReactiveProperty<bool>(false);
-        _isRunning = new ReactiveProperty<bool>(false);
-        _isJumping = new ReactiveProperty<bool>(false);
-        _isLooking = new ReactiveProperty<bool>(false);
-
-        var moveDisposable = _inputHandler.IsWalkPressed
+        var walkDisposable = _inputHandler.IsWalkPressed
             .Subscribe(value =>
             {
-                _isWalking.Value = value;
-                _isRunning.Value = value && _inputHandler.IsRunPressed.CurrentValue;
+                _isWalking.OnNext(value);
+                _isRunning.OnNext(value && _inputHandler.IsRunPressed.CurrentValue);
             });
 
         var runDisposable = _inputHandler.IsRunPressed
-            .Subscribe(value => _isRunning.Value = value && _isWalking.Value);
-
-        var lookDisposable = _inputHandler.IsLookPressed
-            .Subscribe(value => _isLooking.Value = value);
+            .Subscribe(value => _isRunning.OnNext(value && IsWalking.CurrentValue));
 
         var jumpDisposable = _inputHandler.IsJumpPressed
-            .Subscribe(value => _isJumping.Value = value && _characterController.isGrounded);
+            .Subscribe(value => _isJumping.OnNext(value && _characterController.isGrounded));
 
-        IsGrounded = Observable.EveryUpdate()
-            .Select(_ => _characterController != null && _characterController.isGrounded)
+        var lookDisposable = _inputHandler.IsLookPressed
+            .Subscribe(value => _isLooking.OnNext(value));
+
+        var groundDisposable = Observable
+            .EveryUpdate()
+            .Select(_ => _characterController.isGrounded)
             .DistinctUntilChanged()
-            .ToReadOnlyReactiveProperty();
+            .Subscribe(value => _isGrounded.OnNext(value));
 
-        var groundEnterDisposable = IsGrounded
+        var groundEnterDisposable = _isGrounded
             .Where(value => value)
-            .Subscribe(_ => _isJumping.Value = false);
+            .Subscribe(_ => _isJumping.OnNext(false));
 
         _compositeDisposable = new CompositeDisposable
         {
-            moveDisposable,
+            walkDisposable,
             runDisposable,
-            jumpDisposable,
             lookDisposable,
+            jumpDisposable,
+            groundDisposable,
             groundEnterDisposable
         };
     }

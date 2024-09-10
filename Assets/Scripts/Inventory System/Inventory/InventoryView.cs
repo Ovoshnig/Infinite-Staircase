@@ -19,7 +19,7 @@ public class InventoryView : MonoBehaviour
     private void Awake()
     {
         _mouseClickAction = new(type: InputActionType.Button,
-        binding: InputConstants.MouseLeftButtonBinding);
+        binding: InputConstants.MouseLeftButtonPath);
         _mouseClickAction.canceled += OnMouseClickCanceled;
 
         _slotViews = GetComponentsInChildren<SlotView>();

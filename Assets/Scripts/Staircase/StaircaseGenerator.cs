@@ -10,7 +10,7 @@ public class StaircaseGenerator : MonoBehaviour
     [SerializeField] private Transform _startTransform;
     [SerializeField] private int _partsCount;
 
-    private SaveSaver _saveSaver;
+    private SaveStorage _saveStorage;
     private GameObject[] _stairs;
     private StairConnection[] _stairConnections;
     private CancellationTokenSource _cts;
@@ -18,13 +18,13 @@ public class StaircaseGenerator : MonoBehaviour
     private int _seed;
 
     [Inject]
-    private void Construct(SaveSaver saveSaver) => _saveSaver = saveSaver;
+    private void Construct(SaveStorage saveStorage) => _saveStorage = saveStorage;
 
     private void Awake() => _cts = new CancellationTokenSource();
 
     private void Start()
     {
-        _seed = _saveSaver.LoadData<int>(SaveConstants.SeedKey, default);
+        _seed = _saveStorage.Get<int>(SaveConstants.SeedKey, default);
         _stairs = Resources.LoadAll<GameObject>(ResourcesConstants.StairPrefabsPath);
         _size = _stairs[0].GetComponent<Stair>().Size;
         _stairConnections = Resources.LoadAll<StairConnection>(ResourcesConstants.StairConnectionsPath);

@@ -12,16 +12,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f052a82553564f49a319e8b23892e8f, type: 3}
   m_Name: Settings
   m_EditorClassIdentifier: 
+  _timeSettings:
+    <NormalTimeScale>k__BackingField: 1
+    <PauseTimeScale>k__BackingField: 0.0001
   _controlSettings:
+    <MinSensitivity>k__BackingField: 0
     <MaxSensitivity>k__BackingField: 1
   _levelSettings:
     <FirstGameplayLevel>k__BackingField: 1
-    <GameplayLevelsCount>k__BackingField: 1
+    <GameplayLevelsCount>k__BackingField: 3
     <LevelTransitionDuration>k__BackingField: 5
   _audioSettings:
     <MinVolume>k__BackingField: -80
     <MaxVolume>k__BackingField: 0
-    <SnapshotTransitionDuration>k__BackingField: 1
+    <SnapshotTransitionDuration>k__BackingField: 0
+  _worldGeneration:
+    <MinSeed>k__BackingField: -99999999
+    <MaxSeed>k__BackingField: 999999999
   _inventorySettings:
     <RowCount>k__BackingField: 4
     <ColumnCount>k__BackingField: 6

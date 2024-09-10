@@ -2,17 +2,22 @@ using R3;
 using Random = System.Random;
 using System;
 using UnityEngine;
+using Zenject;
 
 [RequireComponent(typeof(AudioSource))]
 public class PlayerSoundPlayer : MonoBehaviour
 {
-    [SerializeField] private PlayerState _playerState;
-
+    private PlayerState _playerState;
     private AudioSource _audioSource;
     private AudioClip[] _footstepClips;
     private AudioClip[] _landClips;
     private Random _random;
     private IDisposable _disposable;
+
+
+    [Inject]
+    private void Construct([Inject(Id = ZenjectIdConstants.PlayerId)] PlayerState playerState) => 
+        _playerState = playerState;
 
     private void Awake()
     {
@@ -25,7 +30,7 @@ public class PlayerSoundPlayer : MonoBehaviour
 
         _disposable = _playerState.IsGrounded
             .Where(value => value)
-            .Subscribe(_ => PlayLandingSound());
+            .Subscribe(_ => PlayLandSound());
     }
 
     private void OnDestroy() => _disposable?.Dispose();
@@ -36,7 +41,7 @@ public class PlayerSoundPlayer : MonoBehaviour
         _audioSource.PlayOneShot(clip);
     }
 
-    private void PlayLandingSound()
+    private void PlayLandSound()
     {
         AudioClip clip = GetRandomClip(_landClips);
         _audioSource.PlayOneShot(clip);
