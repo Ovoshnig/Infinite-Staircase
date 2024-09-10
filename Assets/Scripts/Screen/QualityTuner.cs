@@ -16,6 +16,7 @@ public class QualityTuner : IInitializable, IDisposable
     {
         _isVSyncEnabled = _settingsStorage.Get(SettingsConstants.VSyncKey, false);
         QualitySettings.vSyncCount = _isVSyncEnabled ? 1 : 0;
+        Application.targetFrameRate = -1;
     }
 
     public void Dispose() => _settingsStorage.Set(SettingsConstants.VSyncKey, _isVSyncEnabled);

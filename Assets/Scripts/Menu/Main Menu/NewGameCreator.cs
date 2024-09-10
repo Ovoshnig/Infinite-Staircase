@@ -25,11 +25,13 @@ public class NewGameCreator : MonoBehaviour
         _generationSettings = generationSettings;
     }
 
-    private void OnEnable() => _startGameButton.onClick.AddListener(OnStartNewGameButtonClicked);
+    private void Start() => _seedInputField.contentType = TMP_InputField.ContentType.IntegerNumber;
 
-    private void OnDisable() => _startGameButton.onClick.RemoveListener(OnStartNewGameButtonClicked);
+    private void OnEnable() => _startGameButton.onClick.AddListener(OnStartGameButtonClicked);
 
-    private void OnStartNewGameButtonClicked()
+    private void OnDisable() => _startGameButton.onClick.RemoveListener(OnStartGameButtonClicked);
+
+    private void OnStartGameButtonClicked()
     {
         int seed;
 
