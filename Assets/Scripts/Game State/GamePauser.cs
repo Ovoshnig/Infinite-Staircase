@@ -6,7 +6,7 @@ using Zenject;
 public class GamePauser : IInitializable, IDisposable
 {
     private readonly SceneSwitch _sceneSwitch;
-    private GameSettingsInstaller.TimeSettings _timeSettings;
+    private readonly GameSettingsInstaller.TimeSettings _timeSettings;
     private readonly Subject<bool> _isPause = new();
 
     public GamePauser(SceneSwitch sceneSwitch, 

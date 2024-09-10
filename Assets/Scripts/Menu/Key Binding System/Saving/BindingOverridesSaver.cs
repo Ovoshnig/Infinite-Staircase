@@ -18,13 +18,13 @@ public class BindingOverridesSaver : IDisposable
 
     public void Initialize()
     {
-        var json = _settingsStorage.Get(SettingsConstants.RebindsKey, string.Empty);
+        var json = _settingsStorage.Get(SettingsConstants.BindingOverridesKey, string.Empty);
         _playerInput.LoadBindingOverridesFromJson(json);
     }
 
     public void Dispose()
     {
         var json = _playerInput.SaveBindingOverridesAsJson();
-        _settingsStorage.Set(SettingsConstants.RebindsKey, json);
+        _settingsStorage.Set(SettingsConstants.BindingOverridesKey, json);
     }
 }

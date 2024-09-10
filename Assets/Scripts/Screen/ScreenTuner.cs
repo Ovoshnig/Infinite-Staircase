@@ -31,6 +31,7 @@ public class ScreenTuner : IInitializable, IDisposable
 
     public void Initialize()
     {
+        QualitySettings.vSyncCount = 0;
         Application.targetFrameRate = -1;
 
         var resolution = CurrentResolution;
