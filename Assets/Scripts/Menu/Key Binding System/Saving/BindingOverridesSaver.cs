@@ -1,5 +1,4 @@
 using System;
-using UnityEngine;
 using UnityEngine.InputSystem;
 using Zenject;
 
@@ -19,8 +18,6 @@ public class BindingOverridesSaver : IDisposable
 
     public void Initialize()
     {
-        Debug.Log(nameof(BindingOverridesSaver));
-
         var json = _settingsStorage.Get(SettingsConstants.RebindsKey, string.Empty);
         _playerInput.LoadBindingOverridesFromJson(json);
     }

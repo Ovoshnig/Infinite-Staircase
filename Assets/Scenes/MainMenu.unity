@@ -13639,6 +13639,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3547769345893594773, guid: 8d658f426941261409299bcc6a5882af, type: 3}
       propertyPath: m_Color.a
+      value: 0.35686275
+      objectReference: {fileID: 0}
+    - target: {fileID: 3547769345893594773, guid: 8d658f426941261409299bcc6a5882af, type: 3}
+      propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5649414665136907670, guid: 8d658f426941261409299bcc6a5882af, type: 3}
@@ -13662,12 +13666,16 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5787888182439503507, guid: 8d658f426941261409299bcc6a5882af, type: 3}
+      propertyPath: m_MovementType
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5787888182439503507, guid: 8d658f426941261409299bcc6a5882af, type: 3}
       propertyPath: m_DecelerationRate
       value: 0.02
       objectReference: {fileID: 0}
     - target: {fileID: 5787888182439503507, guid: 8d658f426941261409299bcc6a5882af, type: 3}
       propertyPath: m_ScrollSensitivity
-      value: 20
+      value: 50
       objectReference: {fileID: 0}
     - target: {fileID: 5787888182439503507, guid: 8d658f426941261409299bcc6a5882af, type: 3}
       propertyPath: m_HorizontalScrollbar
