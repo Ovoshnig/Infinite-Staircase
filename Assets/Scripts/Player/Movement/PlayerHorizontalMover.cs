@@ -32,7 +32,7 @@ public class PlayerHorizontalMover : MonoBehaviour
         if (_playerState.IsWalking.CurrentValue)
         {
             float targetAngle = CalculateTargetAngle();
-            float smoothedAngle = CalculateSmothedAngle(targetAngle);
+            float smoothedAngle = CalculateSmoothedAngle(targetAngle);
             transform.eulerAngles = new Vector3(0f, smoothedAngle, 0f);
 
             Vector3 targetForward = CalculateForwardVector(targetAngle);
@@ -53,7 +53,7 @@ public class PlayerHorizontalMover : MonoBehaviour
         return targetAngle;
     }
 
-    private float CalculateSmothedAngle(float angel) =>
+    private float CalculateSmoothedAngle(float angel) =>
         Mathf.LerpAngle(transform.eulerAngles.y, angel, Time.deltaTime * _slewSpeed);
 
     private Vector3 CalculateForwardVector(float angel)

@@ -434,7 +434,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _playerPrefab: {fileID: 3472763440191899071, guid: 7eaf84d7312f3c54c8e31b402647ff4c, type: 3}
   _firstPersonCameraPrefab: {fileID: 260423365766699274, guid: a12c5aa653b08fc41b854e07f188919f, type: 3}
-  _thirdPersonCameraPrefab: {fileID: 7386149614744439597, guid: 2e29f761342f946409d361286ae5f3be, type: 3}
+  _thirdPersonCameraPrefab: {fileID: 140634393728324308, guid: 7594b30adaf3f264981ec1176d49e562, type: 3}
   _spawnPoint: {fileID: 1765437325}
 --- !u!114 &900829437
 MonoBehaviour:
@@ -536,7 +536,7 @@ Transform:
   m_GameObject: {fileID: 1166965745}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:

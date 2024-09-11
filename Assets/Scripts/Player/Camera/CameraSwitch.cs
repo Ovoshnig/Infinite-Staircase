@@ -21,8 +21,8 @@ public class CameraSwitch : MonoBehaviour
     {
         _inputHandler = inputHandler;
         _windowTracker = windowTracker;
-        _firstPersonCamera = firstPersonLook.Camera;
-        _thirdPersonCamera = thirdPersonLook.Camera;
+        _firstPersonCamera = firstPersonLook.CinemachineCamera;
+        _thirdPersonCamera = thirdPersonLook.CinemachineCamera;
     }
 
     public ReadOnlyReactiveProperty<bool> IsFirstPerson => _isFirstPerson;

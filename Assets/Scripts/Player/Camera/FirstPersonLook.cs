@@ -21,4 +21,14 @@ public sealed class FirstPersonLook : PersonLook
 
         PermanentCompositeDisposable.Add(cameraSwitchDisposable);
     }
+
+    protected override void OnEnable()
+    {
+        base.OnEnable();
+
+        var sensitivityDisposable = LookTuner.Sensitivity
+            .Subscribe(value => value = value);
+
+        EnablingCompositeDisposable.Add(sensitivityDisposable);
+    }
 }
