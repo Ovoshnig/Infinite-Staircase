@@ -2,6 +2,7 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using TMPro;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class KeyBindingsGenerator : MonoBehaviour
 {
@@ -14,8 +15,7 @@ public class KeyBindingsGenerator : MonoBehaviour
         while (transform.childCount > 0)
             DestroyImmediate(transform.GetChild(0).gameObject);
 
-        PlayerInput playerInput = new();
-        var actionAsset = playerInput.asset;
+        var actionAsset = InputSystem.actions;
 
         foreach (var actionMap in actionAsset.actionMaps)
         {
@@ -33,7 +33,7 @@ public class KeyBindingsGenerator : MonoBehaviour
                 var keyBinder = Instantiate(_keyBindingBlockPrefab, transform).GetComponent<KeyBinder>();
                 var actionName = Regex.Replace(action.name, "([A-Z])", " $1").ToLower();
                 keyBinder.ActionNameText.text = actionName;
-                keyBinder.InputAction = action;
+                keyBinder.InputActionReference = InputActionReference.Create(action);
             }
         }
     }

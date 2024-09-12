@@ -13,20 +13,21 @@ public class KeyBinder : MonoBehaviour
     [SerializeField] private Button _bindingResetButton;
     [SerializeField] private TMP_Text _actionNameText;
     [SerializeField] private Color _waitingTextColor;
-    [SerializeField] private InputAction _inputAction;
+    [SerializeField] private InputActionReference _inputActionReference;
 
     private KeyBindingsTracker _bindingsTracker;
     private IBindingHandler _bindingHandler;
     private TMP_Text _bindingButtonText;
+    private InputAction _inputAction;
     private IDisposable _disposable;
 
     [Inject]
     private void Construct(KeyBindingsTracker bindingsTracker) => _bindingsTracker = bindingsTracker;
 
-    public InputAction InputAction
+    public InputActionReference InputActionReference
     {
-        get => _inputAction;
-        set => _inputAction = value;
+        get => _inputActionReference;
+        set => _inputActionReference = value;
     }
 
     public TMP_Text ActionNameText => _actionNameText;
@@ -36,16 +37,18 @@ public class KeyBinder : MonoBehaviour
         _bindingButtonText = _bindingButton.GetComponentInChildren<TMP_Text>();
         var normalTextColor = _bindingButtonText.color;
 
+        _inputAction = _inputActionReference.action;
+
         if (_inputAction.type == InputActionType.Button)
         {
             _bindingHandler = new ButtonBindingHandler(_bindingsTracker, _bindingButtonText,
-                normalTextColor, _waitingTextColor, _inputAction);
+                normalTextColor, _waitingTextColor, _inputActionReference);
         }
         else if (_inputAction.type == InputActionType.Value &&
             _inputAction.expectedControlType == nameof(Vector2))
         {
             _bindingHandler = new Vector2BindingHandler(_bindingsTracker, _bindingButtonText,
-                normalTextColor, _waitingTextColor, _inputAction);
+                normalTextColor, _waitingTextColor, _inputActionReference);
         }
 
         _bindingButton.onClick.AddListener(OnBindingButtonPressed);

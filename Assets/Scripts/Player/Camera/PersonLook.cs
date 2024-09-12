@@ -10,18 +10,15 @@ public abstract class PersonLook : MonoBehaviour
     private CameraSwitch _cameraSwitch;
     private Transform _playerTransform;
     private SkinnedMeshRenderer _skinnedMeshRenderer;
-    private LookTuner _lookTuner;
 
     [Inject]
     protected void Construct([Inject(Id = ZenjectIdConstants.PlayerId)] CameraSwitch cameraSwitch,
         [Inject(Id = ZenjectIdConstants.PlayerId)] PlayerState playerState,
-        [Inject(Id = ZenjectIdConstants.PlayerId)] SkinnedMeshRenderer skinnedMeshRenderer,
-        LookTuner lookTuner)
+        [Inject(Id = ZenjectIdConstants.PlayerId)] SkinnedMeshRenderer skinnedMeshRenderer)
     {
         _cameraSwitch = cameraSwitch;
         _playerTransform = playerState.transform;
         _skinnedMeshRenderer = skinnedMeshRenderer;
-        _lookTuner = lookTuner;
     }
 
     public CinemachineCamera CinemachineCamera => _cinemachineCamera;
@@ -31,7 +28,6 @@ public abstract class PersonLook : MonoBehaviour
     protected Transform PlayerTransform => _playerTransform;
     protected SkinnedMeshRenderer SkinnedMeshRenderer => _skinnedMeshRenderer;
     protected CameraSwitch CameraSwitch => _cameraSwitch;
-    protected LookTuner LookTuner => _lookTuner;
     protected CompositeDisposable PermanentCompositeDisposable { get; private set; }
     protected CompositeDisposable EnablingCompositeDisposable { get; private set; }
 

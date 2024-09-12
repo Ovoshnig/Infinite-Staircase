@@ -122,7 +122,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _walkSpeed: 3.5
   _runSpeed: 8
-  _slewSpeed: 7
+  _slewSpeed: 5
 --- !u!114 &5356522404496909390
 MonoBehaviour:
   m_ObjectHideFlags: 0

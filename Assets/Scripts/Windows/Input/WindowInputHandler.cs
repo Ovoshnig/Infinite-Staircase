@@ -5,13 +5,10 @@ using Zenject;
 
 public class WindowInputHandler : IInitializable, IDisposable
 {
-    private readonly PlayerInput _playerInput;
     private readonly Subject<bool> _closeCurrentPressed = new();
     private readonly Subject<bool> _pauseMenuSwitchPressed = new();
     private readonly Subject<bool> _inventorySwitchPressed = new();
-
-    [Inject]
-    public WindowInputHandler(PlayerInput playerInput) => _playerInput = playerInput;
+    private InputActionMap _actionMap;
 
     public Observable<bool> CloseCurrentPressed => _closeCurrentPressed;
     public Observable<bool> PauseMenuSwitchPressed => _pauseMenuSwitchPressed;
@@ -19,17 +16,21 @@ public class WindowInputHandler : IInitializable, IDisposable
 
     public void Initialize()
     {
-        _playerInput.Windows.CloseCurrent.performed += OnCloseCurrent;
-        _playerInput.Windows.CloseCurrent.canceled += OnCloseCurrent;
-        _playerInput.Windows.SwitchPauseMenu.performed += OnPauseMenuSwitch;
-        _playerInput.Windows.SwitchPauseMenu.canceled += OnPauseMenuSwitch;
-        _playerInput.Windows.SwitchInventory.performed += OnInventorySwitch;
-        _playerInput.Windows.SwitchInventory.canceled += OnInventorySwitch;
+        var playerInput = new PlayerInput();
+        var windowMap = playerInput.Windows;
+        _actionMap = InputSystem.actions.FindActionMap(nameof(playerInput.Windows));
 
-        _playerInput.Windows.Enable();
+        _actionMap.FindAction(nameof(windowMap.CloseCurrent)).performed += OnCloseCurrent;
+        _actionMap.FindAction(nameof(windowMap.CloseCurrent)).canceled += OnCloseCurrent;
+        _actionMap.FindAction(nameof(windowMap.SwitchPauseMenu)).performed += OnPauseMenuSwitch;
+        _actionMap.FindAction(nameof(windowMap.SwitchPauseMenu)).canceled += OnPauseMenuSwitch;
+        _actionMap.FindAction(nameof(windowMap.SwitchInventory)).performed += OnInventorySwitch;
+        _actionMap.FindAction(nameof(windowMap.SwitchInventory)).canceled += OnInventorySwitch;
+
+        _actionMap.Enable();
     }
 
-    public void Dispose() => _playerInput.Windows.Disable();
+    public void Dispose() => _actionMap.Disable();
 
     private void OnCloseCurrent(InputAction.CallbackContext context) => 
         _closeCurrentPressed.OnNext(context.ReadValueAsButton());
