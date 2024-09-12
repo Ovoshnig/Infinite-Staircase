@@ -12,8 +12,9 @@ GameObject:
   - component: {fileID: 7151668548597097923}
   - component: {fileID: -1940339382919063971}
   - component: {fileID: 9128313231072524123}
-  - component: {fileID: -133906009881911781}
   - component: {fileID: 2933018600278490843}
+  - component: {fileID: -5447245368467521835}
+  - component: {fileID: 1220182529259713547}
   m_Layer: 0
   m_Name: FirstPerson Camera
   m_TagString: Untagged
@@ -126,51 +127,6 @@ MonoBehaviour:
       Wait: 1.93
       Time: 2
     Restrictions: 0
---- !u!114 &-133906009881911781
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 260423365766699274}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 89875cdc57c54474a8a74efd9b2a3b5d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ScanRecursively: 1
-  SuppressInputWhileBlending: 1
-  IgnoreTimeScale: 0
-  m_ControllerManager:
-    Controllers:
-    - Name: Look X (Pan)
-      Owner: {fileID: 9128313231072524123}
-      Enabled: 1
-      Input:
-        InputAction: {fileID: -3469092977669108680, guid: dfc5194a2da461941bbc4e192fa012b3, type: 3}
-        Gain: 1
-        LegacyInput: Mouse X
-        LegacyGain: 200
-        CancelDeltaTime: 0
-      InputValue: 0
-      Driver:
-        AccelTime: 0.2
-        DecelTime: 0.2
-    - Name: Look Y (Tilt)
-      Owner: {fileID: 9128313231072524123}
-      Enabled: 1
-      Input:
-        InputAction: {fileID: -3469092977669108680, guid: dfc5194a2da461941bbc4e192fa012b3, type: 3}
-        Gain: -1
-        LegacyInput: Mouse Y
-        LegacyGain: -200
-        CancelDeltaTime: 0
-      InputValue: 0
-      Driver:
-        AccelTime: 0.2
-        DecelTime: 0.2
-  PlayerIndex: -1
-  AutoEnableInputs: 1
 --- !u!114 &2933018600278490843
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -183,3 +139,71 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8c09e2d4f386ba54d85e6f46e7059c67, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &-5447245368467521835
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 260423365766699274}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2ecabe7a36153c5448bd3e89febc861d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ScanRecursively: 1
+  SuppressInputWhileBlending: 1
+  IgnoreTimeScale: 0
+  m_ControllerManager:
+    Controllers:
+    - Name: Look X (Pan)
+      Owner: {fileID: 9128313231072524123}
+      Enabled: 1
+      Input:
+        _input: {fileID: -3469092977669108680, guid: dfc5194a2da461941bbc4e192fa012b3, type: 3}
+        _invert: 0
+      InputValue: 0
+      Driver:
+        AccelTime: 0
+        DecelTime: 0
+    - Name: Look Y (Tilt)
+      Owner: {fileID: 9128313231072524123}
+      Enabled: 1
+      Input:
+        _input: {fileID: -3469092977669108680, guid: dfc5194a2da461941bbc4e192fa012b3, type: 3}
+        _invert: 1
+      InputValue: 0
+      Driver:
+        AccelTime: 0
+        DecelTime: 0
+  _playerInput: {fileID: 1220182529259713547}
+--- !u!114 &1220182529259713547
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 260423365766699274}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 62899f850307741f2a39c98a8b639597, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Actions: {fileID: -944628639613478452, guid: dfc5194a2da461941bbc4e192fa012b3, type: 3}
+  m_NotificationBehavior: 3
+  m_UIInputModule: {fileID: 0}
+  m_DeviceLostEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_DeviceRegainedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_ControlsChangedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_ActionEvents: []
+  m_NeverAutoSwitchControlSchemes: 0
+  m_DefaultControlScheme: 
+  m_DefaultActionMap: Player
+  m_SplitScreenIndex: -1
+  m_Camera: {fileID: 0}

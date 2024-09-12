@@ -1,6 +1,5 @@
 using R3;
 using System;
-using UnityEngine.InputSystem;
 using Zenject;
 
 public class LookTuner : IInitializable, IDisposable
@@ -26,9 +25,9 @@ public class LookTuner : IInitializable, IDisposable
         _disposable = Sensitivity
             .Subscribe(value =>
             {
-                value = Math.Clamp(value, 0f, _controlSettings.MaxSensitivity);
+                value = Math.Clamp(value, _controlSettings.MinSensitivity, _controlSettings.MaxSensitivity);
                 _sensitivity.Value = value;
-                var stringValue = value.ToString().Replace(',', '.');
+                /*var stringValue = value.ToString().Replace(',', '.');
 
                 InputSystem.actions.FindActionMap("Player")
                 .FindAction("Look")
@@ -36,7 +35,7 @@ public class LookTuner : IInitializable, IDisposable
                 {
                     overridePath = "<Mouse>/delta",
                     overrideProcessors = $"scaleVector2(x={stringValue}, y={stringValue})"
-                });
+                });*/
             });
     }
 

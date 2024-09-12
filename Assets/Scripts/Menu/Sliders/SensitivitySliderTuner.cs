@@ -17,7 +17,7 @@ public sealed class SensitivitySliderTuner : SliderTuner
 
     protected override float MaxValue => _controlSettings.MaxSensitivity;
 
-    protected override float InitialValue => _lookTuner.Sensitivity.CurrentValue;
+    protected override float InitialValue => _lookTuner.Sensitivity.Value;
 
     protected override void OnSliderValueChanged(float value) => _lookTuner.Sensitivity.Value = value;
 }
