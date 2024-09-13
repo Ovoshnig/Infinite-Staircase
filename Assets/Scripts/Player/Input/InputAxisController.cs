@@ -14,10 +14,15 @@ class InputAxisController : InputAxisControllerBase<InputAxisController.Reader>
     [SerializeField] private UnityEngine.InputSystem.PlayerInput _playerInput;
 
     private LookTuner _lookTuner;
-    private IDisposable _disposable;
+    private WindowTracker _windowTracker;
+    private CompositeDisposable _compositeDisposable;
 
     [Inject]
-    private void Construct(LookTuner lookTuner) => _lookTuner = lookTuner;
+    private void Construct(LookTuner lookTuner, WindowTracker windowTracker)
+    {
+        _lookTuner = lookTuner;
+        _windowTracker = windowTracker;
+    }
 
     private void Awake()
     {
@@ -39,11 +44,20 @@ class InputAxisController : InputAxisControllerBase<InputAxisController.Reader>
             };
         }
 
-        _disposable = _lookTuner.Sensitivity
+        var sensitivityDisposable = _lookTuner.Sensitivity
             .Subscribe(value => Controllers.ForEach(controller => controller.Input.Multiplier = value));
+
+        var windowDisposable = _windowTracker.IsOpen
+            .Subscribe(value => _playerInput.enabled = !value);
+
+        _compositeDisposable = new CompositeDisposable()
+        {
+            sensitivityDisposable,
+            windowDisposable
+        };
     }
 
-    private void OnDestroy() => _disposable?.Dispose();
+    private void OnDestroy() => _compositeDisposable?.Dispose();
 
     private void Update()
     {

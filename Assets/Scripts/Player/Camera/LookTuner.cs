@@ -23,20 +23,8 @@ public class LookTuner : IInitializable, IDisposable
         _sensitivity.Value = _settingsStorage.Get(SettingsConstants.SensitivityKey, _controlSettings.DefaultSensitivity);
 
         _disposable = Sensitivity
-            .Subscribe(value =>
-            {
-                value = Math.Clamp(value, _controlSettings.MinSensitivity, _controlSettings.MaxSensitivity);
-                _sensitivity.Value = value;
-                /*var stringValue = value.ToString().Replace(',', '.');
-
-                InputSystem.actions.FindActionMap("Player")
-                .FindAction("Look")
-                .ApplyBindingOverride(new InputBinding()
-                {
-                    overridePath = "<Mouse>/delta",
-                    overrideProcessors = $"scaleVector2(x={stringValue}, y={stringValue})"
-                });*/
-            });
+            .Subscribe(value => 
+            _sensitivity.Value = Math.Clamp(value, _controlSettings.MinSensitivity, _controlSettings.MaxSensitivity));
     }
 
     public void Dispose()
