@@ -8,12 +8,11 @@ public class ProceduralGlassFloor : MonoBehaviour
     [SerializeField] private int _height = 10;
     [SerializeField] private float _scale = 1f;
     [SerializeField] private int _seed = 12345;
-    [SerializeField] private bool _generateColliders = true;
+    [SerializeField][Range(0.5f, 1f)] private float _colliderResolution = 1f; // Регулирует детализацию коллайдера
 
     private Mesh _mesh;
     private Vector3[] _vertices;
     private int[] _triangles;
-    private GameObject _colliderContainer;
 
     [ContextMenu("Generate Floor")]
     private void GenerateInEditor()
@@ -69,10 +68,7 @@ public class ProceduralGlassFloor : MonoBehaviour
 
         UpdateMesh();
 
-        if (_generateColliders)
-        {
-            GenerateColliders();
-        }
+        GenerateMeshCollider();
     }
 
     private void UpdateMesh()
@@ -83,36 +79,76 @@ public class ProceduralGlassFloor : MonoBehaviour
         _mesh.RecalculateNormals();
     }
 
-    private void GenerateColliders()
+    private void GenerateMeshCollider()
     {
-        if (_colliderContainer != null)
-            DestroyImmediate(_colliderContainer);
-
-        // Создаём новый пустой объект для коллайдеров
-        _colliderContainer = new GameObject("ColliderContainer");
-        _colliderContainer.transform.SetParent(transform);
-        _colliderContainer.transform.localPosition = Vector3.zero;
-
-        for (int z = 0; z < _height; z++)
+        MeshCollider meshCollider = gameObject.GetComponent<MeshCollider>();
+        if (meshCollider == null)
         {
-            for (int x = 0; x < _width; x++)
-            {
-                Vector3 corner1 = _vertices[z * (_width + 1) + x];
-                Vector3 corner2 = _vertices[z * (_width + 1) + (x + 1)];
-                Vector3 corner3 = _vertices[(z + 1) * (_width + 1) + x];
-                Vector3 corner4 = _vertices[(z + 1) * (_width + 1) + (x + 1)];
-
-                Vector3 center = (corner1 + corner2 + corner3 + corner4) / 4f;
-                float maxHeight = Mathf.Max(corner1.y, corner2.y, corner3.y, corner4.y);
-                float minHeight = Mathf.Min(corner1.y, corner2.y, corner3.y, corner4.y);
-
-                GameObject colliderObj = new GameObject($"Collider_{x}_{z}");
-                colliderObj.transform.SetParent(_colliderContainer.transform);
-                colliderObj.transform.localPosition = center;
-
-                BoxCollider boxCollider = colliderObj.AddComponent<BoxCollider>();
-                boxCollider.size = new Vector3(1, maxHeight - minHeight, 1);
-            }
+            meshCollider = gameObject.AddComponent<MeshCollider>();
         }
+
+        // Генерация упрощённого меша для коллайдера
+        Mesh colliderMesh = new Mesh();
+
+        if (_colliderResolution == 1f)
+        {
+            // Полное совпадение коллайдера с мешем
+            colliderMesh.vertices = _mesh.vertices;
+            colliderMesh.triangles = _mesh.triangles;
+        }
+        else
+        {
+            // Упрощённая версия коллайдера
+            int simplifiedWidth = Mathf.RoundToInt(_width * _colliderResolution);
+            int simplifiedHeight = Mathf.RoundToInt(_height * _colliderResolution);
+
+            Vector3[] colliderVertices = new Vector3[(simplifiedWidth + 1) * (simplifiedHeight + 1)];
+            int[] colliderTriangles = new int[simplifiedWidth * simplifiedHeight * 6];
+
+            // Генерация вершин для упрощённого коллайдера
+            for (int z = 0; z <= simplifiedHeight; z++)
+            {
+                for (int x = 0; x <= simplifiedWidth; x++)
+                {
+                    int origX = Mathf.FloorToInt(x / _colliderResolution);
+                    int origZ = Mathf.FloorToInt(z / _colliderResolution);
+
+                    int vertexIndex = z * (simplifiedWidth + 1) + x;
+                    int origIndex1 = origZ * (_width + 1) + origX;
+                    int origIndex2 = origZ * (_width + 1) + Mathf.Min(origX + 1, _width);
+                    int origIndex3 = Mathf.Min(origZ + 1, _height) * (_width + 1) + origX;
+                    int origIndex4 = Mathf.Min(origZ + 1, _height) * (_width + 1) + Mathf.Min(origX + 1, _width);
+
+                    Vector3 avgPosition = (_vertices[origIndex1] + _vertices[origIndex2] + _vertices[origIndex3] + _vertices[origIndex4]) / 4f;
+                    colliderVertices[vertexIndex] = avgPosition;
+                }
+            }
+
+            // Генерация треугольников для упрощённого коллайдера
+            int vert = 0;
+            int tris = 0;
+            for (int z = 0; z < simplifiedHeight; z++)
+            {
+                for (int x = 0; x < simplifiedWidth; x++)
+                {
+                    colliderTriangles[tris + 0] = vert + 0;
+                    colliderTriangles[tris + 1] = vert + simplifiedWidth + 1;
+                    colliderTriangles[tris + 2] = vert + 1;
+                    colliderTriangles[tris + 3] = vert + 1;
+                    colliderTriangles[tris + 4] = vert + simplifiedWidth + 1;
+                    colliderTriangles[tris + 5] = vert + simplifiedWidth + 2;
+
+                    vert++;
+                    tris += 6;
+                }
+                vert++;
+            }
+
+            colliderMesh.vertices = colliderVertices;
+            colliderMesh.triangles = colliderTriangles;
+        }
+
+        colliderMesh.RecalculateNormals();
+        meshCollider.sharedMesh = colliderMesh;
     }
 }
