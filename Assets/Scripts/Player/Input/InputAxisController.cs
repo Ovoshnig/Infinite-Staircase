@@ -5,7 +5,7 @@ using UnityEngine.InputSystem;
 using Unity.Cinemachine;
 using Zenject;
 
-// This class receives input from a PlayerInput component and disptaches it
+// This class receives input from a PlayerInput component and dispatches it
 // to the appropriate Cinemachine InputAxis.  The playerInput component should
 // be on the same GameObject, or specified in the PlayerInput field.
 class InputAxisController : InputAxisControllerBase<InputAxisController.Reader>

@@ -41,7 +41,7 @@ public class StaircaseGenerator : MonoBehaviour
         var index = random.Next(startingConnections.Length);
         var stairConnection = startingConnections[index];
         var position = _startTransform.position;
-        position.y = _size.y / 2;
+        position.y += _size.y / 2f;
         var rotation = _startTransform.rotation.eulerAngles;
 
         (position, rotation) = await GenerateSegment(random, stairConnection, position, rotation, 
