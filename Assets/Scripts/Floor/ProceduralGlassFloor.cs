@@ -1,4 +1,4 @@
-using System;
+using Random = System.Random;
 using UnityEngine;
 
 [RequireComponent(typeof(MeshFilter), typeof(MeshRenderer))]
@@ -7,23 +7,17 @@ public class ProceduralGlassFloor : MonoBehaviour
     [SerializeField] private int _width = 10;
     [SerializeField] private int _height = 10;
     [SerializeField] private float _scale = 1f;
-    [SerializeField] private int _seed = 12345;
-    [SerializeField][Range(0.5f, 1f)] private float _colliderResolution = 1f; // Регулирует детализацию коллайдера
+    [SerializeField] private int _seed = 0;
+    [SerializeField][Range(0.5f, 1f)] private float _colliderResolution = 1f;
 
     private Mesh _mesh;
     private Vector3[] _vertices;
     private int[] _triangles;
 
-    [ContextMenu("Generate Floor")]
-    private void GenerateInEditor()
-    {
-        GenerateFloor();
-    }
+    [ContextMenu(nameof(GenerateFloor))]
+    private void GenerateInEditor() => GenerateFloor();
 
-    private void Start()
-    {
-        GenerateFloor();
-    }
+    private void Start() => GenerateFloor();
 
     private void GenerateFloor()
     {
@@ -33,7 +27,7 @@ public class ProceduralGlassFloor : MonoBehaviour
         _vertices = new Vector3[(_width + 1) * (_height + 1)];
         _triangles = new int[_width * _height * 6];
 
-        System.Random random = new System.Random(_seed);
+        Random random = new(_seed);
 
         float xOffset = _width / 2f;
         float zOffset = _height / 2f;
@@ -47,23 +41,25 @@ public class ProceduralGlassFloor : MonoBehaviour
             }
         }
 
-        int vert = 0;
-        int tris = 0;
+        int vertex = 0;
+        int triangle = 0;
+
         for (int z = 0; z < _height; z++)
         {
             for (int x = 0; x < _width; x++)
             {
-                _triangles[tris + 0] = vert + 0;
-                _triangles[tris + 1] = vert + _width + 1;
-                _triangles[tris + 2] = vert + 1;
-                _triangles[tris + 3] = vert + 1;
-                _triangles[tris + 4] = vert + _width + 1;
-                _triangles[tris + 5] = vert + _width + 2;
+                _triangles[triangle + 0] = vertex + 0;
+                _triangles[triangle + 1] = vertex + _width + 1;
+                _triangles[triangle + 2] = vertex + 1;
+                _triangles[triangle + 3] = vertex + 1;
+                _triangles[triangle + 4] = vertex + _width + 1;
+                _triangles[triangle + 5] = vertex + _width + 2;
 
-                vert++;
-                tris += 6;
+                vertex++;
+                triangle += 6;
             }
-            vert++;
+
+            vertex++;
         }
 
         UpdateMesh();
@@ -81,67 +77,61 @@ public class ProceduralGlassFloor : MonoBehaviour
 
     private void GenerateMeshCollider()
     {
-        MeshCollider meshCollider = gameObject.GetComponent<MeshCollider>();
-        if (meshCollider == null)
-        {
+        if (!gameObject.TryGetComponent<MeshCollider>(out var meshCollider))
             meshCollider = gameObject.AddComponent<MeshCollider>();
-        }
 
-        // Генерация упрощённого меша для коллайдера
-        Mesh colliderMesh = new Mesh();
+        Mesh colliderMesh = new();
 
         if (_colliderResolution == 1f)
         {
-            // Полное совпадение коллайдера с мешем
             colliderMesh.vertices = _mesh.vertices;
             colliderMesh.triangles = _mesh.triangles;
         }
         else
         {
-            // Упрощённая версия коллайдера
             int simplifiedWidth = Mathf.RoundToInt(_width * _colliderResolution);
             int simplifiedHeight = Mathf.RoundToInt(_height * _colliderResolution);
 
             Vector3[] colliderVertices = new Vector3[(simplifiedWidth + 1) * (simplifiedHeight + 1)];
             int[] colliderTriangles = new int[simplifiedWidth * simplifiedHeight * 6];
 
-            // Генерация вершин для упрощённого коллайдера
             for (int z = 0; z <= simplifiedHeight; z++)
             {
                 for (int x = 0; x <= simplifiedWidth; x++)
                 {
-                    int origX = Mathf.FloorToInt(x / _colliderResolution);
-                    int origZ = Mathf.FloorToInt(z / _colliderResolution);
+                    int originX = Mathf.FloorToInt(x / _colliderResolution);
+                    int originZ = Mathf.FloorToInt(z / _colliderResolution);
 
                     int vertexIndex = z * (simplifiedWidth + 1) + x;
-                    int origIndex1 = origZ * (_width + 1) + origX;
-                    int origIndex2 = origZ * (_width + 1) + Mathf.Min(origX + 1, _width);
-                    int origIndex3 = Mathf.Min(origZ + 1, _height) * (_width + 1) + origX;
-                    int origIndex4 = Mathf.Min(origZ + 1, _height) * (_width + 1) + Mathf.Min(origX + 1, _width);
+                    int originIndex1 = originZ * (_width + 1) + originX;
+                    int originIndex2 = originZ * (_width + 1) + Mathf.Min(originX + 1, _width);
+                    int originIndex3 = Mathf.Min(originZ + 1, _height) * (_width + 1) + originX;
+                    int originIndex4 = Mathf.Min(originZ + 1, _height) * (_width + 1) + Mathf.Min(originX + 1, _width);
 
-                    Vector3 avgPosition = (_vertices[origIndex1] + _vertices[origIndex2] + _vertices[origIndex3] + _vertices[origIndex4]) / 4f;
+                    Vector3 avgPosition = (_vertices[originIndex1] + _vertices[originIndex2] + _vertices[originIndex3] + _vertices[originIndex4]) / 4f;
                     colliderVertices[vertexIndex] = avgPosition;
                 }
             }
 
-            // Генерация треугольников для упрощённого коллайдера
-            int vert = 0;
-            int tris = 0;
+            int vertex = 0;
+            int triangle = 0;
+
             for (int z = 0; z < simplifiedHeight; z++)
             {
                 for (int x = 0; x < simplifiedWidth; x++)
                 {
-                    colliderTriangles[tris + 0] = vert + 0;
-                    colliderTriangles[tris + 1] = vert + simplifiedWidth + 1;
-                    colliderTriangles[tris + 2] = vert + 1;
-                    colliderTriangles[tris + 3] = vert + 1;
-                    colliderTriangles[tris + 4] = vert + simplifiedWidth + 1;
-                    colliderTriangles[tris + 5] = vert + simplifiedWidth + 2;
+                    colliderTriangles[triangle + 0] = vertex + 0;
+                    colliderTriangles[triangle + 1] = vertex + simplifiedWidth + 1;
+                    colliderTriangles[triangle + 2] = vertex + 1;
+                    colliderTriangles[triangle + 3] = vertex + 1;
+                    colliderTriangles[triangle + 4] = vertex + simplifiedWidth + 1;
+                    colliderTriangles[triangle + 5] = vertex + simplifiedWidth + 2;
 
-                    vert++;
-                    tris += 6;
+                    vertex++;
+                    triangle += 6;
                 }
-                vert++;
+
+                vertex++;
             }
 
             colliderMesh.vertices = colliderVertices;

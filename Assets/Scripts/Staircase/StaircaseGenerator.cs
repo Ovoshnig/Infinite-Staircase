@@ -15,7 +15,7 @@ public class StaircaseGenerator : MonoBehaviour
     private StairConnection[] _stairConnections;
     private CancellationTokenSource _cts;
     private Vector3 _size;
-    private int _seed;
+    private Random _random;
 
     [Inject]
     private void Construct(SaveStorage saveStorage) => _saveStorage = saveStorage;
@@ -24,7 +24,8 @@ public class StaircaseGenerator : MonoBehaviour
 
     private void Start()
     {
-        _seed = _saveStorage.Get<int>(SaveConstants.SeedKey, default);
+        int seed = _saveStorage.Get(SaveConstants.SeedKey, 0);
+        _random = new Random(seed);
         _stairs = Resources.LoadAll<GameObject>(ResourcesConstants.StairPrefabsPath);
         _size = _stairs[0].GetComponent<Stair>().Size;
         _stairConnections = Resources.LoadAll<StairConnection>(ResourcesConstants.StairConnectionsPath);
@@ -36,42 +37,43 @@ public class StaircaseGenerator : MonoBehaviour
 
     private async UniTask Generate()
     {
-        var random = new Random(_seed);
-        var startingConnections = _stairConnections.Where(x => x.CanBeInStart).ToArray();
-        var index = random.Next(startingConnections.Length);
-        var stairConnection = startingConnections[index];
-        var position = _startTransform.position;
+        StairConnection[] startingConnections = _stairConnections.Where(x => x.CanBeInStart).ToArray();
+        int index = _random.Next(startingConnections.Length);
+        StairConnection stairConnection = startingConnections[index];
+        Vector3 position = _startTransform.position;
         position.y += _size.y / 2f;
-        var rotation = _startTransform.rotation.eulerAngles;
+        Vector3 rotation = _startTransform.eulerAngles;
 
-        (position, rotation) = await GenerateSegment(random, stairConnection, position, rotation, 
+        (position, rotation) = await GenerateSegment(stairConnection, position, rotation, 
             stairConnection.PositionDifference, stairConnection.RotationDifference);
 
         for (int i = 0; i < _partsCount; i++)
         {
-            index = random.Next(_stairConnections.Length);
+            index = _random.Next(_stairConnections.Length);
             stairConnection = _stairConnections[index];
 
-            (position, rotation) = await GenerateSegment(random, stairConnection, position,  rotation, 
+            (position, rotation) = await GenerateSegment(stairConnection, position,  rotation, 
                 stairConnection.PositionDifference, stairConnection.RotationDifference);
         }
     }
 
-    private async UniTask<(Vector3, Vector3)> GenerateSegment(Random random, StairConnection stairConnection, 
+    private async UniTask<(Vector3, Vector3)> GenerateSegment(StairConnection stairConnection, 
         Vector3 position, Vector3 rotation, Vector3 positionDifference, Vector3 rotationDifference)
     {
-        int count = random.Next(stairConnection.MinCount, stairConnection.MaxCount + 1);
+        int count = _random.Next(stairConnection.MinCount, stairConnection.MaxCount + 1);
 
         for (int i = 0; i < count; i++)
         {
-            var index = random.Next(_stairs.Length);
-            var stair = Instantiate(_stairs[index], position, Quaternion.Euler(rotation));
+            int index = _random.Next(_stairs.Length);
+            GameObject stair = Instantiate(_stairs[index], position, Quaternion.Euler(rotation));
             stair.transform.parent = transform;
             position += stair.transform.TransformDirection(positionDifference);
             rotation += rotationDifference;
+
             await UniTask.Yield(_cts.Token);
         }
         
         return (position, rotation);
     }
 }
+ 
