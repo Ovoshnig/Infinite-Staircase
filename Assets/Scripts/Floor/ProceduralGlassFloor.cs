@@ -1,5 +1,6 @@
 using Random = System.Random;
 using UnityEngine;
+using Zenject;
 
 [RequireComponent(typeof(MeshFilter), typeof(MeshRenderer))]
 public class ProceduralGlassFloor : MonoBehaviour
@@ -7,17 +8,33 @@ public class ProceduralGlassFloor : MonoBehaviour
     [SerializeField] private int _width = 10;
     [SerializeField] private int _height = 10;
     [SerializeField] private float _scale = 1f;
-    [SerializeField] private int _seed = 0;
     [SerializeField][Range(0.5f, 1f)] private float _colliderResolution = 1f;
 
+    private SaveStorage _saveStorage;
+    private Random _random;
     private Mesh _mesh;
     private Vector3[] _vertices;
     private int[] _triangles;
 
-    [ContextMenu(nameof(GenerateFloor))]
-    private void GenerateInEditor() => GenerateFloor();
+    [Inject]
+    private void Construct(SaveStorage saveStorage) => _saveStorage = saveStorage;
 
-    private void Start() => GenerateFloor();
+    [ContextMenu(nameof(GenerateFloor))]
+    private void GenerateInEditor()
+    {
+        int seed = 0;
+        _random = new Random(seed);
+
+        GenerateFloor();
+    }
+
+    private void Start()
+    {
+        int seed = _saveStorage.Get(SaveConstants.SeedKey, 0);
+        _random = new Random(seed);
+
+        GenerateFloor();
+    }
 
     private void GenerateFloor()
     {
@@ -27,8 +44,6 @@ public class ProceduralGlassFloor : MonoBehaviour
         _vertices = new Vector3[(_width + 1) * (_height + 1)];
         _triangles = new int[_width * _height * 6];
 
-        Random random = new(_seed);
-
         float xOffset = _width / 2f;
         float zOffset = _height / 2f;
 
@@ -36,7 +51,7 @@ public class ProceduralGlassFloor : MonoBehaviour
         {
             for (int x = 0; x <= _width; x++, i++)
             {
-                float y = (float)random.NextDouble() * _scale;
+                float y = (float)_random.NextDouble() * _scale;
                 _vertices[i] = new Vector3(x - xOffset, y, z - zOffset);
             }
         }
