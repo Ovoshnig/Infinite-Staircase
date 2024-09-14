@@ -16,10 +16,7 @@ public sealed class SaveStorage : DataStorage
     {
         base.LoadData();
 
-#if UNITY_EDITOR
-        return;
-#endif
-
+#if !UNITY_EDITOR
         if (File.Exists(FilePath) && File.Exists(HashFilePath))
         {
             string savedHash = File.ReadAllText(HashFilePath);
@@ -39,6 +36,7 @@ public sealed class SaveStorage : DataStorage
         {
             ResetData();
         }
+#endif
     }
 
     protected override void SaveData()
