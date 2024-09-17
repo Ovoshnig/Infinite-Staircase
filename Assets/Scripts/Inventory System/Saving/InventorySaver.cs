@@ -26,6 +26,7 @@ public class InventorySaver
     {
         for (int i = 0; i < slotViews.Length; i++)
             slotDataArray[i] = slotViews[i].Save();
+
         _saveStorage.Set(SaveConstants.InventoryKey, slotDataArray);
     }
 }

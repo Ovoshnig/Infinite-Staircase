@@ -23,5 +23,7 @@ public class ProjectInstaller : MonoInstaller
         Container.BindInterfacesAndSelfTo<AudioTuner>().FromNew().AsSingle();
         Container.BindInterfacesAndSelfTo<AudioMixerGroup>().FromInstance(_audioMixerGroup).AsSingle();
         Container.BindInterfacesAndSelfTo<AudioMixerTuner>().FromNew().AsSingle();
+
+        Container.BindInterfacesAndSelfTo<BindingOverridesSaver>().FromNew().AsSingle().NonLazy();
     }
 }

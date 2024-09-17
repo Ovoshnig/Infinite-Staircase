@@ -2,17 +2,12 @@ using System;
 using UnityEngine.InputSystem;
 using Zenject;
 
-public class BindingOverridesSaver : IDisposable
+public class BindingOverridesSaver : IInitializable, IDisposable
 {
     private readonly SettingsStorage _settingsStorage;
 
     [Inject]
-    public BindingOverridesSaver(SettingsStorage settingsStorage)
-    {
-        _settingsStorage = settingsStorage;
-
-        Initialize();
-    }
+    public BindingOverridesSaver(SettingsStorage settingsStorage) => _settingsStorage = settingsStorage;
 
     public void Initialize()
     {

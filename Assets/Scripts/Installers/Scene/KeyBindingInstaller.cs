@@ -8,12 +8,6 @@ public class KeyBindingInstaller : MonoInstaller
     public override void InstallBindings()
     {
         Container
-            .BindInterfacesAndSelfTo<BindingOverridesSaver>()
-            .FromNew()
-            .AsSingle()
-            .NonLazy();
-
-        Container
             .BindInterfacesAndSelfTo<KeyBindingsTracker>()
             .FromNew()
             .AsSingle();
