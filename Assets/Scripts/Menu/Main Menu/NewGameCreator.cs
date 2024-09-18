@@ -40,6 +40,7 @@ public class NewGameCreator : MonoBehaviour
         else
             seed = _random.Next(_generationSettings.MinSeed, _generationSettings.MaxSeed);
 
+        _saveStorage.ResetData();
         _saveStorage.Set(SaveConstants.SaveCreatedKey, true);
         _saveStorage.Set(SaveConstants.SeedKey, seed);
         _sceneSwitch.LoadFirstLevel().Forget();

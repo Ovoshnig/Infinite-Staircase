@@ -4,13 +4,12 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
+using Zenject;
 
-public abstract class DataStorage : IDisposable
+public abstract class DataStorage : IInitializable, IDisposable
 {
     private readonly Dictionary<string, object> _defaultDataStore = new();
     private Dictionary<string, object> _dataStore;
-
-    public DataStorage() => LoadData();
 
     protected virtual string SaveFileName => string.Empty;
     protected string FilePath => Path.Combine(Application.persistentDataPath, SaveFileName);
@@ -19,6 +18,8 @@ public abstract class DataStorage : IDisposable
     {
         TypeNameHandling = TypeNameHandling.Auto
     };
+
+    public void Initialize() => LoadData();
 
     public void Dispose() => SaveData();
 

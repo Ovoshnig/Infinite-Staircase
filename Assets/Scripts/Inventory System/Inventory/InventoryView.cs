@@ -18,25 +18,33 @@ public class InventoryView : MonoBehaviour
 
     private void Awake()
     {
-        _mouseClickAction = new(type: InputActionType.Button,
-        binding: InputConstants.MouseLeftButtonPath);
+        _mouseClickAction = new InputAction(type: InputActionType.Button, binding: InputConstants.MouseLeftButtonPath);
         _mouseClickAction.canceled += OnMouseClickCanceled;
 
         _slotViews = GetComponentsInChildren<SlotView>();
+    }
+
+    private void OnEnable() => _mouseClickAction.Enable();
+
+    private void Start()
+    {
         _inventorySaver.LoadSlots(_slotViews);
         SlotModel[] slotModels = _slotViews.Select(x => x.SlotModel).ToArray();
         _inventoryModel = new InventoryModel(slotModels);
     }
 
-    private void OnEnable() => _mouseClickAction.Enable();
-
-    private void OnDisable() => _mouseClickAction.Disable();
-
-    private void OnDestroy()
+    private void OnDisable()
     {
+        _mouseClickAction.Disable();
+
+        if (_inventoryModel == null)
+            return;
+
         SlotData[] slotDataArray = _inventoryModel.SaveSlots();
         _inventorySaver.SaveSlots(_slotViews, slotDataArray);
     }
+
+    private void OnDestroy() => _mouseClickAction.canceled -= OnMouseClickCanceled;
 
     public bool TryAddItem(ItemModel itemModel)
     {

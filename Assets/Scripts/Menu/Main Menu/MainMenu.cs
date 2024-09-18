@@ -23,12 +23,12 @@ public sealed class MainMenu : MonoBehaviour
 
     private void OnEnable()
     {
-        _continueGameButton.interactable = _saveStorage.Get(SaveConstants.SaveCreatedKey, false);
-
         _continueGameButton.onClick.AddListener(OnContinueGameButtonClicked);
         _newGameButton.onClick.AddListener(OnNewGameButtonClicked);
         _quitGameButton.onClick.AddListener(OnQuitGameButtonClicked);
     }
+
+    private void Start() => _continueGameButton.interactable = _saveStorage.Get(SaveConstants.SaveCreatedKey, false);
 
     private void OnDisable()
     {
