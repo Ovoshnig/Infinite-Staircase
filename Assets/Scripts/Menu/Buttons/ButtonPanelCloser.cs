@@ -1,11 +1,10 @@
 using R3;
-using System;
 using Zenject;
 
 public sealed class ButtonPanelCloser : ButtonPanelChanger
 {
+    private readonly CompositeDisposable _compositeDisposable = new();
     private WindowInputHandler _inputHandler;
-    private IDisposable _disposable;
 
     [Inject]
     private void Construct(WindowInputHandler inputHandler) => _inputHandler = inputHandler;
@@ -14,15 +13,16 @@ public sealed class ButtonPanelCloser : ButtonPanelChanger
     {
         base.OnEnable();
 
-        _disposable = _inputHandler.CloseCurrentPressed
+        _inputHandler.CloseCurrentPressed
             .Where(value => value)
-            .Subscribe(_ => Change());
+            .Subscribe(_ => Change())
+            .AddTo(_compositeDisposable);
     }
 
     protected override void OnDisable()
     {
         base.OnDisable();
 
-        _disposable?.Dispose();
+        _compositeDisposable?.Dispose();
     }
 }

@@ -8,7 +8,7 @@ public class AudioTuner : IInitializable, IDisposable
     private readonly ReactiveProperty<float> _musicVolume = new();
     private readonly SettingsStorage _settingsStorage;
     private readonly GameSettingsInstaller.AudioSettings _audioSettings;
-    private CompositeDisposable _compositeDisposable;
+    private readonly CompositeDisposable _compositeDisposable = new();
 
     [Inject]
     public AudioTuner(SettingsStorage settingsStorage, 
@@ -29,19 +29,15 @@ public class AudioTuner : IInitializable, IDisposable
         _musicVolume.Value = _settingsStorage.Get(SettingsConstants.MusicVolumeKey, 
             _audioSettings.DefaultVolume);
 
-        var soundDisposable= SoundVolume
+        SoundVolume
             .Subscribe(value => 
-            _soundVolume.Value = Math.Clamp(value, _audioSettings.MinVolume, _audioSettings.MaxVolume));
+            _soundVolume.Value = Math.Clamp(value, _audioSettings.MinVolume, _audioSettings.MaxVolume))
+            .AddTo(_compositeDisposable);
 
-        var musicDisposable = MusicVolume
+        MusicVolume
             .Subscribe(value =>
-            _musicVolume.Value = Math.Clamp(value, _audioSettings.MinVolume, _audioSettings.MaxVolume));
-
-        _compositeDisposable = new CompositeDisposable()
-        {
-            soundDisposable,
-            musicDisposable
-        };
+            _musicVolume.Value = Math.Clamp(value, _audioSettings.MinVolume, _audioSettings.MaxVolume))
+            .AddTo(_compositeDisposable);
     }
 
     public void Dispose()

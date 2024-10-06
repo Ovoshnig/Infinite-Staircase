@@ -8,10 +8,10 @@ public class PlayerVerticalMover : MonoBehaviour
     [SerializeField] private float _jumpForce;
     [SerializeField] private float _gravity;
 
+    private readonly CompositeDisposable _compositeDisposable = new();
     private PlayerState _playerState;
     private CharacterController _characterController;
     private Vector3 _motion;
-    private CompositeDisposable _compositiveDisposable;
 
     [Inject]
     private void Construct([Inject(Id = ZenjectIdConstants.PlayerId)] PlayerState playerState) => 
@@ -23,20 +23,16 @@ public class PlayerVerticalMover : MonoBehaviour
 
         var jumpDisposable = _playerState.IsJumping
             .Where(value => value)
-            .Subscribe(_ => _motion.y = _jumpForce);
+            .Subscribe(_ => _motion.y = _jumpForce)
+            .AddTo(_compositeDisposable);
 
         var groundEnterDisposable = _playerState.IsGrounded
             .Where(value => value)
-            .Subscribe(_ => _motion.y = -_gravity);
-
-        _compositiveDisposable = new CompositeDisposable()
-        { 
-            jumpDisposable,
-            groundEnterDisposable
-        };
+            .Subscribe(_ => _motion.y = -_gravity)
+            .AddTo(_compositeDisposable);
     }
 
-    private void OnDestroy() => _compositiveDisposable?.Dispose();
+    private void OnDestroy() => _compositeDisposable?.Dispose();
 
     private void Update() => Fall();
 

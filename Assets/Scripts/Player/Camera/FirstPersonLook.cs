@@ -10,15 +10,14 @@ public sealed class FirstPersonLook : PersonLook
     {
         base.Awake();
 
-        var cameraSwitchDisposable = CameraSwitch.IsFirstPerson
+        CameraSwitch.IsFirstPerson
             .Subscribe(value =>
             {
                 IsSelected = value;
 
                 if (value)
                     SkinnedMeshRenderer.shadowCastingMode = ShadowCastingMode.ShadowsOnly;
-            });
-
-        PermanentCompositeDisposable.Add(cameraSwitchDisposable);
+            })
+            .AddTo(PermanentCompositeDisposable);
     }
 }

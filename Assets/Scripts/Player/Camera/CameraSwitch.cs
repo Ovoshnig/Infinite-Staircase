@@ -8,11 +8,11 @@ public class CameraSwitch : MonoBehaviour
     [SerializeField] private GameObject _playerScope;
 
     private readonly ReactiveProperty<bool> _isFirstPerson = new(true);
+    private readonly CompositeDisposable _compositeDisposable = new();
     private CinemachineCamera _firstPersonCamera;
     private CinemachineCamera _thirdPersonCamera;
     private PlayerInputHandler _inputHandler;
     private WindowTracker _windowTracker;
-    private CompositeDisposable _compositeDisposable;
 
     [Inject]
     private void Construct(PlayerInputHandler inputHandler, WindowTracker windowTracker,
@@ -29,23 +29,19 @@ public class CameraSwitch : MonoBehaviour
 
     private void Awake()
     {
-        var togglePerspectiveDisposable = _inputHandler.IsTogglePerspectivePressed
+        _inputHandler.IsTogglePerspectivePressed
             .Where(value => value)
-            .Subscribe(_ => _isFirstPerson.Value = !_isFirstPerson.Value);
+            .Subscribe(_ => _isFirstPerson.Value = !_isFirstPerson.Value)
+            .AddTo(_compositeDisposable);
 
-        var cameraChangeDisposable = _isFirstPerson
-            .Subscribe(value => SetCamera(value));
+        _isFirstPerson
+            .Subscribe(value => SetCamera(value))
+            .AddTo(_compositeDisposable);
 
-        var windowDisposable = _windowTracker.IsOpen
+        _windowTracker.IsOpen
             .Where(_ => _isFirstPerson.Value)
-            .Subscribe(value => _playerScope.SetActive(!value));
-
-        _compositeDisposable = new CompositeDisposable()
-        {
-            togglePerspectiveDisposable,
-            cameraChangeDisposable,
-            windowDisposable
-        };
+            .Subscribe(value => _playerScope.SetActive(!value))
+            .AddTo(_compositeDisposable);
     }
 
     private void OnDestroy() => _compositeDisposable?.Dispose();

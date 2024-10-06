@@ -7,13 +7,12 @@ using Zenject;
 [RequireComponent(typeof(AudioSource))]
 public class PlayerSoundPlayer : MonoBehaviour
 {
+    private readonly CompositeDisposable _compositeDisposable = new();
     private PlayerState _playerState;
     private AudioSource _audioSource;
     private AudioClip[] _footstepClips;
     private AudioClip[] _landClips;
     private Random _random;
-    private IDisposable _disposable;
-
 
     [Inject]
     private void Construct([Inject(Id = ZenjectIdConstants.PlayerId)] PlayerState playerState) => 
@@ -28,12 +27,13 @@ public class PlayerSoundPlayer : MonoBehaviour
 
         _random = new Random();
 
-        _disposable = _playerState.IsGrounded
+        _playerState.IsGrounded
             .Where(value => value)
-            .Subscribe(_ => PlayLandSound());
+            .Subscribe(_ => PlayLandSound())
+            .AddTo(_compositeDisposable);
     }
 
-    private void OnDestroy() => _disposable?.Dispose();
+    private void OnDestroy() => _compositeDisposable?.Dispose();
 
     private void PlayStepSound()
     {

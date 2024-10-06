@@ -1,5 +1,4 @@
 using R3;
-using System;
 using System.Linq;
 using TMPro;
 using UnityEngine;
@@ -12,9 +11,9 @@ public class GraphicSettings : MonoBehaviour
     [SerializeField] private Toggle _vSyncToggle;
     [SerializeField] private TMP_Dropdown _resolutionDropdown;
 
+    private readonly CompositeDisposable _compositeDisposable = new();
     private ScreenTuner _screenTuner;
     private QualityTuner _qualityTuner;
-    private IDisposable _disposable;
 
     [Inject]
     private void Construct(ScreenTuner screenTuner, QualityTuner qualityTuner)
@@ -25,12 +24,13 @@ public class GraphicSettings : MonoBehaviour
 
     private void Awake()
     {
-        _disposable = _screenTuner.IsFullScreen
+        _screenTuner.IsFullScreen
             .Subscribe(value =>
             {
                 if (_fullScreenToggle.isOn != value)
                     _fullScreenToggle.SetIsOnWithoutNotify(value);
-            });
+            })
+            .AddTo(_compositeDisposable);
     }
 
     private void OnEnable()
@@ -58,7 +58,7 @@ public class GraphicSettings : MonoBehaviour
         _resolutionDropdown.onValueChanged.RemoveListener(OnResolutionDropdownValueChanged);
     }
 
-    private void OnDestroy() => _disposable?.Dispose();
+    private void OnDestroy() => _compositeDisposable?.Dispose();
 
     private void OnFullScreenToggleValueChanged(bool _) => _screenTuner.SwitchFullScreen();
 

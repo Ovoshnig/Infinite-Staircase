@@ -8,8 +8,8 @@ public class WindowTracker : IInitializable, IDisposable
     private readonly WindowInputHandler _inputHandler;
     private readonly ReactiveProperty<bool> _isOpen = new(false);
     private readonly ReactiveProperty<WindowSwitch> _currentWindow = new(null);
+    private readonly CompositeDisposable _compositeDisposable = new();
     private Type _windowSwitchType = null;
-    private CompositeDisposable _compositeDisposable;
 
     [Inject]
     public WindowTracker(WindowInputHandler inputHandler) => _inputHandler = inputHandler;
@@ -18,26 +18,22 @@ public class WindowTracker : IInitializable, IDisposable
 
     public void Initialize()
     {
-        var currentWindowDisposable = _currentWindow
-            .Subscribe(value => _isOpen.Value = value != null);
+        _currentWindow
+            .Subscribe(value => _isOpen.Value = value != null)
+            .AddTo(_compositeDisposable);
 
-        var openDisposable = _isOpen
-            .Subscribe(value => SetCursor(value));
+        _isOpen
+            .Subscribe(value => SetCursor(value))
+            .AddTo(_compositeDisposable);
 
-        var closeCurrentDisposable = _inputHandler.CloseCurrentPressed
+        _inputHandler.CloseCurrentPressed
             .Where(value => value)
             .Subscribe(_ =>
             {
                 if (_currentWindow != null && _windowSwitchType != typeof(PauseMenuSwitch))
                     _currentWindow.Value.Close();
-            });
-
-        _compositeDisposable = new CompositeDisposable()
-        {
-            currentWindowDisposable,
-            openDisposable,
-            closeCurrentDisposable
-        };
+            })
+            .AddTo(_compositeDisposable);
     }
 
     public void Dispose() => _compositeDisposable?.Dispose();

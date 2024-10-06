@@ -7,7 +7,7 @@ public class LookTuner : IInitializable, IDisposable
     private readonly ReactiveProperty<float> _sensitivity = new(0f);
     private readonly SettingsStorage _settingsStorage;
     private readonly GameSettingsInstaller.ControlSettings _controlSettings;
-    private IDisposable _disposable;
+    private readonly CompositeDisposable _compositeDisposable = new();
 
     [Inject]
     public LookTuner(SettingsStorage settingsStorage, GameSettingsInstaller.ControlSettings controlSettings)
@@ -22,15 +22,16 @@ public class LookTuner : IInitializable, IDisposable
     {
         _sensitivity.Value = _settingsStorage.Get(SettingsConstants.SensitivityKey, _controlSettings.DefaultSensitivity);
 
-        _disposable = Sensitivity
+        Sensitivity
             .Subscribe(value => 
-            _sensitivity.Value = Math.Clamp(value, _controlSettings.MinSensitivity, _controlSettings.MaxSensitivity));
+            _sensitivity.Value = Math.Clamp(value, _controlSettings.MinSensitivity, _controlSettings.MaxSensitivity))
+            .AddTo(_compositeDisposable);
     }
 
     public void Dispose()
     {
         _settingsStorage.Set(SettingsConstants.SensitivityKey, _sensitivity.Value);
 
-        _disposable?.Dispose();
+        _compositeDisposable?.Dispose();
     }
 }

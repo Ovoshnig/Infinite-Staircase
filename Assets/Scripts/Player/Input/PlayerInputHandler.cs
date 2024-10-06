@@ -12,8 +12,8 @@ public class PlayerInputHandler : IInitializable, IDisposable
     private readonly ReactiveProperty<bool> _isLookPressed = new(false);
     private readonly ReactiveProperty<bool> _isJumpPressed = new(false);
     private readonly ReactiveProperty<bool> _isTogglePerspectivePressed = new(false);
+    private readonly CompositeDisposable _compositeDisposable = new();
     private InputActionMap _actionMap;
-    private IDisposable _disposable;
 
     [Inject]
     public PlayerInputHandler(WindowTracker windowTracker) => _windowTracker = windowTracker;
@@ -43,21 +43,22 @@ public class PlayerInputHandler : IInitializable, IDisposable
         _actionMap.FindAction(nameof(playerMap.TogglePerspective)).performed += OnTogglePerspective;
         _actionMap.FindAction(nameof(playerMap.TogglePerspective)).canceled += OnTogglePerspective;
 
-        _disposable = _windowTracker.IsOpen
+        _windowTracker.IsOpen
             .Subscribe(value =>
             {
                 if (value)
                     _actionMap.Disable();
                 else
                     _actionMap.Enable();
-            });
+            })
+            .AddTo(_compositeDisposable);
     }
 
     public void Dispose()
     {
         _actionMap.Disable();
 
-        _disposable?.Dispose();
+        _compositeDisposable?.Dispose();
     }
 
     private void OnWalk(InputAction.CallbackContext context)

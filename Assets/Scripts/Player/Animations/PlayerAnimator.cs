@@ -5,9 +5,9 @@ using Zenject;
 [RequireComponent(typeof(Animator))]
 public class PlayerAnimator : MonoBehaviour
 {
+    private readonly CompositeDisposable _compositeDisposable = new();
     private PlayerState _playerState;
     private Animator _animator;
-    private CompositeDisposable _compositeDisposable;
 
     [Inject]
     private void Construct([Inject(Id = ZenjectIdConstants.PlayerId)] PlayerState playerState) => 
@@ -17,25 +17,21 @@ public class PlayerAnimator : MonoBehaviour
     {
         _animator = GetComponent<Animator>();
 
-        var walkDisposable = _playerState.IsWalking
-            .Subscribe(value => _animator.SetBool(AnimatorConstants.IsWalking, value));
+        _playerState.IsWalking
+            .Subscribe(value => _animator.SetBool(AnimatorConstants.IsWalking, value))
+            .AddTo(_compositeDisposable);
 
-        var runDisposable = _playerState.IsRunning
-            .Subscribe(value => _animator.SetBool(AnimatorConstants.IsRunning, value));
+        _playerState.IsRunning
+            .Subscribe(value => _animator.SetBool(AnimatorConstants.IsRunning, value))
+            .AddTo(_compositeDisposable);
 
-        var jumpDisposable = _playerState.IsJumping
-            .Subscribe(value => _animator.SetBool(AnimatorConstants.IsJumping, value));
+        _playerState.IsJumping
+            .Subscribe(value => _animator.SetBool(AnimatorConstants.IsJumping, value))
+            .AddTo(_compositeDisposable);
 
-        var groundDisposable = _playerState.IsGrounded
-            .Subscribe(value => _animator.SetBool(AnimatorConstants.IsGrounded, value));
-
-        _compositeDisposable = new CompositeDisposable()
-        {
-            walkDisposable,
-            runDisposable,
-            jumpDisposable,
-            groundDisposable
-        };
+        _playerState.IsGrounded
+            .Subscribe(value => _animator.SetBool(AnimatorConstants.IsGrounded, value))
+            .AddTo(_compositeDisposable);
     }
 
     private void OnDestroy() => _compositeDisposable?.Dispose();

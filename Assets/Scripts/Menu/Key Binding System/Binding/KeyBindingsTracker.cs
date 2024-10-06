@@ -11,7 +11,7 @@ public class KeyBindingsTracker : IInitializable, IDisposable
     private readonly ButtonPanelCloser _doneButtonCloser;
     private readonly Button _doneButton;
     private readonly ReactiveProperty<bool> _isListening = new(false);
-    private IDisposable _disposable;
+    private readonly CompositeDisposable _compositeDisposable = new();
 
     [Inject]
     public KeyBindingsTracker([Inject(Id = ZenjectIdConstants.BindingDoneButtonId)] ButtonPanelCloser buttonPanelCloser)
@@ -27,15 +27,16 @@ public class KeyBindingsTracker : IInitializable, IDisposable
 
     public void Initialize()
     {
-        _disposable = _isListening
+        _isListening
             .Subscribe(value =>
             {
                 _doneButtonCloser.enabled = !value;
                 _doneButton.interactable = !value;
-            });
+            })
+            .AddTo(_compositeDisposable);
     }
 
-    public void Dispose() => _disposable?.Dispose();
+    public void Dispose() => _compositeDisposable?.Dispose();
 
     public bool TryStartListening()
     {

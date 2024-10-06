@@ -9,7 +9,7 @@ public class AudioMixerTuner : IInitializable, IDisposable
     private readonly AudioTuner _audioTuner;
     private readonly GameSettingsInstaller.AudioSettings _audioSettings;
     private readonly GamePauser _gamePauser;
-    private CompositeDisposable _compositeDisposable;
+    private readonly CompositeDisposable _compositeDisposable = new();
 
     [Inject]
     public AudioMixerTuner(AudioMixerGroup audioMixerGroup, AudioTuner audioTuner, 
@@ -25,23 +25,19 @@ public class AudioMixerTuner : IInitializable, IDisposable
 
     public void Initialize()
     {
-        var soundDisposable = _audioTuner.SoundVolume
+        _audioTuner.SoundVolume
             .Subscribe(value => 
-            AudioMixer.SetFloat(AudioMixerConstants.SoundGroupName, value));
+            AudioMixer.SetFloat(AudioMixerConstants.SoundGroupName, value))
+            .AddTo(_compositeDisposable);
 
-        var musicDisposable = _audioTuner.MusicVolume
+        _audioTuner.MusicVolume
             .Subscribe(value =>
-            AudioMixer.SetFloat(AudioMixerConstants.MusicGroupName, value));
+            AudioMixer.SetFloat(AudioMixerConstants.MusicGroupName, value))
+            .AddTo(_compositeDisposable);
 
-        var pauseDisposable = _gamePauser.IsPause
-            .Subscribe(value => SetSnapshot(value));
-
-        _compositeDisposable = new CompositeDisposable()
-        {
-            soundDisposable,
-            musicDisposable,
-            pauseDisposable
-        };
+        _gamePauser.IsPause
+            .Subscribe(value => SetSnapshot(value))
+            .AddTo(_compositeDisposable);
     }
 
     public void Dispose() => _compositeDisposable?.Dispose();

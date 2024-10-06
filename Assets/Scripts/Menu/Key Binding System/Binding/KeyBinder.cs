@@ -4,7 +4,6 @@ using UnityEngine.InputSystem;
 using UnityEngine;
 using Zenject;
 using UnityEngine.UI;
-using System;
 using System.Linq;
 
 public class KeyBinder : MonoBehaviour
@@ -15,11 +14,11 @@ public class KeyBinder : MonoBehaviour
     [SerializeField] private Color _waitingTextColor;
     [SerializeField] private InputActionReference _inputActionReference;
 
+    private readonly CompositeDisposable _compositeDisposable = new();
     private KeyBindingsTracker _bindingsTracker;
     private IBindingHandler _bindingHandler;
     private TMP_Text _bindingButtonText;
     private InputAction _inputAction;
-    private IDisposable _disposable;
 
     [Inject]
     private void Construct(KeyBindingsTracker bindingsTracker) => _bindingsTracker = bindingsTracker;
@@ -54,11 +53,12 @@ public class KeyBinder : MonoBehaviour
         _bindingButton.onClick.AddListener(OnBindingButtonPressed);
         _bindingResetButton.onClick.AddListener(OnBindingResetButtonClicked);
 
-        _disposable = Observable
+        Observable
             .EveryUpdate()
             .Select(_ => _inputAction.bindings.Any(b => b.hasOverrides))
             .DistinctUntilChanged()
-            .Subscribe(value => _bindingResetButton.interactable = value);
+            .Subscribe(value => _bindingResetButton.interactable = value)
+            .AddTo(_compositeDisposable);
     }
     
     private void OnDestroy()
@@ -66,7 +66,7 @@ public class KeyBinder : MonoBehaviour
         _bindingButton.onClick.RemoveListener(OnBindingButtonPressed);
         _bindingResetButton.onClick.RemoveListener(OnBindingResetButtonClicked);
 
-        _disposable?.Dispose();
+        _compositeDisposable?.Dispose();
     }
 
     private void OnBindingButtonPressed() => _bindingHandler.StartListening();

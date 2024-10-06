@@ -15,7 +15,7 @@ class InputAxisController : InputAxisControllerBase<InputAxisController.Reader>
 
     private LookTuner _lookTuner;
     private WindowTracker _windowTracker;
-    private CompositeDisposable _compositeDisposable;
+    private readonly CompositeDisposable _compositeDisposable = new();
 
     [Inject]
     private void Construct(LookTuner lookTuner, WindowTracker windowTracker)
@@ -44,17 +44,13 @@ class InputAxisController : InputAxisControllerBase<InputAxisController.Reader>
             };
         }
 
-        var sensitivityDisposable = _lookTuner.Sensitivity
-            .Subscribe(value => Controllers.ForEach(controller => controller.Input.Multiplier = value));
+        _lookTuner.Sensitivity
+            .Subscribe(value => Controllers.ForEach(controller => controller.Input.Multiplier = value))
+            .AddTo(_compositeDisposable);
 
-        var windowDisposable = _windowTracker.IsOpen
-            .Subscribe(value => _playerInput.enabled = !value);
-
-        _compositeDisposable = new CompositeDisposable()
-        {
-            sensitivityDisposable,
-            windowDisposable
-        };
+        _windowTracker.IsOpen
+            .Subscribe(value => _playerInput.enabled = !value)
+            .AddTo(_compositeDisposable);
     }
 
     private void OnDestroy() => _compositeDisposable?.Dispose();

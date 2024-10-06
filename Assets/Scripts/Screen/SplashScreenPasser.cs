@@ -6,7 +6,7 @@ using Zenject;
 public class SplashScreenPasser : IInitializable, IDisposable
 {
     private readonly ScreenInputHandler _inputHandler;
-    private IDisposable _disposed;
+    private readonly CompositeDisposable _compositeDisposable = new();
 
     [Inject]
     public SplashScreenPasser(ScreenInputHandler screenInputHandler) => _inputHandler = screenInputHandler;
@@ -15,12 +15,13 @@ public class SplashScreenPasser : IInitializable, IDisposable
     {
         Play();
 
-        _disposed = _inputHandler.IsPassSplashImagePressed
+        _inputHandler.IsPassSplashImagePressed
             .Where(value => value)
-            .Subscribe(_ => Pass());
+            .Subscribe(_ => Pass())
+            .AddTo(_compositeDisposable);
     }
 
-    public void Dispose() => _disposed?.Dispose();
+    public void Dispose() => _compositeDisposable?.Dispose();
 
     private void Play()
     {

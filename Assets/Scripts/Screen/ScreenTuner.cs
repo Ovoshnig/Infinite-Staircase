@@ -9,7 +9,7 @@ public class ScreenTuner : IInitializable, IDisposable
 {
     private readonly ScreenInputHandler _inputHandler;
     private readonly ReactiveProperty<bool> _isFullScreen = new(Screen.fullScreen);
-    private IDisposable _disposable;
+    private readonly CompositeDisposable _compositeDisposable = new();
 
     [Inject]
     public ScreenTuner(ScreenInputHandler screenInputHandler) => _inputHandler = screenInputHandler;
@@ -50,12 +50,13 @@ public class ScreenTuner : IInitializable, IDisposable
             CurrentResolutionNumber = index;
         }
 
-        _disposable = _inputHandler.IsSwitchFullScreenPressed
+        _inputHandler.IsSwitchFullScreenPressed
             .Where(value => value)
-            .Subscribe(_ => SwitchFullScreen());
+            .Subscribe(_ => SwitchFullScreen())
+            .AddTo(_compositeDisposable);
     }
 
-    public void Dispose() => _disposable?.Dispose();
+    public void Dispose() => _compositeDisposable?.Dispose();
 
     public void SwitchFullScreen()
     {
