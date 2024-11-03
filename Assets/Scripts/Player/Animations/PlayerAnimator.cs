@@ -26,7 +26,8 @@ public class PlayerAnimator : MonoBehaviour
             .AddTo(_compositeDisposable);
 
         _playerState.IsJumping
-            .Subscribe(value => _animator.SetBool(AnimatorConstants.IsJumping, value))
+            .Where(value => value)
+            .Subscribe(_ => _animator.SetTrigger(AnimatorConstants.IsJumping))
             .AddTo(_compositeDisposable);
 
         _playerState.IsGrounded
