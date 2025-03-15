@@ -5,10 +5,10 @@ using Zenject;
 [RequireComponent(typeof(Animator))]
 public class PlayerAnimator : MonoBehaviour
 {
-    private static readonly int s_isWalkingHash = Animator.StringToHash(AnimatorConstants.IsWalking);
-    private static readonly int s_isRunningHash = Animator.StringToHash(AnimatorConstants.IsRunning);
-    private static readonly int s_isJumpingHash = Animator.StringToHash(AnimatorConstants.IsJumping);
-    private static readonly int s_isGroundedHash = Animator.StringToHash(AnimatorConstants.IsGrounded);
+    private static readonly int s_isWalkingId = Animator.StringToHash(AnimatorConstants.IsWalking);
+    private static readonly int s_isRunningId = Animator.StringToHash(AnimatorConstants.IsRunning);
+    private static readonly int s_isJumpingId = Animator.StringToHash(AnimatorConstants.IsJumping);
+    private static readonly int s_isGroundedId = Animator.StringToHash(AnimatorConstants.IsGrounded);
     private readonly CompositeDisposable _compositeDisposable = new();
     private PlayerState _playerState;
     private Animator _animator;
@@ -22,20 +22,20 @@ public class PlayerAnimator : MonoBehaviour
         _animator = GetComponent<Animator>();
 
         _playerState.IsWalking
-            .Subscribe(value => _animator.SetBool(s_isWalkingHash, value))
+            .Subscribe(value => _animator.SetBool(s_isWalkingId, value))
             .AddTo(_compositeDisposable);
 
         _playerState.IsRunning
-            .Subscribe(value => _animator.SetBool(s_isRunningHash, value))
+            .Subscribe(value => _animator.SetBool(s_isRunningId, value))
             .AddTo(_compositeDisposable);
 
         _playerState.IsJumping
             .Where(value => value)
-            .Subscribe(_ => _animator.SetTrigger(s_isJumpingHash))
+            .Subscribe(_ => _animator.SetTrigger(s_isJumpingId))
             .AddTo(_compositeDisposable);
 
         _playerState.IsGrounded
-            .Subscribe(value => _animator.SetBool(s_isGroundedHash, value))
+            .Subscribe(value => _animator.SetBool(s_isGroundedId, value))
             .AddTo(_compositeDisposable);
     }
 
