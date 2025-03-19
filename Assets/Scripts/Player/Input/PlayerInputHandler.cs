@@ -27,20 +27,20 @@ public class PlayerInputHandler : IInitializable, IDisposable
 
     public void Initialize()
     {
-        var playerInput = new PlayerInput();
-        var playerMap = playerInput.Player;
+        PlayerInput playerInput = new();
+        PlayerInput.PlayerActions playerActions = playerInput.Player;
         _actionMap = InputSystem.actions.FindActionMap(nameof(playerInput.Player));
 
-        _actionMap.FindAction(nameof(playerMap.Walk)).performed += OnWalk;
-        _actionMap.FindAction(nameof(playerMap.Walk)).canceled += OnWalk;
-        _actionMap.FindAction(nameof(playerMap.Run)).performed += OnRun;
-        _actionMap.FindAction(nameof(playerMap.Run)).canceled += OnRun;
-        _actionMap.FindAction(nameof(playerMap.Look)).performed += OnLook;
-        _actionMap.FindAction(nameof(playerMap.Look)).canceled += OnLook;
-        _actionMap.FindAction(nameof(playerMap.Jump)).performed += OnJump;
-        _actionMap.FindAction(nameof(playerMap.Jump)).canceled += OnJump;
-        _actionMap.FindAction(nameof(playerMap.TogglePerspective)).performed += OnTogglePerspective;
-        _actionMap.FindAction(nameof(playerMap.TogglePerspective)).canceled += OnTogglePerspective;
+        _actionMap.FindAction(nameof(playerActions.Walk)).performed += OnWalk;
+        _actionMap.FindAction(nameof(playerActions.Walk)).canceled += OnWalk;
+        _actionMap.FindAction(nameof(playerActions.Run)).performed += OnRun;
+        _actionMap.FindAction(nameof(playerActions.Run)).canceled += OnRun;
+        _actionMap.FindAction(nameof(playerActions.Look)).performed += OnLook;
+        _actionMap.FindAction(nameof(playerActions.Look)).canceled += OnLook;
+        _actionMap.FindAction(nameof(playerActions.Jump)).performed += OnJump;
+        _actionMap.FindAction(nameof(playerActions.Jump)).canceled += OnJump;
+        _actionMap.FindAction(nameof(playerActions.TogglePerspective)).performed += OnTogglePerspective;
+        _actionMap.FindAction(nameof(playerActions.TogglePerspective)).canceled += OnTogglePerspective;
 
         _windowTracker.IsOpen
             .Subscribe(value =>

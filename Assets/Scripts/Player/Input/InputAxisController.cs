@@ -5,14 +5,12 @@ using UnityEngine.InputSystem;
 using Unity.Cinemachine;
 using VContainer;
 
-class InputAxisController : InputAxisControllerBase<InputAxisController.Reader>
+public class InputAxisController : InputAxisControllerBase<InputAxisController.Reader>
 {
-    [Header("Input Source Override")]
-    [SerializeField] private UnityEngine.InputSystem.PlayerInput _playerInput;
-
+    private readonly CompositeDisposable _compositeDisposable = new();
     private LookTuner _lookTuner;
     private WindowTracker _windowTracker;
-    private readonly CompositeDisposable _compositeDisposable = new();
+    private InputActionMap _actionMap;
 
     [Inject]
     public void Construct(LookTuner lookTuner, WindowTracker windowTracker)
@@ -21,41 +19,50 @@ class InputAxisController : InputAxisControllerBase<InputAxisController.Reader>
         _windowTracker = windowTracker;
     }
 
+    private void Awake()
+    {
+        PlayerInput playerInput = new();
+        PlayerInput.PlayerActions playerActions = playerInput.Player;
+        _actionMap = InputSystem.actions.FindActionMap(nameof(playerInput.Player));
+
+        _actionMap.FindAction(nameof(playerActions.Look)).performed += OnActionTriggered;
+        _actionMap.FindAction(nameof(playerActions.Look)).canceled += OnActionTriggered;
+    }
+
     private void Start()
     {
-        if (_playerInput == null)
-        {
-            TryGetComponent(out _playerInput);
-        }
-        if (_playerInput == null)
-        {
-            Debug.LogError("Cannot find PlayerInput component");
-        }
-        else
-        {
-            _playerInput.notificationBehavior = PlayerNotifications.InvokeCSharpEvents;
-            _playerInput.onActionTriggered += (value) =>
-            {
-                for (var i = 0; i < Controllers.Count; i++)
-                    Controllers[i].Input.ProcessInput(value.action);
-            };
-        }
-
         _lookTuner.Sensitivity
             .Subscribe(value => Controllers.ForEach(controller => controller.Input.Multiplier = value))
             .AddTo(_compositeDisposable);
 
         _windowTracker.IsOpen
-            .Subscribe(value => _playerInput.enabled = !value)
+            .Subscribe(isOpen =>
+            {
+                if (isOpen)
+                    _actionMap.Disable();
+                else
+                    _actionMap.Enable();
+            })
             .AddTo(_compositeDisposable);
     }
 
-    private void OnDestroy() => _compositeDisposable?.Dispose();
+    private void OnActionTriggered(InputAction.CallbackContext context)
+    {
+        foreach (var controller in Controllers)
+            controller.Input.ProcessInput(context.action);
+    }
 
     private void Update()
     {
         if (Application.isPlaying)
             UpdateControllers();
+    }
+
+    private void OnDestroy()
+    {
+        _actionMap.Disable();
+
+        _compositeDisposable.Dispose();
     }
 
     [Serializable]
@@ -64,25 +71,23 @@ class InputAxisController : InputAxisControllerBase<InputAxisController.Reader>
         [SerializeField] private InputActionReference _input;
         [SerializeField] private bool _invert = false;
 
-        private Vector2 m_Value;
-
+        private Vector2 _value;
         public float Multiplier { get; set; } = 1f;
 
         public void ProcessInput(InputAction action)
         {
             if (_input != null && _input.action.id == action.id)
             {
-                if (action.expectedControlType == nameof(Vector2))
-                    m_Value = action.ReadValue<Vector2>();
-                else
-                    m_Value.x = m_Value.y = action.ReadValue<float>();
+                _value = action.expectedControlType == nameof(Vector2)
+                    ? action.ReadValue<Vector2>()
+                    : new Vector2(action.ReadValue<float>(), action.ReadValue<float>());
 
-                int sign = _invert ? -1 : 1;
-                m_Value *= sign * Multiplier;
+                float sign = _invert ? -1f : 1f;
+                _value *= sign * Multiplier;
             }
         }
 
         public float GetValue(UnityEngine.Object context, IInputAxisOwner.AxisDescriptor.Hints hint) => 
-            (hint == IInputAxisOwner.AxisDescriptor.Hints.Y ? m_Value.y : m_Value.x);
+            hint == IInputAxisOwner.AxisDescriptor.Hints.Y ? _value.y : _value.x;
     }
 }

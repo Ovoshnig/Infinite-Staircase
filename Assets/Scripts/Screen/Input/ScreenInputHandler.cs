@@ -14,14 +14,14 @@ public class ScreenInputHandler : IInitializable, IDisposable
 
     public void Initialize()
     {
-        var playerInput = new PlayerInput();
-        var screenMap = playerInput.Screen;
+        PlayerInput playerInput = new();
+        PlayerInput.ScreenActions screenActions = playerInput.Screen;
         _actionMap = InputSystem.actions.FindActionMap(nameof(playerInput.Screen));
 
-        _actionMap.FindAction(nameof(screenMap.SwitchFullScreen)).performed += OnFullScreenSwitch;
-        _actionMap.FindAction(nameof(screenMap.SwitchFullScreen)).canceled += OnFullScreenSwitch;
-        _actionMap.FindAction(nameof(screenMap.PassSplashImage)).performed += OnPassSplashImage;
-        _actionMap.FindAction(nameof(screenMap.PassSplashImage)).canceled += OnPassSplashImage;
+        _actionMap.FindAction(nameof(screenActions.SwitchFullScreen)).performed += OnFullScreenSwitch;
+        _actionMap.FindAction(nameof(screenActions.SwitchFullScreen)).canceled += OnFullScreenSwitch;
+        _actionMap.FindAction(nameof(screenActions.PassSplashImage)).performed += OnPassSplashImage;
+        _actionMap.FindAction(nameof(screenActions.PassSplashImage)).canceled += OnPassSplashImage;
 
         _actionMap.Enable();
     }
