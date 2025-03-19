@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using VContainer.Unity;
 
-public class SceneSwitch : IInitializable, IDisposable
+public class SceneSwitch : IPostInitializable, IDisposable
 {
     public enum SceneType
     {
@@ -29,11 +29,9 @@ public class SceneSwitch : IInitializable, IDisposable
 
     public SceneType CurrentSceneType { get; private set; }
 
-    public void Initialize()
+    public void PostInitialize()
     {
         _achievedLevel = _saveStorage.Get(SaveConstants.AchievedLevelKey, _levelSettings.FirstGameplayLevel);
-        _achievedLevel = 0;
-
         _currentLevel = (uint)SceneManager.GetActiveScene().buildIndex;
 
         if (_currentLevel > _achievedLevel && _currentLevel <= _levelSettings.LastGameplayLevel)
