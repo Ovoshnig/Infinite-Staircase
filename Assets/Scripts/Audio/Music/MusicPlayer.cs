@@ -4,9 +4,11 @@ using System.Threading;
 using System;
 using UnityEngine;
 using VContainer;
+using R3;
 
 public class MusicPlayer : MonoBehaviour
 {
+    private readonly CompositeDisposable _compositeDisposable = new();
     private AudioSource _audioSource;
     private MusicQueue _musicQueue;
     private IMusicLoader _musicLoader;
@@ -31,27 +33,38 @@ public class MusicPlayer : MonoBehaviour
         _audioSource = GetComponent<AudioSource>();
         _musicClipPaths = LoadMusicClipPaths();
 
-        _sceneSwitch.SceneLoaded += OnSceneLoaded;
+        _sceneSwitch.IsSceneLoading
+            .Where(value => !value)
+            .Subscribe(value => TryPlayMusic())
+            .AddTo(_compositeDisposable);
     }
 
     private void OnDestroy()
     {
         _cts.CancelAndDispose(ref _cts);
 
-        _sceneSwitch.SceneLoaded -= OnSceneLoaded;
+        _compositeDisposable?.Dispose();
     }
 
-    private void OnSceneLoaded(SceneSwitch.SceneType sceneType)
+    private bool TryPlayMusic()
     {
         _cts.CancelAndDispose(ref _cts);
         _cts = new CancellationTokenSource();
 
-        var category = _sceneMusicMapper.GetMusicCategory(sceneType);
+        MusicCategory category = _sceneMusicMapper.GetMusicCategory(_sceneSwitch.CurrentSceneType);
 
         if (_musicClipPaths.TryGetValue(category, out var clips))
+        {
             PlayMusic(clips);
+
+            return true;
+        }
         else
+        {
             Debug.LogWarning($"No music found for category {category}");
+
+            return false;
+        }
     }
 
     private void PlayMusic(List<string> clipPaths)

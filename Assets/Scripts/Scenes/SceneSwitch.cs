@@ -1,4 +1,5 @@
 using Cysharp.Threading.Tasks;
+using R3;
 using System;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -15,11 +16,9 @@ public class SceneSwitch : IPostInitializable, IDisposable
 
     private readonly SaveStorage _saveStorage;
     private readonly LevelSettings _levelSettings;
+    private readonly ReactiveProperty<bool> _isSceneLoading = new(true);
     private uint _achievedLevel;
     private uint _currentLevel;
-
-    public event Action<SceneType> SceneLoading;
-    public event Action<SceneType> SceneLoaded;
 
     public SceneSwitch(SaveStorage saveStorage, LevelSettings levelSettings)
     {
@@ -28,6 +27,7 @@ public class SceneSwitch : IPostInitializable, IDisposable
     }
 
     public SceneType CurrentSceneType { get; private set; }
+    public ReadOnlyReactiveProperty<bool> IsSceneLoading => _isSceneLoading.ToReadOnlyReactiveProperty();
 
     public void PostInitialize()
     {
@@ -57,13 +57,13 @@ public class SceneSwitch : IPostInitializable, IDisposable
     public async UniTask LoadLevel(uint index)
     {
         SceneType sceneType = GetSceneTypeByIndex(index);
-        SceneLoading?.Invoke(sceneType);
+        _isSceneLoading.Value = true;
 
         await SceneManager.LoadSceneAsync((int)index);
 
         _currentLevel = index;
         CurrentSceneType = sceneType;
-        SceneLoaded?.Invoke(sceneType);
+        _isSceneLoading.Value = false;
     }
 
     private async UniTaskVoid WaitForFirstSceneLoad()
@@ -71,7 +71,7 @@ public class SceneSwitch : IPostInitializable, IDisposable
         await UniTask.WaitUntil(() => SceneManager.GetActiveScene().isLoaded);
         SceneType sceneType = GetSceneTypeByIndex(_currentLevel);
         CurrentSceneType = sceneType;
-        SceneLoaded?.Invoke(sceneType);
+        _isSceneLoading.Value = false;
     }
 
     private SceneType GetSceneTypeByIndex(uint index)
