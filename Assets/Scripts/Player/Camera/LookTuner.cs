@@ -2,7 +2,7 @@ using R3;
 using System;
 using VContainer.Unity;
 
-public class LookTuner : IInitializable, IDisposable
+public class LookTuner : IPostInitializable, IDisposable
 {
     private readonly ReactiveProperty<float> _sensitivity = new(0f);
     private readonly SettingsStorage _settingsStorage;
@@ -17,7 +17,7 @@ public class LookTuner : IInitializable, IDisposable
 
     public ReactiveProperty<float> Sensitivity => _sensitivity;
 
-    public void Initialize()
+    public void PostInitialize()
     {
         _sensitivity.Value = _settingsStorage.Get(SettingsConstants.SensitivityKey, _controlSettings.DefaultSensitivity);
 

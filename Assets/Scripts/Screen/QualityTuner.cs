@@ -2,7 +2,7 @@ using System;
 using UnityEngine;
 using VContainer.Unity;
 
-public class QualityTuner : IInitializable, IDisposable
+public class QualityTuner : IPostInitializable, IDisposable
 {
     private readonly SettingsStorage _settingsStorage;
     private bool _isVSyncEnabled;
@@ -11,7 +11,7 @@ public class QualityTuner : IInitializable, IDisposable
 
     public bool IsVSyncEnabled => _isVSyncEnabled;
 
-    public void Initialize()
+    public void PostInitialize()
     {
         _isVSyncEnabled = _settingsStorage.Get(SettingsConstants.VSyncKey, false);
         QualitySettings.vSyncCount = _isVSyncEnabled ? 1 : 0;

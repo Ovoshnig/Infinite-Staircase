@@ -2,7 +2,6 @@ using R3;
 using UnityEngine;
 using UnityEngine.Rendering;
 using VContainer;
-using static UnityEngine.Rendering.DebugUI;
 
 [RequireComponent(typeof(SkinnedMeshRenderer))]
 public class SkinnedMeshRendererView : MonoBehaviour

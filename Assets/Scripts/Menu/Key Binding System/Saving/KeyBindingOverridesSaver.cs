@@ -2,21 +2,21 @@ using System;
 using UnityEngine.InputSystem;
 using VContainer.Unity;
 
-public class KeyBindingOverridesSaver : IInitializable, IDisposable
+public class KeyBindingOverridesSaver : IPostInitializable, IDisposable
 {
     private readonly SettingsStorage _settingsStorage;
 
     public KeyBindingOverridesSaver(SettingsStorage settingsStorage) => _settingsStorage = settingsStorage;
 
-    public void Initialize()
+    public void PostInitialize()
     {
-        var json = _settingsStorage.Get(SettingsConstants.BindingOverridesKey, string.Empty);
+        string json = _settingsStorage.Get(SettingsConstants.BindingOverridesKey, string.Empty);
         InputSystem.actions.LoadBindingOverridesFromJson(json);
     }
 
     public void Dispose()
     {
-        var json = InputSystem.actions.SaveBindingOverridesAsJson();
+        string json = InputSystem.actions.SaveBindingOverridesAsJson();
         _settingsStorage.Set(SettingsConstants.BindingOverridesKey, json);
     }
 }

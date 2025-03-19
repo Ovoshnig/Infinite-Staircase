@@ -1,8 +1,9 @@
 using R3;
 using System;
+using UnityEngine;
 using VContainer.Unity;
 
-public class AudioTuner : IInitializable, IDisposable
+public class AudioTuner : IPostInitializable, IDisposable
 {
     private readonly ReactiveProperty<float> _soundVolume = new();
     private readonly ReactiveProperty<float> _musicVolume = new();
@@ -20,7 +21,7 @@ public class AudioTuner : IInitializable, IDisposable
     public ReactiveProperty<float> SoundVolume => _soundVolume;
     public ReactiveProperty<float> MusicVolume => _musicVolume;
 
-    public void Initialize()
+    public void PostInitialize()
     {
         _soundVolume.Value = _settingsStorage.Get(SettingsConstants.SoundVolumeKey, 
             _audioSettings.DefaultVolume);

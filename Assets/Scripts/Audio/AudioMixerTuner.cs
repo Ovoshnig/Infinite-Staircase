@@ -3,7 +3,7 @@ using System;
 using UnityEngine.Audio;
 using VContainer.Unity;
 
-public class AudioMixerTuner : IInitializable, IDisposable
+public class AudioMixerTuner : IStartable, IDisposable
 {
     private readonly AudioMixerGroup _audioMixerGroup;
     private readonly AudioTuner _audioTuner;
@@ -22,7 +22,7 @@ public class AudioMixerTuner : IInitializable, IDisposable
 
     private AudioMixer AudioMixer => _audioMixerGroup.audioMixer;
 
-    public void Initialize()
+    public void Start()
     {
         _audioTuner.SoundVolume
             .Subscribe(value => 

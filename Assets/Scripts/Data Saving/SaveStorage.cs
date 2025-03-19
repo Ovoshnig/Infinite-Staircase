@@ -1,6 +1,7 @@
 using Cryptography = System.Security.Cryptography;
 using System;
 using System.IO;
+using System.Security.Cryptography;
 using UnityEngine;
 
 public class SaveStorage : DataStorage
@@ -21,6 +22,7 @@ public class SaveStorage : DataStorage
             if (savedHash != currentHash)
             {
                 Debug.LogWarning("File integrity check failed. The save file might have been tampered with.");
+                ResetData();
             }
         }
         else
@@ -39,7 +41,7 @@ public class SaveStorage : DataStorage
 
     private string CalculateHash(string filePath)
     {
-        using var sha256 = Cryptography.SHA256.Create();
+        using SHA256 sha256 = SHA256.Create();
         byte[] fileBytes = File.ReadAllBytes(filePath);
         byte[] hashBytes = sha256.ComputeHash(fileBytes);
 
