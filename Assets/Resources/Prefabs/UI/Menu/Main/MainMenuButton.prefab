@@ -90,7 +90,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3136494955626142587, guid: 723194aaa30a36e43ad28ddddaeeb499, type: 3}
       propertyPath: m_Name
-      value: Button Variant
+      value: MainMenuButton
+      objectReference: {fileID: 0}
+    - target: {fileID: 4230476776402574984, guid: 723194aaa30a36e43ad28ddddaeeb499, type: 3}
+      propertyPath: m_Color.b
+      value: 0.8820753
+      objectReference: {fileID: 0}
+    - target: {fileID: 4230476776402574984, guid: 723194aaa30a36e43ad28ddddaeeb499, type: 3}
+      propertyPath: m_Color.g
+      value: 0.8820753
+      objectReference: {fileID: 0}
+    - target: {fileID: 4230476776402574984, guid: 723194aaa30a36e43ad28ddddaeeb499, type: 3}
+      propertyPath: m_Color.r
+      value: 0.8820753
       objectReference: {fileID: 0}
     - target: {fileID: 4648900923960772367, guid: 723194aaa30a36e43ad28ddddaeeb499, type: 3}
       propertyPath: m_sharedMaterial
