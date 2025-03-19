@@ -45,7 +45,7 @@ public class GraphicSettings : MonoBehaviour
         _vSyncToggle.SetIsOnWithoutNotify(_qualityTuner.IsVSyncEnabled);
 
         _resolutionDropdown.options = _screenTuner.Resolutions
-            .Select(x => new TMP_Dropdown.OptionData($"{x.width}x{x.height}"))
+            .Select(x => new TMP_Dropdown.OptionData($"{x.width}x{x.height}@{x.refreshRate.value:F2}"))
             .ToList();
 
         _resolutionDropdown.SetValueWithoutNotify(_screenTuner.CurrentResolutionNumber);

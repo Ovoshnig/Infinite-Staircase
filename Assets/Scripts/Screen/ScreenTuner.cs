@@ -7,31 +7,31 @@ using VContainer.Unity;
 
 public class ScreenTuner : IInitializable, IDisposable
 {
-    private readonly ScreenInputHandler _inputHandler;
+    private readonly ScreenInputHandler _screenInputHandler;
     private readonly ReactiveProperty<bool> _isFullScreen = new(Screen.fullScreen);
     private readonly CompositeDisposable _compositeDisposable = new();
 
-    public ScreenTuner(ScreenInputHandler screenInputHandler) => _inputHandler = screenInputHandler;
+    public ScreenTuner(ScreenInputHandler screenInputHandler) => _screenInputHandler = screenInputHandler;
 
-    public List<(int width, int height)> Resolutions { get; private set; }
+    public List<(int width, int height, RefreshRate refreshRate)> Resolutions { get; private set; }
     public int CurrentResolutionNumber { get; private set; }
     public ReadOnlyReactiveProperty<bool> IsFullScreen => _isFullScreen;
 
-    private (int width, int height) CurrentResolution
+    private (int width, int height, RefreshRate refreshRate) CurrentResolution
     {
         get
         {
             if (_isFullScreen.Value)
-                return (Screen.currentResolution.width, Screen.currentResolution.height);
+                return (Screen.currentResolution.width, Screen.currentResolution.height, Screen.currentResolution.refreshRateRatio);
             else
-                return (Screen.width, Screen.height);
+                return (Screen.width, Screen.height, Screen.currentResolution.refreshRateRatio);
         }
     }
 
     public void Initialize()
     {
         var resolution = CurrentResolution;
-        var resolutions = Screen.resolutions.Select(x => (x.width, x.height)).ToList();
+        var resolutions = Screen.resolutions.Select(x => (x.width, x.height, x.refreshRateRatio)).ToList();
         Resolutions = resolutions;
 
         if (resolutions.Contains(resolution))
@@ -49,7 +49,7 @@ public class ScreenTuner : IInitializable, IDisposable
             CurrentResolutionNumber = index;
         }
 
-        _inputHandler.IsSwitchFullScreenPressed
+        _screenInputHandler.IsSwitchFullScreenPressed
             .Where(value => value)
             .Subscribe(_ => SwitchFullScreen())
             .AddTo(_compositeDisposable);
@@ -72,8 +72,8 @@ public class ScreenTuner : IInitializable, IDisposable
             return;
         }
 
-        var (width, height) = Resolutions[number];
-        Screen.SetResolution(width, height, Screen.fullScreenMode);
+        var (width, height, refreshRate) = Resolutions[number];
+        Screen.SetResolution(width, height, Screen.fullScreenMode, refreshRate);
         CurrentResolutionNumber = number;
     }
 }
