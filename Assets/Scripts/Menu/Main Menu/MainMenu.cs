@@ -1,7 +1,7 @@
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.UI;
-using Zenject;
+using VContainer;
 
 public sealed class MainMenu : MonoBehaviour
 {
@@ -15,7 +15,7 @@ public sealed class MainMenu : MonoBehaviour
     private SceneSwitch _sceneSwitch;
 
     [Inject]
-    private void Construct(SaveStorage saveStorage, SceneSwitch sceneSwitch)
+    public void Construct(SaveStorage saveStorage, SceneSwitch sceneSwitch)
     {
         _saveStorage = saveStorage;
         _sceneSwitch = sceneSwitch;

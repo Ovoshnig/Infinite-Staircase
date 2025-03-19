@@ -1,13 +1,12 @@
 using System;
 using UnityEngine;
-using Zenject;
+using VContainer.Unity;
 
 public class QualityTuner : IInitializable, IDisposable
 {
     private readonly SettingsStorage _settingsStorage;
     private bool _isVSyncEnabled;
 
-    [Inject]
     public QualityTuner(SettingsStorage settingsStorage) => _settingsStorage = settingsStorage;
 
     public bool IsVSyncEnabled => _isVSyncEnabled;

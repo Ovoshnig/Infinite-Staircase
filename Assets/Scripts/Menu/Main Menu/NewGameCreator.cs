@@ -3,7 +3,7 @@ using Random = System.Random;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using Zenject;
+using VContainer;
 
 public class NewGameCreator : MonoBehaviour
 {
@@ -14,11 +14,11 @@ public class NewGameCreator : MonoBehaviour
     private readonly Random _random = new();
     private SceneSwitch _sceneSwitch;
     private SaveStorage _saveStorage;
-    private GameSettingsInstaller.WorldGenerationSettings _generationSettings;
+    private WorldGenerationSettings _generationSettings;
 
     [Inject]
-    private void Construct(SceneSwitch sceneSwitch, SaveStorage saveStorage,
-        GameSettingsInstaller.WorldGenerationSettings generationSettings)
+    public void Construct(SceneSwitch sceneSwitch, SaveStorage saveStorage,
+        WorldGenerationSettings generationSettings)
     {
         _sceneSwitch = sceneSwitch;
         _saveStorage = saveStorage;

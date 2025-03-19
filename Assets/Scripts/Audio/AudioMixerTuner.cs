@@ -1,19 +1,18 @@
 ﻿using R3;
 using System;
 using UnityEngine.Audio;
-using Zenject;
+using VContainer.Unity;
 
 public class AudioMixerTuner : IInitializable, IDisposable
 {
     private readonly AudioMixerGroup _audioMixerGroup;
     private readonly AudioTuner _audioTuner;
-    private readonly GameSettingsInstaller.AudioSettings _audioSettings;
+    private readonly AudioSettings _audioSettings;
     private readonly GamePauser _gamePauser;
     private readonly CompositeDisposable _compositeDisposable = new();
 
-    [Inject]
     public AudioMixerTuner(AudioMixerGroup audioMixerGroup, AudioTuner audioTuner, 
-        GameSettingsInstaller.AudioSettings audioSettings, GamePauser gamePauser)
+        AudioSettings audioSettings, GamePauser gamePauser)
     {
         _audioMixerGroup = audioMixerGroup;
         _audioTuner = audioTuner;
@@ -44,7 +43,7 @@ public class AudioMixerTuner : IInitializable, IDisposable
 
     private void SetSnapshot(bool pause)
     {
-        var snapshot = AudioMixer.FindSnapshot(
+        AudioMixerSnapshot snapshot = AudioMixer.FindSnapshot(
             pause ? AudioMixerConstants.PauseSnapshotName : AudioMixerConstants.NormalSnapshotName);
         snapshot.TransitionTo(_audioSettings.SnapshotTransitionDuration);
     }

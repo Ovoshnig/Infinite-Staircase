@@ -3,11 +3,8 @@ using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using Unity.Cinemachine;
-using Zenject;
+using VContainer;
 
-// This class receives input from a PlayerInput component and dispatches it
-// to the appropriate Cinemachine InputAxis.  The playerInput component should
-// be on the same GameObject, or specified in the PlayerInput field.
 class InputAxisController : InputAxisControllerBase<InputAxisController.Reader>
 {
     [Header("Input Source Override")]
@@ -18,13 +15,13 @@ class InputAxisController : InputAxisControllerBase<InputAxisController.Reader>
     private readonly CompositeDisposable _compositeDisposable = new();
 
     [Inject]
-    private void Construct(LookTuner lookTuner, WindowTracker windowTracker)
+    public void Construct(LookTuner lookTuner, WindowTracker windowTracker)
     {
         _lookTuner = lookTuner;
         _windowTracker = windowTracker;
     }
 
-    private void Awake()
+    private void Start()
     {
         if (_playerInput == null)
         {

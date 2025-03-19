@@ -1,7 +1,7 @@
 using R3;
 using UnityEngine;
 using UnityEngine.UI;
-using Zenject;
+using VContainer;
 
 public class PauseMenuSwitch : WindowSwitch
 {
@@ -10,11 +10,11 @@ public class PauseMenuSwitch : WindowSwitch
     private GamePauser _gamePauser;
 
     [Inject]
-    private void Construct(GamePauser gamePauser) => _gamePauser = gamePauser;
+    public void Construct(GamePauser gamePauser) => _gamePauser = gamePauser;
 
     protected override void InitializeInput()
     {
-        Disposable = InputHandler.PauseMenuSwitchPressed
+        Disposable = WindowInputHandler.PauseMenuSwitchPressed
             .Where(value => value)
             .Subscribe(_ => Switch());
     }

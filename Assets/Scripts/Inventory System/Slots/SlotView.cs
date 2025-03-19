@@ -1,22 +1,22 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
-using Zenject;
+using VContainer;
 
 public class SlotView : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerDownHandler
 {
+    [SerializeField] private InventoryView _inventoryView;
     [SerializeField] private GameObject _itemPrefab;
 
     private readonly Vector2 _halfVector2 = Vector2.one / 2f;
     private RectTransform _storedItem;
     private DraggedItemHolder _draggedItemHolder;
-    private InventoryView _inventoryView;
     private SlotModel _slotModel;
 
     [Inject]
-    private void Construct(DraggedItemHolder draggedItemHolder, InventoryView inventoryView)
+    public void Construct(DraggedItemHolder draggedItemHolder)
     {
         _draggedItemHolder = draggedItemHolder;
-        _inventoryView = inventoryView;
+
         _slotModel = new SlotModel();
     }
 

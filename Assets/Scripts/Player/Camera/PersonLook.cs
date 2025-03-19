@@ -1,33 +1,22 @@
 ﻿using R3;
 using Unity.Cinemachine;
 using UnityEngine;
-using Zenject;
+using VContainer;
 
 [RequireComponent(typeof(CinemachineCamera))]
 public abstract class PersonLook : MonoBehaviour
 {
     private CinemachineCamera _cinemachineCamera;
-    private CameraSwitch _cameraSwitch;
     private Transform _playerTransform;
-    private SkinnedMeshRenderer _skinnedMeshRenderer;
 
     [Inject]
-    protected void Construct([Inject(Id = ZenjectIdConstants.PlayerId)] CameraSwitch cameraSwitch,
-        [Inject(Id = ZenjectIdConstants.PlayerId)] PlayerState playerState,
-        [Inject(Id = ZenjectIdConstants.PlayerId)] SkinnedMeshRenderer skinnedMeshRenderer)
-    {
-        _cameraSwitch = cameraSwitch;
-        _playerTransform = playerState.transform;
-        _skinnedMeshRenderer = skinnedMeshRenderer;
-    }
+    public void Construct(CharacterController characterController) => 
+        _playerTransform = characterController.transform;
 
     public CinemachineCamera CinemachineCamera => _cinemachineCamera;
-    public bool IsSelected { get; protected set; } = false;
 
     protected virtual Transform FollowPoint { get; } = null;
     protected Transform PlayerTransform => _playerTransform;
-    protected SkinnedMeshRenderer SkinnedMeshRenderer => _skinnedMeshRenderer;
-    protected CameraSwitch CameraSwitch => _cameraSwitch;
     protected CompositeDisposable PermanentCompositeDisposable { get; private set; }
     protected CompositeDisposable EnablingCompositeDisposable { get; private set; }
 

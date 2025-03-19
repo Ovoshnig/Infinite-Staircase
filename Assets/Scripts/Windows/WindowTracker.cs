@@ -1,7 +1,7 @@
 using R3;
 using System;
 using UnityEngine;
-using Zenject;
+using VContainer.Unity;
 
 public class WindowTracker : IInitializable, IDisposable
 {
@@ -11,7 +11,6 @@ public class WindowTracker : IInitializable, IDisposable
     private readonly CompositeDisposable _compositeDisposable = new();
     private Type _windowSwitchType = null;
 
-    [Inject]
     public WindowTracker(WindowInputHandler inputHandler) => _inputHandler = inputHandler;
 
     public ReadOnlyReactiveProperty<bool> IsOpen => _isOpen;
@@ -30,7 +29,7 @@ public class WindowTracker : IInitializable, IDisposable
             .Where(value => value)
             .Subscribe(_ =>
             {
-                if (_currentWindow != null && _windowSwitchType != typeof(PauseMenuSwitch))
+                if (_currentWindow.Value != null && _windowSwitchType != typeof(PauseMenuSwitch))
                     _currentWindow.Value.Close();
             })
             .AddTo(_compositeDisposable);

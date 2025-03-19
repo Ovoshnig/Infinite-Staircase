@@ -3,7 +3,7 @@ using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using Zenject;
+using VContainer;
 
 public class GraphicSettings : MonoBehaviour
 {
@@ -16,7 +16,7 @@ public class GraphicSettings : MonoBehaviour
     private QualityTuner _qualityTuner;
 
     [Inject]
-    private void Construct(ScreenTuner screenTuner, QualityTuner qualityTuner)
+    public void Construct(ScreenTuner screenTuner, QualityTuner qualityTuner)
     {
         _screenTuner = screenTuner;
         _qualityTuner = qualityTuner;

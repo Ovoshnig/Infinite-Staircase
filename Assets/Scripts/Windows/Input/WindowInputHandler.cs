@@ -1,7 +1,7 @@
 using R3;
 using System;
 using UnityEngine.InputSystem;
-using Zenject;
+using VContainer.Unity;
 
 public class WindowInputHandler : IInitializable, IDisposable
 {

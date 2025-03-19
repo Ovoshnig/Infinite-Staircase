@@ -1,12 +1,10 @@
 using System.Linq;
-using Zenject;
 
 public class InventorySaver
 {
     private readonly SaveStorage _saveStorage;
     private readonly ItemDataRepository _itemDataRepository;
 
-    [Inject]
     public InventorySaver(SaveStorage saveStorage, ItemDataRepository itemDataRepository)
     {
         _saveStorage = saveStorage;

@@ -1,10 +1,10 @@
 using R3;
 using TMPro;
 using UnityEngine.InputSystem;
-using UnityEngine;
-using Zenject;
-using UnityEngine.UI;
 using System.Linq;
+using UnityEngine;
+using UnityEngine.UI;
+using VContainer;
 
 public class KeyBinder : MonoBehaviour
 {
@@ -21,7 +21,7 @@ public class KeyBinder : MonoBehaviour
     private InputAction _inputAction;
 
     [Inject]
-    private void Construct(KeyBindingsTracker bindingsTracker) => _bindingsTracker = bindingsTracker;
+    public void Construct(KeyBindingsTracker bindingsTracker) => _bindingsTracker = bindingsTracker;
 
     public InputActionReference InputActionReference
     {

@@ -1,13 +1,13 @@
-using Zenject;
+using VContainer;
 
 public sealed class SoundSliderTuner : SliderTuner
 {
     private AudioTuner _audioTuner;
-    private GameSettingsInstaller.AudioSettings _audioSettings;
+    private AudioSettings _audioSettings;
 
     [Inject]
-    private void Construct(AudioTuner audioTuner, 
-        GameSettingsInstaller.AudioSettings audioSettings)
+    public void Construct(AudioTuner audioTuner, 
+        AudioSettings audioSettings)
     {
         _audioTuner = audioTuner;
         _audioSettings = audioSettings;

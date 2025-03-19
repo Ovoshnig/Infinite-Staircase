@@ -1,8 +1,7 @@
 using R3;
 using Random = System.Random;
-using System;
 using UnityEngine;
-using Zenject;
+using VContainer;
 
 [RequireComponent(typeof(AudioSource))]
 public class PlayerSoundPlayer : MonoBehaviour
@@ -15,13 +14,12 @@ public class PlayerSoundPlayer : MonoBehaviour
     private Random _random;
 
     [Inject]
-    private void Construct([Inject(Id = ZenjectIdConstants.PlayerId)] PlayerState playerState) => 
-        _playerState = playerState;
+    public void Construct(PlayerState playerState) => _playerState = playerState;
 
-    private void Awake()
+    private void Awake() => _audioSource = GetComponent<AudioSource>();
+
+    private void Start()
     {
-        _audioSource = GetComponent<AudioSource>();
-
         _footstepClips = Resources.LoadAll<AudioClip>(ResourcesConstants.PlayerFootstepPath);
         _landClips = Resources.LoadAll<AudioClip>(ResourcesConstants.PlayerLandPath);
 

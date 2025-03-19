@@ -3,7 +3,7 @@ using Random = System.Random;
 using System.Linq;
 using System.Threading;
 using UnityEngine;
-using Zenject;
+using VContainer;
 
 public class StaircaseGenerator : MonoBehaviour
 {
@@ -18,7 +18,7 @@ public class StaircaseGenerator : MonoBehaviour
     private Random _random;
 
     [Inject]
-    private void Construct(SaveStorage saveStorage) => _saveStorage = saveStorage;
+    public void Construct(SaveStorage saveStorage) => _saveStorage = saveStorage;
 
     private void Awake() => _cts = new CancellationTokenSource();
 

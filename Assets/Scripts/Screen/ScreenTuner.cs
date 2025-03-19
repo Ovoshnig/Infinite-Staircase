@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using Zenject;
+using VContainer.Unity;
 
 public class ScreenTuner : IInitializable, IDisposable
 {
@@ -11,7 +11,6 @@ public class ScreenTuner : IInitializable, IDisposable
     private readonly ReactiveProperty<bool> _isFullScreen = new(Screen.fullScreen);
     private readonly CompositeDisposable _compositeDisposable = new();
 
-    [Inject]
     public ScreenTuner(ScreenInputHandler screenInputHandler) => _inputHandler = screenInputHandler;
 
     public List<(int width, int height)> Resolutions { get; private set; }

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Threading;
 using System;
 using UnityEngine;
-using Zenject;
+using VContainer;
 
 public class MusicPlayer : MonoBehaviour
 {
@@ -17,7 +17,7 @@ public class MusicPlayer : MonoBehaviour
     private AudioClip _pastClip = null;
 
     [Inject]
-    private void Construct(IMusicLoader musicLoader, MusicQueue musicQueue,
+    public void Construct(IMusicLoader musicLoader, MusicQueue musicQueue,
         ISceneMusicMapper sceneMusicMapper, SceneSwitch sceneSwitch)
     {
         _musicLoader = musicLoader;

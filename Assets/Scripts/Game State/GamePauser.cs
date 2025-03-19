@@ -1,16 +1,16 @@
 using R3;
 using System;
 using UnityEngine;
-using Zenject;
+using VContainer.Unity;
 
 public class GamePauser : IInitializable, IDisposable
 {
     private readonly SceneSwitch _sceneSwitch;
-    private readonly GameSettingsInstaller.TimeSettings _timeSettings;
+    private readonly TimeSettings _timeSettings;
     private readonly Subject<bool> _isPause = new();
 
     public GamePauser(SceneSwitch sceneSwitch, 
-        GameSettingsInstaller.TimeSettings timeSettings)
+        TimeSettings timeSettings)
     {
         _sceneSwitch = sceneSwitch;
         _timeSettings = timeSettings;

@@ -2,7 +2,7 @@ using R3;
 using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using Zenject;
+using VContainer.Unity;
 
 public class PlayerInputHandler : IInitializable, IDisposable
 {
@@ -15,7 +15,6 @@ public class PlayerInputHandler : IInitializable, IDisposable
     private readonly CompositeDisposable _compositeDisposable = new();
     private InputActionMap _actionMap;
 
-    [Inject]
     public PlayerInputHandler(WindowTracker windowTracker) => _windowTracker = windowTracker;
 
     public Vector2 WalkInput { get; private set; } = Vector2.zero;

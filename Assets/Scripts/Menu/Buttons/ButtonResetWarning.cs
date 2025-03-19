@@ -1,6 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
-using Zenject;
+using VContainer;
 
 [RequireComponent(typeof(Button))]
 public class ButtonResetWarning : MonoBehaviour
@@ -9,7 +9,7 @@ public class ButtonResetWarning : MonoBehaviour
     private Button _button;
 
     [Inject]
-    private void Construct(SaveStorage saveStorage) => _saveStorage = saveStorage;
+    public void Construct(SaveStorage saveStorage) => _saveStorage = saveStorage;
 
     private void Awake() => _button = GetComponent<Button>();
 

@@ -1,6 +1,6 @@
 using Random = System.Random;
 using UnityEngine;
-using Zenject;
+using VContainer;
 
 [RequireComponent(typeof(MeshFilter), typeof(MeshRenderer))]
 public class ProceduralGlassFloor : MonoBehaviour
@@ -17,7 +17,7 @@ public class ProceduralGlassFloor : MonoBehaviour
     private int[] _triangles;
 
     [Inject]
-    private void Construct(SaveStorage saveStorage) => _saveStorage = saveStorage;
+    public void Construct(SaveStorage saveStorage) => _saveStorage = saveStorage;
 
     [ContextMenu(nameof(GenerateFloor))]
     private void GenerateInEditor()

@@ -1,7 +1,7 @@
 using System.Linq;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using Zenject;
+using VContainer;
 
 public class InventoryView : MonoBehaviour
 {
@@ -11,7 +11,7 @@ public class InventoryView : MonoBehaviour
     private InventorySaver _inventorySaver;
 
     [Inject]
-    private void Construct(InventorySaver inventorySaver) => _inventorySaver = inventorySaver;
+    public void Construct(InventorySaver inventorySaver) => _inventorySaver = inventorySaver;
 
     public SlotView StartingSlot { get; set; } = null;
     public SlotView SelectedSlot { get; set; } = null;

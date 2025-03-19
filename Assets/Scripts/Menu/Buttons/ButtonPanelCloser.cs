@@ -1,19 +1,19 @@
 using R3;
-using Zenject;
+using VContainer;
 
 public sealed class ButtonPanelCloser : ButtonPanelChanger
 {
     private readonly CompositeDisposable _compositeDisposable = new();
-    private WindowInputHandler _inputHandler;
+    private WindowInputHandler _windowInputHandler;
 
     [Inject]
-    private void Construct(WindowInputHandler inputHandler) => _inputHandler = inputHandler;
+    public void Construct(WindowInputHandler windowInputHandler) => _windowInputHandler = windowInputHandler;
 
     protected override void OnEnable()
     {
         base.OnEnable();
 
-        _inputHandler.CloseCurrentPressed
+        _windowInputHandler.CloseCurrentPressed
             .Where(value => value)
             .Subscribe(_ => Change())
             .AddTo(_compositeDisposable);

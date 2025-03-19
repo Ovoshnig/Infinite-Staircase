@@ -1,6 +1,6 @@
 using Random = System.Random;
 using UnityEngine;
-using Zenject;
+using VContainer;
 
 public class ItemGenerator : MonoBehaviour
 {
@@ -12,7 +12,7 @@ public class ItemGenerator : MonoBehaviour
     private void Awake() => _random = new Random();
 
     [Inject]
-    private void Construct(InventoryView inventoryView, ItemDataRepository itemDataRepository)
+    public void Construct(InventoryView inventoryView, ItemDataRepository itemDataRepository)
     {
         _inventoryView = inventoryView;
         _itemDataRepository = itemDataRepository;

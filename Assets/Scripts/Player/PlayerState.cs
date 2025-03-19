@@ -1,9 +1,11 @@
 using R3;
+using System;
 using UnityEngine;
-using Zenject;
+using VContainer;
+using VContainer.Unity;
 
 [RequireComponent(typeof(CharacterController))]
-public class PlayerState : MonoBehaviour
+public class PlayerState : IInitializable, IDisposable
 {
     private readonly ReactiveProperty<bool> _isWalking = new(false);
     private readonly ReactiveProperty<bool> _isRunning = new(false);
@@ -15,20 +17,23 @@ public class PlayerState : MonoBehaviour
     private CharacterController _characterController;
 
     [Inject]
-    private void Construct(PlayerInputHandler inputHandler) => _inputHandler = inputHandler;
+    public void Construct(PlayerInputHandler inputHandler, CharacterController characterController)
+    {
+        _inputHandler = inputHandler;
+        _characterController = characterController;
+    }
 
     public Vector2 WalkInput => _inputHandler.WalkInput;
     public Vector2 LookInput => _inputHandler.LookInput;
+    public Vector3 EulerAngels => _characterController.transform.eulerAngles;
     public ReadOnlyReactiveProperty<bool> IsWalking => _isWalking;
     public ReadOnlyReactiveProperty<bool> IsRunning => _isRunning;
     public ReadOnlyReactiveProperty<bool> IsGrounded => _isGrounded;
     public ReadOnlyReactiveProperty<bool> IsJumping => _isJumping;
     public ReadOnlyReactiveProperty<bool> IsLooking => _isLooking;
 
-    private void Awake()
+    public void Initialize()
     {
-        _characterController = GetComponent<CharacterController>();
-
         _inputHandler.IsWalkPressed
            .Subscribe(value =>
            {
@@ -62,5 +67,5 @@ public class PlayerState : MonoBehaviour
             .AddTo(_compositeDisposable);
     }
 
-    private void OnDestroy() => _compositeDisposable?.Dispose();
+    public void Dispose() => _compositeDisposable?.Dispose();
 }

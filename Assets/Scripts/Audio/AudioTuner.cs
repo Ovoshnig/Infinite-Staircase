@@ -1,18 +1,17 @@
 using R3;
 using System;
-using Zenject;
+using VContainer.Unity;
 
 public class AudioTuner : IInitializable, IDisposable
 {
     private readonly ReactiveProperty<float> _soundVolume = new();
     private readonly ReactiveProperty<float> _musicVolume = new();
     private readonly SettingsStorage _settingsStorage;
-    private readonly GameSettingsInstaller.AudioSettings _audioSettings;
+    private readonly AudioSettings _audioSettings;
     private readonly CompositeDisposable _compositeDisposable = new();
 
-    [Inject]
     public AudioTuner(SettingsStorage settingsStorage, 
-        GameSettingsInstaller.AudioSettings audioSettings)
+        AudioSettings audioSettings)
     {
         _settingsStorage = settingsStorage;
         _audioSettings = audioSettings;

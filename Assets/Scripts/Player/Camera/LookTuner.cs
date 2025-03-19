@@ -1,16 +1,15 @@
 using R3;
 using System;
-using Zenject;
+using VContainer.Unity;
 
 public class LookTuner : IInitializable, IDisposable
 {
     private readonly ReactiveProperty<float> _sensitivity = new(0f);
     private readonly SettingsStorage _settingsStorage;
-    private readonly GameSettingsInstaller.ControlSettings _controlSettings;
+    private readonly ControlSettings _controlSettings;
     private readonly CompositeDisposable _compositeDisposable = new();
 
-    [Inject]
-    public LookTuner(SettingsStorage settingsStorage, GameSettingsInstaller.ControlSettings controlSettings)
+    public LookTuner(SettingsStorage settingsStorage, ControlSettings controlSettings)
     {
         _settingsStorage = settingsStorage;
         _controlSettings = controlSettings;

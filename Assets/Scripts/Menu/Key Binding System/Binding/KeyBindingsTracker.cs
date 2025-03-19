@@ -3,7 +3,7 @@ using System;
 using UnityEngine.InputSystem.Utilities;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
-using Zenject;
+using VContainer.Unity;
 using System.Linq;
 
 public class KeyBindingsTracker : IInitializable, IDisposable
@@ -13,8 +13,7 @@ public class KeyBindingsTracker : IInitializable, IDisposable
     private readonly ReactiveProperty<bool> _isListening = new(false);
     private readonly CompositeDisposable _compositeDisposable = new();
 
-    [Inject]
-    public KeyBindingsTracker([Inject(Id = ZenjectIdConstants.BindingDoneButtonId)] ButtonPanelCloser buttonPanelCloser)
+    public KeyBindingsTracker(ButtonPanelCloser buttonPanelCloser)
     {
         _doneButtonCloser = buttonPanelCloser;
         _doneButton = buttonPanelCloser.GetComponent<Button>();

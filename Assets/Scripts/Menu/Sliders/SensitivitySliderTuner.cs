@@ -1,13 +1,13 @@
-using Zenject;
+using VContainer;
 
 public sealed class SensitivitySliderTuner : SliderTuner
 {
     private LookTuner _lookTuner;
-    private GameSettingsInstaller.ControlSettings _controlSettings;
+    private ControlSettings _controlSettings;
 
     [Inject]
-    private void Construct(LookTuner lookTuner, 
-        GameSettingsInstaller.ControlSettings controlSettings)
+    public void Construct(LookTuner lookTuner, 
+        ControlSettings controlSettings)
     {
         _lookTuner = lookTuner;
         _controlSettings = controlSettings;

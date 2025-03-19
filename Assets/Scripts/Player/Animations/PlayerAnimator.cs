@@ -1,6 +1,6 @@
 using R3;
 using UnityEngine;
-using Zenject;
+using VContainer;
 
 [RequireComponent(typeof(Animator))]
 public class PlayerAnimator : MonoBehaviour
@@ -14,13 +14,12 @@ public class PlayerAnimator : MonoBehaviour
     private Animator _animator;
 
     [Inject]
-    private void Construct([Inject(Id = ZenjectIdConstants.PlayerId)] PlayerState playerState) => 
-        _playerState = playerState;
+    public void Construct(PlayerState playerState) => _playerState = playerState;
 
-    private void Awake()
+    private void Awake() => _animator = GetComponent<Animator>();
+
+    private void Start()
     {
-        _animator = GetComponent<Animator>();
-
         _playerState.IsWalking
             .Subscribe(value => _animator.SetBool(s_isWalkingId, value))
             .AddTo(_compositeDisposable);

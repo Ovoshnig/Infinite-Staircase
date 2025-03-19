@@ -2,7 +2,7 @@ using Cysharp.Threading.Tasks;
 using System;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using Zenject;
+using VContainer.Unity;
 
 public class SceneSwitch : IInitializable, IDisposable
 {
@@ -14,15 +14,14 @@ public class SceneSwitch : IInitializable, IDisposable
     }
 
     private readonly SaveStorage _saveStorage;
-    private readonly GameSettingsInstaller.LevelSettings _levelSettings;
+    private readonly LevelSettings _levelSettings;
     private uint _achievedLevel;
     private uint _currentLevel;
 
     public event Action<SceneType> SceneLoading;
     public event Action<SceneType> SceneLoaded;
 
-    [Inject]
-    public SceneSwitch(SaveStorage saveStorage, GameSettingsInstaller.LevelSettings levelSettings)
+    public SceneSwitch(SaveStorage saveStorage, LevelSettings levelSettings)
     {
         _saveStorage = saveStorage;
         _levelSettings = levelSettings;
@@ -33,6 +32,8 @@ public class SceneSwitch : IInitializable, IDisposable
     public void Initialize()
     {
         _achievedLevel = _saveStorage.Get(SaveConstants.AchievedLevelKey, _levelSettings.FirstGameplayLevel);
+        _achievedLevel = 0;
+
         _currentLevel = (uint)SceneManager.GetActiveScene().buildIndex;
 
         if (_currentLevel > _achievedLevel && _currentLevel <= _levelSettings.LastGameplayLevel)

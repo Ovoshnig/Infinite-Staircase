@@ -5,11 +5,11 @@ using UnityEngine.UI;
 public class InventoryGridGenerator : MonoBehaviour
 {
     [SerializeField] private GameObject _slotPrefab;
-    [SerializeField] private GameSettingsInstaller _settings;
+    [SerializeField] private InventorySettings _inventorySettings;
 
     private GridLayoutGroup _gridLayoutGroup;
 
-    private GameSettingsInstaller.InventorySettings InventorySettings => _settings.InventorySettings1;
+    private InventorySettings InventorySettings => _inventorySettings;
 
     private void OnValidate()
     {

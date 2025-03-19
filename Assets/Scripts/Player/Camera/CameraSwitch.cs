@@ -1,35 +1,35 @@
 using R3;
-using UnityEngine;
+using System;
 using Unity.Cinemachine;
-using Zenject;
+using VContainer;
+using VContainer.Unity;
 
-public class CameraSwitch : MonoBehaviour
+public class CameraSwitch : IInitializable, IDisposable
 {
-    [SerializeField] private GameObject _playerScope;
-
     private readonly ReactiveProperty<bool> _isFirstPerson = new(true);
+    private readonly ReactiveProperty<bool> _isScopeEnabled = new(false);
     private readonly CompositeDisposable _compositeDisposable = new();
     private CinemachineCamera _firstPersonCamera;
     private CinemachineCamera _thirdPersonCamera;
-    private PlayerInputHandler _inputHandler;
+    private PlayerInputHandler _playerInputHandler;
     private WindowTracker _windowTracker;
 
     [Inject]
-    private void Construct(PlayerInputHandler inputHandler, WindowTracker windowTracker,
-        [Inject(Id = ZenjectIdConstants.FirstPersonCameraId)] FirstPersonLook firstPersonLook,
-        [Inject(Id = ZenjectIdConstants.ThirdPersonCameraId)] ThirdPersonLook thirdPersonLook)
+    public void Construct(PlayerInputHandler playerInputHandler, WindowTracker windowTracker,
+        FirstPersonLook firstPersonLook, ThirdPersonLook thirdPersonLook)
     {
-        _inputHandler = inputHandler;
+        _playerInputHandler = playerInputHandler;
         _windowTracker = windowTracker;
         _firstPersonCamera = firstPersonLook.CinemachineCamera;
         _thirdPersonCamera = thirdPersonLook.CinemachineCamera;
     }
 
     public ReadOnlyReactiveProperty<bool> IsFirstPerson => _isFirstPerson;
+    public ReadOnlyReactiveProperty<bool> IsScopeEnabled => _isScopeEnabled;
 
-    private void Awake()
+    public void Initialize()
     {
-        _inputHandler.IsTogglePerspectivePressed
+        _playerInputHandler.IsTogglePerspectivePressed
             .Where(value => value)
             .Subscribe(_ => _isFirstPerson.Value = !_isFirstPerson.Value)
             .AddTo(_compositeDisposable);
@@ -40,17 +40,17 @@ public class CameraSwitch : MonoBehaviour
 
         _windowTracker.IsOpen
             .Where(_ => _isFirstPerson.Value)
-            .Subscribe(value => _playerScope.SetActive(!value))
+            .Subscribe(value => _isScopeEnabled.Value = !value)
             .AddTo(_compositeDisposable);
     }
 
-    private void OnDestroy() => _compositeDisposable?.Dispose();
+    public void Dispose() => _compositeDisposable?.Dispose();
 
     private void SetCamera(bool isFirstPerson)
     {
         _firstPersonCamera.Priority = isFirstPerson ? 1 : 0;
         _thirdPersonCamera.Priority = isFirstPerson ? 0 : 1;
 
-        _playerScope.SetActive(isFirstPerson);
+        _isScopeEnabled.Value = isFirstPerson;
     }
 }

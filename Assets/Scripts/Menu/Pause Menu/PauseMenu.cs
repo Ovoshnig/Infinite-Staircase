@@ -1,7 +1,7 @@
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.UI;
-using Zenject;
+using VContainer;
 
 public class PauseMenu : MonoBehaviour
 {
@@ -11,7 +11,7 @@ public class PauseMenu : MonoBehaviour
     private SceneSwitch _sceneSwitch;
 
     [Inject]
-    private void Construct(SceneSwitch sceneSwitch) => _sceneSwitch = sceneSwitch;
+    public void Construct(SceneSwitch sceneSwitch) => _sceneSwitch = sceneSwitch;
 
     private void OnEnable()
     {

@@ -2,7 +2,7 @@
 using System.Threading;
 using UnityEngine;
 
-public class ResourcesMusicLoader : IMusicLoader
+public sealed class ResourcesMusicLoader : IMusicLoader
 {
     public async UniTask<AudioClip> LoadClipAsync(string path, CancellationToken cancellationToken)
     {
