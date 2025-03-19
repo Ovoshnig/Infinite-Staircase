@@ -1259,6 +1259,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1c8fd97016a1fa04c8476abe0e71d550, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _footstepResource: {fileID: 6418180475301049370, guid: dddb155c45a7207458ede43931ce5986, type: 2}
+  _landResource: {fileID: 6418180475301049370, guid: b1c68c9a28701dc43a2fd74acb193b5d, type: 2}
 --- !u!1 &3760077177457233363 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -7891092957932549332, guid: d90ce7795ccb94d448599e87949aaeb4, type: 3}

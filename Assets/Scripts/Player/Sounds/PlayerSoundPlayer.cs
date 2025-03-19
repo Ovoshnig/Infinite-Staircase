@@ -1,17 +1,18 @@
 using R3;
-using Random = System.Random;
 using UnityEngine;
 using VContainer;
+using UnityEngine.Audio;
+using JetBrains.Annotations;
 
 [RequireComponent(typeof(AudioSource))]
 public class PlayerSoundPlayer : MonoBehaviour
 {
+    [SerializeField] private AudioResource _footstepResource;
+    [SerializeField] private AudioResource _landResource;
+
     private readonly CompositeDisposable _compositeDisposable = new();
     private PlayerState _playerState;
     private AudioSource _audioSource;
-    private AudioClip[] _footstepClips;
-    private AudioClip[] _landClips;
-    private Random _random;
 
     [Inject]
     public void Construct(PlayerState playerState) => _playerState = playerState;
@@ -20,11 +21,6 @@ public class PlayerSoundPlayer : MonoBehaviour
 
     private void Start()
     {
-        _footstepClips = Resources.LoadAll<AudioClip>(ResourcesConstants.PlayerFootstepPath);
-        _landClips = Resources.LoadAll<AudioClip>(ResourcesConstants.PlayerLandPath);
-
-        _random = new Random();
-
         _playerState.IsGrounded
             .Where(value => value)
             .Subscribe(_ => PlayLandSound())
@@ -33,23 +29,16 @@ public class PlayerSoundPlayer : MonoBehaviour
 
     private void OnDestroy() => _compositeDisposable?.Dispose();
 
+    [UsedImplicitly]
     private void PlayStepSound()
     {
-        AudioClip clip = GetRandomClip(_footstepClips);
-        _audioSource.PlayOneShot(clip);
+        _audioSource.resource = _footstepResource;
+        _audioSource.Play();
     }
 
     private void PlayLandSound()
     {
-        AudioClip clip = GetRandomClip(_landClips);
-        _audioSource.PlayOneShot(clip);
-    }
-
-    private AudioClip GetRandomClip(AudioClip[] clips)
-    {
-        int index = _random.Next(0, clips.Length);
-        AudioClip clip = clips[index];
-
-        return clip;
+        _audioSource.resource = _landResource;
+        _audioSource.Play();
     }
 }
