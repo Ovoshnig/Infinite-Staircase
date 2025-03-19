@@ -35,7 +35,7 @@ public class WindowInputHandler : IInitializable, IDisposable
     private void OnCloseCurrent(InputAction.CallbackContext context) => 
         _closeCurrentPressed.OnNext(context.ReadValueAsButton());
 
-    private void OnPauseMenuSwitch(InputAction.CallbackContext context) =>
+    private void OnPauseMenuSwitch(InputAction.CallbackContext context) => 
         _pauseMenuSwitchPressed.OnNext(context.ReadValueAsButton());
 
     private void OnInventorySwitch(InputAction.CallbackContext context) =>
