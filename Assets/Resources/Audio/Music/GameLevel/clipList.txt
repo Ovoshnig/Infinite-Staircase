@@ -1,5 +1,0 @@
-Audio/Music/GameLevel/Ethereal Drift
-Audio/Music/GameLevel/Lush Reverie
-Audio/Music/GameLevel/Tranquil Breeze (1)
-Audio/Music/GameLevel/Yellow calm (1)
-Audio/Music/GameLevel/Yellow calm

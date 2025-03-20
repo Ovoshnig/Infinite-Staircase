@@ -1,10 +1,11 @@
 using Cysharp.Threading.Tasks;
+using R3;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System;
 using UnityEngine;
 using VContainer;
-using R3;
 
 public class MusicPlayer : MonoBehaviour
 {
@@ -53,7 +54,7 @@ public class MusicPlayer : MonoBehaviour
 
         MusicCategory category = _sceneMusicMapper.GetMusicCategory(_sceneSwitch.CurrentSceneType);
 
-        if (_musicClipPaths.TryGetValue(category, out var clips))
+        if (_musicClipPaths.TryGetValue(category, out List<string> clips))
         {
             PlayMusic(clips);
 
@@ -82,12 +83,12 @@ public class MusicPlayer : MonoBehaviour
             _pastClip = null;
         }
 
-        var nextClipPath = _musicQueue.GetNextClip();
+        string nextClipPath = _musicQueue.GetNextClip();
 
         if (nextClipPath == null)
             return;
 
-        var clip = await _musicLoader.LoadClipAsync(nextClipPath, _cts.Token);
+        AudioClip clip = await _musicLoader.LoadClipAsync(nextClipPath, _cts.Token);
         _audioSource.clip = clip;
         _pastClip = clip;
         _audioSource.Play();
@@ -105,22 +106,29 @@ public class MusicPlayer : MonoBehaviour
 
     private Dictionary<MusicCategory, List<string>> LoadMusicClipPaths()
     {
-        var musicClipKeys = new Dictionary<MusicCategory, List<string>>();
+        Dictionary<MusicCategory, List<string>> musicClipKeys = new();
+        TextAsset resourcesList = Resources.Load<TextAsset>(ResourcesConstants.ResourcesListPath);
+
+        if (resourcesList == null)
+        {
+            Debug.LogError($"Ќе удалось загрузить список ресурсов.");
+
+            return musicClipKeys;
+        }
+
+        char[] separators = { '\r', '\n' };
+        string extension = ".mp3";
 
         foreach (MusicCategory category in Enum.GetValues(typeof(MusicCategory)))
         {
-            var categoryPath = $"{ResourcesConstants.MusicPath}/{category}/clipList";
+            string categoryPath = $"{ResourcesConstants.MusicPath}/{category}";
 
-            TextAsset clipListAsset = Resources.Load<TextAsset>(categoryPath);
+            List<string> clipPaths = new(resourcesList.text
+                .Split(separators, StringSplitOptions.RemoveEmptyEntries)
+                .Where(c => c.StartsWith(categoryPath) && c.EndsWith(extension))
+                .Select(c => c[..^4]));
 
-            if (clipListAsset == null)
-            {
-                Debug.LogError($"Ќе удалось загрузить список клипов дл€ категории {category}.");
-                continue;
-            }
-
-            List<string> clipNames = new(clipListAsset.text.Split(new[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries));
-            musicClipKeys[category] = clipNames;
+            musicClipKeys[category] = clipPaths;
         }
 
         return musicClipKeys;

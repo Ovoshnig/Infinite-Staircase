@@ -1,8 +1,8 @@
+using JetBrains.Annotations;
 using R3;
+using UnityEngine.Audio;
 using UnityEngine;
 using VContainer;
-using UnityEngine.Audio;
-using JetBrains.Annotations;
 
 [RequireComponent(typeof(AudioSource))]
 public class PlayerSoundPlayer : MonoBehaviour
@@ -10,9 +10,9 @@ public class PlayerSoundPlayer : MonoBehaviour
     [SerializeField] private AudioResource _footstepResource;
     [SerializeField] private AudioResource _landResource;
 
-    private readonly CompositeDisposable _compositeDisposable = new();
-    private PlayerState _playerState;
-    private AudioSource _audioSource;
+	private readonly CompositeDisposable _compositeDisposable = new();
+	private PlayerState _playerState;
+	private AudioSource _audioSource;
 
     [Inject]
     public void Construct(PlayerState playerState) => _playerState = playerState;
