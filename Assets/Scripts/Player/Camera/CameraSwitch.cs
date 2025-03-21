@@ -1,6 +1,7 @@
 using R3;
 using System;
 using Unity.Cinemachine;
+using UnityEngine;
 using VContainer;
 using VContainer.Unity;
 
@@ -16,12 +17,20 @@ public class CameraSwitch : IInitializable, IDisposable
 
     [Inject]
     public void Construct(PlayerInputHandler playerInputHandler, WindowTracker windowTracker,
-        FirstPersonLook firstPersonLook, ThirdPersonLook thirdPersonLook)
+        CharacterController characterController)
     {
         _playerInputHandler = playerInputHandler;
         _windowTracker = windowTracker;
-        _firstPersonCamera = firstPersonLook.CinemachineCamera;
-        _thirdPersonCamera = thirdPersonLook.CinemachineCamera;
+
+        _firstPersonCamera = characterController
+            .GetComponentInChildren<CinemachineHardLockToTarget>()
+            .gameObject
+            .GetComponent<CinemachineCamera>();
+
+        _thirdPersonCamera = characterController
+            .GetComponentInChildren<CinemachineOrbitalFollow>()
+            .gameObject
+            .GetComponent<CinemachineCamera>();
     }
 
     public ReadOnlyReactiveProperty<bool> IsFirstPerson => _isFirstPerson;

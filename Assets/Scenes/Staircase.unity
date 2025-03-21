@@ -378,8 +378,6 @@ MonoBehaviour:
   autoInjectGameObjects: []
   _characterController: {fileID: 9036547352052814359, guid: 7eaf84d7312f3c54c8e31b402647ff4c, type: 3}
   _spawnPoint: {fileID: 1765437325}
-  _firstPersonLook: {fileID: 2933018600278490843, guid: a12c5aa653b08fc41b854e07f188919f, type: 3}
-  _thirdPersonLook: {fileID: -9019117457041987280, guid: 7594b30adaf3f264981ec1176d49e562, type: 3}
 --- !u!1 &481872784
 GameObject:
   m_ObjectHideFlags: 0

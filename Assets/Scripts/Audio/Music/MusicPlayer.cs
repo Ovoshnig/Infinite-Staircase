@@ -107,7 +107,7 @@ public class MusicPlayer : MonoBehaviour
     private Dictionary<MusicCategory, List<string>> LoadMusicClipPaths()
     {
         Dictionary<MusicCategory, List<string>> musicClipKeys = new();
-        TextAsset resourcesList = Resources.Load<TextAsset>(ResourcesConstants.ResourcesListPath);
+        TextAsset resourcesList = Resources.Load<TextAsset>(ResourcesConstants.ResourcesListName);
 
         if (resourcesList == null)
         {

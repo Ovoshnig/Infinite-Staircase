@@ -82,8 +82,9 @@ public class InputAxisController : InputAxisControllerBase<InputAxisController.R
                     ? action.ReadValue<Vector2>()
                     : new Vector2(action.ReadValue<float>(), action.ReadValue<float>());
 
-                float sign = _invert ? -1f : 1f;
-                _value *= sign * Multiplier;
+                int sign = _invert ? -1 : 1;
+                _value *= sign;
+                _value *= Multiplier;
             }
         }
 

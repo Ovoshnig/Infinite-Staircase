@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &140634393728324308
+--- !u!1 &2839248306953733993
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,43 +8,42 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 5941995548965610323}
-  - component: {fileID: 6733597279697294788}
-  - component: {fileID: 6871062386341338326}
-  - component: {fileID: 3895476084856007468}
-  - component: {fileID: 2655822098937414273}
-  - component: {fileID: -2082361168083996192}
-  - component: {fileID: -9019117457041987280}
-  - component: {fileID: -8246515452133242617}
+  - component: {fileID: 773404610060252674}
+  - component: {fileID: 9176137172615115575}
+  - component: {fileID: 4200810987329945573}
+  - component: {fileID: 5122574246869689079}
+  - component: {fileID: 1539302684058403837}
+  - component: {fileID: 4863336510614827535}
+  - component: {fileID: 2516191018730909653}
   m_Layer: 0
-  m_Name: ThirdPerson Camera
+  m_Name: ThirdPersonCamera
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &5941995548965610323
+--- !u!4 &773404610060252674
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 140634393728324308}
+  m_GameObject: {fileID: 2839248306953733993}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.38268355, y: 0.000000051194647, z: -0.00000002101866, w: -0.9238795}
-  m_LocalPosition: {x: 0, y: 3.474874, z: -2.4748735}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -1.9432837e-23, y: 2.9504623, z: -3.8127277}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &6733597279697294788
+--- !u!114 &9176137172615115575
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 140634393728324308}
+  m_GameObject: {fileID: 2839248306953733993}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f9dfa5b682dcd46bda6128250e975f58, type: 3}
@@ -65,7 +64,7 @@ MonoBehaviour:
     FieldOfView: 60.000004
     OrthographicSize: 10
     NearClipPlane: 0.1
-    FarClipPlane: 5000
+    FarClipPlane: 150
     Dutch: 0
     ModeOverride: 0
     PhysicalProperties:
@@ -81,27 +80,27 @@ MonoBehaviour:
       BarrelClipping: 0.25
       Anamorphism: 0
   BlendHint: 0
---- !u!114 &6871062386341338326
+--- !u!114 &4200810987329945573
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 140634393728324308}
+  m_GameObject: {fileID: 2839248306953733993}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3b5d7c088409d9a40b7b09aa707777f8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  TargetOffset: {x: 0, y: 0, z: 0}
+  TargetOffset: {x: 0, y: -0.35, z: 0}
   TrackerSettings:
     BindingMode: 4
-    PositionDamping: {x: 1, y: 1, z: 1}
+    PositionDamping: {x: 0.3, y: 0.3, z: 0.3}
     AngularDampingMode: 0
     RotationDamping: {x: 1, y: 1, z: 1}
     QuaternionDamping: 1
   OrbitStyle: 0
-  Radius: 3.5
+  Radius: 4
   Orbits:
     Top:
       Radius: 2
@@ -125,9 +124,9 @@ MonoBehaviour:
       Time: 2
     Restrictions: 0
   VerticalAxis:
-    Value: 45
+    Value: 0
     Center: 0
-    Range: {x: -30, y: 80}
+    Range: {x: -70, y: 75}
     Wrap: 0
     Recentering:
       Enabled: 0
@@ -144,42 +143,47 @@ MonoBehaviour:
       Wait: 1
       Time: 2
     Restrictions: 0
---- !u!114 &3895476084856007468
+--- !u!114 &5122574246869689079
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 140634393728324308}
+  m_GameObject: {fileID: 2839248306953733993}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f38bda98361e1de48a4ca2bd86ea3c17, type: 3}
+  m_Script: {fileID: 11500000, guid: 62d54399b04b4fa48a73e121d4937dd4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Composition:
-    ScreenPosition: {x: 0, y: 0}
-    DeadZone:
+  ReferenceFrame: 0
+  RecenterTarget: 0
+  PanAxis:
+    Value: 0
+    Center: 0
+    Range: {x: -180, y: 180}
+    Wrap: 1
+    Recentering:
       Enabled: 0
-      Size: {x: 0.2, y: 0.2}
-    HardLimits:
+      Wait: 1
+      Time: 2
+    Restrictions: 0
+  TiltAxis:
+    Value: 0
+    Center: 0
+    Range: {x: -70, y: 70}
+    Wrap: 0
+    Recentering:
       Enabled: 0
-      Size: {x: 0.8, y: 0.8}
-      Offset: {x: 0, y: 0}
-  CenterOnActivate: 1
-  TargetOffset: {x: 0, y: 0, z: 0}
-  Damping: {x: 0.8, y: 0.8}
-  Lookahead:
-    Enabled: 0
-    Time: 0
-    Smoothing: 0
-    IgnoreY: 0
---- !u!114 &2655822098937414273
+      Wait: 1
+      Time: 2
+    Restrictions: 0
+--- !u!114 &1539302684058403837
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 140634393728324308}
+  m_GameObject: {fileID: 2839248306953733993}
   m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a076c17fe76165e4f8ed21498b877bf9, type: 3}
@@ -189,64 +193,13 @@ MonoBehaviour:
   references:
     version: 2
     RefIds: []
---- !u!114 &-2082361168083996192
+--- !u!114 &4863336510614827535
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 140634393728324308}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dbe43d662878a7c43bcd44d43c9e2094, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  CollideAgainst:
-    serializedVersion: 2
-    m_Bits: 1
-  IgnoreTag: 
-  TransparentLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  MinimumDistanceFromTarget: 0.3
-  AvoidObstacles:
-    Enabled: 1
-    DistanceLimit: 0
-    MinimumOcclusionTime: 0
-    CameraRadius: 0.1
-    UseFollowTarget:
-      Enabled: 0
-      YOffset: 0
-    Strategy: 0
-    MaximumEffort: 4
-    SmoothingTime: 0
-    Damping: 0.4
-    DampingWhenOccluded: 0.2
-  ShotQualityEvaluation:
-    Enabled: 0
-    OptimalDistance: 10
-    NearLimit: 5
-    FarLimit: 30
-    MaxQualityBoost: 0.2
---- !u!114 &-9019117457041987280
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 140634393728324308}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2b95eade3d9d8f24b93f1389cc2ea89d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &-8246515452133242617
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 140634393728324308}
+  m_GameObject: {fileID: 2839248306953733993}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2ecabe7a36153c5448bd3e89febc861d, type: 3}
@@ -258,7 +211,7 @@ MonoBehaviour:
   m_ControllerManager:
     Controllers:
     - Name: Look Orbit X
-      Owner: {fileID: 6871062386341338326}
+      Owner: {fileID: 4200810987329945573}
       Enabled: 1
       Input:
         _input: {fileID: -3469092977669108680, guid: dfc5194a2da461941bbc4e192fa012b3, type: 3}
@@ -268,7 +221,7 @@ MonoBehaviour:
         AccelTime: 0
         DecelTime: 0
     - Name: Look Orbit Y
-      Owner: {fileID: 6871062386341338326}
+      Owner: {fileID: 4200810987329945573}
       Enabled: 1
       Input:
         _input: {fileID: -3469092977669108680, guid: dfc5194a2da461941bbc4e192fa012b3, type: 3}
@@ -278,7 +231,17 @@ MonoBehaviour:
         AccelTime: 0
         DecelTime: 0
     - Name: Orbit Scale
-      Owner: {fileID: 6871062386341338326}
+      Owner: {fileID: 4200810987329945573}
+      Enabled: 1
+      Input:
+        _input: {fileID: 4619228427395069528, guid: dfc5194a2da461941bbc4e192fa012b3, type: 3}
+        _invert: 0
+      InputValue: 0
+      Driver:
+        AccelTime: 0
+        DecelTime: 0
+    - Name: Look X (Pan)
+      Owner: {fileID: 5122574246869689079}
       Enabled: 1
       Input:
         _input: {fileID: -3469092977669108680, guid: dfc5194a2da461941bbc4e192fa012b3, type: 3}
@@ -287,3 +250,25 @@ MonoBehaviour:
       Driver:
         AccelTime: 0
         DecelTime: 0
+    - Name: Look Y (Tilt)
+      Owner: {fileID: 5122574246869689079}
+      Enabled: 1
+      Input:
+        _input: {fileID: -3469092977669108680, guid: dfc5194a2da461941bbc4e192fa012b3, type: 3}
+        _invert: 1
+      InputValue: 0
+      Driver:
+        AccelTime: 0
+        DecelTime: 0
+--- !u!114 &2516191018730909653
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2839248306953733993}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1912720002677254c843e290071eb961, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

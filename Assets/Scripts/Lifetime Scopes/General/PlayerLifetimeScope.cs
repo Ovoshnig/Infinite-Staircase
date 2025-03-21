@@ -6,8 +6,6 @@ public class PlayerLifetimeScope : LifetimeScope
 {
     [SerializeField] private CharacterController _characterController;
     [SerializeField] private Transform _spawnPoint;
-    [SerializeField] private FirstPersonLook _firstPersonLook;
-    [SerializeField] private ThirdPersonLook _thirdPersonLook;
 
     protected override void Configure(IContainerBuilder builder)
     {
@@ -20,19 +18,11 @@ public class PlayerLifetimeScope : LifetimeScope
 
         builder.RegisterComponentInNewPrefab(_characterController, Lifetime.Singleton)
             .UnderTransform(_spawnPoint);
-
-        builder.RegisterComponentInNewPrefab(_firstPersonLook, Lifetime.Singleton);
-        builder.RegisterComponentInNewPrefab(_thirdPersonLook, Lifetime.Singleton);
     }
 
     private void Start()
     {
         GameObject player = Container.Resolve<CharacterController>().gameObject;
-        GameObject firstCamera = Container.Resolve<FirstPersonLook>().gameObject;
-        GameObject thirdCamera = Container.Resolve<ThirdPersonLook>().gameObject;
-
         Container.InjectGameObject(player);
-        Container.InjectGameObject(firstCamera);
-        Container.InjectGameObject(thirdCamera);
     }
 }

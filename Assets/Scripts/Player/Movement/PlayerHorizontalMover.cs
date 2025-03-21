@@ -1,23 +1,30 @@
-﻿using UnityEngine;
+﻿using Unity.Cinemachine;
+using UnityEngine;
 
 [RequireComponent(typeof(CharacterController))]
 public class PlayerHorizontalMover
 {
     private readonly PlayerSettings _playerSettings;
     private readonly PlayerState _playerState;
-    private readonly FirstPersonLook _firstPersonLook;
-    private readonly ThirdPersonLook _thirdPersonLook;
+    private readonly Transform _firstPersonCameraTransform;
+    private readonly Transform _thirdPersonCameraTransform;
     private readonly CameraSwitch _cameraSwitch;
 
     public PlayerHorizontalMover(PlayerSettings playerSettings, 
-        PlayerState playerState, FirstPersonLook firstPersonLook,
-        ThirdPersonLook thirdPersonLook, CameraSwitch cameraSwitch)
+        PlayerState playerState, CharacterController characterController, 
+        CameraSwitch cameraSwitch)
     {
         _playerSettings = playerSettings;
         _playerState = playerState;
-        _firstPersonLook = firstPersonLook;
-        _thirdPersonLook = thirdPersonLook;
         _cameraSwitch = cameraSwitch;
+
+        _firstPersonCameraTransform = characterController
+            .GetComponentInChildren<CinemachineHardLockToTarget>()
+            .transform;
+
+        _thirdPersonCameraTransform = characterController
+            .GetComponentInChildren<CinemachineOrbitalFollow>()
+            .transform;
     }
 
     public Vector3 EulerAngles { get; private set; } = Vector3.zero;
@@ -49,8 +56,8 @@ public class PlayerHorizontalMover
         float targetAngle = Mathf.Atan2(inputDirection.x, inputDirection.z) * Mathf.Rad2Deg;
 
         targetAngle += _cameraSwitch.IsFirstPerson.CurrentValue
-            ? _firstPersonLook.transform.eulerAngles.y
-            : _thirdPersonLook.transform.eulerAngles.y;
+            ? _firstPersonCameraTransform.eulerAngles.y
+            : _thirdPersonCameraTransform.eulerAngles.y;
 
         return targetAngle;
     }

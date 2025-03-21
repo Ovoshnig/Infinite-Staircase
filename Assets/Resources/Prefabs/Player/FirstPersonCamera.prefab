@@ -12,10 +12,10 @@ GameObject:
   - component: {fileID: 7151668548597097923}
   - component: {fileID: -1940339382919063971}
   - component: {fileID: 9128313231072524123}
-  - component: {fileID: 2933018600278490843}
   - component: {fileID: -5447245368467521835}
+  - component: {fileID: -7709607277042160851}
   m_Layer: 0
-  m_Name: FirstPerson Camera
+  m_Name: FirstPersonCamera
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -119,25 +119,13 @@ MonoBehaviour:
   TiltAxis:
     Value: 0
     Center: 0
-    Range: {x: -90, y: 90}
+    Range: {x: -70, y: 75}
     Wrap: 0
     Recentering:
       Enabled: 0
       Wait: 1.93
       Time: 2
     Restrictions: 0
---- !u!114 &2933018600278490843
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 260423365766699274}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8c09e2d4f386ba54d85e6f46e7059c67, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &-5447245368467521835
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -175,3 +163,15 @@ MonoBehaviour:
       Driver:
         AccelTime: 0
         DecelTime: 0
+--- !u!114 &-7709607277042160851
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 260423365766699274}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1912720002677254c843e290071eb961, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

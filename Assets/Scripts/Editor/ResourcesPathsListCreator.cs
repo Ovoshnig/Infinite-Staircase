@@ -8,7 +8,7 @@ public class ResourcesPathsListCreator
     {
         string[] guids = AssetDatabase.FindAssets("", new[] { ResourcesConstants.ResourcesPath });
 
-        string listFilePath = $"{ResourcesConstants.ResourcesPath}/{ResourcesConstants.ResourcesListPath}.txt";
+        string listFilePath = $"{ResourcesConstants.ResourcesPath}/{ResourcesConstants.ResourcesListName}.txt";
         using StreamWriter writer = new(listFilePath);
 
         foreach (string guid in guids)
