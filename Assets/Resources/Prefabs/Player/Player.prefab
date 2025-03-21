@@ -255,7 +255,7 @@ MonoBehaviour:
     Enabled: 0
     DefaultMode: 2
   DefaultBlend:
-    Style: 1
+    Style: 0
     Time: 0.3
     CustomCurve:
       serializedVersion: 2
@@ -281,7 +281,7 @@ MonoBehaviour:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-  CustomBlends: {fileID: 0}
+  CustomBlends: {fileID: 11400000, guid: 8beed9320372eb7499f36eeb0921d77a, type: 2}
 --- !u!1001 &715167685058826490
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -292,7 +292,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 260423365766699274, guid: a12c5aa653b08fc41b854e07f188919f, type: 3}
       propertyPath: m_Name
-      value: FirstPerson Camera
+      value: FirstPersonCamera
       objectReference: {fileID: 0}
     - target: {fileID: 7044455393839650909, guid: a12c5aa653b08fc41b854e07f188919f, type: 3}
       propertyPath: m_LocalPosition.x
@@ -338,14 +338,6 @@ PrefabInstance:
       propertyPath: Target.TrackingTarget
       value: 
       objectReference: {fileID: 1601814965081601927}
-    - target: {fileID: 9128313231072524123, guid: a12c5aa653b08fc41b854e07f188919f, type: 3}
-      propertyPath: TiltAxis.Range.x
-      value: -70
-      objectReference: {fileID: 0}
-    - target: {fileID: 9128313231072524123, guid: a12c5aa653b08fc41b854e07f188919f, type: 3}
-      propertyPath: TiltAxis.Range.y
-      value: 80
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1364,11 +1356,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 773404610060252674, guid: 9f452c475aa18d146ac1de25904781c9, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 6.58637e-24
+      value: 4.6104593e-24
       objectReference: {fileID: 0}
     - target: {fileID: 773404610060252674, guid: 9f452c475aa18d146ac1de25904781c9, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -1
+      value: -0.70000005
       objectReference: {fileID: 0}
     - target: {fileID: 773404610060252674, guid: 9f452c475aa18d146ac1de25904781c9, type: 3}
       propertyPath: m_LocalPosition.z

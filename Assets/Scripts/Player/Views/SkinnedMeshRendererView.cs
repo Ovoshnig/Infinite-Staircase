@@ -20,10 +20,9 @@ public class SkinnedMeshRendererView : MonoBehaviour
         _cameraSwitch.IsFirstPerson
             .Subscribe(value => 
             {
-                if (value)
-                    _skinnedMeshRenderer.shadowCastingMode = ShadowCastingMode.ShadowsOnly;
-                else
-                    _skinnedMeshRenderer.shadowCastingMode = ShadowCastingMode.On;
+                _skinnedMeshRenderer.shadowCastingMode = value 
+                ? ShadowCastingMode.ShadowsOnly 
+                : ShadowCastingMode.On;
             })
             .AddTo(_compositeDisposable);
     }
