@@ -18,6 +18,18 @@ public class PlayerLifetimeScope : LifetimeScope
 
         builder.RegisterComponentInNewPrefab(_characterController, Lifetime.Singleton)
             .UnderTransform(_spawnPoint);
+
+        builder.Register(resolver =>
+        {
+            CharacterController characterController = resolver.Resolve<CharacterController>();
+            return characterController.GetComponentInChildren<FirstCameraPriorityChanger>();
+        }, Lifetime.Singleton);
+
+        builder.Register(resolver =>
+        {
+            CharacterController characterController = resolver.Resolve<CharacterController>();
+            return characterController.GetComponentInChildren<ThirdCameraPriorityChanger>();
+        }, Lifetime.Singleton);
     }
 
     private void Start()

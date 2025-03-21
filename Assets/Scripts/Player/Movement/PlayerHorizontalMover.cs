@@ -1,35 +1,29 @@
-﻿using Unity.Cinemachine;
-using UnityEngine;
+﻿using UnityEngine;
 
 [RequireComponent(typeof(CharacterController))]
 public class PlayerHorizontalMover
 {
-    private readonly PlayerSettings _playerSettings;
-    private readonly PlayerState _playerState;
     private readonly Transform _firstPersonCameraTransform;
     private readonly Transform _thirdPersonCameraTransform;
+    private readonly PlayerSettings _playerSettings;
+    private readonly PlayerState _playerState;
     private readonly CameraSwitch _cameraSwitch;
 
-    public PlayerHorizontalMover(PlayerSettings playerSettings, 
-        PlayerState playerState, CharacterController characterController, 
+    public PlayerHorizontalMover(FirstCameraPriorityChanger firstCamera, ThirdCameraPriorityChanger thirdCamera, 
+        PlayerSettings playerSettings, PlayerState playerState, 
         CameraSwitch cameraSwitch)
     {
+        _firstPersonCameraTransform = firstCamera.transform;
+        _thirdPersonCameraTransform = thirdCamera.transform;
+
         _playerSettings = playerSettings;
         _playerState = playerState;
         _cameraSwitch = cameraSwitch;
-
-        _firstPersonCameraTransform = characterController
-            .GetComponentInChildren<CinemachineHardLockToTarget>()
-            .transform;
-
-        _thirdPersonCameraTransform = characterController
-            .GetComponentInChildren<CinemachineOrbitalFollow>()
-            .transform;
     }
 
     public Vector3 EulerAngles { get; private set; } = Vector3.zero;
 
-    public virtual Vector3 CalculateMovementVector()
+    public Vector3 CalculateMovementVector()
     {
         Vector3 movement;
 
