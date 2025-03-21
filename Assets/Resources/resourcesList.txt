@@ -659,6 +659,7 @@ Prefabs/Audio/MusicPlayer.prefab
 Prefabs/Important/DirectionalLight.prefab
 Prefabs/Important/EventSystem.prefab
 Prefabs/Player/FirstPersonCamera.prefab
+Prefabs/Player/MainCamera Custom Blends.asset
 Prefabs/Player/Player.prefab
 Prefabs/Player/PlayerScopeCanvas.prefab
 Prefabs/Player/ThirdPersonCamera.prefab

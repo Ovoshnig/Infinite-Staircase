@@ -12,4 +12,26 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 36baaa8bdcb9d8b49b9199833965d2c3, type: 3}
   m_Name: MainCamera Custom Blends
   m_EditorClassIdentifier: 
-  CustomBlends: []
+  CustomBlends:
+  - From: ThirdPersonCamera
+    To: FirstPersonCamera
+    Blend:
+      Style: 1
+      Time: 0.3
+      CustomCurve:
+        serializedVersion: 2
+        m_Curve: []
+        m_PreInfinity: 0
+        m_PostInfinity: 0
+        m_RotationOrder: 0
+  - From: FirstPersonCamera
+    To: ThirdPersonCamera
+    Blend:
+      Style: 3
+      Time: 0.3
+      CustomCurve:
+        serializedVersion: 2
+        m_Curve: []
+        m_PreInfinity: 0
+        m_PostInfinity: 0
+        m_RotationOrder: 0
