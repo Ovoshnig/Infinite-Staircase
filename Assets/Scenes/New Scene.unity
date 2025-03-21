@@ -229,7 +229,6 @@ GameObject:
   - component: {fileID: 595167451}
   - component: {fileID: 595167453}
   - component: {fileID: 595167452}
-  - component: {fileID: 595167454}
   m_Layer: 0
   m_Name: LifetimeScope
   m_TagString: Untagged
@@ -319,24 +318,6 @@ MonoBehaviour:
   autoRun: 1
   autoInjectGameObjects: []
   _pauseMenuCanvas: {fileID: 556110117597708177, guid: 430f92455e684724abfd5d02368be160, type: 3}
---- !u!114 &595167454
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 595167442}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1e06f7bde5ef62a468f99cc7525fbd6a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  parentReference:
-    TypeName: WindowTrackerLifetimeScope
-  autoRun: 1
-  autoInjectGameObjects: []
-  _characterController: {fileID: 9036547352052814359, guid: 7eaf84d7312f3c54c8e31b402647ff4c, type: 3}
-  _spawnPoint: {fileID: 1898319001}
 --- !u!1 &625813789
 GameObject:
   m_ObjectHideFlags: 0

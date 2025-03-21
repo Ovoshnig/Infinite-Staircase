@@ -43,5 +43,10 @@ public class ProjectLifetimeScope : LifetimeScope
             .DontDestroyOnLoad();
     }
 
-    private void Start() => Container.Resolve<MusicPlayer>();
+    protected override void Awake()
+    {
+        base.Awake();
+
+        Container.Resolve<MusicPlayer>();
+    }
 }
