@@ -6,7 +6,7 @@ public sealed class SoundSliderTuner : SliderTuner
     private AudioSettings _audioSettings;
 
     [Inject]
-    public void Construct(AudioTuner audioTuner, 
+    public void Construct(AudioTuner audioTuner,
         AudioSettings audioSettings)
     {
         _audioTuner = audioTuner;
@@ -14,11 +14,15 @@ public sealed class SoundSliderTuner : SliderTuner
     }
 
     protected override float MinValue => _audioSettings.MinVolume;
-
     protected override float MaxValue => _audioSettings.MaxVolume;
 
-    protected override float InitialValue => _audioTuner.SoundVolume.CurrentValue;
+    protected override void Start()
+    {
+        base.Start();
 
-    protected override void OnSliderValueChanged(float value) => 
-        _audioTuner.SoundVolume.Value = value;
+        SetSliderValue(_audioTuner.SoundVolume.CurrentValue);
+    }
+
+    protected override void OnSliderValueChanged(float value) =>
+        _audioTuner.SetSoundVolume(value);
 }

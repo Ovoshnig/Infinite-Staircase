@@ -1,50 +1,48 @@
 using R3;
 using System;
-using UnityEngine;
 using VContainer.Unity;
 
 public class AudioTuner : IPostInitializable, IDisposable
 {
-    private readonly ReactiveProperty<float> _soundVolume = new();
-    private readonly ReactiveProperty<float> _musicVolume = new();
     private readonly SettingsStorage _settingsStorage;
     private readonly AudioSettings _audioSettings;
-    private readonly CompositeDisposable _compositeDisposable = new();
+    private readonly ReactiveProperty<float> _soundVolume = new();
+    private readonly ReactiveProperty<float> _musicVolume = new();
 
-    public AudioTuner(SettingsStorage settingsStorage, 
+    public AudioTuner(SettingsStorage settingsStorage,
         AudioSettings audioSettings)
     {
         _settingsStorage = settingsStorage;
         _audioSettings = audioSettings;
     }
 
-    public ReactiveProperty<float> SoundVolume => _soundVolume;
-    public ReactiveProperty<float> MusicVolume => _musicVolume;
+    public ReadOnlyReactiveProperty<float> SoundVolume => _soundVolume;
+    public ReadOnlyReactiveProperty<float> MusicVolume => _musicVolume;
 
     public void PostInitialize()
     {
-        _soundVolume.Value = _settingsStorage.Get(SettingsConstants.SoundVolumeKey, 
-            _audioSettings.DefaultVolume);
+        float soundVolume = _settingsStorage.Get(SettingsConstants.SoundVolumeKey, _audioSettings.DefaultVolume);
+        SetSoundVolume(soundVolume);
 
-        _musicVolume.Value = _settingsStorage.Get(SettingsConstants.MusicVolumeKey, 
-            _audioSettings.DefaultVolume);
-
-        SoundVolume
-            .Subscribe(value => 
-            _soundVolume.Value = Math.Clamp(value, _audioSettings.MinVolume, _audioSettings.MaxVolume))
-            .AddTo(_compositeDisposable);
-
-        MusicVolume
-            .Subscribe(value =>
-            _musicVolume.Value = Math.Clamp(value, _audioSettings.MinVolume, _audioSettings.MaxVolume))
-            .AddTo(_compositeDisposable);
+        float musicVolume = _settingsStorage.Get(SettingsConstants.MusicVolumeKey, _audioSettings.DefaultVolume);
+        SetMusicVolume(musicVolume);
     }
 
     public void Dispose()
     {
         _settingsStorage.Set(SettingsConstants.SoundVolumeKey, _soundVolume.Value);
         _settingsStorage.Set(SettingsConstants.MusicVolumeKey, _musicVolume.Value);
+    }
 
-        _compositeDisposable?.Dispose();
+    public void SetSoundVolume(float value)
+    {
+        value = Math.Clamp(value, _audioSettings.MinVolume, _audioSettings.MaxVolume);
+        _soundVolume.Value = value;
+    }
+
+    public void SetMusicVolume(float value)
+    {
+        value = Math.Clamp(value, _audioSettings.MinVolume, _audioSettings.MaxVolume);
+        _musicVolume.Value = value;
     }
 }
