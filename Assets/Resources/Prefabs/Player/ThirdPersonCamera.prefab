@@ -137,7 +137,7 @@ MonoBehaviour:
   RadialAxis:
     Value: 1
     Center: 1
-    Range: {x: 1, y: 1}
+    Range: {x: 0.7, y: 1.3}
     Wrap: 0
     Recentering:
       Enabled: 0
@@ -259,7 +259,7 @@ MonoBehaviour:
       Enabled: 1
       Input:
         _input: {fileID: 4619228427395069528, guid: dfc5194a2da461941bbc4e192fa012b3, type: 3}
-        _invert: 0
+        _invert: 1
       InputValue: 0
       Driver:
         AccelTime: 0

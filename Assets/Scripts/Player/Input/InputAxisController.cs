@@ -27,6 +27,8 @@ public class InputAxisController : InputAxisControllerBase<InputAxisController.R
 
         _actionMap.FindAction(nameof(playerActions.Look)).performed += OnActionTriggered;
         _actionMap.FindAction(nameof(playerActions.Look)).canceled += OnActionTriggered;
+        _actionMap.FindAction(nameof(playerActions.Zoom)).performed += OnActionTriggered;
+        _actionMap.FindAction(nameof(playerActions.Zoom)).canceled += OnActionTriggered;
     }
 
     private void Start()

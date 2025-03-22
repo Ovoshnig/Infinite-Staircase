@@ -643,6 +643,27 @@ Materials/Coloured Glass/Gradient.jpeg
 Materials/Coloured Glass/Noise2Colors.mat
 Materials/Coloured Glass/Noise2Colors.shadergraph
 Materials/Floor.mat
+Materials/Materials/New Render Texture.mat
+Materials/New Material.mat
+Materials/Skybox Cubemap Extended/Core/Editor/Boxophobic.SkyboxCubemapExtended.Editor.asmdef
+Materials/Skybox Cubemap Extended/Core/Editor/SkyboxExtendedShaderGUI.cs
+Materials/Skybox Cubemap Extended/Core/Editor/SkyboxExtendedWindows.cs
+Materials/Skybox Cubemap Extended/Core/Editor/Version.asset
+Materials/Skybox Cubemap Extended/Core/Functions/Compute Rotation Y.asset
+Materials/Skybox Cubemap Extended/Core/Shaders/Skybox Cubemap Blend.shader
+Materials/Skybox Cubemap Extended/Core/Shaders/Skybox Cubemap Extended.shader
+Materials/Skybox Cubemap Extended/Demo/Materials/LowPoly - FirTree.mat
+Materials/Skybox Cubemap Extended/Demo/Materials/LowPoly - FirTreeVariation.mat
+Materials/Skybox Cubemap Extended/Demo/Materials/LowPoly - Grass.mat
+Materials/Skybox Cubemap Extended/Demo/Materials/LowPoly - Rock.mat
+Materials/Skybox Cubemap Extended/Demo/Materials/LowPoly - Terrain.mat
+Materials/Skybox Cubemap Extended/Demo/Materials/LowPoly - TreeTrunk.mat
+Materials/Skybox Cubemap Extended/Demo/Materials/LowPoly - Wood.mat
+Materials/Skybox Cubemap Extended/Demo/Materials/Skybox Cubemap Extended Blend.mat
+Materials/Skybox Cubemap Extended/Demo/Materials/Skybox Cubemap Extended Day.mat
+Materials/Skybox Cubemap Extended/Demo/Materials/Skybox Cubemap Extended Night.mat
+Materials/Skybox Cubemap Extended/Demo/Textures/Polyverse Skies - Blue Sky.png
+Materials/Skybox Cubemap Extended/Demo/Textures/Polyverse Skies - Night Sky.exr
 Materials/Stair.mat
 Materials/Stone/Stone.mat
 Materials/Stone/Textures/seaside_rock_diff_2k.jpg
