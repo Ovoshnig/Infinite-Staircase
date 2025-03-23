@@ -24,7 +24,7 @@ MonoBehaviour:
     <LevelTransitionDuration>k__BackingField: 5
   _audioSettings:
     <MinVolume>k__BackingField: -80
-    <MaxVolume>k__BackingField: 10
+    <MaxVolume>k__BackingField: 0
     <SnapshotTransitionDuration>k__BackingField: 0
   _worldGeneration:
     <MinSeed>k__BackingField: -99999999

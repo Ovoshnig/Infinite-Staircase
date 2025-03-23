@@ -59,6 +59,7 @@ public class ScreenTuner : IInitializable, IDisposable
 
     public void SwitchFullScreen()
     {
+        Debug.Log(1);
         _isFullScreen.Value = !_isFullScreen.Value;
         Screen.fullScreen = _isFullScreen.Value;
     }

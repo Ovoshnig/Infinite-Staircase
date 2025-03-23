@@ -7,7 +7,7 @@ public class GamePauser : IInitializable, IDisposable
 {
     private readonly SceneSwitch _sceneSwitch;
     private readonly TimeSettings _timeSettings;
-    private readonly Subject<bool> _isPause = new();
+    private readonly ReactiveProperty<bool> _isPause = new();
     private readonly CompositeDisposable _compositeDisposable = new();
 
     public GamePauser(SceneSwitch sceneSwitch, 
@@ -17,7 +17,7 @@ public class GamePauser : IInitializable, IDisposable
         _timeSettings = timeSettings;
     }
 
-    public Observable<bool> IsPause => _isPause;
+    public ReadOnlyReactiveProperty<bool> IsPause => _isPause;
 
     public void Initialize()
     {

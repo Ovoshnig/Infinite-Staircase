@@ -676,8 +676,6 @@ Materials/Stone/Textures/stone_tiles_02_nor_gl_2k.exr
 Materials/Stone/Textures/stone_tiles_02_rough_2k.exr
 Materials/Wood/Wood.mat
 Materials/Wood/WoodShader.shadergraph
-PerformanceTestRunInfo.json
-PerformanceTestRunSettings.json
 Prefabs/Audio/MusicPlayer.prefab
 Prefabs/General/DirectionalLight.prefab
 Prefabs/General/EventSystem.prefab
