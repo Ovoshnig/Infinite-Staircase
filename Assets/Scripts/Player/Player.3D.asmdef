@@ -1,0 +1,23 @@
+{
+    "name": "Player.3D",
+    "rootNamespace": "",
+    "references": [
+        "GUID:b0214a6008ed146ff8f122a6a9c2f6cc",
+        "GUID:4307f53044263cf4b835bd812fc161a4",
+        "GUID:75469ad4d38634e559750d17036d5f7c",
+        "GUID:4d6381f4a70063b44a9df78726e1a6e6",
+        "GUID:93214d6b557c26f40bf9df3f36503a4a",
+        "GUID:d500fc47a151ef3488b74d300c50e44d",
+        "GUID:542945b7b6eec0e49a16f4bf8ebfda5b",
+        "GUID:3e45438da6e583745af8890138470615"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
