@@ -28,7 +28,7 @@ public class ScreenInputHandler : IInitializable, IDisposable
         _actionMap.Enable();
     }
 
-    public void Dispose() => _actionMap.Disable();
+    public void Dispose() => _actionMap.Dispose();
 
     private void OnFullScreenSwitch(InputAction.CallbackContext context) =>
         _isSwitchFullScreenPressed.OnNext(context.ReadValueAsButton());

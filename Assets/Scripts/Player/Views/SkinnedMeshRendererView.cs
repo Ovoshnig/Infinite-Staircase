@@ -6,7 +6,6 @@ using VContainer;
 [RequireComponent(typeof(SkinnedMeshRenderer))]
 public class SkinnedMeshRendererView : MonoBehaviour
 {
-    private readonly CompositeDisposable _compositeDisposable = new();
     private CameraSwitch _cameraSwitch;
     private SkinnedMeshRenderer _skinnedMeshRenderer;
 
@@ -24,8 +23,6 @@ public class SkinnedMeshRendererView : MonoBehaviour
                 ? ShadowCastingMode.ShadowsOnly 
                 : ShadowCastingMode.On;
             })
-            .AddTo(_compositeDisposable);
+            .AddTo(this);
     }
-
-    private void OnDestroy() => _compositeDisposable?.Dispose();
 }

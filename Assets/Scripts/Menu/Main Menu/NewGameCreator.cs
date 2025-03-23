@@ -16,7 +16,6 @@ public class NewGameCreator : MonoBehaviour
     private SceneSwitch _sceneSwitch;
     private SaveStorage _saveStorage;
     private WorldGenerationSettings _generationSettings;
-    private CompositeDisposable _compositeDisposable = new();
 
     [Inject]
     public void Construct(SceneSwitch sceneSwitch, SaveStorage saveStorage,
@@ -27,19 +26,13 @@ public class NewGameCreator : MonoBehaviour
         _generationSettings = generationSettings;
     }
 
-    private void Start() => _seedInputField.contentType = TMP_InputField.ContentType.IntegerNumber;
-
-    private void OnEnable()
+    private void Start()
     {
         _startGameButton.OnClickAsObservable()
             .Subscribe(_ => OnStartGameButtonClicked())
-            .AddTo(_compositeDisposable);
-    }
+            .AddTo(this);
 
-    private void OnDisable()
-    {
-        _compositeDisposable?.Dispose();
-        _compositeDisposable = new CompositeDisposable();
+        _seedInputField.contentType = TMP_InputField.ContentType.IntegerNumber;
     }
 
     private void OnStartGameButtonClicked()

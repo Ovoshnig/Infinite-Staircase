@@ -8,7 +8,6 @@ public class PauseMenuSwitch : WindowSwitch
     [SerializeField] private Button _resumeButton;
 
     private GamePauser _gamePauser;
-    private CompositeDisposable _compositeDisposable = new();
 
     [Inject]
     public void Construct(GamePauser gamePauser) => _gamePauser = gamePauser;
@@ -20,20 +19,13 @@ public class PauseMenuSwitch : WindowSwitch
             .Subscribe(_ => Switch());
     }
 
-    protected override void Awake()
+    protected override void Start()
     {
-        base.Awake();
+        base.Start();
 
         _resumeButton.OnClickAsObservable()
             .Subscribe(_ => OnResumeClicked())
-            .AddTo(_compositeDisposable);
-    }
-
-    protected override void OnDestroy()
-    {
-        base.OnDestroy();
-
-        _compositeDisposable?.Dispose();
+            .AddTo(this);
     }
 
     public override bool Open()

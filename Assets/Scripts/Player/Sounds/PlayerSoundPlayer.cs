@@ -1,7 +1,7 @@
 using JetBrains.Annotations;
 using R3;
-using UnityEngine.Audio;
 using UnityEngine;
+using UnityEngine.Audio;
 using VContainer;
 
 [RequireComponent(typeof(AudioSource))]
@@ -10,7 +10,6 @@ public class PlayerSoundPlayer : MonoBehaviour
     [SerializeField] private AudioResource _footstepResource;
     [SerializeField] private AudioResource _landResource;
 
-	private readonly CompositeDisposable _compositeDisposable = new();
 	private PlayerState _playerState;
 	private AudioSource _audioSource;
 
@@ -24,10 +23,8 @@ public class PlayerSoundPlayer : MonoBehaviour
         _playerState.IsGrounded
             .Where(value => value)
             .Subscribe(_ => PlayLandSound())
-            .AddTo(_compositeDisposable);
+            .AddTo(this);
     }
-
-    private void OnDestroy() => _compositeDisposable?.Dispose();
 
     [UsedImplicitly]
     private void PlayStepSound()

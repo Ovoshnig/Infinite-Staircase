@@ -33,7 +33,7 @@ public class WindowInputHandler : IInitializable, IDisposable
         _actionMap.Enable();
     }
 
-    public void Dispose() => _actionMap.Disable();
+    public void Dispose() => _actionMap.Dispose();
 
     private void OnCloseCurrent(InputAction.CallbackContext context) => 
         _closeCurrentPressed.OnNext(context.ReadValueAsButton());

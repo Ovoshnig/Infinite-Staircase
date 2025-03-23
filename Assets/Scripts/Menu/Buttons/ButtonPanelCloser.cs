@@ -8,13 +8,13 @@ public sealed class ButtonPanelCloser : ButtonPanelChanger
     [Inject]
     public void Construct(WindowInputHandler windowInputHandler) => _windowInputHandler = windowInputHandler;
 
-    protected override void OnEnable()
+    protected override void Start()
     {
-        base.OnEnable();
+        base.Start();
 
         _windowInputHandler.CloseCurrentPressed
-            .Where(value => value)
+            .Where(value => isActiveAndEnabled && value)
             .Subscribe(_ => Change())
-            .AddTo(CompositeDisposable);
+            .AddTo(this);
     }
 }

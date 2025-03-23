@@ -14,7 +14,6 @@ public sealed class MainMenu : MonoBehaviour
 
     private SaveStorage _saveStorage;
     private SceneSwitch _sceneSwitch;
-    private CompositeDisposable _compositeDisposable = new();
 
     [Inject]
     public void Construct(SaveStorage saveStorage, SceneSwitch sceneSwitch)
@@ -23,29 +22,20 @@ public sealed class MainMenu : MonoBehaviour
         _sceneSwitch = sceneSwitch;
     }
 
-    private void OnEnable()
+    private void Start()
     {
         _continueGameButton.OnClickAsObservable()
             .Subscribe(_ => OnContinueGameButtonClicked())
-            .AddTo(_compositeDisposable);
+            .AddTo(this);
         _newGameButton.OnClickAsObservable()
             .Subscribe(_ => OnNewGameButtonClicked())
-            .AddTo(_compositeDisposable);
+            .AddTo(this);
         _quitGameButton.OnClickAsObservable()
             .Subscribe(_ => OnQuitGameButtonClicked())
-            .AddTo(_compositeDisposable);
-    }
+            .AddTo(this);
 
-    private void Start()
-    {
         bool saveCreated = _saveStorage.Get(SaveConstants.SaveCreatedKey, false);
         _continueGameButton.interactable = saveCreated;
-    }
-
-    private void OnDisable()
-    {
-        _compositeDisposable?.Dispose();
-        _compositeDisposable = new CompositeDisposable();
     }
 
     private void OnContinueGameButtonClicked() => _sceneSwitch.LoadAchievedLevel().Forget();

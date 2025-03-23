@@ -676,9 +676,15 @@ Materials/Stone/Textures/stone_tiles_02_nor_gl_2k.exr
 Materials/Stone/Textures/stone_tiles_02_rough_2k.exr
 Materials/Wood/Wood.mat
 Materials/Wood/WoodShader.shadergraph
+PerformanceTestRunInfo.json
+PerformanceTestRunSettings.json
 Prefabs/Audio/MusicPlayer.prefab
-Prefabs/Important/DirectionalLight.prefab
-Prefabs/Important/EventSystem.prefab
+Prefabs/General/DirectionalLight.prefab
+Prefabs/General/EventSystem.prefab
+Prefabs/Inventory/InventoryCanvas.prefab
+Prefabs/Inventory/InventoryName Variant.prefab
+Prefabs/Inventory/Item.prefab
+Prefabs/Inventory/Slot.prefab
 Prefabs/Player/FirstPersonCamera.prefab
 Prefabs/Player/MainCamera Custom Blends.asset
 Prefabs/Player/Player.prefab
@@ -707,10 +713,6 @@ Prefabs/UI/Basic/Scrollbar.prefab
 Prefabs/UI/Basic/Slider.prefab
 Prefabs/UI/Basic/Text (TMP).prefab
 Prefabs/UI/Basic/Toggle.prefab
-Prefabs/UI/Inventory/InventoryCanvas.prefab
-Prefabs/UI/Inventory/InventoryName Variant.prefab
-Prefabs/UI/Inventory/Item.prefab
-Prefabs/UI/Inventory/Slot.prefab
 Prefabs/UI/Menu/Button Variant.prefab
 Prefabs/UI/Menu/KeyBinding/ActionMapText (TMP).prefab
 Prefabs/UI/Menu/KeyBinding/KeyBindingBlock.prefab

@@ -6,7 +6,6 @@ using VContainer;
 [RequireComponent(typeof(Image))]
 public class ScopeView : MonoBehaviour
 {
-    private readonly CompositeDisposable _compositeDisposable = new();
     private CameraSwitch _cameraSwitch;
     private WindowTracker _windowTracker;
     private Image _scopeImage;
@@ -24,13 +23,11 @@ public class ScopeView : MonoBehaviour
     {
         _cameraSwitch.IsFirstPerson
             .Subscribe(value => _scopeImage.enabled = value)
-            .AddTo(_compositeDisposable);
+            .AddTo(this);
 
         _windowTracker.IsOpen
             .Where(_ => _cameraSwitch.IsFirstPerson.CurrentValue)
             .Subscribe(value => _scopeImage.enabled = !value)
-            .AddTo(_compositeDisposable);
+            .AddTo(this);
     }
-
-    private void OnDestroy() => _compositeDisposable?.Dispose();
 }

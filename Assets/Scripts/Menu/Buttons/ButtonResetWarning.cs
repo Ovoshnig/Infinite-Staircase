@@ -8,7 +8,6 @@ public class ButtonResetWarning : MonoBehaviour
 {
     [SerializeField] private Button _continueGameButton;
 
-    private CompositeDisposable _compositeDisposable = new();
     private SaveStorage _saveStorage;
     private Button _resetButton;
 
@@ -17,17 +16,11 @@ public class ButtonResetWarning : MonoBehaviour
 
     private void Awake() => _resetButton = GetComponent<Button>();
 
-    private void OnEnable()
+    private void Start()
     {
         _resetButton.OnClickAsObservable()
             .Subscribe(_ => OnResetButtonClicked())
-            .AddTo(_compositeDisposable);
-    }
-
-    private void OnDisable()
-    {
-        _compositeDisposable?.Dispose();
-        _compositeDisposable = new();
+            .AddTo(this);
     }
 
     private void OnResetButtonClicked()

@@ -1,10 +1,10 @@
 using R3;
 using System;
-using UnityEngine.InputSystem.Utilities;
+using System.Linq;
 using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.Utilities;
 using UnityEngine.UI;
 using VContainer.Unity;
-using System.Linq;
 
 public class KeyBindingsTracker : IInitializable, IDisposable
 {

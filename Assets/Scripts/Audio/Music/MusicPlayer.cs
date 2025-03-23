@@ -1,15 +1,14 @@
 using Cysharp.Threading.Tasks;
 using R3;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
-using System;
 using UnityEngine;
 using VContainer;
 
 public class MusicPlayer : MonoBehaviour
 {
-    private readonly CompositeDisposable _compositeDisposable = new();
     private AudioSource _audioSource;
     private MusicQueue _musicQueue;
     private IMusicLoader _musicLoader;
@@ -33,19 +32,17 @@ public class MusicPlayer : MonoBehaviour
     {
         _audioSource = GetComponent<AudioSource>();
         _musicClipPaths = LoadMusicClipPaths();
+    }
 
+    private void Start()
+    {
         _sceneSwitch.IsSceneLoading
             .Where(value => !value)
             .Subscribe(value => TryPlayMusic())
-            .AddTo(_compositeDisposable);
+            .AddTo(this);
     }
 
-    private void OnDestroy()
-    {
-        _cts.CancelAndDispose(ref _cts);
-
-        _compositeDisposable?.Dispose();
-    }
+    private void OnDestroy() => _cts.CancelAndDispose(ref _cts);
 
     private bool TryPlayMusic()
     {

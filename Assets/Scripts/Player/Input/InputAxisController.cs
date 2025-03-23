@@ -7,7 +7,6 @@ using VContainer;
 
 public class InputAxisController : InputAxisControllerBase<InputAxisController.Reader>
 {
-    private readonly CompositeDisposable _compositeDisposable = new();
     private LookTuner _lookTuner;
     private WindowTracker _windowTracker;
     private InputActionMap _actionMap;
@@ -35,8 +34,7 @@ public class InputAxisController : InputAxisControllerBase<InputAxisController.R
     {
         _lookTuner.Sensitivity
             .Subscribe(value => Controllers.ForEach(controller => controller.Input.Multiplier = value))
-            .AddTo(_compositeDisposable);
-
+            .AddTo(this);
         _windowTracker.IsOpen
             .Subscribe(isOpen =>
             {
@@ -45,14 +43,10 @@ public class InputAxisController : InputAxisControllerBase<InputAxisController.R
                 else
                     _actionMap.Enable();
             })
-            .AddTo(_compositeDisposable);
+            .AddTo(this);
     }
 
-    private void OnActionTriggered(InputAction.CallbackContext context)
-    {
-        foreach (var controller in Controllers)
-            controller.Input.ProcessInput(context.action);
-    }
+    private void OnDestroy() => _actionMap.Dispose();
 
     private void Update()
     {
@@ -60,11 +54,10 @@ public class InputAxisController : InputAxisControllerBase<InputAxisController.R
             UpdateControllers();
     }
 
-    private void OnDestroy()
+    private void OnActionTriggered(InputAction.CallbackContext context)
     {
-        _actionMap.Disable();
-
-        _compositeDisposable.Dispose();
+        foreach (var controller in Controllers)
+            controller.Input.ProcessInput(context.action);
     }
 
     [Serializable]

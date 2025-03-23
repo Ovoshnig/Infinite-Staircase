@@ -9,7 +9,7 @@ public class PlayerAnimator : MonoBehaviour
     private static readonly int s_isRunningId = Animator.StringToHash(AnimatorConstants.IsRunning);
     private static readonly int s_isJumpingId = Animator.StringToHash(AnimatorConstants.IsJumping);
     private static readonly int s_isGroundedId = Animator.StringToHash(AnimatorConstants.IsGrounded);
-    private readonly CompositeDisposable _compositeDisposable = new();
+
     private PlayerState _playerState;
     private Animator _animator;
 
@@ -22,21 +22,19 @@ public class PlayerAnimator : MonoBehaviour
     {
         _playerState.IsWalking
             .Subscribe(value => _animator.SetBool(s_isWalkingId, value))
-            .AddTo(_compositeDisposable);
+            .AddTo(this);
 
         _playerState.IsRunning
             .Subscribe(value => _animator.SetBool(s_isRunningId, value))
-            .AddTo(_compositeDisposable);
+            .AddTo(this);
 
         _playerState.IsJumping
             .Where(value => value)
             .Subscribe(_ => _animator.SetTrigger(s_isJumpingId))
-            .AddTo(_compositeDisposable);
+            .AddTo(this);
 
         _playerState.IsGrounded
             .Subscribe(value => _animator.SetBool(s_isGroundedId, value))
-            .AddTo(_compositeDisposable);
+            .AddTo(this);
     }
-
-    private void OnDestroy() => _compositeDisposable?.Dispose();
 }

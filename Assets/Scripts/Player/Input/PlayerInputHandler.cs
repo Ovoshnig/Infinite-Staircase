@@ -55,7 +55,7 @@ public class PlayerInputHandler : IInitializable, IDisposable
 
     public void Dispose()
     {
-        _actionMap.Disable();
+        _actionMap.Dispose();
 
         _compositeDisposable?.Dispose();
     }

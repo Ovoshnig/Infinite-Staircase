@@ -1,11 +1,10 @@
 using R3;
-using TMPro;
-using UnityEngine.InputSystem;
 using System.Linq;
+using TMPro;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.UI;
 using VContainer;
-using R3.Triggers;
 
 public class KeyBinder : MonoBehaviour
 {
@@ -19,7 +18,6 @@ public class KeyBinder : MonoBehaviour
     private IBindingHandler _bindingHandler;
     private TMP_Text _bindingButtonText;
     private InputAction _inputAction;
-    private CompositeDisposable _compositeDisposable = new();
 
     [Inject]
     public void Construct(KeyBindingsTracker bindingsTracker) => _bindingsTracker = bindingsTracker;
@@ -52,24 +50,18 @@ public class KeyBinder : MonoBehaviour
         }
     }
 
-    private void OnEnable()
+    private void Start()
     {
         _bindingButton.OnClickAsObservable()
             .Subscribe(_ => OnBindingButtonPressed())
-            .AddTo(_compositeDisposable);
+            .AddTo(this);
         _bindingResetButton.OnClickAsObservable()
             .Subscribe(_ => OnBindingResetButtonClicked())
-            .AddTo(_compositeDisposable);
+            .AddTo(this);
         Observable
             .EveryValueChanged(this, _ => _inputAction.bindings.Any(b => b.hasOverrides))
             .Subscribe(value => _bindingResetButton.interactable = value)
-            .AddTo(_compositeDisposable);
-    }
-
-    private void OnDisable()
-    {
-        _compositeDisposable?.Dispose();
-        _compositeDisposable = new CompositeDisposable();
+            .AddTo(this);
     }
 
     private void OnBindingButtonPressed() => _bindingHandler.StartListening();

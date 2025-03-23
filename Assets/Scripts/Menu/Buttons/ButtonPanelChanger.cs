@@ -10,8 +10,6 @@ public abstract class ButtonPanelChanger : MonoBehaviour
 
     private Button _button;
 
-    protected CompositeDisposable CompositeDisposable { get; private set; } = new();
-
     protected virtual void Awake()
     {
         if (_currentPanel == null)
@@ -20,17 +18,11 @@ public abstract class ButtonPanelChanger : MonoBehaviour
         _button = GetComponent<Button>();
     }
 
-    protected virtual void OnEnable()
+    protected virtual void Start()
     {
         _button.OnClickAsObservable()
             .Subscribe(_ => OnButtonClicked())
-            .AddTo(CompositeDisposable);
-    }
-
-    protected virtual void OnDisable()
-    {
-        CompositeDisposable?.Dispose();
-        CompositeDisposable = new CompositeDisposable();
+            .AddTo(this);
     }
 
     protected void Change()
