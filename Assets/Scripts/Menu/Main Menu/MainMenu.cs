@@ -38,7 +38,7 @@ public sealed class MainMenu : MonoBehaviour
         _continueGameButton.interactable = saveCreated;
     }
 
-    private void OnContinueGameButtonClicked() => _sceneSwitch.LoadAchievedLevel().Forget();
+    private void OnContinueGameButtonClicked() => _sceneSwitch.LoadAchievedLevelAsync().Forget();
 
     private void OnNewGameButtonClicked()
     {

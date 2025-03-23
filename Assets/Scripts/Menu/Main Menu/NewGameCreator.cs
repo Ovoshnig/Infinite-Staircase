@@ -47,6 +47,6 @@ public class NewGameCreator : MonoBehaviour
         _saveStorage.ResetData();
         _saveStorage.Set(SaveConstants.SaveCreatedKey, true);
         _saveStorage.Set(SaveConstants.SeedKey, seed);
-        _sceneSwitch.LoadFirstLevel().Forget();
+        _sceneSwitch.LoadFirstLevelAsync().Forget();
     }
 }

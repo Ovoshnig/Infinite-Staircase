@@ -1,9 +1,9 @@
 using Cysharp.Threading.Tasks;
-using Random = System.Random;
 using System.Linq;
 using System.Threading;
 using UnityEngine;
 using VContainer;
+using Random = System.Random;
 
 public class StaircaseGenerator : MonoBehaviour
 {
@@ -30,12 +30,12 @@ public class StaircaseGenerator : MonoBehaviour
         _size = _stairs[0].GetComponent<Stair>().Size;
         _stairConnections = Resources.LoadAll<StairConnection>(ResourcesConstants.StairConnectionsPath);
 
-        Generate().Forget();
+        GenerateAsync().Forget();
     }
 
     private void OnDisable() => _cts.CancelAndDispose(ref _cts);
 
-    private async UniTask Generate()
+    private async UniTask GenerateAsync()
     {
         StairConnection[] startingConnections = _stairConnections.Where(x => x.CanBeInStart).ToArray();
         int index = _random.Next(startingConnections.Length);
@@ -44,7 +44,7 @@ public class StaircaseGenerator : MonoBehaviour
         position.y += _size.y / 2f;
         Vector3 rotation = _startTransform.eulerAngles;
 
-        (position, rotation) = await GenerateSegment(stairConnection, position, rotation, 
+        (position, rotation) = await GenerateSegmentAsync(stairConnection, position, rotation, 
             stairConnection.PositionDifference, stairConnection.RotationDifference);
 
         for (int i = 0; i < _partsCount; i++)
@@ -52,12 +52,12 @@ public class StaircaseGenerator : MonoBehaviour
             index = _random.Next(_stairConnections.Length);
             stairConnection = _stairConnections[index];
 
-            (position, rotation) = await GenerateSegment(stairConnection, position,  rotation, 
+            (position, rotation) = await GenerateSegmentAsync(stairConnection, position,  rotation, 
                 stairConnection.PositionDifference, stairConnection.RotationDifference);
         }
     }
 
-    private async UniTask<(Vector3, Vector3)> GenerateSegment(StairConnection stairConnection, 
+    private async UniTask<(Vector3, Vector3)> GenerateSegmentAsync(StairConnection stairConnection, 
         Vector3 position, Vector3 rotation, Vector3 positionDifference, Vector3 rotationDifference)
     {
         int count = _random.Next(stairConnection.MinCount, stairConnection.MaxCount + 1);

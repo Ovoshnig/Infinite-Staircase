@@ -69,10 +69,10 @@ public class MusicPlayer : MonoBehaviour
     {
         _musicQueue.SetClips(clipPaths);
         _musicQueue.Shuffle();
-        PlayNextClip().Forget();
+        PlayNextClipAsync().Forget();
     }
 
-    private async UniTask PlayNextClip()
+    private async UniTask PlayNextClipAsync()
     {
         if (_pastClip != null)
         {
@@ -91,7 +91,7 @@ public class MusicPlayer : MonoBehaviour
         _audioSource.Play();
         await UniTask.WaitWhile(() => _audioSource.isPlaying, cancellationToken: _cts.Token);
 
-        PlayNextClip().Forget();
+        PlayNextClipAsync().Forget();
     }
 
     private void ReleaseClip(AudioClip clip)

@@ -37,24 +37,24 @@ public class SceneSwitch : IPostInitializable, IDisposable
         if (_currentLevel > _achievedLevel && _currentLevel <= _levelSettings.LastGameplayLevel)
             _achievedLevel = _currentLevel;
 
-        WaitForFirstSceneLoad().Forget();
+        WaitForFirstSceneLoadAsync().Forget();
     }
 
     public void Dispose() => _saveStorage.Set(SaveConstants.AchievedLevelKey, _achievedLevel);
 
-    public async UniTask LoadAchievedLevel() => await LoadLevel(_achievedLevel);
+    public async UniTask LoadAchievedLevelAsync() => await LoadLevelAsync(_achievedLevel);
 
-    public async UniTask LoadFirstLevel()
+    public async UniTask LoadFirstLevelAsync()
     {
         ResetProgress();
-        await LoadAchievedLevel();
+        await LoadAchievedLevelAsync();
     }
 
     public void ResetProgress() => _achievedLevel = _levelSettings.FirstGameplayLevel;
 
-    public void LoadCurrentLevel() => LoadLevel(_currentLevel).Forget();
+    public void LoadCurrentLevel() => LoadLevelAsync(_currentLevel).Forget();
 
-    public async UniTask LoadLevel(uint index)
+    public async UniTask LoadLevelAsync(uint index)
     {
         SceneType sceneType = GetSceneTypeByIndex(index);
         _isSceneLoading.Value = true;
@@ -66,7 +66,7 @@ public class SceneSwitch : IPostInitializable, IDisposable
         _isSceneLoading.Value = false;
     }
 
-    private async UniTaskVoid WaitForFirstSceneLoad()
+    private async UniTask WaitForFirstSceneLoadAsync()
     {
         await UniTask.WaitUntil(() => SceneManager.GetActiveScene().isLoaded);
         SceneType sceneType = GetSceneTypeByIndex(_currentLevel);

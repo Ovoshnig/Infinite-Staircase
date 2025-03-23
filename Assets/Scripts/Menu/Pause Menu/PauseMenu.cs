@@ -20,7 +20,7 @@ public class PauseMenu : MonoBehaviour
             .Subscribe(_ => _sceneSwitch.LoadCurrentLevel())
             .AddTo(this);
         _loadMainMenuButton.OnClickAsObservable()
-            .Subscribe(_ => _sceneSwitch.LoadLevel(0).Forget())
+            .Subscribe(_ => _sceneSwitch.LoadLevelAsync(0).Forget())
             .AddTo(this);
     }
 }
