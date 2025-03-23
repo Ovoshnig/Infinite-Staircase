@@ -1,9 +1,10 @@
 using Cysharp.Threading.Tasks;
-using Random = System.Random;
+using R3;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using VContainer;
+using Random = System.Random;
 
 public class NewGameCreator : MonoBehaviour
 {
@@ -15,6 +16,7 @@ public class NewGameCreator : MonoBehaviour
     private SceneSwitch _sceneSwitch;
     private SaveStorage _saveStorage;
     private WorldGenerationSettings _generationSettings;
+    private CompositeDisposable _compositeDisposable = new();
 
     [Inject]
     public void Construct(SceneSwitch sceneSwitch, SaveStorage saveStorage,
@@ -27,9 +29,18 @@ public class NewGameCreator : MonoBehaviour
 
     private void Start() => _seedInputField.contentType = TMP_InputField.ContentType.IntegerNumber;
 
-    private void OnEnable() => _startGameButton.onClick.AddListener(OnStartGameButtonClicked);
+    private void OnEnable()
+    {
+        _startGameButton.OnClickAsObservable()
+            .Subscribe(_ => OnStartGameButtonClicked())
+            .AddTo(_compositeDisposable);
+    }
 
-    private void OnDisable() => _startGameButton.onClick.RemoveListener(OnStartGameButtonClicked);
+    private void OnDisable()
+    {
+        _compositeDisposable?.Dispose();
+        _compositeDisposable = new CompositeDisposable();
+    }
 
     private void OnStartGameButtonClicked()
     {

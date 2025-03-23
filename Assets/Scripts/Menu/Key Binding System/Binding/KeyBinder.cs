@@ -5,6 +5,7 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 using VContainer;
+using R3.Triggers;
 
 public class KeyBinder : MonoBehaviour
 {
@@ -14,11 +15,11 @@ public class KeyBinder : MonoBehaviour
     [SerializeField] private Color _waitingTextColor;
     [SerializeField] private InputActionReference _inputActionReference;
 
-    private readonly CompositeDisposable _compositeDisposable = new();
     private KeyBindingsTracker _bindingsTracker;
     private IBindingHandler _bindingHandler;
     private TMP_Text _bindingButtonText;
     private InputAction _inputAction;
+    private CompositeDisposable _compositeDisposable = new();
 
     [Inject]
     public void Construct(KeyBindingsTracker bindingsTracker) => _bindingsTracker = bindingsTracker;
@@ -49,24 +50,26 @@ public class KeyBinder : MonoBehaviour
             _bindingHandler = new Vector2BindingHandler(_bindingsTracker, _bindingButtonText,
                 normalTextColor, _waitingTextColor, _inputActionReference);
         }
+    }
 
-        _bindingButton.onClick.AddListener(OnBindingButtonPressed);
-        _bindingResetButton.onClick.AddListener(OnBindingResetButtonClicked);
-
+    private void OnEnable()
+    {
+        _bindingButton.OnClickAsObservable()
+            .Subscribe(_ => OnBindingButtonPressed())
+            .AddTo(_compositeDisposable);
+        _bindingResetButton.OnClickAsObservable()
+            .Subscribe(_ => OnBindingResetButtonClicked())
+            .AddTo(_compositeDisposable);
         Observable
-            .EveryUpdate()
-            .Select(_ => _inputAction.bindings.Any(b => b.hasOverrides))
-            .DistinctUntilChanged()
+            .EveryValueChanged(this, _ => _inputAction.bindings.Any(b => b.hasOverrides))
             .Subscribe(value => _bindingResetButton.interactable = value)
             .AddTo(_compositeDisposable);
     }
-    
-    private void OnDestroy()
-    {
-        _bindingButton.onClick.RemoveListener(OnBindingButtonPressed);
-        _bindingResetButton.onClick.RemoveListener(OnBindingResetButtonClicked);
 
+    private void OnDisable()
+    {
         _compositeDisposable?.Dispose();
+        _compositeDisposable = new CompositeDisposable();
     }
 
     private void OnBindingButtonPressed() => _bindingHandler.StartListening();

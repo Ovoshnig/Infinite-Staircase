@@ -12,14 +12,13 @@ public sealed class MusicSliderTuner : SliderTuner
         _audioSettings = audioSettings;
     }
 
-    protected override float MinValue => _audioSettings.MinVolume;
-    protected override float MaxValue => _audioSettings.MaxVolume;
-
     protected override void Start()
     {
         base.Start();
 
-        SetSliderValue(_audioTuner.MusicVolume.CurrentValue);
+        Slider.minValue = _audioSettings.MinVolume;
+        Slider.maxValue = _audioSettings.MaxVolume;
+        Slider.SetValueWithoutNotify(_audioTuner.MusicVolume.CurrentValue);
     }
 
     protected override void OnSliderValueChanged(float value) => 

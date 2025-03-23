@@ -10,9 +10,12 @@ public class WindowInputHandler : IInitializable, IDisposable
     private readonly Subject<bool> _inventorySwitchPressed = new();
     private InputActionMap _actionMap;
 
-    public Observable<bool> CloseCurrentPressed => _closeCurrentPressed;
-    public Observable<bool> PauseMenuSwitchPressed => _pauseMenuSwitchPressed;
-    public Observable<bool> InventorySwitchPressed => _inventorySwitchPressed;
+    public ReadOnlyReactiveProperty<bool> CloseCurrentPressed => 
+        _closeCurrentPressed.ToReadOnlyReactiveProperty();
+    public ReadOnlyReactiveProperty<bool> PauseMenuSwitchPressed => 
+        _pauseMenuSwitchPressed.ToReadOnlyReactiveProperty();
+    public ReadOnlyReactiveProperty<bool> InventorySwitchPressed => 
+        _inventorySwitchPressed.ToReadOnlyReactiveProperty();
 
     public void Initialize()
     {

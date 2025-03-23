@@ -35,13 +35,13 @@ public class AudioMixerTuner : IStartable, IDisposable
             .AddTo(_compositeDisposable);
 
         _gamePauser.IsPause
-            .Subscribe(value => SetSnapshot(value))
+            .Subscribe(value => OnPauseValueChanged(value))
             .AddTo(_compositeDisposable);
     }
 
     public void Dispose() => _compositeDisposable?.Dispose();
 
-    private void SetSnapshot(bool pause)
+    private void OnPauseValueChanged(bool pause)
     {
         AudioMixerSnapshot snapshot = AudioMixer.FindSnapshot(
             pause ? AudioMixerConstants.PauseSnapshotName : AudioMixerConstants.NormalSnapshotName);

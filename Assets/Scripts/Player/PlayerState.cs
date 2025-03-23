@@ -13,18 +13,18 @@ public class PlayerState : IInitializable, IDisposable
     private readonly ReactiveProperty<bool> _isLooking = new(false);
     private readonly ReactiveProperty<bool> _isGrounded = new(false);
     private readonly CompositeDisposable _compositeDisposable = new();
-    private PlayerInputHandler _inputHandler;
+    private PlayerInputHandler _playerInputHandler;
     private CharacterController _characterController;
 
     [Inject]
-    public void Construct(PlayerInputHandler inputHandler, CharacterController characterController)
+    public void Construct(PlayerInputHandler playerInputHandler, CharacterController characterController)
     {
-        _inputHandler = inputHandler;
+        _playerInputHandler = playerInputHandler;
         _characterController = characterController;
     }
 
-    public Vector2 WalkInput => _inputHandler.WalkInput;
-    public Vector2 LookInput => _inputHandler.LookInput;
+    public Vector2 WalkInput => _playerInputHandler.WalkInput;
+    public Vector2 LookInput => _playerInputHandler.LookInput;
     public Vector3 EulerAngels => _characterController.transform.eulerAngles;
     public ReadOnlyReactiveProperty<bool> IsWalking => _isWalking;
     public ReadOnlyReactiveProperty<bool> IsRunning => _isRunning;
@@ -34,23 +34,23 @@ public class PlayerState : IInitializable, IDisposable
 
     public void Initialize()
     {
-        _inputHandler.IsWalkPressed
+        _playerInputHandler.IsWalkPressed
            .Subscribe(value =>
            {
                _isWalking.OnNext(value);
-               _isRunning.OnNext(value && _inputHandler.IsRunPressed.CurrentValue);
+               _isRunning.OnNext(value && _playerInputHandler.IsRunPressed.CurrentValue);
            })
            .AddTo(_compositeDisposable);
 
-        _inputHandler.IsRunPressed
+        _playerInputHandler.IsRunPressed
             .Subscribe(value => _isRunning.OnNext(value && IsWalking.CurrentValue))
             .AddTo(_compositeDisposable);
 
-        _inputHandler.IsJumpPressed
+        _playerInputHandler.IsJumpPressed
            .Subscribe(value => _isJumping.OnNext(value && _characterController.isGrounded))
            .AddTo(_compositeDisposable);
 
-        _inputHandler.IsLookPressed
+        _playerInputHandler.IsLookPressed
            .Subscribe(value => _isLooking.OnNext(value))
            .AddTo(_compositeDisposable);
 

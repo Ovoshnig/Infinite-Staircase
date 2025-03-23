@@ -9,8 +9,10 @@ public class ScreenInputHandler : IInitializable, IDisposable
     private readonly Subject<bool> _isPassSplashImagePressed = new();
     private InputActionMap _actionMap;
 
-    public Observable<bool> IsSwitchFullScreenPressed => _isSwitchFullScreenPressed;
-    public Observable<bool> IsPassSplashImagePressed => _isPassSplashImagePressed;
+    public ReadOnlyReactiveProperty<bool> IsSwitchFullScreenPressed => 
+        _isSwitchFullScreenPressed.ToReadOnlyReactiveProperty();
+    public ReadOnlyReactiveProperty<bool> IsPassSplashImagePressed =>
+        _isPassSplashImagePressed.ToReadOnlyReactiveProperty();
 
     public void Initialize()
     {

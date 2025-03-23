@@ -1,4 +1,5 @@
 using Cysharp.Threading.Tasks;
+using R3;
 using UnityEngine;
 using UnityEngine.UI;
 using VContainer;
@@ -13,6 +14,7 @@ public sealed class MainMenu : MonoBehaviour
 
     private SaveStorage _saveStorage;
     private SceneSwitch _sceneSwitch;
+    private CompositeDisposable _compositeDisposable = new();
 
     [Inject]
     public void Construct(SaveStorage saveStorage, SceneSwitch sceneSwitch)
@@ -23,18 +25,27 @@ public sealed class MainMenu : MonoBehaviour
 
     private void OnEnable()
     {
-        _continueGameButton.onClick.AddListener(OnContinueGameButtonClicked);
-        _newGameButton.onClick.AddListener(OnNewGameButtonClicked);
-        _quitGameButton.onClick.AddListener(OnQuitGameButtonClicked);
+        _continueGameButton.OnClickAsObservable()
+            .Subscribe(_ => OnContinueGameButtonClicked())
+            .AddTo(_compositeDisposable);
+        _newGameButton.OnClickAsObservable()
+            .Subscribe(_ => OnNewGameButtonClicked())
+            .AddTo(_compositeDisposable);
+        _quitGameButton.OnClickAsObservable()
+            .Subscribe(_ => OnQuitGameButtonClicked())
+            .AddTo(_compositeDisposable);
     }
 
-    private void Start() => _continueGameButton.interactable = _saveStorage.Get(SaveConstants.SaveCreatedKey, false);
+    private void Start()
+    {
+        bool saveCreated = _saveStorage.Get(SaveConstants.SaveCreatedKey, false);
+        _continueGameButton.interactable = saveCreated;
+    }
 
     private void OnDisable()
     {
-        _continueGameButton.onClick.RemoveListener(OnContinueGameButtonClicked);
-        _newGameButton.onClick.RemoveListener(OnNewGameButtonClicked);
-        _quitGameButton.onClick.RemoveListener(OnQuitGameButtonClicked);
+        _compositeDisposable?.Dispose();
+        _compositeDisposable = new CompositeDisposable();
     }
 
     private void OnContinueGameButtonClicked() => _sceneSwitch.LoadAchievedLevel().Forget();

@@ -3,7 +3,6 @@ using VContainer;
 
 public sealed class ButtonPanelCloser : ButtonPanelChanger
 {
-    private CompositeDisposable _compositeDisposable = new();
     private WindowInputHandler _windowInputHandler;
 
     [Inject]
@@ -16,14 +15,6 @@ public sealed class ButtonPanelCloser : ButtonPanelChanger
         _windowInputHandler.CloseCurrentPressed
             .Where(value => value)
             .Subscribe(_ => Change())
-            .AddTo(_compositeDisposable);
-    }
-
-    protected override void OnDisable()
-    {
-        base.OnDisable();
-
-        _compositeDisposable?.Dispose();
-        _compositeDisposable = new CompositeDisposable();
+            .AddTo(CompositeDisposable);
     }
 }

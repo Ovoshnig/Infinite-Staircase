@@ -1,4 +1,3 @@
-using UnityEngine;
 using VContainer;
 
 public sealed class SensitivitySliderTuner : SliderTuner
@@ -14,14 +13,13 @@ public sealed class SensitivitySliderTuner : SliderTuner
         _controlSettings = controlSettings;
     }
 
-    protected override float MinValue => _controlSettings.MinSensitivity;
-    protected override float MaxValue => _controlSettings.MaxSensitivity;
-
     protected override void Start()
     {
         base.Start();
 
-        SetSliderValue(_lookTuner.Sensitivity.CurrentValue);
+        Slider.minValue = _controlSettings.MinSensitivity;
+        Slider.maxValue = _controlSettings.MaxSensitivity;
+        Slider.SetValueWithoutNotify(_lookTuner.Sensitivity.CurrentValue);
     }
 
     protected override void OnSliderValueChanged(float value) => _lookTuner.SetSensitivity(value);
