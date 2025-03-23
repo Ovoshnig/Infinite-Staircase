@@ -1,3 +1,4 @@
+using R3;
 using VContainer;
 
 public sealed class MusicSliderTuner : SliderTuner
@@ -14,11 +15,14 @@ public sealed class MusicSliderTuner : SliderTuner
 
     protected override void Start()
     {
-        base.Start();
-
         Slider.minValue = _audioSettings.MinVolume;
         Slider.maxValue = _audioSettings.MaxVolume;
-        Slider.SetValueWithoutNotify(_audioTuner.MusicVolume.CurrentValue);
+
+        _audioTuner.MusicVolume
+            .Subscribe(Slider.SetValueWithoutNotify)
+            .AddTo(this);
+
+        base.Start();
     }
 
     protected override void OnSliderValueChanged(float value) => 

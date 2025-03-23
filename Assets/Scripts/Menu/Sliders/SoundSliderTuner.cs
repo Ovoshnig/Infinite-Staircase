@@ -1,3 +1,4 @@
+using R3;
 using VContainer;
 
 public sealed class SoundSliderTuner : SliderTuner
@@ -6,8 +7,7 @@ public sealed class SoundSliderTuner : SliderTuner
     private AudioSettings _audioSettings;
 
     [Inject]
-    public void Construct(AudioTuner audioTuner,
-        AudioSettings audioSettings)
+    public void Construct(AudioTuner audioTuner, AudioSettings audioSettings)
     {
         _audioTuner = audioTuner;
         _audioSettings = audioSettings;
@@ -15,11 +15,14 @@ public sealed class SoundSliderTuner : SliderTuner
 
     protected override void Start()
     {
-        base.Start();
-
         Slider.minValue = _audioSettings.MinVolume;
         Slider.maxValue = _audioSettings.MaxVolume;
-        Slider.SetValueWithoutNotify(_audioTuner.SoundVolume.CurrentValue);
+
+        _audioTuner.SoundVolume
+            .Subscribe(Slider.SetValueWithoutNotify)
+            .AddTo(this);
+
+        base.Start();
     }
 
     protected override void OnSliderValueChanged(float value) =>

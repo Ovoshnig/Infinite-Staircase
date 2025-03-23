@@ -1,3 +1,4 @@
+using R3;
 using VContainer;
 
 public sealed class SensitivitySliderTuner : SliderTuner
@@ -15,11 +16,14 @@ public sealed class SensitivitySliderTuner : SliderTuner
 
     protected override void Start()
     {
-        base.Start();
-
         Slider.minValue = _controlSettings.MinSensitivity;
         Slider.maxValue = _controlSettings.MaxSensitivity;
-        Slider.SetValueWithoutNotify(_lookTuner.Sensitivity.CurrentValue);
+
+        _lookTuner.Sensitivity
+            .Subscribe(Slider.SetValueWithoutNotify)
+            .AddTo(this);
+
+        base.Start();
     }
 
     protected override void OnSliderValueChanged(float value) => _lookTuner.SetSensitivity(value);
