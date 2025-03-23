@@ -1,7 +1,8 @@
 using Cysharp.Threading.Tasks;
+using R3;
 using UnityEngine;
 using UnityEngine.UI;
-using Zenject;
+using VContainer;
 
 public class PauseMenu : MonoBehaviour
 {
@@ -9,23 +10,24 @@ public class PauseMenu : MonoBehaviour
     [SerializeField] private Button _loadMainMenuButton;
 
     private SceneSwitch _sceneSwitch;
+    private CompositeDisposable _compositeDisposable = new();
 
     [Inject]
-    private void Construct(SceneSwitch sceneSwitch) => _sceneSwitch = sceneSwitch;
+    public void Construct(SceneSwitch sceneSwitch) => _sceneSwitch = sceneSwitch;
 
     private void OnEnable()
     {
-        _resetLevelButton.onClick.AddListener(OnResetButtonClicked);
-        _loadMainMenuButton.onClick.AddListener(OnLoadMainMenuButtonClicked);
+        _resetLevelButton.OnClickAsObservable()
+            .Subscribe(_ => _sceneSwitch.LoadCurrentLevel())
+            .AddTo(_compositeDisposable);
+        _loadMainMenuButton.OnClickAsObservable()
+            .Subscribe(_ => _sceneSwitch.LoadLevel(0).Forget())
+            .AddTo(_compositeDisposable);
     }
 
     private void OnDisable()
     {
-        _resetLevelButton.onClick.RemoveListener(OnResetButtonClicked);
-        _loadMainMenuButton.onClick.RemoveListener(OnLoadMainMenuButtonClicked);
+        _compositeDisposable?.Dispose();
+        _compositeDisposable = new CompositeDisposable();
     }
-
-    private void OnResetButtonClicked() => _sceneSwitch.LoadCurrentLevel();
-
-    private void OnLoadMainMenuButtonClicked() => _sceneSwitch.LoadLevel(0).Forget();
 }

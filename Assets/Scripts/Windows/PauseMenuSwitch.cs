@@ -1,20 +1,21 @@
 using R3;
 using UnityEngine;
 using UnityEngine.UI;
-using Zenject;
+using VContainer;
 
 public class PauseMenuSwitch : WindowSwitch
 {
     [SerializeField] private Button _resumeButton;
 
     private GamePauser _gamePauser;
+    private CompositeDisposable _compositeDisposable = new();
 
     [Inject]
-    private void Construct(GamePauser gamePauser) => _gamePauser = gamePauser;
+    public void Construct(GamePauser gamePauser) => _gamePauser = gamePauser;
 
     protected override void InitializeInput()
     {
-        Disposable = InputHandler.PauseMenuSwitchPressed
+        Disposable = WindowInputHandler.PauseMenuSwitchPressed
             .Where(value => value)
             .Subscribe(_ => Switch());
     }
@@ -23,14 +24,16 @@ public class PauseMenuSwitch : WindowSwitch
     {
         base.Awake();
 
-        _resumeButton.onClick.AddListener(OnResumeClicked);
+        _resumeButton.OnClickAsObservable()
+            .Subscribe(_ => OnResumeClicked())
+            .AddTo(_compositeDisposable);
     }
 
     protected override void OnDestroy()
     {
         base.OnDestroy();
 
-        _resumeButton.onClick.RemoveListener(OnResumeClicked);
+        _compositeDisposable?.Dispose();
     }
 
     public override bool Open()

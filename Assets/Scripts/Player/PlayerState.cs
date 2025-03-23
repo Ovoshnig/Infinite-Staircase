@@ -1,70 +1,69 @@
 using R3;
+using System;
 using UnityEngine;
-using Zenject;
+using VContainer;
+using VContainer.Unity;
 
 [RequireComponent(typeof(CharacterController))]
-public class PlayerState : MonoBehaviour
+public class PlayerState : IInitializable, IDisposable
 {
     private readonly ReactiveProperty<bool> _isWalking = new(false);
     private readonly ReactiveProperty<bool> _isRunning = new(false);
     private readonly ReactiveProperty<bool> _isJumping = new(false);
     private readonly ReactiveProperty<bool> _isLooking = new(false);
     private readonly ReactiveProperty<bool> _isGrounded = new(false);
-    private PlayerInputHandler _inputHandler;
+    private readonly CompositeDisposable _compositeDisposable = new();
+    private PlayerInputHandler _playerInputHandler;
     private CharacterController _characterController;
-    private CompositeDisposable _compositeDisposable;
 
     [Inject]
-    private void Construct(PlayerInputHandler inputHandler) => _inputHandler = inputHandler;
+    public void Construct(PlayerInputHandler playerInputHandler, CharacterController characterController)
+    {
+        _playerInputHandler = playerInputHandler;
+        _characterController = characterController;
+    }
 
-    public Vector2 WalkInput => _inputHandler.WalkInput;
-    public Vector2 LookInput => _inputHandler.LookInput;
+    public Vector2 WalkInput => _playerInputHandler.WalkInput;
+    public Vector2 LookInput => _playerInputHandler.LookInput;
+    public Vector3 EulerAngels => _characterController.transform.eulerAngles;
     public ReadOnlyReactiveProperty<bool> IsWalking => _isWalking;
     public ReadOnlyReactiveProperty<bool> IsRunning => _isRunning;
     public ReadOnlyReactiveProperty<bool> IsGrounded => _isGrounded;
     public ReadOnlyReactiveProperty<bool> IsJumping => _isJumping;
     public ReadOnlyReactiveProperty<bool> IsLooking => _isLooking;
 
-    private void Awake()
+    public void Initialize()
     {
-        _characterController = GetComponent<CharacterController>();
+        _playerInputHandler.IsWalkPressed
+           .Subscribe(value =>
+           {
+               _isWalking.OnNext(value);
+               _isRunning.OnNext(value && _playerInputHandler.IsRunPressed.CurrentValue);
+           })
+           .AddTo(_compositeDisposable);
 
-        var walkDisposable = _inputHandler.IsWalkPressed
-            .Subscribe(value =>
-            {
-                _isWalking.OnNext(value);
-                _isRunning.OnNext(value && _inputHandler.IsRunPressed.CurrentValue);
-            });
+        _playerInputHandler.IsRunPressed
+            .Subscribe(value => _isRunning.OnNext(value && IsWalking.CurrentValue))
+            .AddTo(_compositeDisposable);
 
-        var runDisposable = _inputHandler.IsRunPressed
-            .Subscribe(value => _isRunning.OnNext(value && IsWalking.CurrentValue));
+        _playerInputHandler.IsJumpPressed
+           .Subscribe(value => _isJumping.OnNext(value && _characterController.isGrounded))
+           .AddTo(_compositeDisposable);
 
-        var jumpDisposable = _inputHandler.IsJumpPressed
-            .Subscribe(value => _isJumping.OnNext(value && _characterController.isGrounded));
+        _playerInputHandler.IsLookPressed
+           .Subscribe(value => _isLooking.OnNext(value))
+           .AddTo(_compositeDisposable);
 
-        var lookDisposable = _inputHandler.IsLookPressed
-            .Subscribe(value => _isLooking.OnNext(value));
+        Observable
+           .EveryValueChanged(this, c => _characterController.isGrounded)
+           .Subscribe(value => _isGrounded.OnNext(value))
+           .AddTo(_compositeDisposable);
 
-        var groundDisposable = Observable
-            .EveryUpdate()
-            .Select(_ => _characterController.isGrounded)
-            .DistinctUntilChanged()
-            .Subscribe(value => _isGrounded.OnNext(value));
-
-        var groundEnterDisposable = _isGrounded
+        _isGrounded
             .Where(value => value)
-            .Subscribe(_ => _isJumping.OnNext(false));
-
-        _compositeDisposable = new CompositeDisposable
-        {
-            walkDisposable,
-            runDisposable,
-            lookDisposable,
-            jumpDisposable,
-            groundDisposable,
-            groundEnterDisposable
-        };
+            .Subscribe(_ => _isJumping.OnNext(false))
+            .AddTo(_compositeDisposable);
     }
 
-    private void OnDestroy() => _compositeDisposable?.Dispose();
+    public void Dispose() => _compositeDisposable?.Dispose();
 }

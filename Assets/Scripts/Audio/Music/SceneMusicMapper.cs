@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-public class SceneMusicMapper : ISceneMusicMapper
+public sealed class SceneMusicMapper : ISceneMusicMapper
 {
     private readonly Dictionary<SceneSwitch.SceneType, MusicCategory> _sceneToMusicCategory = new()
     {

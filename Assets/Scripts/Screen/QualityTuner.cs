@@ -1,21 +1,21 @@
 using System;
 using UnityEngine;
-using Zenject;
+using VContainer.Unity;
 
-public class QualityTuner : IInitializable, IDisposable
+public class QualityTuner : IPostInitializable, IDisposable
 {
     private readonly SettingsStorage _settingsStorage;
     private bool _isVSyncEnabled;
 
-    [Inject]
     public QualityTuner(SettingsStorage settingsStorage) => _settingsStorage = settingsStorage;
 
     public bool IsVSyncEnabled => _isVSyncEnabled;
 
-    public void Initialize()
+    public void PostInitialize()
     {
         _isVSyncEnabled = _settingsStorage.Get(SettingsConstants.VSyncKey, false);
         QualitySettings.vSyncCount = _isVSyncEnabled ? 1 : 0;
+        Application.targetFrameRate = -1;
     }
 
     public void Dispose() => _settingsStorage.Set(SettingsConstants.VSyncKey, _isVSyncEnabled);

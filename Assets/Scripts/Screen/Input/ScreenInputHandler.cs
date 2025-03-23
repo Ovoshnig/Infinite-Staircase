@@ -1,32 +1,34 @@
 using R3;
 using System;
 using UnityEngine.InputSystem;
-using Zenject;
+using VContainer.Unity;
 
 public class ScreenInputHandler : IInitializable, IDisposable
 {
-    private readonly PlayerInput _playerInput;
     private readonly Subject<bool> _isSwitchFullScreenPressed = new();
     private readonly Subject<bool> _isPassSplashImagePressed = new();
+    private InputActionMap _actionMap;
 
-    [Inject]
-    public ScreenInputHandler(PlayerInput playerInput) => _playerInput = playerInput;
-
-    public Observable<bool> IsSwitchFullScreenPressed => _isSwitchFullScreenPressed;
-    public Observable<bool> IsPassSplashImagePressed => _isPassSplashImagePressed;
+    public ReadOnlyReactiveProperty<bool> IsSwitchFullScreenPressed => 
+        _isSwitchFullScreenPressed.ToReadOnlyReactiveProperty();
+    public ReadOnlyReactiveProperty<bool> IsPassSplashImagePressed =>
+        _isPassSplashImagePressed.ToReadOnlyReactiveProperty();
 
     public void Initialize()
     {
-        _playerInput.Screen.SwitchFullScreen.performed += OnFullScreenSwitch;
-        _playerInput.Screen.SwitchFullScreen.canceled += OnFullScreenSwitch;
-        _playerInput.Screen.PassSplashImage.performed += OnPassSplashImage;
-        _playerInput.Screen.PassSplashImage.canceled += OnPassSplashImage;
+        PlayerInput playerInput = new();
+        PlayerInput.ScreenActions screenActions = playerInput.Screen;
+        _actionMap = InputSystem.actions.FindActionMap(nameof(playerInput.Screen));
 
-        _playerInput.Screen.Enable();
+        _actionMap.FindAction(nameof(screenActions.SwitchFullScreen)).performed += OnFullScreenSwitch;
+        _actionMap.FindAction(nameof(screenActions.SwitchFullScreen)).canceled += OnFullScreenSwitch;
+        _actionMap.FindAction(nameof(screenActions.PassSplashImage)).performed += OnPassSplashImage;
+        _actionMap.FindAction(nameof(screenActions.PassSplashImage)).canceled += OnPassSplashImage;
+
+        _actionMap.Enable();
     }
 
-
-    public void Dispose() => _playerInput.Screen.Disable();
+    public void Dispose() => _actionMap.Disable();
 
     private void OnFullScreenSwitch(InputAction.CallbackContext context) =>
         _isSwitchFullScreenPressed.OnNext(context.ReadValueAsButton());

@@ -1,12 +1,10 @@
 using System.Linq;
-using Zenject;
 
 public class InventorySaver
 {
     private readonly SaveStorage _saveStorage;
     private readonly ItemDataRepository _itemDataRepository;
 
-    [Inject]
     public InventorySaver(SaveStorage saveStorage, ItemDataRepository itemDataRepository)
     {
         _saveStorage = saveStorage;
@@ -26,6 +24,7 @@ public class InventorySaver
     {
         for (int i = 0; i < slotViews.Length; i++)
             slotDataArray[i] = slotViews[i].Save();
+
         _saveStorage.Set(SaveConstants.InventoryKey, slotDataArray);
     }
 }

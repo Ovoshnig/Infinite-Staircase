@@ -1,25 +1,40 @@
+using R3;
 using UnityEngine;
 using UnityEngine.UI;
-using Zenject;
+using VContainer;
 
 [RequireComponent(typeof(Button))]
 public class ButtonResetWarning : MonoBehaviour
 {
+    [SerializeField] private Button _continueGameButton;
+
+    private CompositeDisposable _compositeDisposable = new();
     private SaveStorage _saveStorage;
-    private Button _button;
+    private Button _resetButton;
 
     [Inject]
-    private void Construct(SaveStorage saveStorage) => _saveStorage = saveStorage;
+    public void Construct(SaveStorage saveStorage) => _saveStorage = saveStorage;
 
-    private void Awake() => _button = GetComponent<Button>();
+    private void Awake() => _resetButton = GetComponent<Button>();
 
-    private void OnEnable() => _button.onClick.AddListener(OnResetButtonClicked);
+    private void OnEnable()
+    {
+        _resetButton.OnClickAsObservable()
+            .Subscribe(_ => OnResetButtonClicked())
+            .AddTo(_compositeDisposable);
+    }
 
-    private void OnDisable() => _button.onClick.RemoveListener(OnResetButtonClicked);
+    private void OnDisable()
+    {
+        _compositeDisposable?.Dispose();
+        _compositeDisposable = new();
+    }
 
-    private void OnResetButtonClicked() 
+    private void OnResetButtonClicked()
     {
         _saveStorage.ResetData();
         _saveStorage.Set(SaveConstants.SaveCreatedKey, false);
+
+        _continueGameButton.interactable = false;
     }
 }

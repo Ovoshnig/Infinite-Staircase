@@ -1,3 +1,4 @@
+using R3;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -9,6 +10,8 @@ public abstract class ButtonPanelChanger : MonoBehaviour
 
     private Button _button;
 
+    protected CompositeDisposable CompositeDisposable { get; private set; } = new();
+
     protected virtual void Awake()
     {
         if (_currentPanel == null)
@@ -17,9 +20,18 @@ public abstract class ButtonPanelChanger : MonoBehaviour
         _button = GetComponent<Button>();
     }
 
-    protected virtual void OnEnable() => _button.onClick.AddListener(OnButtonClicked);
+    protected virtual void OnEnable()
+    {
+        _button.OnClickAsObservable()
+            .Subscribe(_ => OnButtonClicked())
+            .AddTo(CompositeDisposable);
+    }
 
-    protected virtual void OnDisable() => _button.onClick.RemoveListener(OnButtonClicked);
+    protected virtual void OnDisable()
+    {
+        CompositeDisposable?.Dispose();
+        CompositeDisposable = new CompositeDisposable();
+    }
 
     protected void Change()
     {

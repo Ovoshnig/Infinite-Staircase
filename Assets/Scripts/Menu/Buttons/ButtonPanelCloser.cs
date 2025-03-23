@@ -1,28 +1,20 @@
 using R3;
-using System;
-using Zenject;
+using VContainer;
 
 public sealed class ButtonPanelCloser : ButtonPanelChanger
 {
-    private WindowInputHandler _inputHandler;
-    private IDisposable _disposable;
+    private WindowInputHandler _windowInputHandler;
 
     [Inject]
-    private void Construct(WindowInputHandler inputHandler) => _inputHandler = inputHandler;
+    public void Construct(WindowInputHandler windowInputHandler) => _windowInputHandler = windowInputHandler;
 
     protected override void OnEnable()
     {
         base.OnEnable();
 
-        _disposable = _inputHandler.CloseCurrentPressed
+        _windowInputHandler.CloseCurrentPressed
             .Where(value => value)
-            .Subscribe(_ => Change());
-    }
-
-    protected override void OnDisable()
-    {
-        base.OnDisable();
-
-        _disposable?.Dispose();
+            .Subscribe(_ => Change())
+            .AddTo(CompositeDisposable);
     }
 }

@@ -1,24 +1,26 @@
-using Zenject;
+using VContainer;
 
 public sealed class SensitivitySliderTuner : SliderTuner
 {
     private LookTuner _lookTuner;
-    private GameSettingsInstaller.ControlSettings _controlSettings;
+    private ControlSettings _controlSettings;
 
     [Inject]
-    private void Construct(LookTuner lookTuner, 
-        GameSettingsInstaller.ControlSettings controlSettings)
+    public void Construct(LookTuner lookTuner,
+        ControlSettings controlSettings)
     {
         _lookTuner = lookTuner;
         _controlSettings = controlSettings;
     }
 
-    protected override float MinValue => _controlSettings.MinSensitivity;
+    protected override void Start()
+    {
+        base.Start();
 
-    protected override float MaxValue => _controlSettings.MaxSensitivity;
+        Slider.minValue = _controlSettings.MinSensitivity;
+        Slider.maxValue = _controlSettings.MaxSensitivity;
+        Slider.SetValueWithoutNotify(_lookTuner.Sensitivity.CurrentValue);
+    }
 
-    protected override float InitialValue => _lookTuner.Sensitivity.CurrentValue;
-
-    protected override void OnSliderValueChanged(float value) => 
-        _lookTuner.Sensitivity.Value = value;
+    protected override void OnSliderValueChanged(float value) => _lookTuner.SetSensitivity(value);
 }

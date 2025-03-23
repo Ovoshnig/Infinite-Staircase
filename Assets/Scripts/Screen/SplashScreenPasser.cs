@@ -1,26 +1,26 @@
 using R3;
 using System;
 using UnityEngine.Rendering;
-using Zenject;
+using VContainer.Unity;
 
 public class SplashScreenPasser : IInitializable, IDisposable
 {
-    private readonly ScreenInputHandler _inputHandler;
-    private IDisposable _disposed;
+    private readonly ScreenInputHandler _screenInputHandler;
+    private readonly CompositeDisposable _compositeDisposable = new();
 
-    [Inject]
-    public SplashScreenPasser(ScreenInputHandler screenInputHandler) => _inputHandler = screenInputHandler;
+    public SplashScreenPasser(ScreenInputHandler screenInputHandler) => _screenInputHandler = screenInputHandler;
 
     public void Initialize()
     {
         Play();
 
-        _disposed = _inputHandler.IsPassSplashImagePressed
+        _screenInputHandler.IsPassSplashImagePressed
             .Where(value => value)
-            .Subscribe(_ => Pass());
+            .Subscribe(_ => OnPassPressed())
+            .AddTo(_compositeDisposable);
     }
 
-    public void Dispose() => _disposed?.Dispose();
+    public void Dispose() => _compositeDisposable?.Dispose();
 
     private void Play()
     {
@@ -28,7 +28,7 @@ public class SplashScreenPasser : IInitializable, IDisposable
         SplashScreen.Draw();
     }
 
-    private void Pass()
+    private void OnPassPressed()
     {
         if (!SplashScreen.isFinished)
             SplashScreen.Stop(SplashScreen.StopBehavior.FadeOut);

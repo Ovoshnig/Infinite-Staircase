@@ -1,24 +1,27 @@
-using Zenject;
+using VContainer;
 
 public sealed class SoundSliderTuner : SliderTuner
 {
     private AudioTuner _audioTuner;
-    private GameSettingsInstaller.AudioSettings _audioSettings;
+    private AudioSettings _audioSettings;
 
     [Inject]
-    private void Construct(AudioTuner audioTuner, 
-        GameSettingsInstaller.AudioSettings audioSettings)
+    public void Construct(AudioTuner audioTuner,
+        AudioSettings audioSettings)
     {
         _audioTuner = audioTuner;
         _audioSettings = audioSettings;
     }
 
-    protected override float MinValue => _audioSettings.MinVolume;
+    protected override void Start()
+    {
+        base.Start();
 
-    protected override float MaxValue => _audioSettings.MaxVolume;
+        Slider.minValue = _audioSettings.MinVolume;
+        Slider.maxValue = _audioSettings.MaxVolume;
+        Slider.SetValueWithoutNotify(_audioTuner.SoundVolume.CurrentValue);
+    }
 
-    protected override float InitialValue => _audioTuner.SoundVolume.CurrentValue;
-
-    protected override void OnSliderValueChanged(float value) => 
-        _audioTuner.SoundVolume.Value = value;
+    protected override void OnSliderValueChanged(float value) =>
+        _audioTuner.SetSoundVolume(value);
 }

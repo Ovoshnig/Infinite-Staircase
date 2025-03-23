@@ -1,50 +1,44 @@
 ﻿using R3;
+using System;
 using UnityEngine;
-using Zenject;
+using VContainer.Unity;
 
 [RequireComponent(typeof(CharacterController))]
-public class PlayerVerticalMover : MonoBehaviour
+public class PlayerVerticalMover : IInitializable, IDisposable
 {
-    [SerializeField] private float _jumpForce;
-    [SerializeField] private float _gravity;
+    private readonly PlayerSettings _playerSettings;
+    private readonly CompositeDisposable _compositeDisposable = new();
+    private readonly PlayerState _playerState;
+    private Vector3 _movement;
 
-    private PlayerState _playerState;
-    private CharacterController _characterController;
-    private Vector3 _motion;
-    private CompositeDisposable _compositiveDisposable;
-
-    [Inject]
-    private void Construct([Inject(Id = ZenjectIdConstants.PlayerId)] PlayerState playerState) => 
-        _playerState = playerState;
-
-    private void Awake()
+    public PlayerVerticalMover(PlayerSettings playerSettings, PlayerState playerState)
     {
-        _characterController = GetComponent<CharacterController>();
+        _playerSettings = playerSettings;
+        _playerState = playerState;
+    }
 
+    public void Initialize()
+    {
         var jumpDisposable = _playerState.IsJumping
             .Where(value => value)
-            .Subscribe(_ => _motion.y = _jumpForce);
+            .Subscribe(_ => _movement.y = _playerSettings.JumpForce)
+            .AddTo(_compositeDisposable);
 
         var groundEnterDisposable = _playerState.IsGrounded
             .Where(value => value)
-            .Subscribe(_ => _motion.y = -_gravity);
-
-        _compositiveDisposable = new CompositeDisposable()
-        { 
-            jumpDisposable,
-            groundEnterDisposable
-        };
+            .Subscribe(_ => _movement.y = -_playerSettings.GravityForce)
+            .AddTo(_compositeDisposable);
     }
 
-    private void OnDestroy() => _compositiveDisposable?.Dispose();
+    public void Dispose() => _compositeDisposable?.Dispose();
 
-    private void Update() => Fall();
-
-    private void Fall()
+    public Vector3 CalculateMovementVector()
     {
         if (!_playerState.IsGrounded.CurrentValue)
-            _motion.y -= _gravity * Time.deltaTime;
+            _movement.y -= _playerSettings.GravityForce * Time.deltaTime;
 
-        _characterController.Move(_motion * Time.deltaTime);
+        Vector3 multipliedMovement = _movement * Time.deltaTime;
+
+        return multipliedMovement;
     }
 }

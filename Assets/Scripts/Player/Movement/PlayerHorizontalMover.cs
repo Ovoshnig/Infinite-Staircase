@@ -1,44 +1,47 @@
 ﻿using UnityEngine;
-using Zenject;
 
 [RequireComponent(typeof(CharacterController))]
-public class PlayerHorizontalMover : MonoBehaviour
+public class PlayerHorizontalMover
 {
-    [SerializeField, Min(0f)] private float _walkSpeed;
-    [SerializeField, Min(0f)] private float _runSpeed;
-    [SerializeField, Min(1f)] private float _slewSpeed = 1f;
+    private readonly Transform _firstPersonCameraTransform;
+    private readonly Transform _thirdPersonCameraTransform;
+    private readonly PlayerSettings _playerSettings;
+    private readonly PlayerState _playerState;
+    private readonly CameraSwitch _cameraSwitch;
 
-    private PlayerState _playerState;
-    private FirstPersonLook _firstPersonLook;
-    private ThirdPersonLook _thirdPersonLook;
-    private CharacterController _characterController;
-
-    [Inject]
-    protected void Construct([Inject(Id = ZenjectIdConstants.PlayerId)] PlayerState playerState,
-        [Inject(Id = ZenjectIdConstants.FirstPersonCameraId)] FirstPersonLook firstPersonLook,
-        [Inject(Id = ZenjectIdConstants.ThirdPersonCameraId)] ThirdPersonLook thirdPersonLook)
+    public PlayerHorizontalMover(FirstCameraPriorityChanger firstCamera, ThirdCameraPriorityChanger thirdCamera, 
+        PlayerSettings playerSettings, PlayerState playerState, 
+        CameraSwitch cameraSwitch)
     {
+        _firstPersonCameraTransform = firstCamera.transform;
+        _thirdPersonCameraTransform = thirdCamera.transform;
+
+        _playerSettings = playerSettings;
         _playerState = playerState;
-        _firstPersonLook = firstPersonLook;
-        _thirdPersonLook = thirdPersonLook;
+        _cameraSwitch = cameraSwitch;
     }
 
-    protected virtual void Awake() => _characterController = GetComponent<CharacterController>();
+    public Vector3 EulerAngles { get; private set; } = Vector3.zero;
 
-    protected virtual void Update() => Move();
-
-    protected virtual void Move()
+    public Vector3 CalculateMovementVector()
     {
+        Vector3 movement;
+
         if (_playerState.IsWalking.CurrentValue)
         {
             float targetAngle = CalculateTargetAngle();
-            float smoothedAngle = CalculateSmothedAngle(targetAngle);
-            transform.eulerAngles = new Vector3(0f, smoothedAngle, 0f);
+            float smoothedAngle = CalculateSmoothedAngle(targetAngle);
+            EulerAngles = new Vector3(0f, smoothedAngle, 0f);
 
             Vector3 targetForward = CalculateForwardVector(targetAngle);
-            Vector3 motion = CalculateMotionVector(targetForward);
-            _characterController.Move(motion);
+            movement = MultiplyMovementVector(targetForward);
         }
+        else
+        {
+            movement = Vector3.zero;
+        }
+
+        return movement;
     }
 
     private float CalculateTargetAngle()
@@ -46,15 +49,15 @@ public class PlayerHorizontalMover : MonoBehaviour
         Vector3 inputDirection = new(_playerState.WalkInput.x, 0f, _playerState.WalkInput.y);
         float targetAngle = Mathf.Atan2(inputDirection.x, inputDirection.z) * Mathf.Rad2Deg;
 
-        targetAngle += _firstPersonLook.IsSelected
-            ? _firstPersonLook.transform.eulerAngles.y
-            : _thirdPersonLook.transform.eulerAngles.y;
+        targetAngle += _cameraSwitch.IsFirstPerson.CurrentValue
+            ? _firstPersonCameraTransform.eulerAngles.y
+            : _thirdPersonCameraTransform.eulerAngles.y;
 
         return targetAngle;
     }
 
-    private float CalculateSmothedAngle(float angel) =>
-        Mathf.LerpAngle(transform.eulerAngles.y, angel, Time.deltaTime * _slewSpeed);
+    private float CalculateSmoothedAngle(float angel) =>
+        Mathf.LerpAngle(_playerState.EulerAngels.y, angel, Time.deltaTime * _playerSettings.SlewSpeed);
 
     private Vector3 CalculateForwardVector(float angel)
     {
@@ -64,11 +67,13 @@ public class PlayerHorizontalMover : MonoBehaviour
         return forward;
     }
 
-    private Vector3 CalculateMotionVector(Vector3 direction)
+    private Vector3 MultiplyMovementVector(Vector3 direction)
     {
-        float speed = _playerState.IsRunning.CurrentValue ? _runSpeed : _walkSpeed;
-        Vector3 motion = speed * Time.deltaTime * direction;
+        float speed = _playerState.IsRunning.CurrentValue 
+            ? _playerSettings.RunSpeed 
+            : _playerSettings.WalkSpeed;
+        Vector3 movement = speed * Time.deltaTime * direction;
 
-        return motion;
+        return movement;
     }
 }

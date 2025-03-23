@@ -1,40 +1,44 @@
 using R3;
 using System;
 using UnityEngine.InputSystem;
-using Zenject;
+using VContainer.Unity;
 
 public class WindowInputHandler : IInitializable, IDisposable
 {
-    private readonly PlayerInput _playerInput;
     private readonly Subject<bool> _closeCurrentPressed = new();
     private readonly Subject<bool> _pauseMenuSwitchPressed = new();
     private readonly Subject<bool> _inventorySwitchPressed = new();
+    private InputActionMap _actionMap;
 
-    [Inject]
-    public WindowInputHandler(PlayerInput playerInput) => _playerInput = playerInput;
-
-    public Observable<bool> CloseCurrentPressed => _closeCurrentPressed;
-    public Observable<bool> PauseMenuSwitchPressed => _pauseMenuSwitchPressed;
-    public Observable<bool> InventorySwitchPressed => _inventorySwitchPressed;
+    public ReadOnlyReactiveProperty<bool> CloseCurrentPressed => 
+        _closeCurrentPressed.ToReadOnlyReactiveProperty();
+    public ReadOnlyReactiveProperty<bool> PauseMenuSwitchPressed => 
+        _pauseMenuSwitchPressed.ToReadOnlyReactiveProperty();
+    public ReadOnlyReactiveProperty<bool> InventorySwitchPressed => 
+        _inventorySwitchPressed.ToReadOnlyReactiveProperty();
 
     public void Initialize()
     {
-        _playerInput.Windows.CloseCurrent.performed += OnCloseCurrent;
-        _playerInput.Windows.CloseCurrent.canceled += OnCloseCurrent;
-        _playerInput.Windows.SwitchPauseMenu.performed += OnPauseMenuSwitch;
-        _playerInput.Windows.SwitchPauseMenu.canceled += OnPauseMenuSwitch;
-        _playerInput.Windows.SwitchInventory.performed += OnInventorySwitch;
-        _playerInput.Windows.SwitchInventory.canceled += OnInventorySwitch;
+        PlayerInput playerInput = new();
+        PlayerInput.WindowsActions windowActions = playerInput.Windows;
+        _actionMap = InputSystem.actions.FindActionMap(nameof(playerInput.Windows));
 
-        _playerInput.Windows.Enable();
+        _actionMap.FindAction(nameof(windowActions.CloseCurrent)).performed += OnCloseCurrent;
+        _actionMap.FindAction(nameof(windowActions.CloseCurrent)).canceled += OnCloseCurrent;
+        _actionMap.FindAction(nameof(windowActions.SwitchPauseMenu)).performed += OnPauseMenuSwitch;
+        _actionMap.FindAction(nameof(windowActions.SwitchPauseMenu)).canceled += OnPauseMenuSwitch;
+        _actionMap.FindAction(nameof(windowActions.SwitchInventory)).performed += OnInventorySwitch;
+        _actionMap.FindAction(nameof(windowActions.SwitchInventory)).canceled += OnInventorySwitch;
+
+        _actionMap.Enable();
     }
 
-    public void Dispose() => _playerInput.Windows.Disable();
+    public void Dispose() => _actionMap.Disable();
 
     private void OnCloseCurrent(InputAction.CallbackContext context) => 
         _closeCurrentPressed.OnNext(context.ReadValueAsButton());
 
-    private void OnPauseMenuSwitch(InputAction.CallbackContext context) =>
+    private void OnPauseMenuSwitch(InputAction.CallbackContext context) => 
         _pauseMenuSwitchPressed.OnNext(context.ReadValueAsButton());
 
     private void OnInventorySwitch(InputAction.CallbackContext context) =>

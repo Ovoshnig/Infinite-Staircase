@@ -1,57 +1,44 @@
+using JetBrains.Annotations;
 using R3;
-using Random = System.Random;
-using System;
+using UnityEngine.Audio;
 using UnityEngine;
-using Zenject;
+using VContainer;
 
 [RequireComponent(typeof(AudioSource))]
 public class PlayerSoundPlayer : MonoBehaviour
 {
-    private PlayerState _playerState;
-    private AudioSource _audioSource;
-    private AudioClip[] _footstepClips;
-    private AudioClip[] _landClips;
-    private Random _random;
-    private IDisposable _disposable;
+    [SerializeField] private AudioResource _footstepResource;
+    [SerializeField] private AudioResource _landResource;
 
+	private readonly CompositeDisposable _compositeDisposable = new();
+	private PlayerState _playerState;
+	private AudioSource _audioSource;
 
     [Inject]
-    private void Construct([Inject(Id = ZenjectIdConstants.PlayerId)] PlayerState playerState) => 
-        _playerState = playerState;
+    public void Construct(PlayerState playerState) => _playerState = playerState;
 
-    private void Awake()
+    private void Awake() => _audioSource = GetComponent<AudioSource>();
+
+    private void Start()
     {
-        _audioSource = GetComponent<AudioSource>();
-
-        _footstepClips = Resources.LoadAll<AudioClip>(ResourcesConstants.PlayerFootstepPath);
-        _landClips = Resources.LoadAll<AudioClip>(ResourcesConstants.PlayerLandPath);
-
-        _random = new Random();
-
-        _disposable = _playerState.IsGrounded
+        _playerState.IsGrounded
             .Where(value => value)
-            .Subscribe(_ => PlayLandSound());
+            .Subscribe(_ => PlayLandSound())
+            .AddTo(_compositeDisposable);
     }
 
-    private void OnDestroy() => _disposable?.Dispose();
+    private void OnDestroy() => _compositeDisposable?.Dispose();
 
+    [UsedImplicitly]
     private void PlayStepSound()
     {
-        AudioClip clip = GetRandomClip(_footstepClips);
-        _audioSource.PlayOneShot(clip);
+        _audioSource.resource = _footstepResource;
+        _audioSource.Play();
     }
 
     private void PlayLandSound()
     {
-        AudioClip clip = GetRandomClip(_landClips);
-        _audioSource.PlayOneShot(clip);
-    }
-
-    private AudioClip GetRandomClip(AudioClip[] clips)
-    {
-        int index = _random.Next(0, clips.Length);
-        AudioClip clip = clips[index];
-
-        return clip;
+        _audioSource.resource = _landResource;
+        _audioSource.Play();
     }
 }

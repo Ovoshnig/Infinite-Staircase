@@ -1,37 +1,33 @@
 using R3;
 using System;
-using Zenject;
+using VContainer.Unity;
 
-public class LookTuner : IInitializable, IDisposable
+public class LookTuner : IPostInitializable, IDisposable
 {
-    private readonly ReactiveProperty<float> _sensitivity = new(0f);
+    private readonly ReactiveProperty<float> _sensitivity = new();
     private readonly SettingsStorage _settingsStorage;
-    private readonly GameSettingsInstaller.ControlSettings _controlSettings;
-    private IDisposable _disposable;
+    private readonly ControlSettings _controlSettings;
 
-    [Inject]
-    public LookTuner(SettingsStorage settingsStorage, GameSettingsInstaller.ControlSettings controlSettings)
+    public LookTuner(SettingsStorage settingsStorage, ControlSettings controlSettings)
     {
         _settingsStorage = settingsStorage;
         _controlSettings = controlSettings;
     }
 
-    public ReactiveProperty<float> Sensitivity => _sensitivity;
+    public ReadOnlyReactiveProperty<float> Sensitivity => _sensitivity;
 
-    public void Initialize()
+    public void PostInitialize()
     {
-        _sensitivity.Value = _settingsStorage.Get(SettingsConstants.SensitivityKey,
-            _controlSettings.DefaultSensitivity);
-
-        _disposable = Sensitivity
-            .Subscribe(value =>
-            _sensitivity.Value = Math.Clamp(value, 0f, _controlSettings.MaxSensitivity));
+        float sensitivity = _settingsStorage.Get(SettingsConstants.SensitivityKey, _controlSettings.DefaultSensitivity);
+        SetSensitivity(sensitivity);
     }
 
-    public void Dispose()
-    {
+    public void Dispose() =>
         _settingsStorage.Set(SettingsConstants.SensitivityKey, _sensitivity.Value);
 
-        _disposable?.Dispose();
+    public void SetSensitivity(float value)
+    {
+        value = Math.Clamp(value, _controlSettings.MinSensitivity, _controlSettings.MaxSensitivity);
+        _sensitivity.Value = value;
     }
 }

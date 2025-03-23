@@ -1,3 +1,4 @@
+using R3;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -5,25 +6,29 @@ using UnityEngine.UI;
 public abstract class SliderTuner : MonoBehaviour
 {
     private Slider _slider;
+    private CompositeDisposable _compositeDisposable = new();
 
-    protected abstract float MinValue { get; }
-    protected abstract float MaxValue { get; }
-    protected abstract float InitialValue { get; }
+    protected Slider Slider => _slider;
 
     protected virtual void Awake() => _slider = GetComponent<Slider>();
 
-    protected virtual void OnEnable() => _slider.onValueChanged.AddListener(OnSliderValueChanged);
+    protected virtual void OnEnable()
+    {
+        _slider.OnValueChangedAsObservable()
+            .Skip(1)
+            .Subscribe(OnSliderValueChanged)
+            .AddTo(_compositeDisposable);
+    }
 
-    protected virtual void Start() => InitializeSlider();
+    protected virtual void Start()
+    {
+    }
 
-    protected virtual void OnDisable() => _slider.onValueChanged.RemoveListener(OnSliderValueChanged);
+    protected virtual void OnDisable()
+    {
+        _compositeDisposable?.Dispose();
+        _compositeDisposable = new CompositeDisposable();
+    }
 
     protected abstract void OnSliderValueChanged(float value);
-
-    private void InitializeSlider()
-    {
-        _slider.minValue = MinValue;
-        _slider.maxValue = MaxValue;
-        _slider.value = InitialValue;
-    }
 }

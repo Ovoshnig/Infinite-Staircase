@@ -1,9 +1,10 @@
 using Cysharp.Threading.Tasks;
-using Random = System.Random;
+using R3;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using Zenject;
+using VContainer;
+using Random = System.Random;
 
 public class NewGameCreator : MonoBehaviour
 {
@@ -14,22 +15,34 @@ public class NewGameCreator : MonoBehaviour
     private readonly Random _random = new();
     private SceneSwitch _sceneSwitch;
     private SaveStorage _saveStorage;
-    private GameSettingsInstaller.WorldGenerationSettings _generationSettings;
+    private WorldGenerationSettings _generationSettings;
+    private CompositeDisposable _compositeDisposable = new();
 
     [Inject]
-    private void Construct(SceneSwitch sceneSwitch, SaveStorage saveStorage,
-        GameSettingsInstaller.WorldGenerationSettings generationSettings)
+    public void Construct(SceneSwitch sceneSwitch, SaveStorage saveStorage,
+        WorldGenerationSettings generationSettings)
     {
         _sceneSwitch = sceneSwitch;
         _saveStorage = saveStorage;
         _generationSettings = generationSettings;
     }
 
-    private void OnEnable() => _startGameButton.onClick.AddListener(OnStartNewGameButtonClicked);
+    private void Start() => _seedInputField.contentType = TMP_InputField.ContentType.IntegerNumber;
 
-    private void OnDisable() => _startGameButton.onClick.RemoveListener(OnStartNewGameButtonClicked);
+    private void OnEnable()
+    {
+        _startGameButton.OnClickAsObservable()
+            .Subscribe(_ => OnStartGameButtonClicked())
+            .AddTo(_compositeDisposable);
+    }
 
-    private void OnStartNewGameButtonClicked()
+    private void OnDisable()
+    {
+        _compositeDisposable?.Dispose();
+        _compositeDisposable = new CompositeDisposable();
+    }
+
+    private void OnStartGameButtonClicked()
     {
         int seed;
 
@@ -38,6 +51,7 @@ public class NewGameCreator : MonoBehaviour
         else
             seed = _random.Next(_generationSettings.MinSeed, _generationSettings.MaxSeed);
 
+        _saveStorage.ResetData();
         _saveStorage.Set(SaveConstants.SaveCreatedKey, true);
         _saveStorage.Set(SaveConstants.SeedKey, seed);
         _sceneSwitch.LoadFirstLevel().Forget();

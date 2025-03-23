@@ -2,25 +2,20 @@ using R3;
 using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using Zenject;
+using VContainer.Unity;
 
 public class PlayerInputHandler : IInitializable, IDisposable
 {
-    private readonly PlayerInput _playerInput;
     private readonly WindowTracker _windowTracker;
     private readonly ReactiveProperty<bool> _isWalkPressed = new(false);
     private readonly ReactiveProperty<bool> _isRunPressed = new(false);
     private readonly ReactiveProperty<bool> _isLookPressed = new(false);
     private readonly ReactiveProperty<bool> _isJumpPressed = new(false);
     private readonly ReactiveProperty<bool> _isTogglePerspectivePressed = new(false);
-    private IDisposable _disposable;
+    private readonly CompositeDisposable _compositeDisposable = new();
+    private InputActionMap _actionMap;
 
-    [Inject]
-    public PlayerInputHandler(PlayerInput playerInput, WindowTracker windowTracker)
-    {
-        _playerInput = playerInput;
-        _windowTracker = windowTracker;
-    }
+    public PlayerInputHandler(WindowTracker windowTracker) => _windowTracker = windowTracker;
 
     public Vector2 WalkInput { get; private set; } = Vector2.zero;
     public Vector2 LookInput { get; private set; } = Vector2.zero;
@@ -32,32 +27,37 @@ public class PlayerInputHandler : IInitializable, IDisposable
 
     public void Initialize()
     {
-        _disposable = _windowTracker.IsOpen
+        PlayerInput playerInput = new();
+        PlayerInput.PlayerActions playerActions = playerInput.Player;
+        _actionMap = InputSystem.actions.FindActionMap(nameof(playerInput.Player));
+
+        _actionMap.FindAction(nameof(playerActions.Walk)).performed += OnWalk;
+        _actionMap.FindAction(nameof(playerActions.Walk)).canceled += OnWalk;
+        _actionMap.FindAction(nameof(playerActions.Run)).performed += OnRun;
+        _actionMap.FindAction(nameof(playerActions.Run)).canceled += OnRun;
+        _actionMap.FindAction(nameof(playerActions.Look)).performed += OnLook;
+        _actionMap.FindAction(nameof(playerActions.Look)).canceled += OnLook;
+        _actionMap.FindAction(nameof(playerActions.Jump)).performed += OnJump;
+        _actionMap.FindAction(nameof(playerActions.Jump)).canceled += OnJump;
+        _actionMap.FindAction(nameof(playerActions.TogglePerspective)).performed += OnTogglePerspective;
+        _actionMap.FindAction(nameof(playerActions.TogglePerspective)).canceled += OnTogglePerspective;
+
+        _windowTracker.IsOpen
             .Subscribe(value =>
             {
                 if (value)
-                    _playerInput.Player.Disable();
+                    _actionMap.Disable();
                 else
-                    _playerInput.Player.Enable();
-            });
-
-        _playerInput.Player.Walk.performed += OnWalk;
-        _playerInput.Player.Walk.canceled += OnWalk;
-        _playerInput.Player.Run.performed += OnRun;
-        _playerInput.Player.Run.canceled += OnRun;
-        _playerInput.Player.Look.performed += OnLook;
-        _playerInput.Player.Look.canceled += OnLook;
-        _playerInput.Player.Jump.performed += OnJump;
-        _playerInput.Player.Jump.canceled += OnJump;
-        _playerInput.Player.TogglePerspective.performed += OnTogglePerspective;
-        _playerInput.Player.TogglePerspective.canceled += OnTogglePerspective;
+                    _actionMap.Enable();
+            })
+            .AddTo(_compositeDisposable);
     }
 
     public void Dispose()
     {
-        _disposable?.Dispose();
+        _actionMap.Disable();
 
-        _playerInput.Player.Disable();
+        _compositeDisposable?.Dispose();
     }
 
     private void OnWalk(InputAction.CallbackContext context)
