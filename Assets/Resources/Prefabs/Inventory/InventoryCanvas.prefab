@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 8728476298558564902}
   - component: {fileID: 7350550668886576797}
   - component: {fileID: 405254108006294585}
-  - component: {fileID: 4196218280827391479}
   - component: {fileID: 5138719768825059544}
   m_Layer: 0
   m_Name: Slots
@@ -95,22 +94,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1515677665204968498}
   m_CullTransparentMesh: 1
---- !u!114 &4196218280827391479
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1515677665204968498}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c9194406856dd0c4189dc540416ac363, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _slotPrefab: {fileID: 70310172741059577, guid: 0935ffcca6454064888813cbb72661a3, type: 3}
-  _inventorySettings:
-    <RowCount>k__BackingField: 6
-    <ColumnCount>k__BackingField: 4
 --- !u!114 &5138719768825059544
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2681,7 +2664,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1183938464703546559, guid: d8e105ccc665eef4a95eee3e8aba6541, type: 3}
       propertyPath: m_AdditionalShaderChannelsFlag
-      value: 31
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 5070337348088267490, guid: d8e105ccc665eef4a95eee3e8aba6541, type: 3}
       propertyPath: m_Name

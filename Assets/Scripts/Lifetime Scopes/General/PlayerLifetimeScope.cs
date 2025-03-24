@@ -12,9 +12,6 @@ public class PlayerLifetimeScope : LifetimeScope
         builder.RegisterEntryPoint<PlayerInputHandler>(Lifetime.Singleton).AsSelf();
         builder.RegisterEntryPoint<PlayerState>(Lifetime.Singleton).AsSelf();
         builder.RegisterEntryPoint<CameraSwitch>(Lifetime.Singleton).AsSelf();
-        builder.RegisterEntryPoint<PlayerVerticalMover>(Lifetime.Singleton).AsSelf();
-
-        builder.Register<PlayerHorizontalMover>(Lifetime.Singleton);
 
         builder.RegisterComponentInNewPrefab(_characterController, Lifetime.Singleton)
             .UnderTransform(_spawnPoint);
