@@ -102,7 +102,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5553912703846147946, guid: 530458200879ce544b4494f4f8612b17, type: 3}
       propertyPath: m_Name
-      value: Button Variant Variant
+      value: KeyResetButton
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

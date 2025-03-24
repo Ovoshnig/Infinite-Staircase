@@ -90,7 +90,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3136494955626142587, guid: 723194aaa30a36e43ad28ddddaeeb499, type: 3}
       propertyPath: m_Name
-      value: Button Variant
+      value: PauseMenuButton
       objectReference: {fileID: 0}
     - target: {fileID: 4230476776402574984, guid: 723194aaa30a36e43ad28ddddaeeb499, type: 3}
       propertyPath: m_Color.g

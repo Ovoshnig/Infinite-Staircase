@@ -109,8 +109,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _slotPrefab: {fileID: 70310172741059577, guid: 0935ffcca6454064888813cbb72661a3, type: 3}
   _inventorySettings:
-    <RowCount>k__BackingField: 0
-    <ColumnCount>k__BackingField: 0
+    <RowCount>k__BackingField: 6
+    <ColumnCount>k__BackingField: 4
 --- !u!114 &5138719768825059544
 MonoBehaviour:
   m_ObjectHideFlags: 0

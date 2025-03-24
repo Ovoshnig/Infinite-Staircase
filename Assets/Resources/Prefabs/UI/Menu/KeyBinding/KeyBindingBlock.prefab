@@ -82,15 +82,7 @@ MonoBehaviour:
   _bindingResetButton: {fileID: 7778082662215887520}
   _actionNameText: {fileID: 6599954011534530538}
   _waitingTextColor: {r: 0.4339621, g: 0.104595244, b: 0.05526871, a: 1}
-  _inputAction:
-    m_Name: Input
-    m_Type: 0
-    m_ExpectedControlType: 
-    m_Id: 439ed0e2-4da7-45c4-8c72-e060e58f9e2f
-    m_Processors: 
-    m_Interactions: 
-    m_SingletonActionBindings: []
-    m_Flags: 0
+  _inputActionReference: {fileID: 0}
 --- !u!1001 &887136218892550641
 PrefabInstance:
   m_ObjectHideFlags: 0
