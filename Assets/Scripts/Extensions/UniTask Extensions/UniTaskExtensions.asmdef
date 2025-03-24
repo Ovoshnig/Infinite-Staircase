@@ -1,9 +1,7 @@
 {
     "name": "UniTask.Extensions",
     "rootNamespace": "",
-    "references": [
-        ""
-    ],
+    "references": [],
     "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
