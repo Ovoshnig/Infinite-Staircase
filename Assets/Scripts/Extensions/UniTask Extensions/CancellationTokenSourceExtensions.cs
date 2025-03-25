@@ -14,4 +14,4 @@ public static class CancellationTokenSourceExtensions
         cts.Dispose();
         ctsField = null;
     }
-}
+};

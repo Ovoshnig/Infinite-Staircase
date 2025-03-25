@@ -635,6 +635,7 @@ Audio/SFX/Player/Footsteps/PlayerFootstepsRandomContainer.asset
 Audio/SFX/Player/Land/Player_Land.wav
 Audio/SFX/Player/Land/PlayerLandRandomContainer.asset
 Items/Gear.asset
+Items/ItemDataRepository.asset
 Items/Music.asset
 Items/Play.asset
 Materials/Coloured Glass/ColouredGlass.mat

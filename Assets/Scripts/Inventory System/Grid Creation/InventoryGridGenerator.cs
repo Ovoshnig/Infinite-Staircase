@@ -11,15 +11,11 @@ public class InventoryGridGenerator : MonoBehaviour
 
     private InventorySettings InventorySettings => _inventorySettings;
 
-    private void OnValidate()
-    {
-        if (_gridLayoutGroup == null)
-            _gridLayoutGroup = GetComponent<GridLayoutGroup>();
-    }
-
     [ContextMenu(nameof(PlaceSlots))]
     private void PlaceSlots()
     {
+        _gridLayoutGroup = GetComponent<GridLayoutGroup>();
+
         while (transform.childCount > 0)
             DestroyImmediate(transform.GetChild(0).gameObject);
 
