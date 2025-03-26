@@ -11,6 +11,7 @@ public class StaircaseGenerator : MonoBehaviour
     [SerializeField] private int _partsCount;
 
     private SaveStorage _saveStorage;
+    private StairsLoader _stairsLoader;
     private GameObject[] _stairs;
     private StairConnection[] _stairConnections;
     private CancellationTokenSource _cts;
@@ -18,22 +19,31 @@ public class StaircaseGenerator : MonoBehaviour
     private Random _random;
 
     [Inject]
-    public void Construct(SaveStorage saveStorage) => _saveStorage = saveStorage;
+    public void Construct(SaveStorage saveStorage, StairsLoader stairsLoader)
+    {
+        _saveStorage = saveStorage;
+        _stairsLoader = stairsLoader;
+    }
 
     private void Awake() => _cts = new CancellationTokenSource();
 
-    private void Start()
+    private async void Start()
     {
         int seed = _saveStorage.Get(SaveConstants.SeedKey, 0);
         _random = new Random(seed);
-        _stairs = Resources.LoadAll<GameObject>(ResourcesConstants.StairPrefabsPath);
+        _stairs = (await _stairsLoader.LoadStairsAsync()).ToArray();
         _size = _stairs[0].GetComponent<Stair>().Size;
-        _stairConnections = Resources.LoadAll<StairConnection>(ResourcesConstants.StairConnectionsPath);
+        _stairConnections = (await _stairsLoader.LoadStairConnectionsAsync()).ToArray();
 
         GenerateAsync().Forget();
     }
 
-    private void OnDisable() => _cts.CancelAndDispose(ref _cts);
+    private void OnDestroy()
+    {
+        _cts.CancelAndDispose(ref _cts);
+
+        _stairsLoader.ReleaseStairs();
+    }
 
     private async UniTask GenerateAsync()
     {

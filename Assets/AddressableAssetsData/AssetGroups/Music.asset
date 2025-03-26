@@ -39,11 +39,6 @@ MonoBehaviour:
     - game level
     - music
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 2992805e45a337a4bbfdd0a05d16faa6
-    m_Address: Audio/Music
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 2c85331f5a370224484186204927a439
     m_Address: Assets/Resources_moved/Audio/Music/MainMenu/Ethereal Drift (1).mp3
     m_ReadOnly: 0
@@ -59,11 +54,6 @@ MonoBehaviour:
     - audio
     - credits
     - music
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 3c6e8d52401563149b355b5496d61a95
-    m_Address: Audio/Music/GameLevel
-    m_ReadOnly: 0
-    m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 4504016d09d824748a014f79d7157323
     m_Address: Assets/Resources_moved/Audio/Music/GameLevel/Free Look.mp3
@@ -97,11 +87,6 @@ MonoBehaviour:
     - main menu
     - music
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 9d2569afeab629b43b275b217ed31cd4
-    m_Address: Assets/Resources_moved/Audio/Music/MainMenu
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: b2a2ccb459313cf4e997880caf02087d
     m_Address: Assets/Resources_moved/Audio/Music/MainMenu/Velvet Horizon.mp3
     m_ReadOnly: 0
@@ -125,11 +110,6 @@ MonoBehaviour:
     - audio
     - game level
     - music
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: d48c8b0b6a57870498b9ea12228c45fe
-    m_Address: Assets/Resources_moved/Audio/Music/Credits
-    m_ReadOnly: 0
-    m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: d565bdae5d925734099523df4350663d
     m_Address: Assets/Resources_moved/Audio/Music/GameLevel/Lush Reverie.mp3

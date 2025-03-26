@@ -15,7 +15,7 @@ MonoBehaviour:
   m_DefaultGroup: 619f6c39f5d4e824f8d04613515e9d1b
   m_currentHash:
     serializedVersion: 2
-    Hash: 00000000000000000000000000000000
+    Hash: a495f91b5318d9429bc5963582bc67b5
   m_OptimizeCatalogSize: 0
   m_BuildRemoteCatalog: 0
   m_CatalogRequestsTimeout: 0
@@ -60,6 +60,7 @@ MonoBehaviour:
   m_overridePlayerVersion: '[UnityEditor.PlayerSettings.bundleVersion]'
   m_GroupAssets:
   - {fileID: 11400000, guid: 1ac1f2a788ed10041ba29f9bbfef6975, type: 2}
+  - {fileID: 11400000, guid: 24f9c2820a6ef4e49b2c3da5d401cd4c, type: 2}
   - {fileID: 11400000, guid: 34bc5d4be37def241b79423a8108be65, type: 2}
   m_BuildSettings:
     m_LogResourceManagerExceptions: 1
@@ -106,6 +107,12 @@ MonoBehaviour:
     - main menu
     - game level
     - credits
+    - stair connection
+    - prefab
+    - stair
+    - material
+    - texture
+    - 3d model
   m_SchemaTemplates: []
   m_GroupTemplateObjects:
   - {fileID: 11400000, guid: 20861731a97b2ce49a010d796a293366, type: 2}
