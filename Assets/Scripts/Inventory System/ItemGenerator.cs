@@ -17,8 +17,6 @@ public class ItemGenerator : MonoBehaviour
     {
         _inventoryView = inventoryView;
         _itemDataRepository = itemDataRepository;
-        Debug.Log(_inventoryView);
-        Debug.Log(_itemDataRepository);
     }
 
     private async void OnTriggerEnter(Collider other)

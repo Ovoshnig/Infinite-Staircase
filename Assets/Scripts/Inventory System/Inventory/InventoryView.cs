@@ -26,9 +26,9 @@ public class InventoryView : MonoBehaviour
 
     private void OnEnable() => _mouseClickAction.Enable();
 
-    private void Start()
+    private async void Start()
     {
-        _inventorySaver.LoadSlots(_slotViews);
+        await _inventorySaver.LoadSlotsAsync(_slotViews);
         SlotModel[] slotModels = _slotViews.Select(x => x.SlotModel).ToArray();
         _inventoryModel = new InventoryModel(slotModels);
     }

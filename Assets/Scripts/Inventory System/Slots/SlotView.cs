@@ -1,3 +1,4 @@
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using VContainer;
@@ -69,9 +70,9 @@ public class SlotView : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 
     public SlotData Save() => _slotModel.Save();
 
-    public void Load(SlotData slotData, ItemDataRepository itemDataRepository)
+    public async UniTask LoadAsync(SlotData slotData, ItemDataRepository itemDataRepository)
     {
-        _slotModel.LoadAsync(slotData, itemDataRepository);
+        await _slotModel.LoadAsync(slotData, itemDataRepository);
 
         if (_slotModel.HasItem)
         {

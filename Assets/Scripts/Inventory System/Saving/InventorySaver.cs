@@ -1,3 +1,4 @@
+using Cysharp.Threading.Tasks;
 using System.Linq;
 
 public class InventorySaver
@@ -11,13 +12,13 @@ public class InventorySaver
         _itemDataRepository = itemDataRepository;
     }
 
-    public void LoadSlots(SlotView[] slotViews)
+    public async UniTask LoadSlotsAsync(SlotView[] slotViews)
     {
         SlotData[] defaultSlotArray = slotViews.Select(_ => new SlotData()).ToArray();
         SlotData[] slotDataArray = _saveStorage.Get(SaveConstants.InventoryKey, defaultSlotArray);
 
         for (int i = 0; i < slotViews.Length; i++)
-            slotViews[i].Load(slotDataArray[i], _itemDataRepository);
+            await slotViews[i].LoadAsync(slotDataArray[i], _itemDataRepository);
     }
 
     public void SaveSlots(SlotView[] slotViews, SlotData[] slotDataArray)
