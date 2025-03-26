@@ -1,3 +1,4 @@
+using Cysharp.Threading.Tasks;
 using System.Linq;
 
 public class InventoryModel
@@ -9,9 +10,9 @@ public class InventoryModel
     public SlotData[] SaveSlots() =>
         _slotModels.Select(slot => slot.Save()).ToArray();
 
-    public void LoadSlots(SlotData[] slotDataArray, ItemDataRepository itemDataRepository)
+    public async UniTask LoadSlotsAsync(SlotData[] slotDataArray, ItemDataRepository itemDataRepository)
     {
         for (int i = 0; i < _slotModels.Length; i++)
-            _slotModels[i].Load(slotDataArray[i], itemDataRepository);
+            await _slotModels[i].LoadAsync(slotDataArray[i], itemDataRepository);
     }
 }

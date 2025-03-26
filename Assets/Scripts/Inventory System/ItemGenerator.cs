@@ -1,6 +1,7 @@
 using Random = System.Random;
 using UnityEngine;
 using VContainer;
+using Cysharp.Threading.Tasks;
 
 public class ItemGenerator : MonoBehaviour
 {
@@ -16,19 +17,21 @@ public class ItemGenerator : MonoBehaviour
     {
         _inventoryView = inventoryView;
         _itemDataRepository = itemDataRepository;
+        Debug.Log(_inventoryView);
+        Debug.Log(_itemDataRepository);
     }
 
-    private void OnTriggerEnter(Collider other)
+    private async void OnTriggerEnter(Collider other)
     {
-        ItemModel itemModel = GenerateRandomItem();
+        ItemModel itemModel = await GenerateRandomItemAsync();
         _inventoryView.TryAddItem(itemModel);
     }
 
-    private ItemModel GenerateRandomItem()
+    private async UniTask<ItemModel> GenerateRandomItemAsync()
     {
         int index = _random.Next(0, _itemNames.Length);
         string name = _itemNames[index];
-        ItemDataSO itemDataSO = _itemDataRepository.GetItemDataByName(name);
+        ItemDataSO itemDataSO = await _itemDataRepository.GetItemDataByNameAsync(name);
         ItemModel itemModel = new(name, itemDataSO.Icon);
 
         return itemModel;

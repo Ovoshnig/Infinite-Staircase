@@ -1,0 +1,46 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
+  m_Name: Items
+  m_EditorClassIdentifier: 
+  m_GroupName: Items
+  m_GUID: deb3f3c4117895b498a81c220b6a1e9d
+  m_SerializeEntries:
+  - m_GUID: 3e6ba3fbcf590084882b2661c18f413b
+    m_Address: Assets/Resources_moved/Items/Gear.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - item
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 5d610a8efaa825046b5d945a2b98fdfe
+    m_Address: Assets/Resources_moved/Items/ItemDataRepository.asset
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 8dc1b2d26f8f77340a939fe430262241
+    m_Address: Assets/Resources_moved/Items/Music.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - item
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d7aa9bcf19a3105499ecc9492bd76de5
+    m_Address: Assets/Resources_moved/Items/Play.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - item
+    FlaggedDuringContentUpdateRestriction: 0
+  m_ReadOnly: 0
+  m_Settings: {fileID: 11400000, guid: abb42a486b86dd0459d8bd909fdf3dba, type: 2}
+  m_SchemaSet:
+    m_Schemas:
+    - {fileID: 11400000, guid: a0165a3357b846c4dbebf4ac93cd1ff0, type: 2}
+    - {fileID: 11400000, guid: b21079aadcff6f7468f91598de4b50fc, type: 2}

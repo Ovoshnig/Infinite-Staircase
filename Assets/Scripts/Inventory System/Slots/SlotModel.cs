@@ -1,3 +1,4 @@
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 
 public class SlotModel
@@ -17,13 +18,13 @@ public class SlotModel
 
     public SlotData Save() => new() { ItemName = ItemModel?.Name };
 
-    public void Load(SlotData slotData, ItemDataRepository itemDataRepository)
+    public async UniTask LoadAsync(SlotData slotData, ItemDataRepository itemDataRepository)
     {
         slotData ??= new SlotData { ItemName = default };
 
         if (slotData.ItemName != null)
         {
-            ItemDataSO itemData = itemDataRepository.GetItemDataByName(slotData.ItemName);
+            ItemDataSO itemData = await itemDataRepository.GetItemDataByNameAsync(slotData.ItemName);
 
             if (itemData == null)
                 Debug.LogError($"Item repository does not contain item with name {slotData.ItemName}");
