@@ -21,11 +21,6 @@ MonoBehaviour:
     m_SerializedLabels:
     - item
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 5d610a8efaa825046b5d945a2b98fdfe
-    m_Address: Assets/Resources_moved/Items/ItemDataRepository.asset
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 8dc1b2d26f8f77340a939fe430262241
     m_Address: Assets/Resources_moved/Items/Music.asset
     m_ReadOnly: 0

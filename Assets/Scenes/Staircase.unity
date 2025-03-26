@@ -637,6 +637,7 @@ MonoBehaviour:
   autoInjectGameObjects: []
   _inventorySwitch: {fileID: 4327219952241436862, guid: ff63e6bdb3799b74fabe58bfac3240a1, type: 3}
   _itemDataRepository: {fileID: 11400000, guid: 5d610a8efaa825046b5d945a2b98fdfe, type: 2}
+  _itemGenerator: {fileID: 1932447964}
 --- !u!1 &965924878
 GameObject:
   m_ObjectHideFlags: 0
