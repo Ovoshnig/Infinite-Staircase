@@ -728,11 +728,6 @@ Prefabs/UI/Menu/SliderBlock/SensitivitySliderBlock.prefab
 Prefabs/UI/Menu/SliderBlock/SliderBlock.prefab
 Prefabs/UI/Menu/SliderBlock/SoundVolumeSliderBlock.prefab
 Prefabs/UI/PanelName Variant.prefab
-resourcesList.txt
 Settings/Settings.asset
-URP/DefaultVolumeProfile.asset
-URP/Universal Render Pipeline Asset.asset
-URP/Universal Render Pipeline Asset_Renderer.asset
-URP/UniversalRenderPipelineGlobalSettings.asset
 VContainer/ProjectLifetimeScope.prefab
 VContainer/VContainerSettings.asset

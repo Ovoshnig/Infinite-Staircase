@@ -36,7 +36,7 @@ public class ProjectLifetimeScope : LifetimeScope
 
         builder.RegisterInstance(_audioMixerGroup);
 
-        builder.Register<IMusicLoader, ResourcesMusicLoader>(Lifetime.Singleton);
+        builder.Register<IClipLoader, AddressablesClipLoader>(Lifetime.Singleton);
         builder.Register<ISceneMusicMapper, SceneMusicMapper>(Lifetime.Singleton);
         builder.Register<MusicQueue>(Lifetime.Singleton);
         builder.RegisterComponentInNewPrefab(_musicPlayer, Lifetime.Singleton)
