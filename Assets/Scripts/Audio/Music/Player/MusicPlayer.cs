@@ -104,7 +104,7 @@ public class MusicPlayer : MonoBehaviour
             _audioSource.Stop();
             _audioSource.clip = null;
             _clipLoader.UnloadClip(clip);
-            Resources.UnloadUnusedAssets();
+            Resources.UnloadAsset(clip);
         }
     }
 }
