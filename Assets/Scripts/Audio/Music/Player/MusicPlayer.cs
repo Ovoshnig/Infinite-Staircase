@@ -14,8 +14,7 @@ public class MusicPlayer : MonoBehaviour
     private ISceneMusicMapper _sceneMusicMapper;
     private SceneSwitch _sceneSwitch;
     private Dictionary<MusicCategory, IEnumerable<object>> _musicClipKeys;
-    private CancellationTokenSource _cts = new();
-    private AudioClip _pastClip = null;
+    private CancellationTokenSource _cts;
 
     [Inject]
     public void Construct(IClipLoader clipLoader, MusicQueue musicQueue,
@@ -31,6 +30,7 @@ public class MusicPlayer : MonoBehaviour
 
     private async void Start()
     {
+        _cts = new CancellationTokenSource();
         _musicClipKeys = await _clipLoader.LoadClipKeysAsync(_cts.Token);
 
         _sceneSwitch.IsSceneLoading
@@ -39,18 +39,22 @@ public class MusicPlayer : MonoBehaviour
             .AddTo(this);
     }
 
-    private void OnDestroy() => _cts.CancelAndDispose(ref _cts);
+    private void OnDestroy()
+    {
+        _cts.CancelAndDispose();
+        _cts = null;
+    }
 
     private bool TryPlayMusic()
     {
-        _cts.CancelAndDispose(ref _cts);
+        _cts.Cancel();
         _cts = new CancellationTokenSource();
 
         MusicCategory category = _sceneMusicMapper.GetMusicCategory(_sceneSwitch.CurrentSceneType);
 
-        if (_musicClipKeys.TryGetValue(category, out IEnumerable<object> clips))
+        if (_musicClipKeys.TryGetValue(category, out IEnumerable<object> clipKeys))
         {
-            PlayMusic(clips);
+            PlayMusic(clipKeys).Forget();
 
             return true;
         }
@@ -62,21 +66,17 @@ public class MusicPlayer : MonoBehaviour
         }
     }
 
-    private void PlayMusic(IEnumerable<object> clipKeys)
+    private async UniTask PlayMusic(IEnumerable<object> clipKeys)
     {
-        _musicQueue.SetClips(clipKeys);
-        _musicQueue.ShuffleKeys();
-        PlayNextClipAsync().Forget();
+        _musicQueue.SetClipKeys(clipKeys);
+        _musicQueue.ShuffleClipKeys();
+
+        while (!_cts.Token.IsCancellationRequested && isActiveAndEnabled)
+            await PlayNextClipAsync();
     }
 
     private async UniTask PlayNextClipAsync()
     {
-        if (_pastClip != null)
-        {
-            ReleaseClip(_pastClip);
-            _pastClip = null;
-        }
-
         object nextClipKey = _musicQueue.GetNextClipKey();
 
         if (nextClipKey == null)
@@ -84,17 +84,27 @@ public class MusicPlayer : MonoBehaviour
 
         AudioClip clip = await _clipLoader.LoadClipAsync(nextClipKey, _cts.Token);
         _audioSource.clip = clip;
-        _pastClip = clip;
         _audioSource.Play();
-        await UniTask.WaitWhile(() => _audioSource.isPlaying, cancellationToken: _cts.Token);
 
-        PlayNextClipAsync().Forget();
+        try
+        {
+            await UniTask.WaitWhile(() => _audioSource.isPlaying, cancellationToken: _cts.Token);
+        }
+        finally
+        {
+            ReleaseClip(clip);
+            clip = null;
+        }
     }
 
     private void ReleaseClip(AudioClip clip)
     {
-        _audioSource.Stop();
-        _audioSource.clip = null;
-        _clipLoader.UnloadClip(clip, _cts.Token);
+        if (_audioSource != null)
+        {
+            _audioSource.Stop();
+            _audioSource.clip = null;
+            _clipLoader.UnloadClip(clip);
+            Resources.UnloadUnusedAssets();
+        }
     }
 }

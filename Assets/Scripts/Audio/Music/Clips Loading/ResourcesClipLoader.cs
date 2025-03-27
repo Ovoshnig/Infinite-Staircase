@@ -48,6 +48,5 @@ public sealed class ResourcesClipLoader : IClipLoader
         return await request.ToUniTask(cancellationToken: cancellationToken) as AudioClip;
     }
 
-    public void UnloadClip(AudioClip clip, CancellationToken cancellationToken) => 
-        Resources.UnloadAsset(clip);
+    public void UnloadClip(AudioClip clip) => Resources.UnloadAsset(clip);
 }

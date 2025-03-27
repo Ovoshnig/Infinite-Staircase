@@ -40,7 +40,8 @@ public class StaircaseGenerator : MonoBehaviour
 
     private void OnDestroy()
     {
-        _cts.CancelAndDispose(ref _cts);
+        _cts.CancelAndDispose();
+        _cts = null;
 
         _stairsLoader.ReleaseStairs();
     }

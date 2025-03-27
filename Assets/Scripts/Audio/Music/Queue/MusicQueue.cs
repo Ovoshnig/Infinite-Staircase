@@ -6,7 +6,7 @@ public class MusicQueue
     private readonly Random _random = new();
     private Queue<object> _clipKeysQueue = new();
 
-    public void SetClips(IEnumerable<object> clips)
+    public void SetClipKeys(IEnumerable<object> clips)
     {
         _clipKeysQueue.Clear();
         _clipKeysQueue = new Queue<object>(clips);
@@ -20,7 +20,7 @@ public class MusicQueue
         return _clipKeysQueue.Dequeue();
     }
 
-    public void ShuffleKeys()
+    public void ShuffleClipKeys()
     {
         List<object> clips = new(_clipKeysQueue);
         _clipKeysQueue.Clear();

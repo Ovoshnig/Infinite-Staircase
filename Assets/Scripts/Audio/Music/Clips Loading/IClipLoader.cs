@@ -9,5 +9,5 @@ public interface IClipLoader
 
     UniTask<AudioClip> LoadClipAsync(object address, CancellationToken cancellationToken);
 
-    void UnloadClip(AudioClip clip, CancellationToken cancellationToken);
+    void UnloadClip(AudioClip clip);
 }
