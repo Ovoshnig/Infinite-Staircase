@@ -14,7 +14,7 @@ public class PlayerMoverView : MonoBehaviour
     private CameraSwitch _cameraSwitch;
     private PlayerSettings _playerSettings;
     private Vector3 _horizontalMovement = Vector3.zero;
-    private Vector3 _verticalMovement;
+    private Vector3 _verticalMovement = Vector3.zero;
 
     [Inject]
     public void Construct(PlayerState playerState, FirstCameraPriorityChanger firstCamera,
@@ -45,19 +45,19 @@ public class PlayerMoverView : MonoBehaviour
     }
 
     private void Update()
-            {
-                float playerAngleY = _playerState.EulerAngels.y;
-                float cameraAngleY = _cameraSwitch.IsFirstPerson.CurrentValue
-                    ? _firstPersonCameraTransform.eulerAngles.y
-                    : _thirdPersonCameraTransform.eulerAngles.y;
+    {
+        float playerAngleY = _playerState.EulerAngels.y;
+        float cameraAngleY = _cameraSwitch.IsFirstPerson.CurrentValue
+            ? _firstPersonCameraTransform.eulerAngles.y
+            : _thirdPersonCameraTransform.eulerAngles.y;
 
-                Vector3 eulerAngles = _playerHorizontalCalculator
-                    .CalculateHorizontalVector(ref _horizontalMovement, _playerState.WalkInput,
-                    playerAngleY, cameraAngleY);
-                Vector3 fallingVector = _playerVerticalCalculator.CalculateFallingVector(ref _verticalMovement);
+        Vector3 eulerAngles = _playerHorizontalCalculator
+            .CalculateHorizontalVector(ref _horizontalMovement, _playerState.WalkInput,
+            playerAngleY, cameraAngleY);
+        Vector3 fallingVector = _playerVerticalCalculator.CalculateFalling(ref _verticalMovement);
 
-                transform.eulerAngles = eulerAngles;
-                _characterController.Move(_horizontalMovement);
-                _characterController.Move(fallingVector);
+        transform.eulerAngles = eulerAngles;
+        _characterController.Move(_horizontalMovement);
+        _characterController.Move(fallingVector);
     }
 }

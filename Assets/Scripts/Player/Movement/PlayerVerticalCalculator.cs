@@ -16,7 +16,7 @@ public class PlayerVerticalCalculator
 
     public void CalculateLanding(ref Vector3 movement) => movement.y = -20f;
 
-    public Vector3 CalculateFallingVector(ref Vector3 movement)
+    public Vector3 CalculateFalling(ref Vector3 movement)
     {
         if (!_playerState.IsGrounded.CurrentValue)
             movement.y -= _playerSettings.GravityForce * Time.deltaTime;
