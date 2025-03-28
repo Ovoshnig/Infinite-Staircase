@@ -1,7 +1,7 @@
 using R3;
 using VContainer;
 
-public sealed class ButtonPanelCloser : ButtonPanelChanger
+public sealed class PanelCloseButton : PanelChangeButton
 {
     private WindowInputHandler _windowInputHandler;
 

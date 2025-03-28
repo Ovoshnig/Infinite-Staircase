@@ -4,7 +4,7 @@ using VContainer.Unity;
 
 public class KeyBindingLifetimeScope : LifetimeScope
 {
-    [SerializeField] private ButtonPanelCloser _buttonPanelCloser;
+    [SerializeField] private PanelCloseButton _buttonPanelCloser;
 
     protected override void Configure(IContainerBuilder builder)
     {

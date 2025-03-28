@@ -8,7 +8,6 @@ using Random = System.Random;
 
 public class NewGameCreator : MonoBehaviour
 {
-    [SerializeField] private GameObject _menuPanel;
     [SerializeField] private Button _startGameButton;
     [SerializeField] private TMP_InputField _seedInputField;
 

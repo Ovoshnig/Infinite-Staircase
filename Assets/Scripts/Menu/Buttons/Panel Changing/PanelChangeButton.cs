@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 [RequireComponent(typeof(Button))]
-public abstract class ButtonPanelChanger : MonoBehaviour
+public abstract class PanelChangeButton : MonoBehaviour
 {
     [SerializeField] private GameObject _currentPanel;
     [SerializeField] private GameObject _newPanel;

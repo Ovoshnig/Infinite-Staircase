@@ -8,12 +8,12 @@ using VContainer.Unity;
 
 public class KeyBindingsTracker : IInitializable, IDisposable
 {
-    private readonly ButtonPanelCloser _doneButtonCloser;
+    private readonly PanelCloseButton _doneButtonCloser;
     private readonly Button _doneButton;
     private readonly ReactiveProperty<bool> _isListening = new(false);
     private readonly CompositeDisposable _compositeDisposable = new();
 
-    public KeyBindingsTracker(ButtonPanelCloser buttonPanelCloser)
+    public KeyBindingsTracker(PanelCloseButton buttonPanelCloser)
     {
         _doneButtonCloser = buttonPanelCloser;
         _doneButton = buttonPanelCloser.GetComponent<Button>();

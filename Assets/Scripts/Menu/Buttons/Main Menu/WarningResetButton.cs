@@ -4,7 +4,7 @@ using UnityEngine.UI;
 using VContainer;
 
 [RequireComponent(typeof(Button))]
-public class ButtonResetWarning : MonoBehaviour
+public class WarningResetButton : MonoBehaviour
 {
     [SerializeField] private Button _continueGameButton;
 

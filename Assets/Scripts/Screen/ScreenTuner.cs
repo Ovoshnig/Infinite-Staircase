@@ -61,7 +61,6 @@ public class ScreenTuner : IInitializable, IDisposable
     {
         _isFullScreen.Value = !_isFullScreen.Value;
         Screen.fullScreen = _isFullScreen.Value;
-        Debug.Log(_isFullScreen.Value);
     }
 
     public void SetResolution(int number)
