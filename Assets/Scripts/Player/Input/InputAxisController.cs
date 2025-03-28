@@ -10,13 +10,16 @@ public class InputAxisController : InputAxisControllerBase<InputAxisController.R
 {
     private LookTuner _lookTuner;
     private WindowTracker _windowTracker;
+    private PlayerSettings _playerSettings;
     private InputActionMap _actionMap;
 
     [Inject]
-    public void Construct(LookTuner lookTuner, WindowTracker windowTracker)
+    public void Construct(LookTuner lookTuner, WindowTracker windowTracker, 
+        PlayerSettings playerSettings)
     {
         _lookTuner = lookTuner;
         _windowTracker = windowTracker;
+        _playerSettings = playerSettings;
     }
 
     private void Awake()
@@ -63,7 +66,7 @@ public class InputAxisController : InputAxisControllerBase<InputAxisController.R
         foreach (Controller controller in Controllers)
         {
             if (controller.Name != CinemachineInputConstants.OrbitScaleControllerName)
-                controller.Input.ProcessInput(context.action);
+                controller.Input.ProcessLookInput(context.action);
         }
     }
 
@@ -73,7 +76,7 @@ public class InputAxisController : InputAxisControllerBase<InputAxisController.R
             .FirstOrDefault(c => c.Name == CinemachineInputConstants.OrbitScaleControllerName);
 
         if (orbitScaleController != default)
-            orbitScaleController.Input.ProcessInput(context.action);
+            orbitScaleController.Input.ProcessZoomInput(context.action, _playerSettings.ZoomMultiplier);
     }
 
     [Serializable]
@@ -85,7 +88,7 @@ public class InputAxisController : InputAxisControllerBase<InputAxisController.R
         private Vector2 _value;
         public float Multiplier { get; set; } = 1f;
 
-        public void ProcessInput(InputAction action)
+        public void ProcessLookInput(InputAction action)
         {
             if (_input != null && _input.action.id == action.id)
             {
@@ -96,6 +99,20 @@ public class InputAxisController : InputAxisControllerBase<InputAxisController.R
                 int sign = _invert ? -1 : 1;
                 _value *= sign;
                 _value *= Multiplier;
+            }
+        }
+
+        public void ProcessZoomInput(InputAction action, float zoomMultiplier)
+        {
+            if (_input != null && _input.action.id == action.id)
+            {
+                _value = action.expectedControlType == nameof(Vector2)
+                    ? action.ReadValue<Vector2>()
+                    : new Vector2(action.ReadValue<float>(), action.ReadValue<float>());
+
+                int sign = _invert ? -1 : 1;
+                _value *= sign;
+                _value *= zoomMultiplier;
             }
         }
 

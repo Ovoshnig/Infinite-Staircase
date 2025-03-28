@@ -9,4 +9,5 @@ public class PlayerSettings
     [field: SerializeField, Min(1f)] public float SlewSpeed { get; private set; } = 5f;
     [field: SerializeField, Min(1f)] public float JumpForce { get; private set; } = 5f;
     [field: SerializeField, Min(1f)] public float GravityForce { get; private set; } = 9.81f;
+    [field: SerializeField, Min(1f)] public float ZoomMultiplier { get; private set; } = 25f;
 }

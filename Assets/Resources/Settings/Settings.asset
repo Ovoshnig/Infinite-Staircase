@@ -35,6 +35,7 @@ MonoBehaviour:
     <SlewSpeed>k__BackingField: 5
     <JumpForce>k__BackingField: 5
     <GravityForce>k__BackingField: 9.81
+    <ZoomMultiplier>k__BackingField: 25
   _inventorySettings:
     <RowCount>k__BackingField: 4
     <ColumnCount>k__BackingField: 6
