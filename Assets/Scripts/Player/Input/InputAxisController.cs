@@ -1,5 +1,6 @@
 using R3;
 using System;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using Unity.Cinemachine;
@@ -24,10 +25,13 @@ public class InputAxisController : InputAxisControllerBase<InputAxisController.R
         PlayerInput.PlayerActions playerActions = playerInput.Player;
         _actionMap = InputSystem.actions.FindActionMap(nameof(playerInput.Player));
 
-        _actionMap.FindAction(nameof(playerActions.Look)).performed += OnActionTriggered;
-        _actionMap.FindAction(nameof(playerActions.Look)).canceled += OnActionTriggered;
-        _actionMap.FindAction(nameof(playerActions.Zoom)).performed += OnActionTriggered;
-        _actionMap.FindAction(nameof(playerActions.Zoom)).canceled += OnActionTriggered;
+        InputAction lookAction = _actionMap.FindAction(nameof(playerActions.Look));
+        InputAction zoomAction = _actionMap.FindAction(nameof(playerActions.Zoom));
+
+        lookAction.performed += OnLook;
+        lookAction.canceled += OnLook;
+        zoomAction.performed += OnZoom;
+        zoomAction.canceled += OnZoom;
     }
 
     private void Start()
@@ -54,10 +58,22 @@ public class InputAxisController : InputAxisControllerBase<InputAxisController.R
             UpdateControllers();
     }
 
-    private void OnActionTriggered(InputAction.CallbackContext context)
+    private void OnLook(InputAction.CallbackContext context)
     {
-        foreach (var controller in Controllers)
-            controller.Input.ProcessInput(context.action);
+        foreach (Controller controller in Controllers)
+        {
+            if (controller.Name != CinemachineInputConstants.OrbitScaleControllerName)
+                controller.Input.ProcessInput(context.action);
+        }
+    }
+
+    private void OnZoom(InputAction.CallbackContext context)
+    {
+        Controller orbitScaleController = Controllers
+            .FirstOrDefault(c => c.Name == CinemachineInputConstants.OrbitScaleControllerName);
+
+        if (orbitScaleController != default)
+            orbitScaleController.Input.ProcessInput(context.action);
     }
 
     [Serializable]
