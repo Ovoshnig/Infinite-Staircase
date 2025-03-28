@@ -51,17 +51,17 @@ public class ScreenTuner : IInitializable, IDisposable
 
         _screenInputHandler.IsSwitchFullScreenPressed
             .Where(value => value)
-            .Subscribe(_ => SwitchFullScreen())
+            .Subscribe(_ => OnSwitchFullScreenPressed())
             .AddTo(_compositeDisposable);
     }
 
     public void Dispose() => _compositeDisposable?.Dispose();
 
-    public void SwitchFullScreen()
+    public void OnSwitchFullScreenPressed()
     {
-        Debug.Log(1);
         _isFullScreen.Value = !_isFullScreen.Value;
         Screen.fullScreen = _isFullScreen.Value;
+        Debug.Log(_isFullScreen.Value);
     }
 
     public void SetResolution(int number)

@@ -11,10 +11,9 @@ public class GraphicSettings : MonoBehaviour
     [SerializeField] private Toggle _vSyncToggle;
     [SerializeField] private TMP_Dropdown _resolutionDropdown;
 
-    private readonly CompositeDisposable _permanentCompositeDisposable = new();
     private ScreenTuner _screenTuner;
     private QualityTuner _qualityTuner;
-    private CompositeDisposable _enabledCompositeDisposable = new();
+    private CompositeDisposable _compositeDisposable = new();
 
     [Inject]
     public void Construct(ScreenTuner screenTuner, QualityTuner qualityTuner)
@@ -23,35 +22,28 @@ public class GraphicSettings : MonoBehaviour
         _qualityTuner = qualityTuner;
     }
 
-    private void Awake()
-    {
-        _screenTuner.IsFullScreen
-            .Subscribe(value =>
-            {
-                if (_fullScreenToggle.isOn != value)
-                    _fullScreenToggle.SetIsOnWithoutNotify(value);
-            })
-            .AddTo(_permanentCompositeDisposable);
-    }
-
     private void OnEnable()
     {
         _fullScreenToggle.OnValueChangedAsObservable()
             .Skip(1)
             .Subscribe(OnFullScreenToggleValueChanged)
-            .AddTo(_enabledCompositeDisposable);
+            .AddTo(_compositeDisposable);
         _vSyncToggle.OnValueChangedAsObservable()
             .Skip(1)
             .Subscribe(OnVSyncToggleValueChanged)
-            .AddTo(_enabledCompositeDisposable);
+            .AddTo(_compositeDisposable);
         _resolutionDropdown.onValueChanged.AsObservable()
             .Skip(1)
             .Subscribe(OnResolutionDropdownValueChanged)
-            .AddTo(_enabledCompositeDisposable);
+            .AddTo(_compositeDisposable);
     }
 
     private void Start()
     {
+        _screenTuner.IsFullScreen
+            .Subscribe(value => _fullScreenToggle.SetIsOnWithoutNotify(value))
+            .AddTo(this);
+
         _vSyncToggle.SetIsOnWithoutNotify(_qualityTuner.IsVSyncEnabled);
 
         _resolutionDropdown.options = _screenTuner.Resolutions
@@ -63,13 +55,11 @@ public class GraphicSettings : MonoBehaviour
 
     private void OnDisable()
     {
-        _enabledCompositeDisposable?.Dispose();
-        _enabledCompositeDisposable = new CompositeDisposable();
+        _compositeDisposable?.Dispose();
+        _compositeDisposable = new CompositeDisposable();
     }
 
-    private void OnDestroy() => _permanentCompositeDisposable?.Dispose();
-
-    private void OnFullScreenToggleValueChanged(bool _) => _screenTuner.SwitchFullScreen();
+    private void OnFullScreenToggleValueChanged(bool _) => _screenTuner.OnSwitchFullScreenPressed();
 
     private void OnVSyncToggleValueChanged(bool _) => _qualityTuner.SwitchVSync();
 
