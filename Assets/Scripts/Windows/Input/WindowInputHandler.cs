@@ -20,12 +20,16 @@ public class WindowInputHandler : IInitializable, IDisposable
         PlayerInput.WindowsActions windowActions = playerInput.Windows;
         _actionMap = InputSystem.actions.FindActionMap(nameof(playerInput.Windows));
 
-        _actionMap.FindAction(nameof(windowActions.CloseCurrent)).performed += OnCloseCurrent;
-        _actionMap.FindAction(nameof(windowActions.CloseCurrent)).canceled += OnCloseCurrent;
-        _actionMap.FindAction(nameof(windowActions.SwitchPauseMenu)).performed += OnPauseMenuSwitch;
-        _actionMap.FindAction(nameof(windowActions.SwitchPauseMenu)).canceled += OnPauseMenuSwitch;
-        _actionMap.FindAction(nameof(windowActions.SwitchInventory)).performed += OnInventorySwitch;
-        _actionMap.FindAction(nameof(windowActions.SwitchInventory)).canceled += OnInventorySwitch;
+        InputAction closeCurrentAction = _actionMap.FindAction(nameof(windowActions.CloseCurrent));
+        InputAction switchPauseMenuAction = _actionMap.FindAction(nameof(windowActions.SwitchPauseMenu));
+        InputAction switchInventoryAction = _actionMap.FindAction(nameof(windowActions.SwitchInventory));
+
+        closeCurrentAction.performed += OnCloseCurrent;
+        closeCurrentAction.canceled += OnCloseCurrent;
+        switchPauseMenuAction.performed += OnPauseMenuSwitch;
+        switchPauseMenuAction.canceled += OnPauseMenuSwitch;
+        switchInventoryAction.performed += OnInventorySwitch;
+        switchInventoryAction.canceled += OnInventorySwitch;
 
         _actionMap.Enable();
     }

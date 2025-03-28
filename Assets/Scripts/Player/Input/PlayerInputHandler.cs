@@ -31,16 +31,22 @@ public class PlayerInputHandler : IInitializable, IDisposable
         PlayerInput.PlayerActions playerActions = playerInput.Player;
         _actionMap = InputSystem.actions.FindActionMap(nameof(playerInput.Player));
 
-        _actionMap.FindAction(nameof(playerActions.Walk)).performed += OnWalk;
-        _actionMap.FindAction(nameof(playerActions.Walk)).canceled += OnWalk;
-        _actionMap.FindAction(nameof(playerActions.Run)).performed += OnRun;
-        _actionMap.FindAction(nameof(playerActions.Run)).canceled += OnRun;
-        _actionMap.FindAction(nameof(playerActions.Look)).performed += OnLook;
-        _actionMap.FindAction(nameof(playerActions.Look)).canceled += OnLook;
-        _actionMap.FindAction(nameof(playerActions.Jump)).performed += OnJump;
-        _actionMap.FindAction(nameof(playerActions.Jump)).canceled += OnJump;
-        _actionMap.FindAction(nameof(playerActions.TogglePerspective)).performed += OnTogglePerspective;
-        _actionMap.FindAction(nameof(playerActions.TogglePerspective)).canceled += OnTogglePerspective;
+        InputAction walkAction = _actionMap.FindAction(nameof(playerActions.Walk));
+        InputAction runAction = _actionMap.FindAction(nameof(playerActions.Run));
+        InputAction lookAction = _actionMap.FindAction(nameof(playerActions.Look));
+        InputAction jumpAction = _actionMap.FindAction(nameof(playerActions.Jump));
+        InputAction togglePerspectiveAction = _actionMap.FindAction(nameof(playerActions.TogglePerspective));
+
+        walkAction.performed += OnWalk;
+        walkAction.canceled += OnWalk;
+        runAction.performed += OnRun;
+        runAction.canceled += OnRun;
+        lookAction.performed += OnLook;
+        lookAction.canceled += OnLook;
+        jumpAction.performed += OnJump;
+        jumpAction.canceled += OnJump;
+        togglePerspectiveAction.performed += OnTogglePerspective;
+        togglePerspectiveAction.canceled += OnTogglePerspective;
 
         _windowTracker.IsOpen
             .Subscribe(value =>
