@@ -20,9 +20,9 @@ public class WindowInputHandler : IInitializable, IDisposable
         PlayerInput.WindowsActions windowActions = playerInput.Windows;
         _actionMap = InputSystem.actions.FindActionMap(nameof(playerInput.Windows));
 
-        InputAction closeCurrentAction = _actionMap.FindAction(nameof(windowActions.CloseCurrent));
-        InputAction switchPauseMenuAction = _actionMap.FindAction(nameof(windowActions.SwitchPauseMenu));
-        InputAction switchInventoryAction = _actionMap.FindAction(nameof(windowActions.SwitchInventory));
+        InputAction closeCurrentAction = _actionMap.FindAction(windowActions.CloseCurrent.name);
+        InputAction switchPauseMenuAction = _actionMap.FindAction(windowActions.SwitchPauseMenu.name);
+        InputAction switchInventoryAction = _actionMap.FindAction(windowActions.SwitchInventory.name);
 
         closeCurrentAction.performed += OnCloseCurrent;
         closeCurrentAction.canceled += OnCloseCurrent;
@@ -36,12 +36,12 @@ public class WindowInputHandler : IInitializable, IDisposable
 
     public void Dispose() => _actionMap.Dispose();
 
-    private void OnCloseCurrent(InputAction.CallbackContext context) => 
-        _closeCurrentPressed.OnNext(context.ReadValueAsButton());
+    private void OnCloseCurrent(InputAction.CallbackContext context) =>
+        _closeCurrentPressed.Value = context.ReadValueAsButton();
 
-    private void OnPauseMenuSwitch(InputAction.CallbackContext context) => 
-        _pauseMenuSwitchPressed.OnNext(context.ReadValueAsButton());
+    private void OnPauseMenuSwitch(InputAction.CallbackContext context) =>
+        _pauseMenuSwitchPressed.Value = context.ReadValueAsButton();
 
     private void OnInventorySwitch(InputAction.CallbackContext context) =>
-        _inventorySwitchPressed.OnNext(context.ReadValueAsButton());
+        _inventorySwitchPressed.Value = context.ReadValueAsButton();
 }

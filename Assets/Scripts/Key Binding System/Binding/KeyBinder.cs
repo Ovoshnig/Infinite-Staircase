@@ -33,7 +33,7 @@ public class KeyBinder : MonoBehaviour
     private void Awake()
     {
         _bindingButtonText = _bindingButton.GetComponentInChildren<TMP_Text>();
-        var normalTextColor = _bindingButtonText.color;
+        Color normalTextColor = _bindingButtonText.color;
 
         _inputAction = _inputActionReference.action;
 
@@ -53,18 +53,14 @@ public class KeyBinder : MonoBehaviour
     private void Start()
     {
         _bindingButton.OnClickAsObservable()
-            .Subscribe(_ => OnBindingButtonPressed())
+            .Subscribe(_ => _bindingHandler.StartListening())
             .AddTo(this);
         _bindingResetButton.OnClickAsObservable()
-            .Subscribe(_ => OnBindingResetButtonClicked())
+            .Subscribe(_ => _bindingHandler.Reset())
             .AddTo(this);
         Observable
             .EveryValueChanged(this, _ => _inputAction.bindings.Any(b => b.hasOverrides))
             .Subscribe(value => _bindingResetButton.interactable = value)
             .AddTo(this);
     }
-
-    private void OnBindingButtonPressed() => _bindingHandler.StartListening();
-
-    private void OnBindingResetButtonClicked() => _bindingHandler.Reset();
 }

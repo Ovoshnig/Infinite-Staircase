@@ -23,7 +23,7 @@ public class ButtonBindingHandler : BindingHandler
 
     protected override void OnAnyKeyPerformed(InputAction.CallbackContext _)
     {
-        var pressedControl = BindingsTracker.AllControls.First(c => c.IsPressed());
+        InputControl pressedControl = BindingsTracker.AllControls.First(c => c.IsPressed());
 
         if (pressedControl == Keyboard.current.escapeKey)
             CancelBinding();

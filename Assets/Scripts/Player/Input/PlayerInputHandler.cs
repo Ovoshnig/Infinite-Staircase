@@ -31,11 +31,11 @@ public class PlayerInputHandler : IInitializable, IDisposable
         PlayerInput.PlayerActions playerActions = playerInput.Player;
         _actionMap = InputSystem.actions.FindActionMap(nameof(playerInput.Player));
 
-        InputAction walkAction = _actionMap.FindAction(nameof(playerActions.Walk));
-        InputAction runAction = _actionMap.FindAction(nameof(playerActions.Run));
-        InputAction lookAction = _actionMap.FindAction(nameof(playerActions.Look));
-        InputAction jumpAction = _actionMap.FindAction(nameof(playerActions.Jump));
-        InputAction togglePerspectiveAction = _actionMap.FindAction(nameof(playerActions.TogglePerspective));
+        InputAction walkAction = _actionMap.FindAction(playerActions.Walk.name);
+        InputAction runAction = _actionMap.FindAction(playerActions.Run.name);
+        InputAction lookAction = _actionMap.FindAction(playerActions.Look.name);
+        InputAction jumpAction = _actionMap.FindAction(playerActions.Jump.name);
+        InputAction togglePerspectiveAction = _actionMap.FindAction(playerActions.TogglePerspective.name);
 
         walkAction.performed += OnWalk;
         walkAction.canceled += OnWalk;
@@ -69,21 +69,21 @@ public class PlayerInputHandler : IInitializable, IDisposable
     private void OnWalk(InputAction.CallbackContext context)
     {
         WalkInput = context.ReadValue<Vector2>();
-        _isWalkPressed.OnNext(WalkInput != Vector2.zero);
+        _isWalkPressed.Value = WalkInput != Vector2.zero;
     }
 
     private void OnRun(InputAction.CallbackContext context) =>
-        _isRunPressed.OnNext(context.ReadValueAsButton());
+        _isRunPressed.Value = context.ReadValueAsButton();
 
     private void OnLook(InputAction.CallbackContext context)
     {
         LookInput = context.ReadValue<Vector2>();
-        _isLookPressed.OnNext(LookInput != Vector2.zero);
+        _isLookPressed.Value = LookInput != Vector2.zero;
     }
 
-    private void OnJump(InputAction.CallbackContext context) => 
-        _isJumpPressed.OnNext(context.ReadValueAsButton());
+    private void OnJump(InputAction.CallbackContext context) =>
+        _isJumpPressed.Value = context.ReadValueAsButton();
 
-    private void OnTogglePerspective(InputAction.CallbackContext context) => 
-        _isTogglePerspectivePressed.OnNext(context.ReadValueAsButton());
+    private void OnTogglePerspective(InputAction.CallbackContext context) =>
+        _isTogglePerspectivePressed.Value = context.ReadValueAsButton();
 }

@@ -28,8 +28,8 @@ public class InputAxisController : InputAxisControllerBase<InputAxisController.R
         PlayerInput.PlayerActions playerActions = playerInput.Player;
         _actionMap = InputSystem.actions.FindActionMap(nameof(playerInput.Player));
 
-        InputAction lookAction = _actionMap.FindAction(nameof(playerActions.Look));
-        InputAction zoomAction = _actionMap.FindAction(nameof(playerActions.Zoom));
+        InputAction lookAction = _actionMap.FindAction(playerActions.Look.name);
+        InputAction zoomAction = _actionMap.FindAction(playerActions.Zoom.name);
 
         lookAction.performed += OnLook;
         lookAction.canceled += OnLook;

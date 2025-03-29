@@ -24,8 +24,9 @@ public class ScreenInputHandler : IInitializable, IDisposable
         PlayerInput playerInput = new();
         ScreenActions screenActions = playerInput.Screen;
         _actionMap = InputSystem.actions.FindActionMap(nameof(playerInput.Screen));
-        _switchFullScreenAction = _actionMap.FindAction(nameof(screenActions.SwitchFullScreen));
-        _passSplashImageAction = _actionMap.FindAction(nameof(screenActions.PassSplashImage));
+
+        _switchFullScreenAction = _actionMap.FindAction(screenActions.SwitchFullScreen.name);
+        _passSplashImageAction = _actionMap.FindAction(screenActions.PassSplashImage.name);
 
         _switchFullScreenAction.performed += OnFullScreenSwitch;
         _switchFullScreenAction.canceled += OnFullScreenSwitch;
