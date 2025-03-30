@@ -8,37 +8,29 @@ using VContainer;
 
 public class InputAxisController : InputAxisControllerBase<InputAxisController.Reader>
 {
+    private PlayerInput _playerInput;
     private LookTuner _lookTuner;
     private WindowTracker _windowTracker;
     private PlayerSettings _playerSettings;
-    private InputActionMap _actionMap;
+    private PlayerInput.PlayerActions _playerActions;
 
     [Inject]
-    public void Construct(LookTuner lookTuner, WindowTracker windowTracker, 
-        PlayerSettings playerSettings)
+    public void Construct(PlayerInput playerInput, LookTuner lookTuner, 
+        WindowTracker windowTracker, PlayerSettings playerSettings)
     {
+        _playerInput = playerInput;
         _lookTuner = lookTuner;
         _windowTracker = windowTracker;
         _playerSettings = playerSettings;
     }
 
-    private void Awake()
-    {
-        PlayerInput playerInput = new();
-        PlayerInput.PlayerActions playerActions = playerInput.Player;
-        _actionMap = InputSystem.actions.FindActionMap(nameof(playerInput.Player));
-
-        InputAction lookAction = _actionMap.FindAction(playerActions.Look.name);
-        InputAction zoomAction = _actionMap.FindAction(playerActions.Zoom.name);
-
-        lookAction.performed += OnLook;
-        lookAction.canceled += OnLook;
-        zoomAction.performed += OnZoom;
-        zoomAction.canceled += OnZoom;
-    }
-
     private void Start()
     {
+        _playerActions = _playerInput.Player;
+
+        _playerActions.Look.Subscribe(OnLook);
+        _playerActions.Zoom.Subscribe(OnZoom);
+
         _lookTuner.Sensitivity
             .Subscribe(value => Controllers.ForEach(controller => controller.Input.Multiplier = value))
             .AddTo(this);
@@ -46,14 +38,20 @@ public class InputAxisController : InputAxisControllerBase<InputAxisController.R
             .Subscribe(isOpen =>
             {
                 if (isOpen)
-                    _actionMap.Disable();
+                    _playerActions.Disable();
                 else
-                    _actionMap.Enable();
+                    _playerActions.Enable();
             })
             .AddTo(this);
     }
 
-    private void OnDestroy() => _actionMap.Dispose();
+    private void OnDestroy()
+    {
+        _playerActions.Disable();
+
+        _playerActions.Look.Unsubscribe(OnLook);
+        _playerActions.Zoom.Unsubscribe(OnZoom);
+    }
 
     private void Update()
     {

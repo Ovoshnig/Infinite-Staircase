@@ -2,55 +2,34 @@ using R3;
 using System;
 using UnityEngine.InputSystem;
 using VContainer.Unity;
-using static PlayerInput;
 
 public class ScreenInputHandler : IInitializable, IDisposable
 {
-    private readonly SceneSwitch _sceneSwitch;
+    private readonly PlayerInput _playerInput;
     private readonly ReactiveProperty<bool> _isSwitchFullScreenPressed = new(false);
     private readonly ReactiveProperty<bool> _isPassSplashImagePressed = new(false);
-    private readonly CompositeDisposable _compositeDisposable = new();
-    private InputActionMap _actionMap;
-    private InputAction _switchFullScreenAction;
-    private InputAction _passSplashImageAction;
+    private PlayerInput.ScreenActions _screenActions;
 
-    public ScreenInputHandler(SceneSwitch sceneSwitch) => _sceneSwitch = sceneSwitch;
+    public ScreenInputHandler(PlayerInput playerInput) => _playerInput = playerInput;
 
     public ReadOnlyReactiveProperty<bool> IsSwitchFullScreenPressed => _isSwitchFullScreenPressed;
     public ReadOnlyReactiveProperty<bool> IsPassSplashImagePressed => _isPassSplashImagePressed;
 
     public void Initialize()
     {
-        PlayerInput playerInput = new();
-        ScreenActions screenActions = playerInput.Screen;
-        _actionMap = InputSystem.actions.FindActionMap(nameof(playerInput.Screen));
+        _screenActions = _playerInput.Screen;
+        _screenActions.Enable();
 
-        _switchFullScreenAction = _actionMap.FindAction(screenActions.SwitchFullScreen.name);
-        _passSplashImageAction = _actionMap.FindAction(screenActions.PassSplashImage.name);
-
-        _switchFullScreenAction.performed += OnFullScreenSwitch;
-        _switchFullScreenAction.canceled += OnFullScreenSwitch;
-        _passSplashImageAction.performed += OnPassSplashImage;
-        _passSplashImageAction.canceled += OnPassSplashImage;
-
-        _sceneSwitch.IsSceneLoading
-            .Where(value => !value)
-            .Subscribe(value => OnSceneLoaded())
-            .AddTo(_compositeDisposable);
+        _screenActions.SwitchFullScreen.Subscribe(OnFullScreenSwitch);
+        _screenActions.PassSplashImage.Subscribe(OnPassSplashImage);
     }
 
     public void Dispose()
     {
-        _actionMap.Dispose();
+        _screenActions.Disable();
 
-        _compositeDisposable?.Dispose();
-    }
-
-    private void OnSceneLoaded()
-    {
-        _actionMap.Enable();
-        _switchFullScreenAction.Enable();
-        _passSplashImageAction.Enable();
+        _screenActions.SwitchFullScreen.Unsubscribe(OnFullScreenSwitch);
+        _screenActions.PassSplashImage.Unsubscribe(OnPassSplashImage);
     }
 
     private void OnFullScreenSwitch(InputAction.CallbackContext context) => 

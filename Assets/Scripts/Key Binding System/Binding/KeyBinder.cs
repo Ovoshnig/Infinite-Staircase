@@ -14,13 +14,18 @@ public class KeyBinder : MonoBehaviour
     [SerializeField] private Color _waitingTextColor;
     [SerializeField] private InputActionReference _inputActionReference;
 
+    private PlayerInput _playerInput;
     private KeyBindingsTracker _bindingsTracker;
     private IBindingHandler _bindingHandler;
     private TMP_Text _bindingButtonText;
     private InputAction _inputAction;
 
     [Inject]
-    public void Construct(KeyBindingsTracker bindingsTracker) => _bindingsTracker = bindingsTracker;
+    public void Construct(KeyBindingsTracker bindingsTracker, PlayerInput playerInput)
+    {
+        _bindingsTracker = bindingsTracker;
+        _playerInput = playerInput;
+    }
 
     public InputActionReference InputActionReference
     {
@@ -40,13 +45,13 @@ public class KeyBinder : MonoBehaviour
         if (_inputAction.type == InputActionType.Button)
         {
             _bindingHandler = new ButtonBindingHandler(_bindingsTracker, _bindingButtonText,
-                normalTextColor, _waitingTextColor, _inputActionReference);
+                normalTextColor, _waitingTextColor, _playerInput, _inputActionReference);
         }
         else if (_inputAction.type == InputActionType.Value &&
             _inputAction.expectedControlType == nameof(Vector2))
         {
             _bindingHandler = new Vector2BindingHandler(_bindingsTracker, _bindingButtonText,
-                normalTextColor, _waitingTextColor, _inputActionReference);
+                normalTextColor, _waitingTextColor, _playerInput, _inputActionReference);
         }
     }
 

@@ -5,10 +5,13 @@ using VContainer.Unity;
 
 public class WindowInputHandler : IInitializable, IDisposable
 {
+    private readonly PlayerInput _playerInput;
     private readonly ReactiveProperty<bool> _closeCurrentPressed = new();
     private readonly ReactiveProperty<bool> _pauseMenuSwitchPressed = new();
     private readonly ReactiveProperty<bool> _inventorySwitchPressed = new();
-    private InputActionMap _actionMap;
+    private PlayerInput.WindowsActions _windowsActions;
+
+    public WindowInputHandler(PlayerInput playerInput) => _playerInput = playerInput;
 
     public ReadOnlyReactiveProperty<bool> CloseCurrentPressed => _closeCurrentPressed;
     public ReadOnlyReactiveProperty<bool> PauseMenuSwitchPressed => _pauseMenuSwitchPressed;
@@ -16,25 +19,22 @@ public class WindowInputHandler : IInitializable, IDisposable
 
     public void Initialize()
     {
-        PlayerInput playerInput = new();
-        PlayerInput.WindowsActions windowActions = playerInput.Windows;
-        _actionMap = InputSystem.actions.FindActionMap(nameof(playerInput.Windows));
+        _windowsActions = _playerInput.Windows;
+        _windowsActions.Enable();
 
-        InputAction closeCurrentAction = _actionMap.FindAction(windowActions.CloseCurrent.name);
-        InputAction switchPauseMenuAction = _actionMap.FindAction(windowActions.SwitchPauseMenu.name);
-        InputAction switchInventoryAction = _actionMap.FindAction(windowActions.SwitchInventory.name);
-
-        closeCurrentAction.performed += OnCloseCurrent;
-        closeCurrentAction.canceled += OnCloseCurrent;
-        switchPauseMenuAction.performed += OnPauseMenuSwitch;
-        switchPauseMenuAction.canceled += OnPauseMenuSwitch;
-        switchInventoryAction.performed += OnInventorySwitch;
-        switchInventoryAction.canceled += OnInventorySwitch;
-
-        _actionMap.Enable();
+        _windowsActions.CloseCurrent.Subscribe(OnCloseCurrent);
+        _windowsActions.SwitchPauseMenu.Subscribe(OnPauseMenuSwitch);
+        _windowsActions.SwitchInventory.Subscribe(OnInventorySwitch);
     }
 
-    public void Dispose() => _actionMap.Dispose();
+    public void Dispose()
+    {
+        _windowsActions.Disable();
+
+        _windowsActions.CloseCurrent.Unsubscribe(OnCloseCurrent);
+        _windowsActions.SwitchPauseMenu.Unsubscribe(OnPauseMenuSwitch);
+        _windowsActions.SwitchInventory.Unsubscribe(OnInventorySwitch);
+    }
 
     private void OnCloseCurrent(InputAction.CallbackContext context) =>
         _closeCurrentPressed.Value = context.ReadValueAsButton();

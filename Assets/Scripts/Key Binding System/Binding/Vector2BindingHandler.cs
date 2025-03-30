@@ -17,9 +17,9 @@ public class Vector2BindingHandler : BindingHandler
     private InputControl[] _temporaryControls;
     private int _keyInputNumber;
 
-    public Vector2BindingHandler(KeyBindingsTracker bindingsTracker, TMP_Text bindingText, 
-        Color normalTextColor, Color waitingTextColor, InputAction inputAction) : 
-        base(bindingsTracker, bindingText, normalTextColor, waitingTextColor, inputAction)
+    public Vector2BindingHandler(KeyBindingsTracker bindingsTracker, TMP_Text bindingText,
+        Color normalTextColor, Color waitingTextColor, PlayerInput playerInput, InputAction inputAction) :
+        base(bindingsTracker, bindingText, normalTextColor, waitingTextColor, playerInput, inputAction)
     {
     }
 
@@ -64,7 +64,7 @@ public class Vector2BindingHandler : BindingHandler
 
         for (int i = 0; i < 4; i++)
         {
-            var actionKeyName = InputAction.bindings[i + 1].path.Split('/')[^1];
+            var actionKeyName = InputActionProperty.bindings[i + 1].path.Split('/')[^1];
             var controlKeyName = _temporaryControls[i].path.Split('/')[^1];
 
             if (actionKeyName != controlKeyName)
@@ -75,15 +75,21 @@ public class Vector2BindingHandler : BindingHandler
         }
 
         if (hasChanges && !hasDuplicates)
+        {
             for (int i = 0; i < 4; i++)
-                InputAction.ApplyBindingOverride(i + 1, _temporaryControls[i].path);
+            {
+                InputAction action = PlayerInputProperty.FindAction(InputActionProperty.name);
+                InputActionProperty.ApplyBindingOverride(i + 1, _temporaryControls[i].path);
+                action.ApplyBindingOverride(i + 1, _temporaryControls[i].path);
+            }
+        }
 
         base.CompleteBinding(control);
     }
 
     protected override string GetActionDisplayName()
     {
-        var controls = InputAction.controls.ToArray();
+        var controls = InputActionProperty.controls.ToArray();
 
         if (controls.Length == 4)
             (controls[2], controls[1]) = (controls[1], controls[2]);

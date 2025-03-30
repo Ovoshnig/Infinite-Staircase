@@ -5,6 +5,7 @@ using UnityEngine.InputSystem;
 public abstract class BindingHandler : IBindingHandler
 {
     private readonly KeyBindingsTracker _bindingsTracker;
+    private readonly PlayerInput _playerInput;
     private readonly InputAction _inputAction;
     private readonly InputAction _anyKeyInputAction;
     private readonly TMP_Text _bindingText;
@@ -12,12 +13,15 @@ public abstract class BindingHandler : IBindingHandler
     private readonly Color _waitingTextColor;
 
     protected BindingHandler(KeyBindingsTracker bindingsTracker, TMP_Text bindingText,
-        Color normalTextColor, Color waitingTextColor, InputAction inputAction)
+        Color normalTextColor, Color waitingTextColor, PlayerInput playerInput
+        , InputAction inputAction
+        )
     {
         _bindingsTracker = bindingsTracker;
         _bindingText = bindingText;
         _normalTextColor = normalTextColor;
         _waitingTextColor = waitingTextColor;
+        _playerInput = playerInput;
         _inputAction = inputAction;
 
         _anyKeyInputAction = new InputAction(type: InputActionType.Button);
@@ -26,7 +30,8 @@ public abstract class BindingHandler : IBindingHandler
 
     protected KeyBindingsTracker BindingsTracker => _bindingsTracker;
     protected TMP_Text BindingText => _bindingText;
-    protected InputAction InputAction => _inputAction;
+    protected PlayerInput PlayerInputProperty => _playerInput;
+    protected InputAction InputActionProperty => _inputAction;
 
     public void Initialize()
     {
@@ -45,6 +50,7 @@ public abstract class BindingHandler : IBindingHandler
     public virtual void Reset()
     {
         _inputAction.RemoveAllBindingOverrides();
+        _playerInput.RemoveAllBindingOverrides();
         _bindingText.text = GetActionDisplayName();
     }
 

@@ -6,8 +6,8 @@ using UnityEngine.InputSystem;
 public class ButtonBindingHandler : BindingHandler
 {
     public ButtonBindingHandler(KeyBindingsTracker bindingsTracker, TMP_Text bindingText,
-        Color normalTextColor, Color waitingTextColor, InputAction inputAction) :
-        base(bindingsTracker, bindingText, normalTextColor, waitingTextColor, inputAction)
+        Color normalTextColor, Color waitingTextColor, PlayerInput playerInput, InputAction inputAction) :
+        base(bindingsTracker, bindingText, normalTextColor, waitingTextColor, playerInput, inputAction)
     {
     }
 
@@ -33,15 +33,19 @@ public class ButtonBindingHandler : BindingHandler
 
     protected override void CompleteBinding(InputControl control)
     {
-        if (InputAction.controls[0].path != control.path)
-            InputAction.ApplyBindingOverride(control.path);
+        if (InputActionProperty.controls[0].path != control.path)
+        {
+            InputAction action = PlayerInputProperty.FindAction(InputActionProperty.name);
+            InputActionProperty.ApplyBindingOverride(control.path);
+            action.ApplyBindingOverride(control.path);
+        }
 
         base.CompleteBinding(control);
     }
 
     protected override string GetActionDisplayName()
     {
-        string actionName = InputAction.controls[0].name;
+        string actionName = InputActionProperty.controls[0].name;
         actionName = char.ToUpper(actionName[0]) + actionName[1..];
 
         return actionName;
