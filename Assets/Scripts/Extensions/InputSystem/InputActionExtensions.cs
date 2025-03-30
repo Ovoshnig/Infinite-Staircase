@@ -19,4 +19,3 @@ public static class InputActionExtensions
         return action;
     }
 }
-

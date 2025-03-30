@@ -13,8 +13,8 @@ public abstract class BindingHandler : IBindingHandler
     private readonly Color _waitingTextColor;
 
     protected BindingHandler(KeyBindingsTracker bindingsTracker, TMP_Text bindingText,
-        Color normalTextColor, Color waitingTextColor, PlayerInput playerInput
-        , InputAction inputAction
+        Color normalTextColor, Color waitingTextColor, PlayerInput playerInput, 
+        InputAction inputAction
         )
     {
         _bindingsTracker = bindingsTracker;
