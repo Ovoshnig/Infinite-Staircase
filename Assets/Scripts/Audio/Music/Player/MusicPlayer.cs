@@ -37,7 +37,7 @@ public class MusicPlayer : MonoBehaviour
         {
             _musicClipKeys = await _clipLoader.LoadClipKeysAsync(_cts.Token);
         }
-        catch (Exception)
+        catch (OperationCanceledException)
         {
             return;
         }
@@ -48,15 +48,11 @@ public class MusicPlayer : MonoBehaviour
             .AddTo(this);
     }
 
-    private void OnDestroy()
-    {
-        _cts.CancelAndDispose();
-        _cts = null;
-    }
+    private void OnDestroy() => _cts?.CancelAndDispose();
 
     private bool TryPlayMusic()
     {
-        _cts.Cancel();
+        _cts?.Cancel();
         _cts = new CancellationTokenSource();
 
         MusicCategory category = _sceneMusicMapper.GetMusicCategory(_sceneSwitch.CurrentSceneType);

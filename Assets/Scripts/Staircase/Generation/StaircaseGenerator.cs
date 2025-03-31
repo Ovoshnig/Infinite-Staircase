@@ -12,6 +12,7 @@ public class StaircaseGenerator : MonoBehaviour
     [SerializeField] private Transform _startTransform;
     [SerializeField] private int _partsCount;
 
+    private readonly CancellationTokenSource _cts = new();
     private SaveStorage _saveStorage;
     private StairsLoader _stairsLoader;
     private GameObject[] _stairs;
@@ -41,18 +42,22 @@ public class StaircaseGenerator : MonoBehaviour
             .LoadStairConnectionsAsync(cts1.Token);
         _stairConnections = stairConnections.ToArray();
 
-        using CancellationTokenSource cts2 = new();
         try
         {
-            await GenerateAsync(cts2.Token);
+            await GenerateAsync(_cts.Token);
         }
-        catch (Exception)
+        catch (OperationCanceledException)
         {
             return;
         }
     }
 
-    private void OnDestroy() => _stairsLoader.ReleaseStairs();
+    private void OnDestroy()
+    {
+        _cts?.CancelAndDispose();
+
+        _stairsLoader.ReleaseStairs();
+    }
 
     private async UniTask GenerateAsync(CancellationToken token)
     {
@@ -63,7 +68,7 @@ public class StaircaseGenerator : MonoBehaviour
         position.y += _size.y / 2f;
         Vector3 rotation = _startTransform.eulerAngles;
 
-        (position, rotation) = await GenerateSegmentAsync(stairConnection, position, rotation, 
+        (position, rotation) = await GenerateSegmentAsync(stairConnection, position, rotation,
             stairConnection.PositionDifference, stairConnection.RotationDifference, token);
 
         for (int i = 0; i < _partsCount; i++)
@@ -71,12 +76,12 @@ public class StaircaseGenerator : MonoBehaviour
             index = _random.Next(_stairConnections.Length);
             stairConnection = _stairConnections[index];
 
-            (position, rotation) = await GenerateSegmentAsync(stairConnection, position,  rotation, 
+            (position, rotation) = await GenerateSegmentAsync(stairConnection, position, rotation,
                 stairConnection.PositionDifference, stairConnection.RotationDifference, token);
         }
     }
 
-    private async UniTask<(Vector3, Vector3)> GenerateSegmentAsync(StairConnection stairConnection, 
+    private async UniTask<(Vector3, Vector3)> GenerateSegmentAsync(StairConnection stairConnection,
         Vector3 position, Vector3 rotation, Vector3 positionDifference, Vector3 rotationDifference,
         CancellationToken token)
     {
@@ -92,8 +97,7 @@ public class StaircaseGenerator : MonoBehaviour
 
             await UniTask.Yield(token);
         }
-        
+
         return (position, rotation);
     }
 }
- 
