@@ -1,4 +1,6 @@
 using Cysharp.Threading.Tasks;
+using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using UnityEngine;
@@ -14,7 +16,6 @@ public class StaircaseGenerator : MonoBehaviour
     private StairsLoader _stairsLoader;
     private GameObject[] _stairs;
     private StairConnection[] _stairConnections;
-    private CancellationTokenSource _cts;
     private Vector3 _size;
     private Random _random;
 
@@ -25,28 +26,35 @@ public class StaircaseGenerator : MonoBehaviour
         _stairsLoader = stairsLoader;
     }
 
-    private void Awake() => _cts = new CancellationTokenSource();
-
     private async void Start()
     {
         int seed = _saveStorage.Get(SaveConstants.SeedKey, 0);
         _random = new Random(seed);
-        _stairs = (await _stairsLoader.LoadStairsAsync()).ToArray();
+
+        using CancellationTokenSource cts = new();
+        IEnumerable<GameObject> stairs = await _stairsLoader.LoadStairsAsync(cts.Token);
+        _stairs = stairs.ToArray();
         _size = _stairs[0].GetComponent<Stair>().Size;
-        _stairConnections = (await _stairsLoader.LoadStairConnectionsAsync()).ToArray();
 
-        GenerateAsync().Forget();
+        using CancellationTokenSource cts1 = new();
+        IEnumerable<StairConnection> stairConnections = await _stairsLoader
+            .LoadStairConnectionsAsync(cts1.Token);
+        _stairConnections = stairConnections.ToArray();
+
+        using CancellationTokenSource cts2 = new();
+        try
+        {
+            await GenerateAsync(cts2.Token);
+        }
+        catch (Exception)
+        {
+            return;
+        }
     }
 
-    private void OnDestroy()
-    {
-        _cts.CancelAndDispose();
-        _cts = null;
+    private void OnDestroy() => _stairsLoader.ReleaseStairs();
 
-        _stairsLoader.ReleaseStairs();
-    }
-
-    private async UniTask GenerateAsync()
+    private async UniTask GenerateAsync(CancellationToken token)
     {
         StairConnection[] startingConnections = _stairConnections.Where(x => x.CanBeInStart).ToArray();
         int index = _random.Next(startingConnections.Length);
@@ -56,7 +64,7 @@ public class StaircaseGenerator : MonoBehaviour
         Vector3 rotation = _startTransform.eulerAngles;
 
         (position, rotation) = await GenerateSegmentAsync(stairConnection, position, rotation, 
-            stairConnection.PositionDifference, stairConnection.RotationDifference);
+            stairConnection.PositionDifference, stairConnection.RotationDifference, token);
 
         for (int i = 0; i < _partsCount; i++)
         {
@@ -64,12 +72,13 @@ public class StaircaseGenerator : MonoBehaviour
             stairConnection = _stairConnections[index];
 
             (position, rotation) = await GenerateSegmentAsync(stairConnection, position,  rotation, 
-                stairConnection.PositionDifference, stairConnection.RotationDifference);
+                stairConnection.PositionDifference, stairConnection.RotationDifference, token);
         }
     }
 
     private async UniTask<(Vector3, Vector3)> GenerateSegmentAsync(StairConnection stairConnection, 
-        Vector3 position, Vector3 rotation, Vector3 positionDifference, Vector3 rotationDifference)
+        Vector3 position, Vector3 rotation, Vector3 positionDifference, Vector3 rotationDifference,
+        CancellationToken token)
     {
         int count = _random.Next(stairConnection.MinCount, stairConnection.MaxCount + 1);
 
@@ -81,7 +90,7 @@ public class StaircaseGenerator : MonoBehaviour
             position += stair.transform.TransformDirection(positionDifference);
             rotation += rotationDifference;
 
-            await UniTask.Yield(_cts.Token);
+            await UniTask.Yield(token);
         }
         
         return (position, rotation);

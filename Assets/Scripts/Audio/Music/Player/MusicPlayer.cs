@@ -1,5 +1,6 @@
 using Cysharp.Threading.Tasks;
 using R3;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
@@ -32,7 +33,14 @@ public class MusicPlayer : MonoBehaviour
     private async void Start()
     {
         _cts = new CancellationTokenSource();
-        _musicClipKeys = await _clipLoader.LoadClipKeysAsync(_cts.Token);
+        try
+        {
+            _musicClipKeys = await _clipLoader.LoadClipKeysAsync(_cts.Token);
+        }
+        catch (Exception)
+        {
+            return;
+        }
 
         _sceneSwitch.IsSceneLoading
             .Where(value => !value)

@@ -30,7 +30,10 @@ public class PlayerSoundLoader
 
     public void ReleaseSounds()
     {
-        _footstepHandle.Release();
-        _landHandle.Release();
+        if (_footstepHandle.IsValid())
+            _footstepHandle.Release();
+
+        if (_landHandle.IsValid())
+            _landHandle.Release();
     }
 }

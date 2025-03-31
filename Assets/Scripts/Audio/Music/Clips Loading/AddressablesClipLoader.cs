@@ -51,5 +51,9 @@ public class AddressablesClipLoader : IClipLoader
         return null;
     }
 
-    public void UnloadClip(AudioClip clip) => _handle.Release();
+    public void UnloadClip(AudioClip clip)
+    {
+        if (_handle.IsValid())
+            _handle.Release();
+    }
 }
