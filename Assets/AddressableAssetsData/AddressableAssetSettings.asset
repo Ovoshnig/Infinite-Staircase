@@ -15,7 +15,7 @@ MonoBehaviour:
   m_DefaultGroup: 619f6c39f5d4e824f8d04613515e9d1b
   m_currentHash:
     serializedVersion: 2
-    Hash: 253dcbbc167c250365f4ca50810f4973
+    Hash: 00000000000000000000000000000000
   m_OptimizeCatalogSize: 0
   m_BuildRemoteCatalog: 0
   m_CatalogRequestsTimeout: 0
@@ -61,6 +61,7 @@ MonoBehaviour:
   m_GroupAssets:
   - {fileID: 11400000, guid: 1ac1f2a788ed10041ba29f9bbfef6975, type: 2}
   - {fileID: 11400000, guid: 24f9c2820a6ef4e49b2c3da5d401cd4c, type: 2}
+  - {fileID: 11400000, guid: 523ea44e632371d49ba434d29e50fff8, type: 2}
   - {fileID: 11400000, guid: 34bc5d4be37def241b79423a8108be65, type: 2}
   - {fileID: 11400000, guid: 6ffcc9bb6a101f44ab37d160b8aaa153, type: 2}
   m_BuildSettings:
@@ -115,6 +116,7 @@ MonoBehaviour:
     - texture
     - 3d model
     - item
+    - player
   m_SchemaTemplates: []
   m_GroupTemplateObjects:
   - {fileID: 11400000, guid: 20861731a97b2ce49a010d796a293366, type: 2}

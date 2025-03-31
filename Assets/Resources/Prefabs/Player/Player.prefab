@@ -168,7 +168,7 @@ Transform:
   m_GameObject: {fileID: 6603589245619016148}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: -3.293185e-24, w: 1}
-  m_LocalPosition: {x: 0, y: 0.82819986, z: 0.075}
+  m_LocalPosition: {x: 0, y: 0.842, z: -4.056}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1353,8 +1353,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1c8fd97016a1fa04c8476abe0e71d550, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _footstepResource: {fileID: 6418180475301049370, guid: dddb155c45a7207458ede43931ce5986, type: 2}
-  _landResource: {fileID: 6418180475301049370, guid: b1c68c9a28701dc43a2fd74acb193b5d, type: 2}
+  _footstepReference:
+    m_AssetGUID: dddb155c45a7207458ede43931ce5986
+    m_SubObjectName: 
+    m_SubObjectType: 
+    m_SubObjectGUID: 
+    m_EditorAssetChanged: 0
+  _landReference:
+    m_AssetGUID: b1c68c9a28701dc43a2fd74acb193b5d
+    m_SubObjectName: 
+    m_SubObjectType: 
+    m_SubObjectGUID: 
+    m_EditorAssetChanged: 0
 --- !u!1 &3760077177457233363 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -7891092957932549332, guid: d90ce7795ccb94d448599e87949aaeb4, type: 3}
