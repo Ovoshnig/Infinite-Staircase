@@ -13,6 +13,7 @@ public sealed class PanelCloseButton : PanelChangeButton
         base.Start();
 
         _windowInputHandler.CloseCurrentPressed
+            .Skip(1)
             .Where(value => isActiveAndEnabled && value)
             .Subscribe(_ => Change())
             .AddTo(this);
