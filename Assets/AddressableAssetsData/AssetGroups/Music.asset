@@ -95,6 +95,14 @@ MonoBehaviour:
     - main menu
     - music
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: bdc85b7429ab6264fb5421dd3e3daa95
+    m_Address: Assets/Resources_moved/Audio/Music/GameLevel/Electro Chill (1).mp3
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - audio
+    - game level
+    - music
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: cbb51bc58a1a3ed42a737f118cce77a6
     m_Address: Assets/Resources_moved/Audio/Music/MainMenu/Impression.mp3
     m_ReadOnly: 0
@@ -133,6 +141,14 @@ MonoBehaviour:
     m_SerializedLabels:
     - audio
     - main menu
+    - music
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ffe72cd25822fe444987e5c2d322d3a1
+    m_Address: Assets/Resources_moved/Audio/Music/GameLevel/Electro Chill.mp3
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - audio
+    - game level
     - music
     FlaggedDuringContentUpdateRestriction: 0
   m_ReadOnly: 0

@@ -14,6 +14,7 @@ public class MusicPlayer : MonoBehaviour
     private ISceneMusicMapper _sceneMusicMapper;
     private SceneSwitch _sceneSwitch;
     private Dictionary<MusicCategory, IEnumerable<object>> _musicClipKeys;
+    private AudioClip _pastClip = null;
     private CancellationTokenSource _cts;
 
     [Inject]
@@ -77,6 +78,12 @@ public class MusicPlayer : MonoBehaviour
 
     private async UniTask PlayNextClipAsync()
     {
+        if (_pastClip != null)
+        {
+            ReleaseClip(_pastClip);
+            _pastClip = null;
+        }
+
         object nextClipKey = _musicQueue.GetNextClipKey();
 
         if (nextClipKey == null)
@@ -85,26 +92,16 @@ public class MusicPlayer : MonoBehaviour
         AudioClip clip = await _clipLoader.LoadClipAsync(nextClipKey, _cts.Token);
         _audioSource.clip = clip;
         _audioSource.Play();
+        _pastClip = clip;
 
-        try
-        {
-            await UniTask.WaitWhile(() => _audioSource.isPlaying, cancellationToken: _cts.Token);
-        }
-        finally
-        {
-            ReleaseClip(clip);
-            clip = null;
-        }
+        await UniTask.WaitWhile(() => _audioSource.isPlaying, cancellationToken: _cts.Token);
     }
 
     private void ReleaseClip(AudioClip clip)
     {
-        if (_audioSource != null)
-        {
-            _audioSource.Stop();
-            _audioSource.clip = null;
-            _clipLoader.UnloadClip(clip);
-            Resources.UnloadAsset(clip);
-        }
+        _audioSource.Stop();
+        _audioSource.clip = null;
+        _clipLoader.UnloadClip(clip);
+        Resources.UnloadAsset(clip);
     }
 }

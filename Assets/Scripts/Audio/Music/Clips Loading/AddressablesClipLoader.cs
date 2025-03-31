@@ -10,6 +10,8 @@ using UnityEngine.ResourceManagement.ResourceLocations;
 
 public class AddressablesClipLoader : IClipLoader
 {
+    private AsyncOperationHandle<AudioClip> _handle;
+
     public async UniTask<Dictionary<MusicCategory, IEnumerable<object>>> LoadClipKeysAsync(CancellationToken token)
     {
         Dictionary<MusicCategory, IEnumerable<object>> musicClipKeys = new();
@@ -36,12 +38,12 @@ public class AddressablesClipLoader : IClipLoader
     public async UniTask<AudioClip> LoadClipAsync(object address, CancellationToken token)
     {
         IResourceLocation resourceLocation = (IResourceLocation)address;
-        AsyncOperationHandle<AudioClip> handle = Addressables.LoadAssetAsync<AudioClip>(resourceLocation);
-        await handle.ToUniTask(cancellationToken: token);
+        _handle = Addressables.LoadAssetAsync<AudioClip>(resourceLocation);
+        await _handle.ToUniTask(cancellationToken: token);
 
-        if (handle.Status == AsyncOperationStatus.Succeeded)
+        if (_handle.Status == AsyncOperationStatus.Succeeded)
         {
-            AudioClip clip = handle.Result;
+            AudioClip clip = _handle.Result;
 
             return clip;
         }
@@ -49,5 +51,5 @@ public class AddressablesClipLoader : IClipLoader
         return null;
     }
 
-    public void UnloadClip(AudioClip clip) => Addressables.Release(clip);
+    public void UnloadClip(AudioClip clip) => _handle.Release();
 }
