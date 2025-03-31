@@ -18,7 +18,7 @@ public class ButtonBindingHandler : BindingHandler
 
         base.StartListening();
 
-        BindingText.text = "ќжидание ввода...";
+        BindingText.text = InputConstants.WaitInputText;
     }
 
     protected override void OnAnyKeyPerformed(InputAction.CallbackContext _)
@@ -35,11 +35,21 @@ public class ButtonBindingHandler : BindingHandler
     {
         if (InputActionProperty.controls[0].path != control.path)
         {
-            InputAction action = PlayerInputProperty.FindAction(InputActionProperty.name);
-            InputActionProperty.ApplyBindingOverride(control.path);
-            action.ApplyBindingOverride(control.path);
-        }
+            string defaultControlName = InputActionProperty.bindings[0].path.Split('/')[^1];
+            string newControlName = control.path.Split('/')[^1];
 
+            if (defaultControlName == newControlName)
+            {
+                Reset();
+            }
+            else
+            {
+                InputActionProperty.ApplyBindingOverride(control.path);
+                InputAction action = PlayerInputProperty.FindAction(InputActionProperty.name);
+                action.ApplyBindingOverride(control.path);
+            }
+        }
+        
         base.CompleteBinding(control);
     }
 

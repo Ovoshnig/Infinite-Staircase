@@ -59,28 +59,40 @@ public class Vector2BindingHandler : BindingHandler
     {
         (_temporaryControls[1], _temporaryControls[2]) = (_temporaryControls[2], _temporaryControls[1]);
 
-        bool hasDuplicates = _temporaryControls.GroupBy(c => c.path).Any(g => g.Count() > 1);
-        bool hasChanges = false;
+        bool[] isDuplicates = _temporaryControls
+            .GroupBy(c => c.path)
+            .Select(g => g.Count() > 1)
+            .ToArray();
+        bool[] isChanges = new bool[4];
+        bool[] sameAsDefault = new bool[4];
 
         for (int i = 0; i < 4; i++)
         {
-            var actionKeyName = InputActionProperty.bindings[i + 1].path.Split('/')[^1];
-            var controlKeyName = _temporaryControls[i].path.Split('/')[^1];
+            string defaultControlName = InputActionProperty.bindings[i + 1].path.Split('/')[^1];
+            string currentControlName = InputActionProperty.bindings[i + 1].effectivePath.Split('/')[^1];
+            string newControlName = _temporaryControls[i].path.Split('/')[^1];
 
-            if (actionKeyName != controlKeyName)
-            {
-                hasChanges = true;
-                break;
-            }
+            if (currentControlName != newControlName)
+                isChanges[i] = true;
+
+            if (newControlName == defaultControlName)
+                sameAsDefault[i] = true;
         }
 
-        if (hasChanges && !hasDuplicates)
+        if (isDuplicates.All(x => !x) && isChanges.Any(x => x))
         {
-            for (int i = 0; i < 4; i++)
+            if (sameAsDefault.All(x => x))
             {
-                InputAction action = PlayerInputProperty.FindAction(InputActionProperty.name);
-                InputActionProperty.ApplyBindingOverride(i + 1, _temporaryControls[i].path);
-                action.ApplyBindingOverride(i + 1, _temporaryControls[i].path);
+                Reset();
+            }
+            else
+            {
+                for (int i = 0; i < 4; i++)
+                {
+                    InputAction action = PlayerInputProperty.FindAction(InputActionProperty.name);
+                    InputActionProperty.ApplyBindingOverride(i + 1, _temporaryControls[i].path);
+                    action.ApplyBindingOverride(i + 1, _temporaryControls[i].path);
+                }
             }
         }
 
