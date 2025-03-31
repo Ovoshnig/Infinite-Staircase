@@ -35,9 +35,10 @@ public class KeyBinder : MonoBehaviour
 
     public TMP_Text ActionNameText => _actionNameText;
 
-    private void Awake()
+    private void Awake() => _bindingButtonText = _bindingButton.GetComponentInChildren<TMP_Text>();
+
+    private void Start()
     {
-        _bindingButtonText = _bindingButton.GetComponentInChildren<TMP_Text>();
         Color normalTextColor = _bindingButtonText.color;
 
         _inputAction = _inputActionReference.action;
@@ -53,10 +54,7 @@ public class KeyBinder : MonoBehaviour
             _bindingHandler = new Vector2BindingHandler(_bindingsTracker, _bindingButtonText,
                 normalTextColor, _waitingTextColor, _playerInput, _inputActionReference);
         }
-    }
 
-    private void Start()
-    {
         _bindingButton.OnClickAsObservable()
             .Subscribe(_ => _bindingHandler.StartListening())
             .AddTo(this);
