@@ -4080,7 +4080,7 @@ MonoBehaviour:
     TypeName: WindowInputLifetimeScope
   autoRun: 1
   autoInjectGameObjects: []
-  _buttonPanelCloser: {fileID: 1598786040}
+  _bindingsCloseView: {fileID: 1598786044}
 --- !u!114 &581829787
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9951,6 +9951,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 5553912703846147946, guid: 530458200879ce544b4494f4f8612b17, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1598786040}
+    - targetCorrespondingSourceObject: {fileID: 5553912703846147946, guid: 530458200879ce544b4494f4f8612b17, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1598786044}
   m_SourcePrefab: {fileID: 100100000, guid: 530458200879ce544b4494f4f8612b17, type: 3}
 --- !u!224 &1598786038 stripped
 RectTransform:
@@ -9976,6 +9979,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _currentPanel: {fileID: 0}
   _newPanel: {fileID: 1886204246}
+--- !u!114 &1598786044
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1598786039}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 22a3c22c972a26d4888de1e66bce4283, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1603896958
 PrefabInstance:
   m_ObjectHideFlags: 0

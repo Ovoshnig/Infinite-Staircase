@@ -1,7 +1,5 @@
 using System;
 using System.Linq;
-using TMPro;
-using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class Vector2BindingHandler : BindingHandler
@@ -17,45 +15,73 @@ public class Vector2BindingHandler : BindingHandler
     private InputControl[] _temporaryControls;
     private int _keyInputNumber;
 
-    public Vector2BindingHandler(KeyBindingsTracker bindingsTracker, TMP_Text bindingText,
-        Color normalTextColor, Color waitingTextColor, PlayerInput playerInput, InputAction inputAction) :
-        base(bindingsTracker, bindingText, normalTextColor, waitingTextColor, playerInput, inputAction)
+    public Vector2BindingHandler(KeyListeningTracker listeningTracker, 
+        PlayerInput playerInput, InputAction inputAction) :
+        base(listeningTracker, playerInput, inputAction)
     {
+    }
+
+    protected override string WaitInputText
+    {
+        get
+        {
+            object ordinalNumber = Enum.GetValues(typeof(Vector2Directions)).GetValue(_keyInputNumber);
+
+            return $"ќжидание ввода {ordinalNumber} клавиши...";
+        }
     }
 
     public override void StartListening()
     {
-        if (!BindingsTracker.TryStartListening())
+        if (!ListeningTracker.TryStartListening())
             return;
-
-        base.StartListening();
 
         _keyInputNumber = 0;
         _temporaryControls = new InputControl[4];
-        DisplayWaitingMessage();
+
+        base.StartListening();
     }
 
-    protected override void OnAnyKeyPerformed(InputAction.CallbackContext _)
+    public override string GetActionDisplayName()
     {
-        var pressedControl = BindingsTracker.AllControls.First(c => c.IsPressed());
+        InputControl[] controls = InputActionProperty.controls.ToArray();
 
-        if (pressedControl == Keyboard.current.escapeKey)
+        if (controls.Length == 4)
+            (controls[2], controls[1]) = (controls[1], controls[2]);
+
+        string displayName = string.Join("/", controls.Select(c =>
         {
-            CancelBinding();
+            string name = c.name;
+            name = char.ToUpper(name[0]) + name[1..];
+
+            return name;
+        }));
+
+        return displayName;
+    }
+
+    protected override void OnAnyButtonPressed(InputControl control)
+    {
+        if (control.device is not Keyboard)
+            return;
+
+        if (control == Keyboard.current.escapeKey)
+        {
+            CancelListening();
         }
         else
         {
-            _temporaryControls[_keyInputNumber] = pressedControl;
+            _temporaryControls[_keyInputNumber] = control;
             _keyInputNumber++;
 
             if (_keyInputNumber == 4)
-                CompleteBinding(pressedControl);
+                ApplyBinding(control);
             else
-                DisplayWaitingMessage();
+                SetWaitingMessage();
         }
     }
 
-    protected override void CompleteBinding(InputControl control)
+    protected override void ApplyBinding(InputControl control)
     {
         (_temporaryControls[1], _temporaryControls[2]) = (_temporaryControls[2], _temporaryControls[1]);
 
@@ -83,7 +109,7 @@ public class Vector2BindingHandler : BindingHandler
         {
             if (sameAsDefault.All(x => x))
             {
-                Reset();
+                ResetBinding();
             }
             else
             {
@@ -96,30 +122,6 @@ public class Vector2BindingHandler : BindingHandler
             }
         }
 
-        base.CompleteBinding(control);
-    }
-
-    protected override string GetActionDisplayName()
-    {
-        var controls = InputActionProperty.controls.ToArray();
-
-        if (controls.Length == 4)
-            (controls[2], controls[1]) = (controls[1], controls[2]);
-
-        string displayName = string.Join("/", controls.Select(c =>
-        {
-            string name = c.name;
-            name = char.ToUpper(name[0]) + name[1..];
-
-            return name;
-        }));
-
-        return displayName;
-    }
-
-    private void DisplayWaitingMessage()
-    {
-        var ordinalNumber = Enum.GetValues(typeof(Vector2Directions)).GetValue(_keyInputNumber);
-        BindingText.text = $"ќжидание ввода {ordinalNumber} клавиши...";
+        base.ApplyBinding(control);
     }
 }

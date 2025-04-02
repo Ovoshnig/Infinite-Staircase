@@ -1,82 +1,79 @@
-using TMPro;
-using UnityEngine;
+using R3;
 using UnityEngine.InputSystem;
 
 public abstract class BindingHandler : IBindingHandler
 {
-    private readonly KeyBindingsTracker _bindingsTracker;
+    private readonly KeyListeningTracker _listeningTracker;
     private readonly PlayerInput _playerInput;
     private readonly InputAction _inputAction;
-    private readonly InputAction _anyKeyInputAction;
-    private readonly TMP_Text _bindingText;
-    private readonly Color _normalTextColor;
-    private readonly Color _waitingTextColor;
+    private readonly ReactiveProperty<bool> _isListening = new(false);
+    private readonly ReactiveProperty<string> _bindingText = new(string.Empty);
+    private CompositeDisposable _compositeDisposable = new();
 
-    protected BindingHandler(KeyBindingsTracker bindingsTracker, TMP_Text bindingText,
-        Color normalTextColor, Color waitingTextColor, PlayerInput playerInput, 
-        InputAction inputAction
-        )
+    public BindingHandler(KeyListeningTracker listeningTracker, 
+        PlayerInput playerInput, InputAction inputAction)
     {
-        _bindingsTracker = bindingsTracker;
-        _bindingText = bindingText;
-        _normalTextColor = normalTextColor;
-        _waitingTextColor = waitingTextColor;
+        _listeningTracker = listeningTracker;
         _playerInput = playerInput;
         _inputAction = inputAction;
-
-        _anyKeyInputAction = new InputAction(type: InputActionType.Button);
-        Initialize();
     }
 
-    protected KeyBindingsTracker BindingsTracker => _bindingsTracker;
-    protected TMP_Text BindingText => _bindingText;
+    public ReadOnlyReactiveProperty<bool> IsListening => _isListening;
+    public ReadOnlyReactiveProperty<string> BindingText => _bindingText;
+
+    protected KeyListeningTracker ListeningTracker => _listeningTracker;
     protected PlayerInput PlayerInputProperty => _playerInput;
     protected InputAction InputActionProperty => _inputAction;
+    protected abstract string WaitInputText { get; }
 
-    public void Initialize()
-    {
-        _bindingText.text = GetActionDisplayName();
+    public void Initialize() => _bindingText.Value = GetActionDisplayName();
 
-        _anyKeyInputAction.AddBinding(InputConstants.KeyboardAnyKeyPath);
-        _anyKeyInputAction.performed += OnAnyKeyPerformed;
-    }
+    public void Dispose() { }
 
     public virtual void StartListening()
     {
-        _anyKeyInputAction.Enable();
-        _bindingText.color = _waitingTextColor;
+        InputSystem.onAnyButtonPress
+            .ToObservable()
+            .Subscribe(OnAnyButtonPressed)
+            .AddTo(_compositeDisposable);
+
+        _isListening.Value = true;
+        SetWaitingMessage();
     }
 
-    public virtual void Reset()
+    public virtual void ResetBinding()
     {
         _inputAction.RemoveAllBindingOverrides();
         _playerInput.RemoveAllBindingOverrides();
-        _bindingText.text = GetActionDisplayName();
+        _bindingText.Value = GetActionDisplayName();
     }
 
-    protected abstract void OnAnyKeyPerformed(InputAction.CallbackContext _);
+    public abstract string GetActionDisplayName();
 
-    protected virtual void CompleteBinding(InputControl _)
+    protected abstract void OnAnyButtonPressed(InputControl control);
+
+    protected virtual void ApplyBinding(InputControl _)
     {
-        _bindingText.text = GetActionDisplayName();
+        _bindingText.Value = GetActionDisplayName();
 
         StopListening();
     }
 
-    protected void CancelBinding()
+    protected virtual void CancelListening()
     {
-        _bindingText.text = GetActionDisplayName();
+        _bindingText.Value = GetActionDisplayName();
 
         StopListening();
     }
 
     protected virtual void StopListening()
     {
-        _bindingText.color = _normalTextColor;
+        _compositeDisposable?.Dispose();
+        _compositeDisposable = new CompositeDisposable();
 
-        _anyKeyInputAction.Disable();
-        _bindingsTracker.StopListening();
+        _listeningTracker.StopListening();
+        _isListening.Value = false;
     }
 
-    protected abstract string GetActionDisplayName();
+    protected void SetWaitingMessage() => _bindingText.Value = WaitInputText;
 }

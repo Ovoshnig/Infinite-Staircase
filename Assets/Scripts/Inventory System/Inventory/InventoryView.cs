@@ -18,7 +18,9 @@ public class InventoryView : MonoBehaviour
 
     private void Awake()
     {
-        _mouseClickAction = new InputAction(type: InputActionType.Button, binding: InputConstants.MouseLeftButtonPath);
+        _mouseClickAction = new InputAction(
+            type: InputActionType.Button, 
+            binding: Mouse.current.leftButton.path);
         _mouseClickAction.canceled += OnMouseClickCanceled;
 
         _slotViews = GetComponentsInChildren<SlotView>();
@@ -65,7 +67,6 @@ public class InventoryView : MonoBehaviour
     {
         if (slotView.SlotModel.HasItem)
         {
-            //Item use logic
             slotView.TakeItem();
         }
     }

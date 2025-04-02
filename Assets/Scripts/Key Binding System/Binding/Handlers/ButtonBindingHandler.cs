@@ -1,37 +1,43 @@
-using System.Linq;
-using TMPro;
-using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class ButtonBindingHandler : BindingHandler
 {
-    public ButtonBindingHandler(KeyBindingsTracker bindingsTracker, TMP_Text bindingText,
-        Color normalTextColor, Color waitingTextColor, PlayerInput playerInput, InputAction inputAction) :
-        base(bindingsTracker, bindingText, normalTextColor, waitingTextColor, playerInput, inputAction)
+    public ButtonBindingHandler(KeyListeningTracker listeningTracker, 
+        PlayerInput playerInput, InputAction inputAction) :
+        base(listeningTracker, playerInput, inputAction)
     {
     }
+
+    protected override string WaitInputText => InputConstants.WaitInputText;
 
     public override void StartListening()
     {
-        if (!BindingsTracker.TryStartListening())
+        if (!ListeningTracker.TryStartListening())
             return;
 
         base.StartListening();
-
-        BindingText.text = InputConstants.WaitInputText;
     }
 
-    protected override void OnAnyKeyPerformed(InputAction.CallbackContext _)
+    public override string GetActionDisplayName()
     {
-        InputControl pressedControl = BindingsTracker.AllControls.First(c => c.IsPressed());
+        string actionName = InputActionProperty.controls[0].name;
+        actionName = char.ToUpper(actionName[0]) + actionName[1..];
 
-        if (pressedControl == Keyboard.current.escapeKey)
-            CancelBinding();
-        else
-            CompleteBinding(pressedControl);
+        return actionName;
     }
 
-    protected override void CompleteBinding(InputControl control)
+    protected override void OnAnyButtonPressed(InputControl control)
+    {
+        if (control.device is not Keyboard)
+            return;
+
+        if (control == Keyboard.current.escapeKey)
+            CancelListening();
+        else
+            ApplyBinding(control);
+    }
+     
+    protected override void ApplyBinding(InputControl control)
     {
         if (InputActionProperty.controls[0].path != control.path)
         {
@@ -40,7 +46,7 @@ public class ButtonBindingHandler : BindingHandler
 
             if (defaultControlName == newControlName)
             {
-                Reset();
+                ResetBinding();
             }
             else
             {
@@ -50,14 +56,6 @@ public class ButtonBindingHandler : BindingHandler
             }
         }
         
-        base.CompleteBinding(control);
-    }
-
-    protected override string GetActionDisplayName()
-    {
-        string actionName = InputActionProperty.controls[0].name;
-        actionName = char.ToUpper(actionName[0]) + actionName[1..];
-
-        return actionName;
+        base.ApplyBinding(control);
     }
 }

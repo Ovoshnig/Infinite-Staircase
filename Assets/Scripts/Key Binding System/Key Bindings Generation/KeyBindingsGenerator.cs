@@ -30,10 +30,10 @@ public class KeyBindingsGenerator : MonoBehaviour
                 if (!isKeyboardUsing || hasEscapeKey)
                     continue;
 
-                var keyBinder = Instantiate(_keyBindingBlockPrefab, transform).GetComponent<KeyBinder>();
+                var keyBinder = Instantiate(_keyBindingBlockPrefab, transform).GetComponent<KeyBinderView>();
                 var actionName = Regex.Replace(action.name, "([A-Z])", " $1").ToLower();
                 keyBinder.ActionNameText.text = actionName;
-                keyBinder.InputActionReference = InputActionReference.Create(action);
+                keyBinder.SetInputActionReference(InputActionReference.Create(action));
             }
         }
     }

@@ -1,3 +1,4 @@
+using Cysharp.Threading.Tasks;
 using R3;
 using System.Linq;
 using TMPro;
@@ -6,7 +7,7 @@ using UnityEngine.InputSystem;
 using UnityEngine.UI;
 using VContainer;
 
-public class KeyBinder : MonoBehaviour
+public class KeyBinderView : MonoBehaviour
 {
     [SerializeField] private Button _bindingButton;
     [SerializeField] private Button _bindingResetButton;
@@ -15,22 +16,16 @@ public class KeyBinder : MonoBehaviour
     [SerializeField] private InputActionReference _inputActionReference;
 
     private PlayerInput _playerInput;
-    private KeyBindingsTracker _bindingsTracker;
-    private IBindingHandler _bindingHandler;
+    private KeyListeningTracker _listeningTracker;
+    private BindingHandler _bindingHandler;
     private TMP_Text _bindingButtonText;
     private InputAction _inputAction;
 
     [Inject]
-    public void Construct(KeyBindingsTracker bindingsTracker, PlayerInput playerInput)
+    public void Construct(KeyListeningTracker listeningTracker, PlayerInput playerInput)
     {
-        _bindingsTracker = bindingsTracker;
+        _listeningTracker = listeningTracker;
         _playerInput = playerInput;
-    }
-
-    public InputActionReference InputActionReference
-    {
-        get => _inputActionReference;
-        set => _inputActionReference = value;
     }
 
     public TMP_Text ActionNameText => _actionNameText;
@@ -44,26 +39,39 @@ public class KeyBinder : MonoBehaviour
         _inputAction = _inputActionReference.action;
 
         if (_inputAction.type == InputActionType.Button)
-        {
-            _bindingHandler = new ButtonBindingHandler(_bindingsTracker, _bindingButtonText,
-                normalTextColor, _waitingTextColor, _playerInput, _inputActionReference);
-        }
-        else if (_inputAction.type == InputActionType.Value &&
-            _inputAction.expectedControlType == nameof(Vector2))
-        {
-            _bindingHandler = new Vector2BindingHandler(_bindingsTracker, _bindingButtonText,
-                normalTextColor, _waitingTextColor, _playerInput, _inputActionReference);
-        }
+            _bindingHandler = new ButtonBindingHandler(_listeningTracker, _playerInput, _inputActionReference);
+        else if (_inputAction.type == InputActionType.Value && _inputAction.expectedControlType == nameof(Vector2))
+            _bindingHandler = new Vector2BindingHandler(_listeningTracker, _playerInput, _inputActionReference);
+
+        _bindingHandler.Initialize();
+
+        _bindingHandler.IsListening
+            .Subscribe(value =>
+            {
+                if (value)
+                    _bindingButtonText.color = _waitingTextColor;
+                else
+                    _bindingButtonText.color = normalTextColor;
+            })
+            .AddTo(this);
+        _bindingHandler.BindingText
+            .Subscribe(value => _bindingButtonText.text = value)
+            .AddTo(this);
 
         _bindingButton.OnClickAsObservable()
             .Subscribe(_ => _bindingHandler.StartListening())
             .AddTo(this);
         _bindingResetButton.OnClickAsObservable()
-            .Subscribe(_ => _bindingHandler.Reset())
+            .Subscribe(_ => _bindingHandler.ResetBinding())
             .AddTo(this);
         Observable
             .EveryValueChanged(this, _ => _inputAction.bindings.Any(b => b.hasOverrides))
             .Subscribe(value => _bindingResetButton.interactable = value)
             .AddTo(this);
     }
+
+    private void OnDestroy() => _bindingHandler.Dispose();
+
+    public void SetInputActionReference(InputActionReference actionReference) =>
+        _inputActionReference = actionReference;
 }
