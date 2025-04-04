@@ -14,7 +14,7 @@ public class PlayerVerticalCalculator
 
     public void CalculateJumping(ref Vector3 movement) => movement.y = _playerSettings.JumpForce;
 
-    public void CalculateLanding(ref Vector3 movement) => movement.y = -20f;
+    public void CalculateLanding(ref Vector3 movement) => movement.y = -_playerSettings.GravityForce;
 
     public Vector3 CalculateFalling(ref Vector3 movement)
     {
