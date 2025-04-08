@@ -19,8 +19,9 @@ public class ProjectLifetimeScope : LifetimeScope
         builder.RegisterEntryPoint<ScreenInputHandler>(Lifetime.Singleton).AsSelf();
         builder.RegisterEntryPoint<ScreenTuner>(Lifetime.Singleton).AsSelf();
         builder.RegisterEntryPoint<QualityTuner>(Lifetime.Singleton).AsSelf();
-        builder.RegisterEntryPoint<LookTuner>(Lifetime.Singleton).AsSelf();
-        builder.RegisterEntryPoint<AudioTuner>(Lifetime.Singleton).AsSelf();
+        builder.RegisterEntryPoint<SensitivityKeeper>(Lifetime.Singleton).AsSelf();
+        builder.RegisterEntryPoint<SoundVolumeKeeper>(Lifetime.Singleton).AsSelf();
+        builder.RegisterEntryPoint<MusicVolumeKeeper>(Lifetime.Singleton).AsSelf();
         builder.RegisterEntryPoint<AudioMixerTuner>(Lifetime.Singleton).AsSelf();
         builder.RegisterEntryPoint<KeyBindingOverridesSaver>(Lifetime.Singleton).AsSelf();
         builder.RegisterEntryPoint<SaveStorage>(Lifetime.Singleton).AsSelf();

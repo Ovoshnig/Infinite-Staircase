@@ -202,6 +202,34 @@
             ]
         },
         {
+            "name": "Menu",
+            "id": "0f52817e-7ac5-4645-addf-cf1b01c9b69e",
+            "actions": [
+                {
+                    "name": "CloseCurrent",
+                    "type": "Button",
+                    "id": "50da8447-761f-4686-a0b3-e2f05a4665aa",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "f9af7be1-f35a-498c-9059-15c69461adc2",
+                    "path": "<Keyboard>/escape",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Keyboard and Mouse",
+                    "action": "CloseCurrent",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        },
+        {
             "name": "Windows",
             "id": "e99e2a38-1195-4e44-b2ca-4dd6dd13629e",
             "actions": [

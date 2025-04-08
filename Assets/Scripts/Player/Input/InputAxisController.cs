@@ -9,18 +9,16 @@ using VContainer;
 public class InputAxisController : InputAxisControllerBase<InputAxisController.Reader>
 {
     private PlayerInput _playerInput;
-    private LookTuner _lookTuner;
-    private WindowTracker _windowTracker;
+    private SensitivityKeeper _sensitivityKeeper;
     private PlayerSettings _playerSettings;
     private PlayerInput.PlayerActions _playerActions;
 
     [Inject]
-    public void Construct(PlayerInput playerInput, LookTuner lookTuner, 
-        WindowTracker windowTracker, PlayerSettings playerSettings)
+    public void Construct(PlayerInput playerInput, SensitivityKeeper sensitivityKeeper, 
+        PlayerSettings playerSettings)
     {
         _playerInput = playerInput;
-        _lookTuner = lookTuner;
-        _windowTracker = windowTracker;
+        _sensitivityKeeper = sensitivityKeeper;
         _playerSettings = playerSettings;
     }
 
@@ -31,17 +29,8 @@ public class InputAxisController : InputAxisControllerBase<InputAxisController.R
         _playerActions.Look.Subscribe(OnLook);
         _playerActions.Zoom.Subscribe(OnZoom);
 
-        _lookTuner.Sensitivity
+        _sensitivityKeeper.Data
             .Subscribe(value => Controllers.ForEach(controller => controller.Input.Multiplier = value))
-            .AddTo(this);
-        _windowTracker.IsOpen
-            .Subscribe(isOpen =>
-            {
-                if (isOpen)
-                    _playerActions.Disable();
-                else
-                    _playerActions.Enable();
-            })
             .AddTo(this);
     }
 

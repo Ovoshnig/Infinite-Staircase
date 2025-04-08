@@ -7,7 +7,6 @@ using VContainer.Unity;
 public class PlayerInputHandler : IInitializable, IDisposable
 {
     private readonly PlayerInput _playerInput;
-    private readonly WindowTracker _windowTracker;
     private readonly ReactiveProperty<bool> _isWalkPressed = new(false);
     private readonly ReactiveProperty<bool> _isRunPressed = new(false);
     private readonly ReactiveProperty<bool> _isLookPressed = new(false);
@@ -16,11 +15,7 @@ public class PlayerInputHandler : IInitializable, IDisposable
     private readonly CompositeDisposable _compositeDisposable = new();
     private PlayerInput.PlayerActions _playerActions;
 
-    public PlayerInputHandler(PlayerInput playerInput, WindowTracker windowTracker)
-    {
-        _playerInput = playerInput;
-        _windowTracker = windowTracker;
-    }
+    public PlayerInputHandler(PlayerInput playerInput) => _playerInput = playerInput;
 
     public Vector2 WalkInput { get; private set; } = Vector2.zero;
     public Vector2 LookInput { get; private set; } = Vector2.zero;
@@ -39,16 +34,6 @@ public class PlayerInputHandler : IInitializable, IDisposable
         _playerActions.Look.Subscribe(OnLook);
         _playerActions.Jump.Subscribe(OnJump);
         _playerActions.TogglePerspective.Subscribe(OnTogglePerspective);
-
-        _windowTracker.IsOpen
-            .Subscribe(value =>
-            {
-                if (value)
-                    _playerActions.Disable();
-                else
-                    _playerActions.Enable();
-            })
-            .AddTo(_compositeDisposable);
     }
 
     public void Dispose()

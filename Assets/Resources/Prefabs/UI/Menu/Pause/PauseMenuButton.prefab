@@ -93,12 +93,16 @@ PrefabInstance:
       value: PauseMenuButton
       objectReference: {fileID: 0}
     - target: {fileID: 4230476776402574984, guid: 723194aaa30a36e43ad28ddddaeeb499, type: 3}
+      propertyPath: m_Color.b
+      value: 0.754717
+      objectReference: {fileID: 0}
+    - target: {fileID: 4230476776402574984, guid: 723194aaa30a36e43ad28ddddaeeb499, type: 3}
       propertyPath: m_Color.g
-      value: 0.972549
+      value: 0.90260684
       objectReference: {fileID: 0}
     - target: {fileID: 4230476776402574984, guid: 723194aaa30a36e43ad28ddddaeeb499, type: 3}
       propertyPath: m_Color.r
-      value: 0.8200542
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4648900923960772367, guid: 723194aaa30a36e43ad28ddddaeeb499, type: 3}
       propertyPath: m_sharedMaterial

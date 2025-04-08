@@ -9,5 +9,9 @@ public class KeyBindingLifetimeScope : LifetimeScope
     protected override void Configure(IContainerBuilder builder) =>
         builder.Register<KeyListeningTracker>(Lifetime.Singleton);
 
-    private void Start() => Container.Inject(_bindingsCloseView);
+    private void Start()
+    {
+        if (_bindingsCloseView != null)
+            Container.Inject(_bindingsCloseView);
+    }
 }

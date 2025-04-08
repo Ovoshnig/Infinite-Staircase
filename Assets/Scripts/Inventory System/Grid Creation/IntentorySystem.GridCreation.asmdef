@@ -1,0 +1,18 @@
+{
+    "name": "IntentorySystem.GridCreation",
+    "rootNamespace": "",
+    "references": [
+        "GUID:d500fc47a151ef3488b74d300c50e44d"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

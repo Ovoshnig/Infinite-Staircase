@@ -290,7 +290,7 @@ GameObject:
   - component: {fileID: 366930858}
   - component: {fileID: 366930861}
   m_Layer: 0
-  m_Name: PlayerLifetimeScope
+  m_Name: Player
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -308,7 +308,8 @@ Transform:
   m_LocalPosition: {x: 1.6058103, y: 112.3447, z: -44.18512}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 578508140}
   m_Father: {fileID: 1049999922}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &366930861
@@ -587,6 +588,54 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 6659017448248509495, guid: 2aeed4f6b79d95c449d9599693532a45, type: 3}
   m_PrefabInstance: {fileID: 533250552}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &578508139
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 578508140}
+  - component: {fileID: 578508141}
+  m_Layer: 0
+  m_Name: WindowsPlayerMediators
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &578508140
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 578508139}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 366930858}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &578508141
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 578508139}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1595517eff025f941bf2ffb76f036e4f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  parentReference:
+    TypeName: PlayerLifetimeScope
+  autoRun: 1
+  autoInjectGameObjects: []
 --- !u!1 &858760208
 GameObject:
   m_ObjectHideFlags: 0
@@ -598,7 +647,7 @@ GameObject:
   - component: {fileID: 858760209}
   - component: {fileID: 858760210}
   m_Layer: 0
-  m_Name: InventoryLifetimeScope
+  m_Name: Inventory
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -649,7 +698,7 @@ GameObject:
   - component: {fileID: 965924879}
   - component: {fileID: 965924880}
   m_Layer: 0
-  m_Name: WindowInputLifetimeScope
+  m_Name: WindowInput
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -698,7 +747,7 @@ GameObject:
   - component: {fileID: 966094633}
   - component: {fileID: 966094634}
   m_Layer: 0
-  m_Name: FloorLifetimeScope
+  m_Name: Floor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -782,7 +831,7 @@ GameObject:
   - component: {fileID: 1049999922}
   - component: {fileID: 1049999923}
   m_Layer: 0
-  m_Name: WindowTrackerLifetimeScope
+  m_Name: WindowTracker
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -880,7 +929,7 @@ GameObject:
   - component: {fileID: 1205798880}
   - component: {fileID: 1205798881}
   m_Layer: 0
-  m_Name: StaircaseLifetimeScope
+  m_Name: Staircase
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1094,7 +1143,7 @@ GameObject:
   - component: {fileID: 1399046811}
   - component: {fileID: 1399046812}
   m_Layer: 0
-  m_Name: PauseMenuLifetimeScope
+  m_Name: PauseMenu
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1112,7 +1161,8 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 1802542993}
   m_Father: {fileID: 1049999922}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1399046812
@@ -1131,7 +1181,7 @@ MonoBehaviour:
     TypeName: WindowTrackerLifetimeScope
   autoRun: 1
   autoInjectGameObjects: []
-  _pauseMenuCanvas: {fileID: 556110117597708177, guid: 430f92455e684724abfd5d02368be160, type: 3}
+  _pauseMenuSwitch: {fileID: 6408046153877070787, guid: 430f92455e684724abfd5d02368be160, type: 3}
 --- !u!1001 &1657208059
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1225,6 +1275,71 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1802542992
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1802542993}
+  - component: {fileID: 1802542994}
+  - component: {fileID: 1802542995}
+  m_Layer: 0
+  m_Name: PauseMenuMediators
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1802542993
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1802542992}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1399046811}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1802542994
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1802542992}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa3dca9828b930043afdbad9e85f26e1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  parentReference:
+    TypeName: PauseMenuLifetimeScope
+  autoRun: 1
+  autoInjectGameObjects: []
+--- !u!114 &1802542995
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1802542992}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c3a96bcf270d42b45920e73057da523c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  parentReference:
+    TypeName: PauseMenuLifetimeScope
+  autoRun: 1
+  autoInjectGameObjects: []
 --- !u!1 &1932447963
 GameObject:
   m_ObjectHideFlags: 0
