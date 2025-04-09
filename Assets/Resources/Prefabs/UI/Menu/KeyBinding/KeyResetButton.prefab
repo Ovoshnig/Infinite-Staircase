@@ -104,6 +104,18 @@ PrefabInstance:
       propertyPath: m_Name
       value: KeyResetButton
       objectReference: {fileID: 0}
+    - target: {fileID: 6638811145721488025, guid: 530458200879ce544b4494f4f8612b17, type: 3}
+      propertyPath: m_Color.b
+      value: 0.3679244
+      objectReference: {fileID: 0}
+    - target: {fileID: 6638811145721488025, guid: 530458200879ce544b4494f4f8612b17, type: 3}
+      propertyPath: m_Color.g
+      value: 0.5334084
+      objectReference: {fileID: 0}
+    - target: {fileID: 6638811145721488025, guid: 530458200879ce544b4494f4f8612b17, type: 3}
+      propertyPath: m_Color.r
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
