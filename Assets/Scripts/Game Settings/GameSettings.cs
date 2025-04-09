@@ -8,6 +8,7 @@ public class GameSettings : ScriptableObject
     [SerializeField] private LevelSettings _levelSettings;
     [SerializeField] private AudioSettings _audioSettings;
     [SerializeField] private WorldGenerationSettings _worldGeneration;
+    [SerializeField] private StaircaseGenerationSettings _staircaseGeneration;
     [SerializeField] private PlayerSettings _playerSettings;
     [SerializeField] private InventorySettings _inventorySettings;
 
@@ -16,6 +17,7 @@ public class GameSettings : ScriptableObject
     public LevelSettings LevelSettings => _levelSettings;
     public AudioSettings AudioSettings => _audioSettings;
     public WorldGenerationSettings WorldGeneration => _worldGeneration;
+    public StaircaseGenerationSettings StaircaseGeneration => _staircaseGeneration;
     public PlayerSettings PlayerSettings => _playerSettings;
     public InventorySettings InventorySettings => _inventorySettings;
 }

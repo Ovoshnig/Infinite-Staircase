@@ -440,9 +440,9 @@ GameObject:
   m_Component:
   - component: {fileID: 481872785}
   m_Layer: 0
-  m_Name: StartPoint
+  m_Name: StaircaseStartPoint
   m_TagString: Untagged
-  m_Icon: {fileID: -5442936267250999957, guid: 0000000000000000d000000000000000, type: 0}
+  m_Icon: {fileID: 5132851093641282708, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -454,12 +454,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 481872784}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: -5, z: 30}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1166965747}
+  m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!43 &491549769
 Mesh:
@@ -828,7 +828,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 966094632}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e8e04afe7d27a004b86a4dbfd20e4cbb, type: 3}
+  m_Script: {fileID: 11500000, guid: a9a7456a04370f14eb5ee2e31907fc4b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   parentReference:
@@ -869,53 +869,6 @@ Transform:
   - {fileID: 1657208060}
   - {fileID: 1316896}
   - {fileID: 1932447968}
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1166965745
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1166965747}
-  - component: {fileID: 1166965746}
-  m_Layer: 0
-  m_Name: StaircaseGenerator
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &1166965746
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1166965745}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 56093e91d92238546bb3cf82c105e5fa, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _startTransform: {fileID: 481872785}
-  _partsCount: 100
---- !u!4 &1166965747
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1166965745}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -5, z: 30}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 481872785}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1205798879
@@ -959,14 +912,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 1205798879}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a0525b1513f40704793c6a4d70843742, type: 3}
+  m_Script: {fileID: 11500000, guid: db86c3aa7522740438afe0ac40a1717a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   parentReference:
     TypeName: 
   autoRun: 1
   autoInjectGameObjects: []
-  _staircaseGenerator: {fileID: 1166965746}
+  _staircaseStartPoint: {fileID: 481872785}
 --- !u!43 &1294031952
 Mesh:
   m_ObjectHideFlags: 0
@@ -1484,5 +1437,5 @@ SceneRoots:
   m_Roots:
   - {fileID: 279571887}
   - {fileID: 977685681}
-  - {fileID: 1166965747}
   - {fileID: 1765437325}
+  - {fileID: 481872785}

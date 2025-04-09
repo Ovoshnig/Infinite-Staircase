@@ -4,30 +4,32 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using UnityEngine;
-using VContainer;
+using VContainer.Unity;
+using Object = UnityEngine.Object;
 using Random = System.Random;
 
-public class StaircaseGenerator : MonoBehaviour
+public class StaircaseGenerator : IInitializable, IDisposable
 {
-    [SerializeField] private Transform _startTransform;
-    [SerializeField] private int _partsCount;
-
+    private readonly SaveStorage _saveStorage;
+    private readonly StairsLoader _stairsLoader;
+    private readonly Transform _startPoint;
+    private readonly StaircaseGenerationSettings _staircaseGenerationSettings;
     private readonly CancellationTokenSource _cts = new();
-    private SaveStorage _saveStorage;
-    private StairsLoader _stairsLoader;
     private GameObject[] _stairs;
     private StairConnection[] _stairConnections;
     private Vector3 _size;
     private Random _random;
 
-    [Inject]
-    public void Construct(SaveStorage saveStorage, StairsLoader stairsLoader)
+    public StaircaseGenerator(SaveStorage saveStorage, StairsLoader stairsLoader,
+        Transform staircaseStartPoint, StaircaseGenerationSettings staircaseGenerationSettings)
     {
         _saveStorage = saveStorage;
         _stairsLoader = stairsLoader;
+        _startPoint = staircaseStartPoint;
+        _staircaseGenerationSettings = staircaseGenerationSettings;
     }
 
-    private async void Start()
+    public async void Initialize()
     {
         int seed = _saveStorage.Get(SaveConstants.SeedKey, 0);
         _random = new Random(seed);
@@ -52,7 +54,7 @@ public class StaircaseGenerator : MonoBehaviour
         }
     }
 
-    private void OnDestroy()
+    public void Dispose()
     {
         _cts?.CancelAndDispose();
 
@@ -64,14 +66,14 @@ public class StaircaseGenerator : MonoBehaviour
         StairConnection[] startingConnections = _stairConnections.Where(x => x.CanBeInStart).ToArray();
         int index = _random.Next(startingConnections.Length);
         StairConnection stairConnection = startingConnections[index];
-        Vector3 position = _startTransform.position;
+        Vector3 position = _startPoint.position;
         position.y += _size.y / 2f;
-        Vector3 rotation = _startTransform.eulerAngles;
+        Vector3 rotation = _startPoint.eulerAngles;
 
         (position, rotation) = await GenerateSegmentAsync(stairConnection, position, rotation,
             stairConnection.PositionDifference, stairConnection.RotationDifference, token);
 
-        for (int i = 0; i < _partsCount; i++)
+        for (int i = 0; i < _staircaseGenerationSettings.SegmentCount; i++)
         {
             index = _random.Next(_stairConnections.Length);
             stairConnection = _stairConnections[index];
@@ -90,8 +92,8 @@ public class StaircaseGenerator : MonoBehaviour
         for (int i = 0; i < count; i++)
         {
             int index = _random.Next(_stairs.Length);
-            GameObject stair = Instantiate(_stairs[index], position, Quaternion.Euler(rotation));
-            stair.transform.parent = transform;
+            GameObject stair = Object.Instantiate(_stairs[index], position, Quaternion.Euler(rotation));
+            stair.transform.parent = _startPoint;
             position += stair.transform.TransformDirection(positionDifference);
             rotation += rotationDifference;
 
