@@ -16,7 +16,7 @@ public class PauseMenuSwitchGamePauserMediator : IInitializable, IDisposable
 
     public void Initialize()
     {
-        _pauseMenuSwitch.PauseMenuOpened
+        _pauseMenuSwitch.IsOpen
             .Subscribe(value =>
             {
                 if (value)

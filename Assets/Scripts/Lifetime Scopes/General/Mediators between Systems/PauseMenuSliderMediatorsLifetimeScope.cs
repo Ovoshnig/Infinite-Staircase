@@ -7,20 +7,20 @@ public class PauseMenuSliderMediatorsLifetimeScope : LifetimeScope
     {
         builder.Register(resolver =>
         {
-            PauseMenuSwitch pauseMenuSwitch = resolver.Resolve<PauseMenuSwitch>();
-            return pauseMenuSwitch.GetComponentInChildren<SensitivitySliderView>(includeInactive: true);
+            WindowView windowView = resolver.Resolve<WindowView>();
+            return windowView.GetComponentInChildren<SensitivitySliderView>(includeInactive: true);
         }, Lifetime.Singleton);
 
         builder.Register(resolver =>
         {
-            PauseMenuSwitch pauseMenuSwitch = resolver.Resolve<PauseMenuSwitch>();
-            return pauseMenuSwitch.GetComponentInChildren<SoundSliderView>(includeInactive: true);
+            WindowView windowView = resolver.Resolve<WindowView>();
+            return windowView.GetComponentInChildren<SoundSliderView>(includeInactive: true);
         }, Lifetime.Singleton);
 
         builder.Register(resolver =>
         {
-            PauseMenuSwitch pauseMenuSwitch = resolver.Resolve<PauseMenuSwitch>();
-            return pauseMenuSwitch.GetComponentInChildren<MusicSliderView>(includeInactive: true);
+            WindowView windowView = resolver.Resolve<WindowView>();
+            return windowView.GetComponentInChildren<MusicSliderView>(includeInactive: true);
         }, Lifetime.Singleton);
 
         builder.RegisterEntryPoint<SensitivitySliderDataKeeperMediator>(Lifetime.Singleton);
