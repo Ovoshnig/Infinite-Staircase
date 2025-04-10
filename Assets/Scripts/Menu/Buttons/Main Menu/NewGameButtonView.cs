@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using R3;
+using UnityEngine;
 using UnityEngine.UI;
 using VContainer;
 
@@ -19,17 +20,13 @@ public class NewGameButtonView : ButtonView
     {
         base.Start();
 
-        ButtonClicked += OnNewGameButtonClicked;
+        Clicked
+            .Skip(1)
+            .Subscribe(_ => OnNewGameButtonClicked())
+            .AddTo(this);
 
         bool saveCreated = _saveStorage.Get(SaveConstants.SaveCreatedKey, false);
         _continueGameButton.interactable = saveCreated;
-    }
-
-    protected override void OnDestroy()
-    {
-        base.OnDestroy();
-
-        ButtonClicked -= OnNewGameButtonClicked;
     }
 
     private void OnNewGameButtonClicked()

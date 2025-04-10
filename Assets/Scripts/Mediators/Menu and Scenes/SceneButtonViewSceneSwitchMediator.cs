@@ -1,12 +1,12 @@
+using R3;
 using System;
-using UnityEngine;
 using VContainer.Unity;
 
-[RequireComponent(typeof(SceneButtonView))]
 public abstract class SceneButtonViewSceneSwitchMediator : IInitializable, IDisposable
 {
     private readonly SceneButtonView _sceneButtonView;
     private readonly SceneSwitch _sceneSwitch;
+    private readonly CompositeDisposable _compositeDisposable = new();
 
     public SceneButtonViewSceneSwitchMediator(SceneButtonView sceneButtonView, 
         SceneSwitch sceneSwitch)
@@ -17,9 +17,15 @@ public abstract class SceneButtonViewSceneSwitchMediator : IInitializable, IDisp
 
     protected SceneSwitch SceneSwitch => _sceneSwitch;
 
-    public void Initialize() => _sceneButtonView.ButtonClicked += OnButtonClicked;
+    public void Initialize()
+    {
+        _sceneButtonView.Clicked
+            .Skip(1)
+            .Subscribe(_ => OnButtonClicked())
+            .AddTo(_compositeDisposable);
+    }
 
-    public void Dispose() => _sceneButtonView.ButtonClicked -= OnButtonClicked;
+    public void Dispose() => _compositeDisposable?.Dispose();
 
     protected abstract void OnButtonClicked();
 }

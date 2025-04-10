@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using R3;
+using UnityEngine;
 
 public class GameQuitButtonView : ButtonView
 {
@@ -6,14 +7,10 @@ public class GameQuitButtonView : ButtonView
     {
         base.Start();
 
-        ButtonClicked += OnButtonClicked;
-    }
-
-    protected override void OnDestroy()
-    {
-        base.OnDestroy();
-
-        ButtonClicked -= OnButtonClicked;
+        Clicked
+            .Skip(1)
+            .Subscribe(value => OnButtonClicked())
+            .AddTo(this);
     }
 
     private void OnButtonClicked() => Application.Quit();

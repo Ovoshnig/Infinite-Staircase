@@ -1,3 +1,4 @@
+using R3;
 using UnityEngine;
 
 public abstract class PanelChangeButtonView : ButtonView
@@ -17,14 +18,10 @@ public abstract class PanelChangeButtonView : ButtonView
     {
         base.Start();
 
-        ButtonClicked += OnButtonClicked;
-    }
-
-    protected override void OnDestroy()
-    {
-        base.OnDestroy();
-
-        ButtonClicked -= OnButtonClicked;
+        Clicked
+            .Skip(1)
+            .Subscribe(_ => OnButtonClicked())
+            .AddTo(this);
     }
 
     protected void Change()

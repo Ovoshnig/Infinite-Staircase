@@ -1,3 +1,4 @@
+using R3;
 using UnityEngine;
 using UnityEngine.UI;
 using VContainer;
@@ -16,14 +17,10 @@ public class WarningResetButtonView : ButtonView
     {
         base.Start();
 
-        ButtonClicked += OnButtonClicked;
-    }
-
-    protected override void OnDestroy()
-    {
-        base.OnDestroy();
-
-        ButtonClicked -= OnButtonClicked;
+        Clicked
+            .Skip(1)
+            .Subscribe(_ => OnButtonClicked())
+            .AddTo(this);
     }
 
     private void OnButtonClicked()

@@ -1,14 +1,14 @@
 using R3;
-using System;
 using UnityEngine;
 using UnityEngine.UI;
 
 [RequireComponent(typeof(Button))]
 public abstract class ButtonView : MonoBehaviour
 {
+    private readonly ReactiveProperty<Unit> _clicked = new(default);
     private Button _button = null;
 
-    public event Action ButtonClicked;
+    public ReadOnlyReactiveProperty<Unit> Clicked => _clicked;
 
     private Button Button
     {
@@ -26,7 +26,7 @@ public abstract class ButtonView : MonoBehaviour
     protected virtual void Start()
     {
         Button.OnClickAsObservable()
-            .Subscribe(_ => ButtonClicked?.Invoke())
+            .Subscribe(_clicked.OnNext)
             .AddTo(this);
     }
 
