@@ -1,9 +1,7 @@
 {
     "name": "IntentorySystem.GridCreation",
     "rootNamespace": "",
-    "references": [
-        "GUID:d500fc47a151ef3488b74d300c50e44d"
-    ],
+    "references": [],
     "includePlatforms": [
         "Editor"
     ],

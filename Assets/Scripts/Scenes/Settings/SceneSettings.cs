@@ -2,7 +2,7 @@ using System;
 using UnityEngine;
 
 [Serializable]
-public class LevelSettings
+public class SceneSettings
 {
     [field: SerializeField, Min(0)] public uint FirstGameplayLevel { get; private set; } = 1;
     [field: SerializeField, Min(1)] public uint GameplayLevelsCount { get; private set; } = 2;

@@ -1,11 +1,11 @@
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "Settings", menuName = "Scriptable Objects/Settings")]
+[CreateAssetMenu(fileName = GameSettingsConstants.FileName, 
+    menuName = GameSettingsConstants.MenuName)]
 public class GameSettings : ScriptableObject
 {
     [SerializeField] private TimeSettings _timeSettings;
-    [SerializeField] private ControlSettings _controlSettings;
-    [SerializeField] private LevelSettings _levelSettings;
+    [SerializeField] private SceneSettings _sceneSettings;
     [SerializeField] private AudioSettings _audioSettings;
     [SerializeField] private WorldGenerationSettings _worldGeneration;
     [SerializeField] private StaircaseGenerationSettings _staircaseGeneration;
@@ -13,8 +13,7 @@ public class GameSettings : ScriptableObject
     [SerializeField] private InventorySettings _inventorySettings;
 
     public TimeSettings TimeSettings => _timeSettings;
-    public ControlSettings ControlSettings => _controlSettings;
-    public LevelSettings LevelSettings => _levelSettings;
+    public SceneSettings SceneSettings => _sceneSettings;
     public AudioSettings AudioSettings => _audioSettings;
     public WorldGenerationSettings WorldGeneration => _worldGeneration;
     public StaircaseGenerationSettings StaircaseGeneration => _staircaseGeneration;

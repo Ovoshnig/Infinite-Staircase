@@ -30,8 +30,7 @@ public class ProjectLifetimeScope : LifetimeScope
         builder.Register<PlayerInput>(Lifetime.Singleton);
 
         builder.RegisterInstance(_gameSettings.TimeSettings);
-        builder.RegisterInstance(_gameSettings.ControlSettings);
-        builder.RegisterInstance(_gameSettings.LevelSettings);
+        builder.RegisterInstance(_gameSettings.SceneSettings);
         builder.RegisterInstance(_gameSettings.AudioSettings);
         builder.RegisterInstance(_gameSettings.WorldGeneration);
         builder.RegisterInstance(_gameSettings.StaircaseGeneration);

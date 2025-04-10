@@ -15,15 +15,15 @@ public class SceneSwitch : IPostInitializable, IDisposable
     }
 
     private readonly SaveStorage _saveStorage;
-    private readonly LevelSettings _levelSettings;
+    private readonly SceneSettings _sceneSettings;
     private readonly ReactiveProperty<bool> _isSceneLoading = new(true);
     private uint _achievedLevel;
     private uint _currentLevel;
 
-    public SceneSwitch(SaveStorage saveStorage, LevelSettings levelSettings)
+    public SceneSwitch(SaveStorage saveStorage, SceneSettings sceneSettings)
     {
         _saveStorage = saveStorage;
-        _levelSettings = levelSettings;
+        _sceneSettings = sceneSettings;
     }
 
     public SceneType CurrentSceneType { get; private set; }
@@ -31,10 +31,10 @@ public class SceneSwitch : IPostInitializable, IDisposable
 
     public void PostInitialize()
     {
-        _achievedLevel = _saveStorage.Get(SaveConstants.AchievedLevelKey, _levelSettings.FirstGameplayLevel);
+        _achievedLevel = _saveStorage.Get(SaveConstants.AchievedLevelKey, _sceneSettings.FirstGameplayLevel);
         _currentLevel = (uint)SceneManager.GetActiveScene().buildIndex;
 
-        if (_currentLevel > _achievedLevel && _currentLevel <= _levelSettings.LastGameplayLevel)
+        if (_currentLevel > _achievedLevel && _currentLevel <= _sceneSettings.LastGameplayLevel)
             _achievedLevel = _currentLevel;
 
         WaitForFirstSceneLoadAsync().Forget();
@@ -50,7 +50,7 @@ public class SceneSwitch : IPostInitializable, IDisposable
         await LoadAchievedLevelAsync();
     }
 
-    public void ResetProgress() => _achievedLevel = _levelSettings.FirstGameplayLevel;
+    public void ResetProgress() => _achievedLevel = _sceneSettings.FirstGameplayLevel;
 
     public void LoadCurrentLevel() => LoadLevelAsync(_currentLevel).Forget();
 
@@ -78,9 +78,9 @@ public class SceneSwitch : IPostInitializable, IDisposable
     {
         if (index == 0)
             return SceneType.MainMenu;
-        else if (index >= _levelSettings.FirstGameplayLevel && index <= _levelSettings.LastGameplayLevel)
+        else if (index >= _sceneSettings.FirstGameplayLevel && index <= _sceneSettings.LastGameplayLevel)
             return SceneType.GameLevel;
-        else if (index == _levelSettings.CreditsScene)
+        else if (index == _sceneSettings.CreditsScene)
             return SceneType.Credits;
         else
             throw new InvalidOperationException($"Invalid level index: {index}");
