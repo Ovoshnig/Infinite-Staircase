@@ -1,3 +1,4 @@
+using R3;
 using System;
 using UnityEngine;
 using VContainer.Unity;
@@ -5,38 +6,38 @@ using VContainer.Unity;
 public class QualityTuner : IPostInitializable, IDisposable
 {
     private readonly SettingsStorage _settingsStorage;
-    private bool _isVSyncEnabled;
+    private readonly ReactiveProperty<bool> _isVSyncEnabled = new(false);
 
     public QualityTuner(SettingsStorage settingsStorage) => _settingsStorage = settingsStorage;
 
-    public bool IsVSyncEnabled => _isVSyncEnabled;
+    public ReadOnlyReactiveProperty<bool> IsVSyncEnabled => _isVSyncEnabled;
 
     public void PostInitialize()
     {
-        _isVSyncEnabled = _settingsStorage.Get(SettingsConstants.VSyncKey, false);
-        QualitySettings.vSyncCount = _isVSyncEnabled ? 1 : 0;
+        _isVSyncEnabled.Value = _settingsStorage.Get(SettingsConstants.VSyncKey, false);
+        QualitySettings.vSyncCount = IsVSyncEnabled.CurrentValue ? 1 : 0;
         Application.targetFrameRate = -1;
     }
 
-    public void Dispose() => _settingsStorage.Set(SettingsConstants.VSyncKey, _isVSyncEnabled);
+    public void Dispose() => _settingsStorage.Set(SettingsConstants.VSyncKey, _isVSyncEnabled.Value);
 
     public void SwitchVSync()
     {
-        if (_isVSyncEnabled)
+        if (IsVSyncEnabled.CurrentValue)
             DisableVSync();
         else
             EnableVSync();
     }
 
-    private void EnableVSync()
+    public void EnableVSync()
     {
         QualitySettings.vSyncCount = 1;
-        _isVSyncEnabled = true;
+        _isVSyncEnabled.Value = true;
     }
 
-    private void DisableVSync()
+    public void DisableVSync()
     {
         QualitySettings.vSyncCount = 0;
-        _isVSyncEnabled = false;
+        _isVSyncEnabled.Value = false;
     }
 }
