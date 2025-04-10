@@ -226,9 +226,6 @@ GameObject:
   m_Component:
   - component: {fileID: 595167444}
   - component: {fileID: 595167447}
-  - component: {fileID: 595167451}
-  - component: {fileID: 595167453}
-  - component: {fileID: 595167452}
   m_Layer: 0
   m_Name: LifetimeScope
   m_TagString: Untagged
@@ -267,57 +264,6 @@ MonoBehaviour:
     TypeName: 
   autoRun: 1
   autoInjectGameObjects: []
---- !u!114 &595167451
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 595167442}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 07d38fdb560c8df49a2702ea8370bf76, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  parentReference:
-    TypeName: WindowInputLifetimeScope
-  autoRun: 1
-  autoInjectGameObjects: []
---- !u!114 &595167452
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 595167442}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: df05affb1beeeaf45b84ddd23621f1a1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  parentReference:
-    TypeName: WindowTrackerLifetimeScope
-  autoRun: 1
-  autoInjectGameObjects: []
-  _inventorySwitch: {fileID: 4327219952241436862, guid: ff63e6bdb3799b74fabe58bfac3240a1, type: 3}
-  _itemDataRepository: {fileID: 11400000, guid: 5d610a8efaa825046b5d945a2b98fdfe, type: 2}
---- !u!114 &595167453
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 595167442}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ae90ebd41f3af2443899fb18cb629f2e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  parentReference:
-    TypeName: WindowTrackerLifetimeScope
-  autoRun: 1
-  autoInjectGameObjects: []
-  _pauseMenuCanvas: {fileID: 556110117597708177, guid: 430f92455e684724abfd5d02368be160, type: 3}
 --- !u!1 &625813789
 GameObject:
   m_ObjectHideFlags: 0
@@ -584,7 +530,7 @@ MonoBehaviour:
     m_Value: 0
   OutputChannel: 1
   StandbyUpdate: 2
-  m_StreamingVersion: 20230301
+  m_StreamingVersion: 20241001
   m_LegacyPriority: 0
   Target:
     TrackingTarget: {fileID: 1577708473}

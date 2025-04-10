@@ -31,7 +31,9 @@ public class NewGameButtonView : ButtonView
 
     private void OnNewGameButtonClicked()
     {
-        if (_saveStorage.Get(SaveConstants.SaveCreatedKey, false))
+        bool isSaveCreated = _saveStorage.Get(SaveConstants.SaveCreatedKey, false);
+
+        if (isSaveCreated)
             _resetWarningPanel.SetActive(true);
         else
             _gameCreationPanel.SetActive(true);
