@@ -6,16 +6,16 @@ using VContainer.Unity;
 
 public class PlayerInputHandler : IInitializable, IDisposable
 {
-    private readonly PlayerInput _playerInput;
+    private readonly InputActions _inputActions;
     private readonly ReactiveProperty<bool> _isWalkPressed = new(false);
     private readonly ReactiveProperty<bool> _isRunPressed = new(false);
     private readonly ReactiveProperty<bool> _isLookPressed = new(false);
     private readonly ReactiveProperty<bool> _isJumpPressed = new(false);
     private readonly ReactiveProperty<bool> _isTogglePerspectivePressed = new(false);
     private readonly CompositeDisposable _compositeDisposable = new();
-    private PlayerInput.PlayerActions _playerActions;
+    private InputActions.PlayerActions _playerActions;
 
-    public PlayerInputHandler(PlayerInput playerInput) => _playerInput = playerInput;
+    public PlayerInputHandler(InputActions inputActions) => _inputActions = inputActions;
 
     public Vector2 WalkInput { get; private set; } = Vector2.zero;
     public Vector2 LookInput { get; private set; } = Vector2.zero;
@@ -27,7 +27,7 @@ public class PlayerInputHandler : IInitializable, IDisposable
 
     public void Initialize()
     {
-        _playerActions = _playerInput.Player;
+        _playerActions = _inputActions.Player;
 
         _playerActions.Walk.Subscribe(OnWalk);
         _playerActions.Run.Subscribe(OnRun);

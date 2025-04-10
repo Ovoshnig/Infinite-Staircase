@@ -15,17 +15,17 @@ public class KeyBinderView : MonoBehaviour
     [SerializeField] private Color _waitingTextColor;
     [SerializeField] private InputActionReference _inputActionReference;
 
-    private PlayerInput _playerInput;
+    private InputActions _inputActions;
     private KeyListeningTracker _listeningTracker;
     private BindingHandler _bindingHandler;
     private TMP_Text _bindingButtonText;
     private InputAction _inputAction;
 
     [Inject]
-    public void Construct(KeyListeningTracker listeningTracker, PlayerInput playerInput)
+    public void Construct(KeyListeningTracker listeningTracker, InputActions inputActions)
     {
         _listeningTracker = listeningTracker;
-        _playerInput = playerInput;
+        _inputActions = inputActions;
     }
 
     public TMP_Text ActionNameText => _actionNameText;
@@ -39,9 +39,9 @@ public class KeyBinderView : MonoBehaviour
         _inputAction = _inputActionReference.action;
 
         if (_inputAction.type == InputActionType.Button)
-            _bindingHandler = new ButtonBindingHandler(_listeningTracker, _playerInput, _inputActionReference);
+            _bindingHandler = new ButtonBindingHandler(_listeningTracker, _inputActions, _inputActionReference);
         else if (_inputAction.type == InputActionType.Value && _inputAction.expectedControlType == nameof(Vector2))
-            _bindingHandler = new Vector2BindingHandler(_listeningTracker, _playerInput, _inputActionReference);
+            _bindingHandler = new Vector2BindingHandler(_listeningTracker, _inputActions, _inputActionReference);
 
         _bindingHandler.Initialize();
 

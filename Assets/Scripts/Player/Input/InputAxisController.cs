@@ -8,23 +8,23 @@ using VContainer;
 
 public class InputAxisController : InputAxisControllerBase<InputAxisController.Reader>
 {
-    private PlayerInput _playerInput;
+    private InputActions _inputActions;
     private SensitivityKeeper _sensitivityKeeper;
     private PlayerSettings _playerSettings;
-    private PlayerInput.PlayerActions _playerActions;
+    private InputActions.PlayerActions _playerActions;
 
     [Inject]
-    public void Construct(PlayerInput playerInput, SensitivityKeeper sensitivityKeeper, 
+    public void Construct(InputActions inputActions, SensitivityKeeper sensitivityKeeper, 
         PlayerSettings playerSettings)
     {
-        _playerInput = playerInput;
+        _inputActions = inputActions;
         _sensitivityKeeper = sensitivityKeeper;
         _playerSettings = playerSettings;
     }
 
     private void Start()
     {
-        _playerActions = _playerInput.Player;
+        _playerActions = _inputActions.Player;
 
         _playerActions.Look.Subscribe(OnLook);
         _playerActions.Zoom.Subscribe(OnZoom);

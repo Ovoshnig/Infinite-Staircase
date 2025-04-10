@@ -16,8 +16,8 @@ public class Vector2BindingHandler : BindingHandler
     private int _keyInputNumber;
 
     public Vector2BindingHandler(KeyListeningTracker listeningTracker, 
-        PlayerInput playerInput, InputAction inputAction) :
-        base(listeningTracker, playerInput, inputAction)
+        InputActions inputActions, InputAction inputAction) :
+        base(listeningTracker, inputActions, inputAction)
     {
     }
 
@@ -115,7 +115,7 @@ public class Vector2BindingHandler : BindingHandler
             {
                 for (int i = 0; i < 4; i++)
                 {
-                    InputAction action = PlayerInputProperty.FindAction(InputActionProperty.name);
+                    InputAction action = InputActionsProperty.FindAction(InputActionProperty.name);
                     InputActionProperty.ApplyBindingOverride(i + 1, _temporaryControls[i].path);
                     action.ApplyBindingOverride(i + 1, _temporaryControls[i].path);
                 }

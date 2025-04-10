@@ -4,17 +4,17 @@ using UnityEngine.InputSystem;
 public abstract class BindingHandler : IBindingHandler
 {
     private readonly KeyListeningTracker _listeningTracker;
-    private readonly PlayerInput _playerInput;
+    private readonly InputActions _inputActions;
     private readonly InputAction _inputAction;
     private readonly ReactiveProperty<bool> _isListening = new(false);
     private readonly ReactiveProperty<string> _bindingText = new(string.Empty);
     private CompositeDisposable _compositeDisposable = new();
 
     public BindingHandler(KeyListeningTracker listeningTracker, 
-        PlayerInput playerInput, InputAction inputAction)
+        InputActions IiputActions, InputAction inputAction)
     {
         _listeningTracker = listeningTracker;
-        _playerInput = playerInput;
+        _inputActions = IiputActions;
         _inputAction = inputAction;
     }
 
@@ -22,7 +22,7 @@ public abstract class BindingHandler : IBindingHandler
     public ReadOnlyReactiveProperty<string> BindingText => _bindingText;
 
     protected KeyListeningTracker ListeningTracker => _listeningTracker;
-    protected PlayerInput PlayerInputProperty => _playerInput;
+    protected InputActions InputActionsProperty => _inputActions;
     protected InputAction InputActionProperty => _inputAction;
     protected abstract string WaitInputText { get; }
 
@@ -44,7 +44,7 @@ public abstract class BindingHandler : IBindingHandler
     public virtual void ResetBinding()
     {
         _inputAction.RemoveAllBindingOverrides();
-        _playerInput.RemoveAllBindingOverrides();
+        _inputActions.RemoveAllBindingOverrides();
         _bindingText.Value = GetActionDisplayName();
     }
 

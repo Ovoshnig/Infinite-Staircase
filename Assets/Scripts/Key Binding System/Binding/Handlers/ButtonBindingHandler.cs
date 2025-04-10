@@ -2,9 +2,9 @@ using UnityEngine.InputSystem;
 
 public class ButtonBindingHandler : BindingHandler
 {
-    public ButtonBindingHandler(KeyListeningTracker listeningTracker, 
-        PlayerInput playerInput, InputAction inputAction) :
-        base(listeningTracker, playerInput, inputAction)
+    public ButtonBindingHandler(KeyListeningTracker listeningTracker,
+        InputActions inputActions, InputAction inputAction) :
+        base(listeningTracker, inputActions, inputAction)
     {
     }
 
@@ -51,7 +51,7 @@ public class ButtonBindingHandler : BindingHandler
             else
             {
                 InputActionProperty.ApplyBindingOverride(control.path);
-                InputAction action = PlayerInputProperty.FindAction(InputActionProperty.name);
+                InputAction action = InputActionsProperty.FindAction(InputActionProperty.name);
                 action.ApplyBindingOverride(control.path);
             }
         }

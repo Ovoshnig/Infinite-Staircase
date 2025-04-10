@@ -27,7 +27,7 @@ public class ProjectLifetimeScope : LifetimeScope
         builder.RegisterEntryPoint<SaveStorage>(Lifetime.Singleton).AsSelf();
         builder.RegisterEntryPoint<SettingsStorage>(Lifetime.Singleton).AsSelf();
 
-        builder.Register<PlayerInput>(Lifetime.Singleton);
+        builder.Register<InputActions>(Lifetime.Singleton);
 
         builder.RegisterInstance(_gameSettings.TimeSettings);
         builder.RegisterInstance(_gameSettings.SceneSettings);

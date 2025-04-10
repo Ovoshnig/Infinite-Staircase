@@ -5,20 +5,20 @@ using VContainer.Unity;
 public class KeyBindingOverridesSaver : IPostInitializable, IDisposable
 {
     private readonly SettingsStorage _settingsStorage;
-    private readonly PlayerInput _playerInput;
+    private readonly InputActions _inputActions;
 
     public KeyBindingOverridesSaver(SettingsStorage settingsStorage,
-        PlayerInput playerInput)
+        InputActions inputActions)
     {
         _settingsStorage = settingsStorage;
-        _playerInput = playerInput;
+        _inputActions = inputActions;
     }
 
     public void PostInitialize()
     {
         string json = _settingsStorage.Get(SettingsConstants.BindingOverridesKey, string.Empty);
         InputSystem.actions.LoadBindingOverridesFromJson(json);
-        _playerInput.LoadBindingOverridesFromJson(json);
+        _inputActions.LoadBindingOverridesFromJson(json);
     }
 
     public void Dispose()

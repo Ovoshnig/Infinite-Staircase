@@ -5,18 +5,18 @@ using VContainer.Unity;
 public class WindowTrackerPlayerInputMediator : IInitializable, IDisposable
 {
     private readonly WindowTracker _windowTracker;
-    private readonly PlayerInput _playerInput;
+    private readonly InputActions _inputActions;
     private readonly CompositeDisposable _compositeDisposable = new();
 
-    public WindowTrackerPlayerInputMediator(WindowTracker windowTracker, PlayerInput playerInput)
+    public WindowTrackerPlayerInputMediator(WindowTracker windowTracker, InputActions inputActions)
     {
         _windowTracker = windowTracker;
-        _playerInput = playerInput;
+        _inputActions = inputActions;
     }
 
     public void Initialize()
     {
-        PlayerInput.PlayerActions playerActions = _playerInput.Player;
+        InputActions.PlayerActions playerActions = _inputActions.Player;
 
         _windowTracker.IsOpen
             .Subscribe(value =>
