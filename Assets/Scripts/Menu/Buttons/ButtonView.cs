@@ -6,15 +6,26 @@ using UnityEngine.UI;
 [RequireComponent(typeof(Button))]
 public abstract class ButtonView : MonoBehaviour
 {
-    private Button _button;
+    private Button _button = null;
 
     public event Action ButtonClicked;
 
-    protected virtual void Awake() => _button = GetComponent<Button>();
+    private Button Button
+    {
+        get
+        {
+            if (_button == null)
+                _button = GetComponent<Button>();
+
+            return _button;
+        }
+    }
+
+    protected virtual void Awake() { }
 
     protected virtual void Start()
     {
-        _button.OnClickAsObservable()
+        Button.OnClickAsObservable()
             .Subscribe(_ => ButtonClicked?.Invoke())
             .AddTo(this);
     }

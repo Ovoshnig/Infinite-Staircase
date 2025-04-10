@@ -12,7 +12,7 @@ public abstract class SliderDataKeeperMediator : IPostInitializable, IDisposable
         DataKeeper<float> dataKeeper)
     {
         _sliderView = sliderView;
-        _dataKeeper = dataKeeper;;
+        _dataKeeper = dataKeeper;
     }
 
     protected abstract float MinValue { get; }
@@ -20,7 +20,6 @@ public abstract class SliderDataKeeperMediator : IPostInitializable, IDisposable
 
     public void PostInitialize()
     {
-        _sliderView.Awake();
         _sliderView.SetMinValue(MinValue);
         _sliderView.SetMaxValue(MaxValue);
 
