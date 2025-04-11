@@ -8,7 +8,17 @@ public abstract class WindowLifetimeScope : LifetimeScope
 
     protected override void Configure(IContainerBuilder builder)
     {
+        builder.RegisterComponentInNewPrefab(_windowView, Lifetime.Singleton);
+
         builder.RegisterEntryPoint<WindowSwitchWindowViewMediator>(Lifetime.Singleton);
+
+        builder.Register(resolver =>
+        {
+            WindowView windowView = resolver.Resolve<WindowView>();
+            return windowView.GetComponentInChildren<MainPanelView>(includeInactive: true);
+        }, Lifetime.Singleton);
+
+        builder.RegisterEntryPoint<MainPanelViewWindowSwitchMediator>(Lifetime.Singleton);
 
         builder.Register(resolver =>
         {
@@ -17,8 +27,6 @@ public abstract class WindowLifetimeScope : LifetimeScope
         }, Lifetime.Singleton);
 
         builder.RegisterEntryPoint<ResumeButtonViewWindowSwitchMediator>(Lifetime.Singleton);
-
-        builder.RegisterComponentInNewPrefab(_windowView, Lifetime.Singleton);
     }
 
     protected virtual void Start()
