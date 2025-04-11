@@ -171,7 +171,7 @@ MonoBehaviour:
   TiltAxis:
     Value: 0
     Center: 0
-    Range: {x: -70, y: 70}
+    Range: {x: -70, y: 80}
     Wrap: 0
     Recentering:
       Enabled: 0
