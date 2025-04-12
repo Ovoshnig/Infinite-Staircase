@@ -28,8 +28,6 @@ public class KeyBinderView : MonoBehaviour
         _inputActions = inputActions;
     }
 
-    public TMP_Text ActionNameText => _actionNameText;
-
     private void Awake() => _bindingButtonText = _bindingButton.GetComponentInChildren<TMP_Text>();
 
     private void Start()
@@ -72,6 +70,9 @@ public class KeyBinderView : MonoBehaviour
 
     private void OnDestroy() => _bindingHandler.Dispose();
 
-    public void SetInputActionReference(InputActionReference actionReference) =>
-        _inputActionReference = actionReference;
+    public void SetInputAction(InputActionReference inputActionReference, string name)
+    {
+        _inputActionReference = inputActionReference;
+        _actionNameText.text = name;
+    }
 }
