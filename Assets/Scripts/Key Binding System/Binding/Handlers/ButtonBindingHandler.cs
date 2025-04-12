@@ -20,7 +20,7 @@ public class ButtonBindingHandler : BindingHandler
 
     public override string GetActionDisplayName()
     {
-        string actionName = InputActionProperty.controls[0].name;
+        string actionName = InputAction.controls[0].name;
         actionName = char.ToUpper(actionName[0]) + actionName[1..];
 
         return actionName;
@@ -39,9 +39,9 @@ public class ButtonBindingHandler : BindingHandler
      
     protected override void ApplyBinding(InputControl control)
     {
-        if (InputActionProperty.controls[0].path != control.path)
+        if (InputAction.controls[0].path != control.path)
         {
-            string defaultControlName = InputActionProperty.bindings[0].path.Split('/')[^1];
+            string defaultControlName = InputAction.bindings[0].path.Split('/')[^1];
             string newControlName = control.path.Split('/')[^1];
 
             if (defaultControlName == newControlName)
@@ -50,8 +50,8 @@ public class ButtonBindingHandler : BindingHandler
             }
             else
             {
-                InputActionProperty.ApplyBindingOverride(control.path);
-                InputAction action = InputActionsProperty.FindAction(InputActionProperty.name);
+                InputAction.ApplyBindingOverride(control.path);
+                InputAction action = InputActions.FindAction(InputAction.name);
                 action.ApplyBindingOverride(control.path);
             }
         }

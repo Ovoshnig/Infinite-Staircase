@@ -44,7 +44,7 @@ public class Vector2BindingHandler : BindingHandler
 
     public override string GetActionDisplayName()
     {
-        InputControl[] controls = InputActionProperty.controls.ToArray();
+        InputControl[] controls = InputAction.controls.ToArray();
 
         if (controls.Length == 4)
             (controls[2], controls[1]) = (controls[1], controls[2]);
@@ -94,8 +94,8 @@ public class Vector2BindingHandler : BindingHandler
 
         for (int i = 0; i < 4; i++)
         {
-            string defaultControlName = InputActionProperty.bindings[i + 1].path.Split('/')[^1];
-            string currentControlName = InputActionProperty.bindings[i + 1].effectivePath.Split('/')[^1];
+            string defaultControlName = InputAction.bindings[i + 1].path.Split('/')[^1];
+            string currentControlName = InputAction.bindings[i + 1].effectivePath.Split('/')[^1];
             string newControlName = _temporaryControls[i].path.Split('/')[^1];
 
             if (currentControlName != newControlName)
@@ -115,8 +115,8 @@ public class Vector2BindingHandler : BindingHandler
             {
                 for (int i = 0; i < 4; i++)
                 {
-                    InputAction action = InputActionsProperty.FindAction(InputActionProperty.name);
-                    InputActionProperty.ApplyBindingOverride(i + 1, _temporaryControls[i].path);
+                    InputAction action = InputActions.FindAction(InputAction.name);
+                    InputAction.ApplyBindingOverride(i + 1, _temporaryControls[i].path);
                     action.ApplyBindingOverride(i + 1, _temporaryControls[i].path);
                 }
             }

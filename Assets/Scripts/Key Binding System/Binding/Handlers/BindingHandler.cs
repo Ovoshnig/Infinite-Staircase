@@ -11,10 +11,10 @@ public abstract class BindingHandler : IBindingHandler
     private CompositeDisposable _compositeDisposable = new();
 
     public BindingHandler(KeyListeningTracker listeningTracker, 
-        InputActions IiputActions, InputAction inputAction)
+        InputActions InputActions, InputAction inputAction)
     {
         _listeningTracker = listeningTracker;
-        _inputActions = IiputActions;
+        _inputActions = InputActions;
         _inputAction = inputAction;
     }
 
@@ -22,8 +22,8 @@ public abstract class BindingHandler : IBindingHandler
     public ReadOnlyReactiveProperty<string> BindingText => _bindingText;
 
     protected KeyListeningTracker ListeningTracker => _listeningTracker;
-    protected InputActions InputActionsProperty => _inputActions;
-    protected InputAction InputActionProperty => _inputAction;
+    protected InputActions InputActions => _inputActions;
+    protected InputAction InputAction => _inputAction;
     protected abstract string WaitInputText { get; }
 
     public void Initialize() => _bindingText.Value = GetActionDisplayName();
