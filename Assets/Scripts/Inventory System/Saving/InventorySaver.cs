@@ -1,5 +1,6 @@
 using Cysharp.Threading.Tasks;
 using System.Linq;
+using UnityEngine;
 
 public class InventorySaver
 {
@@ -17,7 +18,9 @@ public class InventorySaver
         SlotData[] defaultSlotArray = slotViews.Select(_ => new SlotData()).ToArray();
         SlotData[] slotDataArray = _saveStorage.Get(SaveConstants.InventoryKey, defaultSlotArray);
 
-        for (int i = 0; i < slotViews.Length; i++)
+        int slotCount = Mathf.Min(slotViews.Length, slotDataArray.Length);
+
+        for (int i = 0; i < slotCount; i++)
             await slotViews[i].LoadAsync(slotDataArray[i], _itemDataRepository);
     }
 
