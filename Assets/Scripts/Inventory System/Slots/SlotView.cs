@@ -7,17 +7,19 @@ public class SlotView : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
     [SerializeField] private GameObject _itemPrefab;
 
-    private readonly Vector2 _halfVector2 = Vector2.one / 2f;
     private InventoryView _inventoryView;
     private RectTransform _storedItem;
     private DraggedItemHolder _draggedItemHolder;
+    private InventorySettings _inventorySettings;
     private SlotModel _slotModel;
 
     [Inject]
-    public void Construct(InventoryView inventoryView, DraggedItemHolder draggedItemHolder)
+    public void Construct(InventoryView inventoryView, DraggedItemHolder draggedItemHolder
+        , InventorySettings inventorySettings)
     {
         _inventoryView = inventoryView;
         _draggedItemHolder = draggedItemHolder;
+        _inventorySettings = inventorySettings;
 
         _slotModel = new SlotModel();
     }
@@ -79,10 +81,9 @@ public class SlotView : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
         {
             GameObject itemObject = InstantiateItem(_slotModel.ItemModel);
             _storedItem = itemObject.GetComponent<RectTransform>();
-            _storedItem.transform.SetParent(transform);
-            _storedItem.anchorMax = _halfVector2;
-            _storedItem.anchorMin = _halfVector2;
-            _storedItem.anchoredPosition = Vector2.zero;
+
+            await UniTask.WaitUntil(() => didAwake);
+            InitializeStoredItem();
 
             _slotModel.PlaceItem(_storedItem.GetComponent<ItemView>().ItemModel);
         }
@@ -102,9 +103,15 @@ public class SlotView : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 
     private void InitializeStoredItem()
     {
-        _storedItem.transform.SetParent(transform);
-        _storedItem.anchorMax = _halfVector2;
-        _storedItem.anchorMin = _halfVector2;
-        _storedItem.anchoredPosition = Vector2.zero;
+        _storedItem.transform.SetParent(transform, false);
+        _storedItem.localScale = Vector3.one;
+
+        RectTransform rectTransform = transform as RectTransform;
+        float padding = _inventorySettings.ItemPaddingRatio * rectTransform.rect.width;
+
+        _storedItem.anchorMin = Vector2.zero;
+        _storedItem.anchorMax = Vector2.one;
+        _storedItem.offsetMin = new Vector2(padding, padding);
+        _storedItem.offsetMax = new Vector2(-padding, -padding);
     }
 }
