@@ -35,7 +35,6 @@ public class ProjectLifetimeScope : LifetimeScope
         builder.RegisterInstance(_gameSettings.WorldGeneration);
         builder.RegisterInstance(_gameSettings.StaircaseGeneration);
         builder.RegisterInstance(_gameSettings.PlayerSettings);
-        builder.RegisterInstance(_gameSettings.InventorySettings);
 
         builder.RegisterInstance(_audioMixerGroup);
 
