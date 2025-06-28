@@ -5,17 +5,18 @@ using VContainer;
 
 public class SlotView : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerDownHandler
 {
-    [SerializeField] private InventoryView _inventoryView;
     [SerializeField] private GameObject _itemPrefab;
 
     private readonly Vector2 _halfVector2 = Vector2.one / 2f;
+    private InventoryView _inventoryView;
     private RectTransform _storedItem;
     private DraggedItemHolder _draggedItemHolder;
     private SlotModel _slotModel;
 
     [Inject]
-    public void Construct(DraggedItemHolder draggedItemHolder)
+    public void Construct(InventoryView inventoryView, DraggedItemHolder draggedItemHolder)
     {
+        _inventoryView = inventoryView;
         _draggedItemHolder = draggedItemHolder;
 
         _slotModel = new SlotModel();

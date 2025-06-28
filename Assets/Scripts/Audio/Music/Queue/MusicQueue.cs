@@ -12,13 +12,7 @@ public class MusicQueue
         _clipKeysQueue = new Queue<object>(clips);
     }
 
-    public object GetNextClipKey()
-    {
-        if (_clipKeysQueue.Count == 0)
-            return null;
-
-        return _clipKeysQueue.Dequeue();
-    }
+    public object GetNextClipKey() => _clipKeysQueue.TryDequeue(out var key) ? key : null;
 
     public void ShuffleClipKeys()
     {
