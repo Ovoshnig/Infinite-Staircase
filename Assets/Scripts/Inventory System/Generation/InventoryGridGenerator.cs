@@ -13,13 +13,13 @@ public class InventoryGridGenerator : MonoBehaviour
     [SerializeField] private GameObject _slotPrefab;
     [SerializeField] private InventorySettings _inventorySettings;
 
-    [ContextMenu("Generate")]
+    [ContextMenu(nameof(Generate))]
     public void Generate()
     {
 #if UNITY_EDITOR
         if (Application.isPlaying)
         {
-            Debug.LogWarning("Генерация слотов отключена во время Play Mode.");
+            Debug.LogWarning("Slot generation is disabled during Play Mode.");
             return;
         }
 
@@ -99,5 +99,7 @@ public class InventoryGridGenerator : MonoBehaviour
                 slot.name = $"Slot ({i}, {j})";
             }
         }
+
+        Debug.Log("Generation successfully completed");
     }
 }

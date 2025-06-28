@@ -2,6 +2,10 @@
 using System.Linq;
 using System.Text.RegularExpressions;
 using TMPro;
+#if UNITY_EDITOR
+using UnityEditor;
+using UnityEditor.SceneManagement; 
+#endif
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -12,10 +16,29 @@ public class KeyBindingsGenerator : MonoBehaviour
     [SerializeField] private GameObject _keyBindingBlockPrefab;
 
     [ContextMenu(nameof(Generate))]
-    private void Generate()
+    public void Generate()
     {
+#if UNITY_EDITOR
+        if (Application.isPlaying)
+        {
+            Debug.LogWarning("Key bindings generation is disabled during Play Mode.");
+            return;
+        }
+
+        int undoGroup = Undo.GetCurrentGroup();
+        Undo.IncrementCurrentGroup();
+        Undo.SetCurrentGroupName("Generate Key Bindings");
+
+        Undo.RegisterFullObjectHierarchyUndo(_parentTransform.gameObject, "Generate Key Bindings");
+
         if (TryDestroyOld())
+        {
             GenerateNew();
+
+            EditorUtility.SetDirty(_parentTransform.gameObject);
+            EditorSceneManager.MarkSceneDirty(_parentTransform.gameObject.scene);
+        }
+#endif
     }
 
     private bool TryDestroyOld()
@@ -33,7 +56,7 @@ public class KeyBindingsGenerator : MonoBehaviour
                     directChild.GetComponent<ActionMapTextView>() == null)
                 {
                     Debug.LogError($"Invalid child object {directChild.name}, destroying and " +
-                        "generation of key bindings cancelled", directChild);
+                        "key bindings generation cancelled", directChild);
 
                     return false;
                 }
