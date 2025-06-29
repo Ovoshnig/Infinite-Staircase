@@ -13,14 +13,15 @@ public class InventoryGridGenerator : MonoBehaviour
     [SerializeField] private GameObject _slotPrefab;
     [SerializeField] private InventorySettings _inventorySettings;
 
-    [ContextMenu(nameof(Generate))]
-    public void Generate()
+    public bool TryGenerate()
     {
-#if UNITY_EDITOR
+        if (!Application.isEditor)
+            return false;
+
         if (Application.isPlaying)
         {
             Debug.LogWarning("Slot generation is disabled during Play Mode.");
-            return;
+            return false;
         }
 
         int undoGroup = Undo.GetCurrentGroup();
@@ -35,8 +36,11 @@ public class InventoryGridGenerator : MonoBehaviour
 
             EditorUtility.SetDirty(_parentTransform.gameObject);
             EditorSceneManager.MarkSceneDirty(_parentTransform.gameObject.scene);
+
+            return true;
         }
-#endif
+
+        return false;
     }
 
     private bool TryDestroyOld()
@@ -68,7 +72,7 @@ public class InventoryGridGenerator : MonoBehaviour
 
     private void GenerateNew()
     {
-        var grid = _parentTransform.GetComponent<GridLayoutGroup>();
+        GridLayoutGroup grid = _parentTransform.GetComponent<GridLayoutGroup>();
         int columns = (int)_inventorySettings.ColumnCount;
         int rows = (int)_inventorySettings.RowCount;
 
