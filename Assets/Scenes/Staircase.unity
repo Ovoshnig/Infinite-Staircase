@@ -576,6 +576,7 @@ MonoBehaviour:
   autoRun: 1
   autoInjectGameObjects: []
   _windowView: {fileID: 6849666653976752735, guid: ff63e6bdb3799b74fabe58bfac3240a1, type: 3}
+  _inventorySettings: {fileID: 11400000, guid: 181e5f6e881c1474c964db47dea5dcd3, type: 2}
   _itemDataRepository: {fileID: 11400000, guid: 5d610a8efaa825046b5d945a2b98fdfe, type: 2}
   _itemGenerator: {fileID: 1932447964}
 --- !u!1 &481872784
