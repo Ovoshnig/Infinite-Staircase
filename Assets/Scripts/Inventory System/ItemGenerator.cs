@@ -1,22 +1,17 @@
-using Random = System.Random;
 using UnityEngine;
 using VContainer;
 using Cysharp.Threading.Tasks;
 
 public class ItemGenerator : MonoBehaviour
 {
-    private readonly string[] _itemNames = new string[] { "Gear", "Music", "Play" };
     private InventoryView _inventoryView;
-    private ItemDataRepository _itemDataRepository;
-    private Random _random;
-
-    private void Awake() => _random = new Random();
+    private ItemDataLoader _itemDataLoader;
 
     [Inject]
-    public void Construct(InventoryView inventoryView, ItemDataRepository itemDataRepository)
+    public void Construct(InventoryView inventoryView, ItemDataLoader itemDataLoader)
     {
         _inventoryView = inventoryView;
-        _itemDataRepository = itemDataRepository;
+        _itemDataLoader = itemDataLoader;
     }
 
     private async void OnTriggerEnter(Collider other)
@@ -27,11 +22,8 @@ public class ItemGenerator : MonoBehaviour
 
     private async UniTask<ItemModel> GenerateRandomItemAsync()
     {
-        int index = _random.Next(0, _itemNames.Length);
-        string name = _itemNames[index];
-        ItemDataSO itemDataSO = await _itemDataRepository.GetItemDataByNameAsync(name);
-        ItemModel itemModel = new(name, itemDataSO.Icon);
-
+        ItemData itemDataSO = await _itemDataLoader.GetRandomItemDataAsync();
+        ItemModel itemModel = new(itemDataSO.name, itemDataSO.Icon);
         return itemModel;
     }
 }

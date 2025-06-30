@@ -18,18 +18,18 @@ public class SlotModel
 
     public SlotData Save() => new() { ItemName = ItemModel?.Name };
 
-    public async UniTask LoadAsync(SlotData slotData, ItemDataRepository itemDataRepository)
+    public async UniTask LoadAsync(SlotData slotData, ItemDataLoader itemDataLoader)
     {
         slotData ??= new SlotData { ItemName = default };
 
         if (slotData.ItemName != null)
         {
-            ItemDataSO itemData = await itemDataRepository.GetItemDataByNameAsync(slotData.ItemName);
+            ItemData itemData = await itemDataLoader.GetItemDataByNameAsync(slotData.ItemName);
 
             if (itemData == null)
                 Debug.LogError($"Item repository does not contain item with name {slotData.ItemName}");
             else
-                ItemModel = new ItemModel(itemData.Name, itemData.Icon);
+                ItemModel = new ItemModel(itemData.name, itemData.Icon);
         }
         else
         {

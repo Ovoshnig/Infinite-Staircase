@@ -73,9 +73,9 @@ public class SlotView : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 
     public SlotData Save() => _slotModel.Save();
 
-    public async UniTask LoadAsync(SlotData slotData, ItemDataRepository itemDataRepository)
+    public async UniTask LoadAsync(SlotData slotData, ItemDataLoader itemDataLoader)
     {
-        await _slotModel.LoadAsync(slotData, itemDataRepository);
+        await _slotModel.LoadAsync(slotData, itemDataLoader);
 
         if (_slotModel.HasItem)
         {

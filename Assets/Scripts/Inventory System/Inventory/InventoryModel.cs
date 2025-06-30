@@ -10,9 +10,9 @@ public class InventoryModel
     public SlotData[] SaveSlots() =>
         _slotModels.Select(slot => slot.Save()).ToArray();
 
-    public async UniTask LoadSlotsAsync(SlotData[] slotDataArray, ItemDataRepository itemDataRepository)
+    public async UniTask LoadSlotsAsync(SlotData[] slotDataArray, ItemDataLoader itemDataLoader)
     {
         for (int i = 0; i < _slotModels.Length; i++)
-            await _slotModels[i].LoadAsync(slotDataArray[i], itemDataRepository);
+            await _slotModels[i].LoadAsync(slotDataArray[i], itemDataLoader);
     }
 }

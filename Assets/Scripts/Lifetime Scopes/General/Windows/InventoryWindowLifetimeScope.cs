@@ -5,7 +5,6 @@ using VContainer.Unity;
 public sealed class InventoryWindowLifetimeScope : WindowLifetimeScope
 {
     [SerializeField] private InventorySettings _inventorySettings;
-    [SerializeField] private ItemDataRepository _itemDataRepository;
     [SerializeField] private ItemGenerator _itemGenerator;
 
     protected override void Configure(IContainerBuilder builder)
@@ -14,9 +13,9 @@ public sealed class InventoryWindowLifetimeScope : WindowLifetimeScope
 
         builder.Register<InventorySaver>(Lifetime.Singleton);
         builder.Register<DraggedItemHolder>(Lifetime.Singleton);
+        builder.Register<ItemDataLoader>(Lifetime.Singleton);
 
         builder.RegisterInstance(_inventorySettings);
-        builder.RegisterInstance(_itemDataRepository);
 
         builder.Register(resolver =>
         {

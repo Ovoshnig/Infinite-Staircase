@@ -5,12 +5,12 @@ using UnityEngine;
 public class InventorySaver
 {
     private readonly SaveStorage _saveStorage;
-    private readonly ItemDataRepository _itemDataRepository;
+    private readonly ItemDataLoader _itemDataLoader;
 
-    public InventorySaver(SaveStorage saveStorage, ItemDataRepository itemDataRepository)
+    public InventorySaver(SaveStorage saveStorage, ItemDataLoader itemDataLoader)
     {
         _saveStorage = saveStorage;
-        _itemDataRepository = itemDataRepository;
+        _itemDataLoader = itemDataLoader;
     }
 
     public async UniTask LoadSlotsAsync(SlotView[] slotViews)
@@ -21,7 +21,7 @@ public class InventorySaver
         int slotCount = Mathf.Min(slotViews.Length, slotDataArray.Length);
 
         for (int i = 0; i < slotCount; i++)
-            await slotViews[i].LoadAsync(slotDataArray[i], _itemDataRepository);
+            await slotViews[i].LoadAsync(slotDataArray[i], _itemDataLoader);
     }
 
     public void SaveSlots(SlotView[] slotViews, SlotData[] slotDataArray)
