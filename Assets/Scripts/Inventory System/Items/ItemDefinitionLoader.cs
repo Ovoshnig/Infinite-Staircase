@@ -5,29 +5,30 @@ using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
 using Random = System.Random;
 
-public class ItemDataLoader
+public class ItemDefinitionLoader
 {
     private readonly Random random = new();
-    private List<ItemData> _items = null;
+    private List<ItemDefinition> _items = null;
 
-    public async UniTask<ItemData> GetItemDataByNameAsync(string name)
+    public async UniTask<ItemDefinition> GetItemByNameAsync(string name)
     {
-        List<ItemData> items = await GetItemsAsync();
+        List<ItemDefinition> items = await GetItemsAsync();
         return items.Find(item => item.name == name);
     }
 
-    public async UniTask<ItemData> GetRandomItemDataAsync()
+    public async UniTask<ItemDefinition> GetRandomItemAsync()
     {
-        List<ItemData> items = await GetItemsAsync();
+        List<ItemDefinition> items = await GetItemsAsync();
         int index = random.Next(0, items.Count);
         return items[index];
     }
 
-    private async UniTask<List<ItemData>> GetItemsAsync()
+    private async UniTask<List<ItemDefinition>> GetItemsAsync()
     {
         if (_items == null)
         {
-            AsyncOperationHandle<IList<ItemData>> handler = Addressables.LoadAssetsAsync<ItemData>("item");
+            AsyncOperationHandle<IList<ItemDefinition>> handler = Addressables
+                .LoadAssetsAsync<ItemDefinition>("item");
             await handler.ToUniTask();
 
             if (handler.Status == AsyncOperationStatus.Succeeded)

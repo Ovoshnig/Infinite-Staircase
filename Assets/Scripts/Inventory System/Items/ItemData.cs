@@ -1,7 +1,13 @@
-using UnityEngine;
+﻿using UnityEngine;
 
-[CreateAssetMenu(fileName = "ItemData", menuName = "Scriptable Objects/ItemData")]
-public class ItemData : ScriptableObject
+public class ItemData
 {
-    [field: SerializeField] public Sprite Icon { get; private set; }
+    public string Name { get; }
+    public Sprite Icon { get; }
+
+    public ItemData(string name, Sprite icon)
+    {
+        Name = name;
+        Icon = icon;
+    }
 }

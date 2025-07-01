@@ -14,7 +14,25 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_GroupName: Default Local Group
   m_GUID: 619f6c39f5d4e824f8d04613515e9d1b
-  m_SerializeEntries: []
+  m_SerializeEntries:
+  - m_GUID: 39112feb0a789744f953890fe9b8f47b
+    m_Address: Assets/Resources_moved/Items/Exit.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - item
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 7970ca7cbc041324b9777c10326a37a3
+    m_Address: Assets/Resources_moved/Items/Cart.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - item
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: bb77e4e707876674b8648d4ba5d90179
+    m_Address: Assets/Resources_moved/Items/Question.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - item
+    FlaggedDuringContentUpdateRestriction: 0
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: abb42a486b86dd0459d8bd909fdf3dba, type: 2}
   m_SchemaSet:

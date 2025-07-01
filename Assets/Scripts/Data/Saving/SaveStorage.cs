@@ -1,4 +1,3 @@
-using Cryptography = System.Security.Cryptography;
 using System;
 using System.IO;
 using System.Security.Cryptography;
@@ -37,6 +36,7 @@ public class SaveStorage : DataStorage
 
         string fileHash = CalculateHash(FilePath);
         File.WriteAllText(HashFilePath, fileHash);
+        Debug.Log(2);
     }
 
     private string CalculateHash(string filePath)

@@ -9,19 +9,21 @@ public sealed class InventoryWindowLifetimeScope : WindowLifetimeScope
 
     protected override void Configure(IContainerBuilder builder)
     {
+        builder.RegisterInstance(_inventorySettings);
+
         builder.RegisterEntryPoint<InventorySwitch>(Lifetime.Singleton).As<WindowSwitch>();
+        builder.RegisterEntryPoint<InventoryMediator>();
 
         builder.Register<InventorySaver>(Lifetime.Singleton);
-        builder.Register<DraggedItemHolder>(Lifetime.Singleton);
-        builder.Register<ItemDataLoader>(Lifetime.Singleton);
-
-        builder.RegisterInstance(_inventorySettings);
+        builder.Register<ItemDefinitionLoader>(Lifetime.Singleton);
 
         builder.Register(resolver =>
         {
             WindowView windowView = resolver.Resolve<WindowView>();
             return windowView.GetComponentInChildren<InventoryView>();
         }, Lifetime.Singleton);
+
+        builder.Register(_ => new Inventory(_inventorySettings.SlotCount), Lifetime.Singleton);
 
         base.Configure(builder);
     }

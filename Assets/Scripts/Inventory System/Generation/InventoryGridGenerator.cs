@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 #if UNITY_EDITOR
 using UnityEditor;
-using UnityEditor.SceneManagement; 
+using UnityEditor.SceneManagement;
 #endif
 using UnityEngine;
 using UnityEngine.UI;
@@ -95,12 +95,16 @@ public class InventoryGridGenerator : MonoBehaviour
         grid.spacing = new Vector2(spacing, spacing);
         grid.padding = new RectOffset(padding, padding, padding, padding);
 
+        float itemPadding = _inventorySettings.ItemPaddingRatio * cellSize;
+
         for (int i = 0; i < rows; i++)
         {
             for (int j = 0; j < columns; j++)
             {
                 GameObject slot = Instantiate(_slotPrefab, _parentTransform);
                 slot.name = $"Slot ({i}, {j})";
+
+                slot.GetComponent<SlotView>().SetItemPadding(itemPadding);
             }
         }
 

@@ -1,34 +1,28 @@
 using Cysharp.Threading.Tasks;
-using System.Linq;
 using UnityEngine;
 
 public class InventorySaver
 {
     private readonly SaveStorage _saveStorage;
-    private readonly ItemDataLoader _itemDataLoader;
+    private readonly ItemDefinitionLoader _itemDefinitionLoader;
 
-    public InventorySaver(SaveStorage saveStorage, ItemDataLoader itemDataLoader)
+    public InventorySaver(SaveStorage saveStorage, ItemDefinitionLoader itemDefinitionLoader)
     {
         _saveStorage = saveStorage;
-        _itemDataLoader = itemDataLoader;
+        _itemDefinitionLoader = itemDefinitionLoader;
     }
 
-    public async UniTask LoadSlotsAsync(SlotView[] slotViews)
+    public async UniTask LoadInventoryAsync(Inventory inventory)
     {
-        SlotData[] defaultSlotArray = slotViews.Select(_ => new SlotData()).ToArray();
+        SlotData[] defaultSlotArray = inventory.ToData();
         SlotData[] slotDataArray = _saveStorage.Get(SaveConstants.InventoryKey, defaultSlotArray);
-
-        int slotCount = Mathf.Min(slotViews.Length, slotDataArray.Length);
-
-        for (int i = 0; i < slotCount; i++)
-            await slotViews[i].LoadAsync(slotDataArray[i], _itemDataLoader);
+        await inventory.LoadFromDataAsync(slotDataArray, _itemDefinitionLoader);
     }
 
-    public void SaveSlots(SlotView[] slotViews, SlotData[] slotDataArray)
+    public void SaveInventory(Inventory inventory)
     {
-        for (int i = 0; i < slotViews.Length; i++)
-            slotDataArray[i] = slotViews[i].Save();
-
+        SlotData[] slotDataArray = inventory.ToData();
         _saveStorage.Set(SaveConstants.InventoryKey, slotDataArray);
+        Debug.Log(1);
     }
 }

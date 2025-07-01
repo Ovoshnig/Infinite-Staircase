@@ -12,4 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 035af97fde7d47b4394309fa1d881912, type: 3}
   m_Name: Question
   m_EditorClassIdentifier: 
-  <Icon>k__BackingField: {fileID: 0}
+  <Icon>k__BackingField: {fileID: 21300000, guid: caeb937b157a2c0439129b08eb817a60, type: 3}

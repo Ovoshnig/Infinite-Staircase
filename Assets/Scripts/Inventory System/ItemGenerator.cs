@@ -4,26 +4,26 @@ using Cysharp.Threading.Tasks;
 
 public class ItemGenerator : MonoBehaviour
 {
-    private InventoryView _inventoryView;
-    private ItemDataLoader _itemDataLoader;
+    private Inventory _inventory;
+    private ItemDefinitionLoader _itemDefinitionLoader;
 
     [Inject]
-    public void Construct(InventoryView inventoryView, ItemDataLoader itemDataLoader)
+    public void Construct(Inventory inventory, ItemDefinitionLoader itemDefinitionLoader)
     {
-        _inventoryView = inventoryView;
-        _itemDataLoader = itemDataLoader;
+        _inventory = inventory;
+        _itemDefinitionLoader = itemDefinitionLoader;
     }
 
     private async void OnTriggerEnter(Collider other)
     {
-        ItemModel itemModel = await GenerateRandomItemAsync();
-        _inventoryView.TryAddItem(itemModel);
+        ItemData itemData = await GenerateRandomItemAsync();
+        _inventory.TryAddItem(itemData);
     }
 
-    private async UniTask<ItemModel> GenerateRandomItemAsync()
+    private async UniTask<ItemData> GenerateRandomItemAsync()
     {
-        ItemData itemDataSO = await _itemDataLoader.GetRandomItemDataAsync();
-        ItemModel itemModel = new(itemDataSO.name, itemDataSO.Icon);
-        return itemModel;
+        ItemDefinition itemDataSO = await _itemDefinitionLoader.GetRandomItemAsync();
+        ItemData itemData = new(itemDataSO.name, itemDataSO.Icon);
+        return itemData;
     }
 }
