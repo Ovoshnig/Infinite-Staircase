@@ -35,11 +35,11 @@ public class Inventory
         return true;
     }
 
-    public bool TryPickUpItem(Slot slot)
+    public bool TryRemoveItem(Slot slot)
     {
         if (slot.HasItem)
         {
-            Debug.Log($"Using item: {slot.ItemData.Name}");
+            Debug.Log($"Removing item: {slot.ItemData.Name}");
             slot.TakeItem();
             return true;
         }

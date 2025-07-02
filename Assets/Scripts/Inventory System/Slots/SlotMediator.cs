@@ -35,6 +35,8 @@ public class SlotMediator
     {
         if (eventData.button == PointerEventData.InputButton.Left)
             _inventory.BeginDrag(_slot);
+        else if (eventData.button == PointerEventData.InputButton.Right)
+            _inventory.TryRemoveItem(_slot);
     }
 
     private void HandlePointerUp(PointerEventData eventData)

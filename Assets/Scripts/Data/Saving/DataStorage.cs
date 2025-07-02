@@ -21,11 +21,7 @@ public abstract class DataStorage : IInitializable, IDisposable
 
     public void Initialize() => LoadData();
 
-    public void Dispose()
-    {
-        SaveData();
-        Debug.Log("Dispose " + nameof(DataStorage));
-    }
+    public void Dispose() => SaveData();
 
     public virtual T Get<T>(string key, T defaultValue)
     {
