@@ -1,70 +1,43 @@
 using System.Collections.Generic;
-using System.Linq;
-#if UNITY_EDITOR
-using UnityEditor;
-using UnityEditor.SceneManagement;
-#endif
 using UnityEngine;
 using UnityEngine.UI;
 
 public class InventoryGridGenerator : MonoBehaviour
 {
-    [SerializeField] private RectTransform _parentTransform;
+    [SerializeField] private RectTransform _containerTransform;
     [SerializeField] private GameObject _slotPrefab;
     [SerializeField] private InventorySettings _inventorySettings;
 
-    public bool TryGenerate()
+    public GameObject ContainerObject => _containerTransform.gameObject;
+
+    public void GenerateGrid()
     {
-        if (!Application.isEditor)
-            return false;
+        if (!TryDestroyOld())
+            return;
 
-        if (Application.isPlaying)
-        {
-            Debug.LogWarning("Slot generation is disabled during Play Mode.");
-            return false;
-        }
-
-        int undoGroup = Undo.GetCurrentGroup();
-        Undo.IncrementCurrentGroup();
-        Undo.SetCurrentGroupName("Generate Inventory Grid");
-
-        Undo.RegisterFullObjectHierarchyUndo(_parentTransform.gameObject, "Generate Inventory Grid");
-
-        if (TryDestroyOld())
-        {
-            GenerateNew();
-
-            EditorUtility.SetDirty(_parentTransform.gameObject);
-            EditorSceneManager.MarkSceneDirty(_parentTransform.gameObject.scene);
-
-            return true;
-        }
-
-        return false;
+        GenerateNew();
     }
 
     private bool TryDestroyOld()
     {
-        List<GameObject> directChildren = _parentTransform
-                    .Cast<Transform>()
-                    .Select(t => t.gameObject)
-                    .ToList();
+        List<GameObject> directChildren = new();
 
-        if (directChildren.Any())
+        foreach (Transform child in _containerTransform)
+            directChildren.Add(child.gameObject);
+
+        if (directChildren.Count > 0)
         {
-            foreach (var directChild in directChildren)
+            foreach (var child in directChildren)
             {
-                if (directChild.GetComponent<SlotView>() == null)
+                if (child.GetComponent<SlotView>() == null)
                 {
-                    Debug.LogError($"Invalid child object {directChild.name}, destroying and " +
-                        "generation of inventory grid cancelled", directChild);
-
+                    Debug.LogError($"Invalid child object {child.name}, cancelling generation.", child);
                     return false;
                 }
             }
 
-            foreach (var directChild in directChildren)
-                DestroyImmediate(directChild, false);
+            foreach (var child in directChildren)
+                DestroyImmediate(child, false);
         }
 
         return true;
@@ -72,21 +45,19 @@ public class InventoryGridGenerator : MonoBehaviour
 
     private void GenerateNew()
     {
-        GridLayoutGroup grid = _parentTransform.GetComponent<GridLayoutGroup>();
+        GridLayoutGroup grid = _containerTransform.GetComponent<GridLayoutGroup>();
         int columns = (int)_inventorySettings.ColumnCount;
         int rows = (int)_inventorySettings.RowCount;
 
         grid.constraint = GridLayoutGroup.Constraint.FixedColumnCount;
         grid.constraintCount = columns;
 
-        float containerWidth = _parentTransform.rect.width;
-        float containerHeight = _parentTransform.rect.height;
-
+        float containerWidth = _containerTransform.rect.width;
+        float containerHeight = _containerTransform.rect.height;
         float spacingRatio = _inventorySettings.SpacingRatio;
 
         float cellWidth = containerWidth / (columns + (columns + 1) * spacingRatio);
         float cellHeight = containerHeight / (rows + (rows + 1) * spacingRatio);
-
         float cellSize = Mathf.Min(cellWidth, cellHeight);
         float spacing = cellSize * spacingRatio;
         int padding = Mathf.RoundToInt(spacing);
@@ -101,9 +72,8 @@ public class InventoryGridGenerator : MonoBehaviour
         {
             for (int j = 0; j < columns; j++)
             {
-                GameObject slot = Instantiate(_slotPrefab, _parentTransform);
+                var slot = Instantiate(_slotPrefab, _containerTransform);
                 slot.name = $"Slot ({i}, {j})";
-
                 slot.GetComponent<SlotView>().SetItemPadding(itemPadding);
             }
         }

@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 89f45a6f0cd140843ac6813e177e0c37, type: 3}
   m_Name: InventorySettings
   m_EditorClassIdentifier: 
-  <RowCount>k__BackingField: 3
+  <RowCount>k__BackingField: 2
   <ColumnCount>k__BackingField: 5
   <SpacingRatio>k__BackingField: 0.5
   <ItemPaddingRatio>k__BackingField: 0.2
