@@ -29,10 +29,14 @@ public class InventoryMediator : IInitializable, ITickable, IDisposable
         _slotMediators = new SlotMediator[_inventorySettings.SlotCount];
 
         for (int i = 0; i < _inventorySettings.SlotCount; i++)
-            _slotMediators[i] = new SlotMediator(_inventory.GetSlot(i), _inventoryView.SlotViews[i], _inventory);
+        {
+            SlotMediator slotMediator = new(_inventory.GetSlot(i), _inventoryView.SlotViews[i], _inventory);
+            slotMediator.Initialize();
+            _slotMediators[i] = slotMediator;
+        }
 
-        _inventory.OnDragStarted += HandleDragStarted;
-        _inventory.OnDragEnded += HandleDragEnded;
+        _inventory.DragStarted += OnDragStarted;
+        _inventory.DragEnded += OnDragEnded;
 
         _inventorySaver.LoadInventoryAsync(_inventory).Forget();
     }
@@ -53,13 +57,16 @@ public class InventoryMediator : IInitializable, ITickable, IDisposable
 
     public void Dispose()
     {
-        _inventory.OnDragStarted -= HandleDragStarted;
-        _inventory.OnDragEnded -= HandleDragEnded;
+        for (int i = 0; i < _inventorySettings.SlotCount; i++)
+            _slotMediators[i].Dispose();
+
+        _inventory.DragStarted -= OnDragStarted;
+        _inventory.DragEnded -= OnDragEnded;
 
         _inventorySaver.SaveInventory(_inventory);
     }
 
-    private void HandleDragStarted(ItemData itemData)
+    private void OnDragStarted(ItemData itemData)
     {
         for (int i = 0; i < _inventorySettings.SlotCount; i++)
         {
@@ -79,7 +86,7 @@ public class InventoryMediator : IInitializable, ITickable, IDisposable
         }
     }
 
-    private void HandleDragEnded()
+    private void OnDragEnded()
     {
         if (_draggedItemView != null)
         {

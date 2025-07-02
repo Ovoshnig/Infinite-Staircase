@@ -7,6 +7,7 @@
         "GUID:84651a3751eca9349aac36a66bba901b",
         "GUID:b0214a6008ed146ff8f122a6a9c2f6cc",
         "GUID:f51ebe6a0ceec4240a699833d6309b23",
+        "GUID:77221876cc6b8244180b96e320b1bcd4",
         "GUID:dc47925d1a5fa2946bdd37746b2b5d48",
         "GUID:e9745f6a32442194c8dc5a43e9ab86f9",
         "GUID:4d6381f4a70063b44a9df78726e1a6e6"
@@ -15,7 +16,9 @@
     "excludePlatforms": [],
     "allowUnsafeCode": false,
     "overrideReferences": true,
-    "precompiledReferences": [],
+    "precompiledReferences": [
+        "R3.dll"
+    ],
     "autoReferenced": true,
     "defineConstraints": [],
     "versionDefines": [],

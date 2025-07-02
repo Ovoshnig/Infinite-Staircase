@@ -5,8 +5,8 @@ using UnityEngine;
 
 public class Inventory
 {
-    public event Action<ItemData> OnDragStarted;
-    public event Action OnDragEnded;
+    public event Action<ItemData> DragStarted;
+    public event Action DragEnded;
 
     private readonly Slot[] _slots;
 
@@ -39,7 +39,7 @@ public class Inventory
     {
         if (slot.HasItem)
         {
-            Debug.Log($"Removing item: {slot.ItemData.Name}");
+            Debug.Log($"Removing item: {slot.ItemData.CurrentValue.Name}");
             slot.TakeItem();
             return true;
         }
@@ -61,7 +61,7 @@ public class Inventory
             return;
 
         DraggingSlot = slot;
-        OnDragStarted?.Invoke(DraggingSlot.ItemData);
+        DragStarted?.Invoke(DraggingSlot.ItemData.CurrentValue);
     }
 
     public void Drop()
@@ -87,7 +87,7 @@ public class Inventory
         }
 
         DraggingSlot = null;
-        OnDragEnded?.Invoke();
+        DragEnded?.Invoke();
     }
 
     public SlotData[] ToData() => _slots.Select(slot => slot.ToData()).ToArray();

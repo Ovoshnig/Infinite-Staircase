@@ -1,28 +1,15 @@
 using Cysharp.Threading.Tasks;
-using System;
+using R3;
 using UnityEngine;
 
 public class Slot
 {
-    public event Action<ItemData> OnItemChanged;
+    private readonly ReactiveProperty<ItemData> _itemData = new(null);
+    
+    public ReadOnlyReactiveProperty<ItemData> ItemData => _itemData;
 
-    private ItemData _itemData;
-
-    public ItemData ItemData
-    {
-        get => _itemData;
-        private set
-        {
-            if (_itemData != value)
-            {
-                _itemData = value;
-                OnItemChanged?.Invoke(_itemData);
-            }
-        }
-    }
-
-    public bool HasItem => ItemData != null;
-    public bool IsEmpty => ItemData == null;
+    public bool HasItem => _itemData.Value != null;
+    public bool IsEmpty => _itemData.Value == null;
 
     public void PlaceItem(ItemData itemData)
     {
@@ -35,7 +22,7 @@ public class Slot
             return;
         }
 
-        ItemData = itemData;
+        _itemData.Value = itemData;
     }
 
     public ItemData TakeItem()
@@ -46,14 +33,14 @@ public class Slot
             return null;
         }
 
-        ItemData takenItem = ItemData;
-        ItemData = null;
+        ItemData takenItem = _itemData.Value;
+        _itemData.Value = null;
         return takenItem;
     }
 
-    public void Clear() => ItemData = null;
+    public void Clear() => _itemData.Value = null;
 
-    public SlotData ToData() => new() { ItemName = ItemData?.Name };
+    public SlotData ToData() => new() { ItemName = _itemData.Value?.Name };
 
     public async UniTask LoadFromDataAsync(SlotData slotData, ItemDefinitionLoader itemDefinitionLoader)
     {
@@ -74,7 +61,7 @@ public class Slot
             }
             else
             {
-                ItemData = new ItemData(itemDefinition.name, itemDefinition.Icon);
+                _itemData.Value = new ItemData(itemDefinition.name, itemDefinition.Icon);
             }
         }
     }

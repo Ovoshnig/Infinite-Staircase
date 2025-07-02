@@ -9,10 +9,10 @@ public class SlotView : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     [SerializeField] private RectTransform _itemParent;
     [SerializeField] private float _itemPadding = 0f;
 
-    public event Action<PointerEventData> OnPointerDownEvent;
-    public event Action<PointerEventData> OnPointerUpEvent;
-    public event Action OnPointerEnterEvent;
-    public event Action OnPointerExitEvent;
+    public event Action<PointerEventData> PointerDown;
+    public event Action<PointerEventData> PointerUp;
+    public event Action PointerEntered;
+    public event Action PointerExited;
 
     public ItemView ItemView => _itemView;
 
@@ -22,13 +22,13 @@ public class SlotView : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
             _itemView.Clear();
     }
 
-    public void OnPointerDown(PointerEventData eventData) => OnPointerDownEvent?.Invoke(eventData);
+    public void OnPointerDown(PointerEventData eventData) => PointerDown?.Invoke(eventData);
 
-    public void OnPointerUp(PointerEventData eventData) => OnPointerUpEvent?.Invoke(eventData);
+    public void OnPointerUp(PointerEventData eventData) => PointerUp?.Invoke(eventData);
 
-    public void OnPointerEnter(PointerEventData eventData) => OnPointerEnterEvent?.Invoke();
+    public void OnPointerEnter(PointerEventData eventData) => PointerEntered?.Invoke();
 
-    public void OnPointerExit(PointerEventData eventData) => OnPointerExitEvent?.Invoke();
+    public void OnPointerExit(PointerEventData eventData) => PointerExited?.Invoke();
 
     public void SetItemPadding(float value) => _itemPadding = value;
 
