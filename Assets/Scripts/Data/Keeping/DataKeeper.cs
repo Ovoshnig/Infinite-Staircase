@@ -2,7 +2,7 @@ using R3;
 using System;
 using VContainer.Unity;
 
-public abstract class DataKeeper<T> : IPostInitializable, IDisposable
+public abstract class DataKeeper<T> : IInitializable, IDisposable
 {
     private readonly ReactiveProperty<T> _data = new();
     private readonly DataStorage _dataStorage;
@@ -13,7 +13,7 @@ public abstract class DataKeeper<T> : IPostInitializable, IDisposable
     protected abstract string DataKey { get; }
     protected abstract T DefaultValue { get; }
 
-    public void PostInitialize()
+    public void Initialize()
     {
         T value = _dataStorage.Get(DataKey, DefaultValue);
         SetValue(value);

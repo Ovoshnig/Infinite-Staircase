@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using VContainer.Unity;
 
-public class SceneSwitch : IPostInitializable, IDisposable
+public class SceneSwitch : IInitializable, IDisposable
 {
     public enum SceneType
     {
@@ -29,7 +29,7 @@ public class SceneSwitch : IPostInitializable, IDisposable
     public SceneType CurrentSceneType { get; private set; }
     public ReadOnlyReactiveProperty<bool> IsSceneLoading => _isSceneLoading.ToReadOnlyReactiveProperty();
 
-    public void PostInitialize()
+    public void Initialize()
     {
         _achievedLevel = _saveStorage.Get(SaveConstants.AchievedLevelKey, _sceneSettings.FirstGameplayLevel);
         _currentLevel = (uint)SceneManager.GetActiveScene().buildIndex;

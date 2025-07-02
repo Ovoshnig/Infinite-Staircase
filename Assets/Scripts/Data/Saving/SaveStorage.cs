@@ -36,7 +36,6 @@ public class SaveStorage : DataStorage
 
         string fileHash = CalculateHash(FilePath);
         File.WriteAllText(HashFilePath, fileHash);
-        Debug.Log(2);
     }
 
     private string CalculateHash(string filePath)

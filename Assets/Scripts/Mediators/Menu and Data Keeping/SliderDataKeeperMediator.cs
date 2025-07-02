@@ -2,7 +2,7 @@ using R3;
 using System;
 using VContainer.Unity;
 
-public abstract class SliderDataKeeperMediator : IPostInitializable, IDisposable
+public abstract class SliderDataKeeperMediator : IInitializable, IDisposable
 {
     private readonly SliderView _sliderView;
     private readonly DataKeeper<float> _dataKeeper;
@@ -18,7 +18,7 @@ public abstract class SliderDataKeeperMediator : IPostInitializable, IDisposable
     protected abstract float MinValue { get; }
     protected abstract float MaxValue { get; }
 
-    public void PostInitialize()
+    public void Initialize()
     {
         _sliderView.SetMinValue(MinValue);
         _sliderView.SetMaxValue(MaxValue);

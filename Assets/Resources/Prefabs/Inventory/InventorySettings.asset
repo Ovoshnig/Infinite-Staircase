@@ -16,3 +16,5 @@ MonoBehaviour:
   <ColumnCount>k__BackingField: 5
   <SpacingRatio>k__BackingField: 0.5
   <ItemPaddingRatio>k__BackingField: 0.2
+  <ItemTransparentValue>k__BackingField: 0.8
+  <ItemOpaqueValue>k__BackingField: 1

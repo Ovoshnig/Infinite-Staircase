@@ -1,5 +1,4 @@
 using Cysharp.Threading.Tasks;
-using UnityEngine;
 
 public class InventorySaver
 {
@@ -23,6 +22,5 @@ public class InventorySaver
     {
         SlotData[] slotDataArray = inventory.ToData();
         _saveStorage.Set(SaveConstants.InventoryKey, slotDataArray);
-        Debug.Log(1);
     }
 }

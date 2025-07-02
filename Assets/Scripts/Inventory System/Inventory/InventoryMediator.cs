@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using VContainer.Unity;
 
-public class InventoryMediator : IInitializable, ITickable, IStartable, IDisposable
+public class InventoryMediator : IInitializable, ITickable, IDisposable
 {
     private readonly InventoryView _inventoryView;
     private readonly Inventory _inventory;
@@ -33,10 +33,9 @@ public class InventoryMediator : IInitializable, ITickable, IStartable, IDisposa
 
         _inventory.OnDragStarted += HandleDragStarted;
         _inventory.OnDragEnded += HandleDragEnded;
-    }
 
-    public void Start() => 
         _inventorySaver.LoadInventoryAsync(_inventory).Forget();
+    }
 
     public void Tick()
     {

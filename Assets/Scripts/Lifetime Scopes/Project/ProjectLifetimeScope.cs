@@ -14,19 +14,19 @@ public class ProjectLifetimeScope : LifetimeScope
 #if !UNITY_EDITOR
         builder.RegisterEntryPoint<SplashScreenPasser>(Lifetime.Singleton).AsSelf();
 #endif
+        builder.RegisterEntryPoint<SaveStorage>(Lifetime.Singleton).AsSelf();
+        builder.RegisterEntryPoint<SettingsStorage>(Lifetime.Singleton).AsSelf();
+        builder.RegisterEntryPoint<KeyBindingOverridesSaver>(Lifetime.Singleton).AsSelf();
+        builder.RegisterEntryPoint<SensitivityKeeper>(Lifetime.Singleton).AsSelf();
+        builder.RegisterEntryPoint<SoundVolumeKeeper>(Lifetime.Singleton).AsSelf();
+        builder.RegisterEntryPoint<MusicVolumeKeeper>(Lifetime.Singleton).AsSelf();
         builder.RegisterEntryPoint<SceneSwitch>(Lifetime.Singleton).AsSelf();
         builder.RegisterEntryPoint<GamePauser>(Lifetime.Singleton).AsSelf();
         builder.RegisterEntryPoint<ScreenInputHandler>(Lifetime.Singleton).AsSelf();
         builder.RegisterEntryPoint<ScreenTuner>(Lifetime.Singleton).AsSelf();
         builder.RegisterEntryPoint<QualityTuner>(Lifetime.Singleton).AsSelf();
-        builder.RegisterEntryPoint<SensitivityKeeper>(Lifetime.Singleton).AsSelf();
-        builder.RegisterEntryPoint<SoundVolumeKeeper>(Lifetime.Singleton).AsSelf();
-        builder.RegisterEntryPoint<MusicVolumeKeeper>(Lifetime.Singleton).AsSelf();
         builder.RegisterEntryPoint<AudioMixerTuner>(Lifetime.Singleton).AsSelf();
-        builder.RegisterEntryPoint<KeyBindingOverridesSaver>(Lifetime.Singleton).AsSelf();
-        builder.RegisterEntryPoint<SaveStorage>(Lifetime.Singleton).AsSelf();
-        builder.RegisterEntryPoint<SettingsStorage>(Lifetime.Singleton).AsSelf();
-
+        
         builder.Register<InputActions>(Lifetime.Singleton);
 
         builder.RegisterInstance(_gameSettings.TimeSettings);
