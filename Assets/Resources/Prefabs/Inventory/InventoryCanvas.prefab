@@ -688,6 +688,7 @@ GameObject:
   - component: {fileID: 7350550668886576797}
   - component: {fileID: 405254108006294585}
   - component: {fileID: 5138719768825059544}
+  - component: {fileID: 310104218799915523}
   m_Layer: 0
   m_Name: Slots
   m_TagString: Untagged
@@ -774,6 +775,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <CanvasRectTransform>k__BackingField: {fileID: 1971382425082665333}
+--- !u!114 &310104218799915523
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1515677665204968498}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c9194406856dd0c4189dc540416ac363, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _slotPrefab: {fileID: 70310172741059577, guid: 0935ffcca6454064888813cbb72661a3, type: 3}
+  _inventorySettings: {fileID: 11400000, guid: 181e5f6e881c1474c964db47dea5dcd3, type: 2}
 --- !u!1 &1586839253400038632
 GameObject:
   m_ObjectHideFlags: 0
@@ -2522,57 +2537,6 @@ MonoBehaviour:
   _itemView: {fileID: 8640090304693979031}
   _itemParent: {fileID: 4490029224432791908}
   _itemPadding: 36.8
---- !u!1 &5668242615519289274
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 8276652884268762064}
-  - component: {fileID: 8322795177475879746}
-  m_Layer: 5
-  m_Name: Generator
-  m_TagString: EditorOnly
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!224 &8276652884268762064
-RectTransform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5668242615519289274}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 5670826890459899235}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
-  m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &8322795177475879746
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5668242615519289274}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c9194406856dd0c4189dc540416ac363, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _containerTransform: {fileID: 8728476298558564902}
-  _slotPrefab: {fileID: 70310172741059577, guid: 0935ffcca6454064888813cbb72661a3, type: 3}
-  _inventorySettings: {fileID: 11400000, guid: 181e5f6e881c1474c964db47dea5dcd3, type: 2}
 --- !u!1 &6043859978651860933
 GameObject:
   m_ObjectHideFlags: 0
@@ -4117,9 +4081,6 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 3552931024355162621, guid: 8c32878ae634b2b499722f1ae8cfb007, type: 3}
       insertIndex: -1
       addedObject: {fileID: 5145277746729890908}
-    - targetCorrespondingSourceObject: {fileID: 3552931024355162621, guid: 8c32878ae634b2b499722f1ae8cfb007, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 8276652884268762064}
     - targetCorrespondingSourceObject: {fileID: 3552931024355162621, guid: 8c32878ae634b2b499722f1ae8cfb007, type: 3}
       insertIndex: -1
       addedObject: {fileID: 8728476298558564902}

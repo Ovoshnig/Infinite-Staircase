@@ -2,13 +2,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+[RequireComponent(typeof(InventoryView))]
+[RequireComponent(typeof(RectTransform))]
 public class InventoryGridGenerator : MonoBehaviour
 {
-    [SerializeField] private RectTransform _containerTransform;
     [SerializeField] private GameObject _slotPrefab;
     [SerializeField] private InventorySettings _inventorySettings;
-
-    public GameObject ContainerObject => _containerTransform.gameObject;
 
     public void GenerateGrid()
     {
@@ -22,7 +21,7 @@ public class InventoryGridGenerator : MonoBehaviour
     {
         List<GameObject> directChildren = new();
 
-        foreach (Transform child in _containerTransform)
+        foreach (Transform child in transform)
             directChildren.Add(child.gameObject);
 
         if (directChildren.Count > 0)
@@ -45,15 +44,16 @@ public class InventoryGridGenerator : MonoBehaviour
 
     private void GenerateNew()
     {
-        GridLayoutGroup grid = _containerTransform.GetComponent<GridLayoutGroup>();
+        GridLayoutGroup grid = GetComponent<GridLayoutGroup>();
         int columns = (int)_inventorySettings.ColumnCount;
         int rows = (int)_inventorySettings.RowCount;
 
         grid.constraint = GridLayoutGroup.Constraint.FixedColumnCount;
         grid.constraintCount = columns;
 
-        float containerWidth = _containerTransform.rect.width;
-        float containerHeight = _containerTransform.rect.height;
+        RectTransform rectTransform = transform as RectTransform;
+        float containerWidth = rectTransform.rect.width;
+        float containerHeight = rectTransform.rect.height;
         float spacingRatio = _inventorySettings.SpacingRatio;
 
         float cellWidth = containerWidth / (columns + (columns + 1) * spacingRatio);
@@ -72,7 +72,7 @@ public class InventoryGridGenerator : MonoBehaviour
         {
             for (int j = 0; j < columns; j++)
             {
-                var slot = Instantiate(_slotPrefab, _containerTransform);
+                var slot = Instantiate(_slotPrefab, transform);
                 slot.name = $"Slot ({i}, {j})";
                 slot.GetComponent<SlotView>().SetItemPadding(itemPadding);
             }

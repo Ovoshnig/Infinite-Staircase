@@ -13,22 +13,22 @@ public class InventoryGridGeneratorEditor : Editor
 
         if (GUILayout.Button("Generate Inventory Grid"))
         {
-            if (!Application.isPlaying)
+            if (Application.isPlaying)
+            {
+                Debug.LogWarning("Slot generation is disabled during Play Mode.");
+            }
+            else
             {
                 int group = Undo.GetCurrentGroup();
                 Undo.IncrementCurrentGroup();
                 Undo.SetCurrentGroupName("Generate Inventory Grid");
 
-                Undo.RegisterFullObjectHierarchyUndo(generator.ContainerObject, "Generate Inventory Grid");
+                Undo.RegisterFullObjectHierarchyUndo(generator.gameObject, "Generate Inventory Grid");
 
                 generator.GenerateGrid();
 
-                EditorUtility.SetDirty(generator.ContainerObject);
-                EditorSceneManager.MarkSceneDirty(generator.ContainerObject.scene);
-            }
-            else
-            {
-                Debug.LogWarning("Slot generation is disabled during Play Mode.");
+                EditorUtility.SetDirty(generator.gameObject);
+                EditorSceneManager.MarkSceneDirty(generator.gameObject.scene);
             }
         }
     }
