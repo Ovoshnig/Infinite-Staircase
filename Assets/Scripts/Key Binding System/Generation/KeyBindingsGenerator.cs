@@ -2,69 +2,47 @@
 using System.Linq;
 using System.Text.RegularExpressions;
 using TMPro;
-#if UNITY_EDITOR
-using UnityEditor;
-using UnityEditor.SceneManagement; 
-#endif
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.UI;
 
+[RequireComponent(typeof(RectTransform))]
+[RequireComponent(typeof(VerticalLayoutGroup))]
 public class KeyBindingsGenerator : MonoBehaviour
 {
-    [SerializeField] private Transform _parentTransform;
     [SerializeField] private GameObject _actionMapTextPrefab;
     [SerializeField] private GameObject _keyBindingBlockPrefab;
 
-    [ContextMenu(nameof(Generate))]
-    public void Generate()
+    public void GenerateBindings()
     {
-#if UNITY_EDITOR
-        if (Application.isPlaying)
-        {
-            Debug.LogWarning("Key bindings generation is disabled during Play Mode.");
+        if (!TryDestroyOld())
             return;
-        }
 
-        int undoGroup = Undo.GetCurrentGroup();
-        Undo.IncrementCurrentGroup();
-        Undo.SetCurrentGroupName("Generate Key Bindings");
-
-        Undo.RegisterFullObjectHierarchyUndo(_parentTransform.gameObject, "Generate Key Bindings");
-
-        if (TryDestroyOld())
-        {
-            GenerateNew();
-
-            EditorUtility.SetDirty(_parentTransform.gameObject);
-            EditorSceneManager.MarkSceneDirty(_parentTransform.gameObject.scene);
-        }
-#endif
+        GenerateNew();
     }
 
     private bool TryDestroyOld()
     {
-        List<GameObject> directChildren = _parentTransform
-                    .Cast<Transform>()
-                    .Select(t => t.gameObject)
-                    .ToList();
+        List<GameObject> children = transform
+            .Cast<Transform>()
+            .Select(t => t.gameObject)
+            .ToList();
 
-        if (directChildren.Any())
+        if (!children.Any())
+            return true;
+
+        foreach (var child in children)
         {
-            foreach (var directChild in directChildren)
+            if (child.GetComponent<KeyBinderView>() == null &&
+                child.GetComponent<ActionMapTextView>() == null)
             {
-                if (directChild.GetComponent<KeyBinderView>() == null &&
-                    directChild.GetComponent<ActionMapTextView>() == null)
-                {
-                    Debug.LogError($"Invalid child object {directChild.name}, destroying and " +
-                        "key bindings generation cancelled", directChild);
-
-                    return false;
-                }
+                Debug.LogError($"Invalid child object {child.name}, cancelling generation.", child);
+                return false;
             }
-
-            foreach (var directChild in directChildren)
-                DestroyImmediate(directChild, false);
         }
+
+        foreach (var child in children)
+            DestroyImmediate(child, false);
 
         return true;
     }
@@ -75,37 +53,33 @@ public class KeyBindingsGenerator : MonoBehaviour
 
         foreach (var actionMap in actionAsset.actionMaps)
         {
-            List<InputAction> appropriateActions = new();
+            List<InputAction> actionsToBind = new();
 
             foreach (var action in actionMap.actions)
             {
-                List<string> controlPaths = action.controls
-                    .Select(c => c.path.ToLower())
-                    .ToList();
-                bool isKeyboardUsing = controlPaths.Any(c => c.Contains("keyboard"));
-                bool hasEscapeKey = controlPaths.Any(c => c.Contains("escape"));
+                List<string> controlPaths = action.controls.Select(c => c.path.ToLower()).ToList();
+                bool isKeyboard = controlPaths.Any(p => p.Contains("keyboard"));
+                bool hasEscape = controlPaths.Any(p => p.Contains("escape"));
 
-                if (isKeyboardUsing && !hasEscapeKey)
-                    appropriateActions.Add(action);
+                if (isKeyboard && !hasEscape)
+                    actionsToBind.Add(action);
             }
 
-            if (!appropriateActions.Any())
+            if (!actionsToBind.Any())
                 continue;
 
-            GameObject actionMapObject = Instantiate(_actionMapTextPrefab, _parentTransform);
-            actionMapObject.name = $"🗺️{actionMap.name}";
+            GameObject mapLabel = Instantiate(_actionMapTextPrefab, transform);
+            mapLabel.name = $"🗺️{actionMap.name}";
+            mapLabel.GetComponent<TMP_Text>().text = actionMap.name;
 
-            TMP_Text actionMapText = actionMapObject.GetComponent<TMP_Text>();
-            actionMapText.text = actionMap.name;
-
-            foreach (var action in appropriateActions)
+            foreach (var action in actionsToBind)
             {
-                GameObject keyBindingBlockObject = Instantiate(_keyBindingBlockPrefab, _parentTransform);
-                keyBindingBlockObject.name = $"🎬{action.name}";
+                GameObject bindingBlock = Instantiate(_keyBindingBlockPrefab, transform);
+                bindingBlock.name = $"🎬{action.name}";
 
-                KeyBinderView keyBinderView = keyBindingBlockObject.GetComponent<KeyBinderView>();
-                string actionName = Regex.Replace(action.name, "([A-Z])", " $1").ToLower();
-                keyBinderView.SetInputAction(InputActionReference.Create(action), actionName);
+                var keyBinder = bindingBlock.GetComponent<KeyBinderView>();
+                string formattedName = Regex.Replace(action.name, "([A-Z])", " $1").ToLower();
+                keyBinder.SetInputAction(InputActionReference.Create(action), formattedName);
             }
         }
 

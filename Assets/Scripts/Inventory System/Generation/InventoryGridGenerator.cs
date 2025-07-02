@@ -1,9 +1,10 @@
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
-[RequireComponent(typeof(InventoryView))]
 [RequireComponent(typeof(RectTransform))]
+[RequireComponent(typeof(InventoryView))]
 public class InventoryGridGenerator : MonoBehaviour
 {
     [SerializeField] private GameObject _slotPrefab;
@@ -19,25 +20,25 @@ public class InventoryGridGenerator : MonoBehaviour
 
     private bool TryDestroyOld()
     {
-        List<GameObject> directChildren = new();
+        List<GameObject> children = transform
+            .Cast<Transform>()
+            .Select(t => t.gameObject)
+            .ToList();
 
-        foreach (Transform child in transform)
-            directChildren.Add(child.gameObject);
-
-        if (directChildren.Count > 0)
+        if (!children.Any())
+            return true;
+        
+        foreach (var child in children)
         {
-            foreach (var child in directChildren)
+            if (child.GetComponent<SlotView>() == null)
             {
-                if (child.GetComponent<SlotView>() == null)
-                {
-                    Debug.LogError($"Invalid child object {child.name}, cancelling generation.", child);
-                    return false;
-                }
+                Debug.LogError($"Invalid child object {child.name}, cancelling generation.", child);
+                return false;
             }
-
-            foreach (var child in directChildren)
-                DestroyImmediate(child, false);
         }
+
+        foreach (var child in children)
+            DestroyImmediate(child, false);
 
         return true;
     }
