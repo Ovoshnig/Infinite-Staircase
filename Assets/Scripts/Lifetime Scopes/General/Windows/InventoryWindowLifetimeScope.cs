@@ -14,16 +14,14 @@ public sealed class InventoryWindowLifetimeScope : WindowLifetimeScope
         builder.RegisterEntryPoint<InventorySwitch>(Lifetime.Singleton).As<WindowSwitch>();
         builder.RegisterEntryPoint<InventoryMediator>();
 
+        builder.Register<Inventory>(Lifetime.Singleton);
         builder.Register<InventorySaver>(Lifetime.Singleton);
         builder.Register<ItemDefinitionLoader>(Lifetime.Singleton);
-
         builder.Register(resolver =>
         {
             WindowView windowView = resolver.Resolve<WindowView>();
             return windowView.GetComponentInChildren<InventoryView>();
         }, Lifetime.Singleton);
-
-        builder.Register(_ => new Inventory(_inventorySettings.SlotCount), Lifetime.Singleton);
 
         base.Configure(builder);
     }

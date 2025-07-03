@@ -14,12 +14,11 @@ public class Inventory
     public Slot HoveredSlot { get; private set; }
     public bool IsDragging => DraggingSlot != null;
 
-    public Inventory(uint slotCount)
+    public Inventory(InventorySettings inventorySettings)
     {
-        _slots = new Slot[slotCount];
-
-        for (int i = 0; i < slotCount; i++)
-            _slots[i] = new Slot();
+        _slots = Enumerable.Range(0, (int)inventorySettings.SlotCount)
+            .Select(_ => new Slot())
+            .ToArray();
     }
 
     public Slot GetSlot(int index) => _slots[index];
@@ -57,7 +56,7 @@ public class Inventory
 
     public void BeginDrag(Slot slot)
     {
-        if (slot.IsEmpty || IsDragging) 
+        if (slot.IsEmpty || IsDragging)
             return;
 
         DraggingSlot = slot;
@@ -66,7 +65,7 @@ public class Inventory
 
     public void Drop()
     {
-        if (!IsDragging) 
+        if (!IsDragging)
             return;
 
         ItemData draggedItem = DraggingSlot.TakeItem();

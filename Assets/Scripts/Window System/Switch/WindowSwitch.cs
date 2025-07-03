@@ -22,7 +22,7 @@ public abstract class WindowSwitch : IWindowSwitch, IInitializable, IDisposable
     protected WindowInputHandler WindowInputHandler => _windowInputHandler;
 
     public virtual void Initialize() 
-    { 
+    {
         WindowSwitchPressed
             .Where(value => value)
             .Subscribe(_ => OnWindowSwitchPressed())
