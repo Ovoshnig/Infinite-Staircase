@@ -3,12 +3,9 @@ using UnityEngine;
 using VContainer;
 
 [RequireComponent(typeof(MeshFilter), typeof(MeshRenderer))]
-public class ProceduralGlassFloor : MonoBehaviour
+public class GlassFloorGenerator : MonoBehaviour
 {
-    [SerializeField] private int _width = 10;
-    [SerializeField] private int _height = 10;
-    [SerializeField] private float _scale = 1f;
-    [SerializeField][Range(0.5f, 1f)] private float _colliderResolution = 1f;
+    [SerializeField] private GlassFloorSettings _floorSettings;
 
     private SaveStorage _saveStorage;
     private Random _random;
@@ -41,17 +38,21 @@ public class ProceduralGlassFloor : MonoBehaviour
         _mesh = new Mesh();
         GetComponent<MeshFilter>().mesh = _mesh;
 
-        _vertices = new Vector3[(_width + 1) * (_height + 1)];
-        _triangles = new int[_width * _height * 6];
+        int length = _floorSettings.Length;
+        int width = _floorSettings.Width;
+        float height = _floorSettings.Height;
 
-        float xOffset = _width / 2f;
-        float zOffset = _height / 2f;
+        _vertices = new Vector3[(length + 1) * (width + 1)];
+        _triangles = new int[length * width * 6];
 
-        for (int i = 0, z = 0; z <= _height; z++)
+        float xOffset = length / 2f;
+        float zOffset = width / 2f;
+
+        for (int i = 0, z = 0; z <= width; z++)
         {
-            for (int x = 0; x <= _width; x++, i++)
+            for (int x = 0; x <= length; x++, i++)
             {
-                float y = (float)_random.NextDouble() * _scale;
+                float y = (float)_random.NextDouble() * height;
                 _vertices[i] = new Vector3(x - xOffset, y, z - zOffset);
             }
         }
@@ -59,16 +60,16 @@ public class ProceduralGlassFloor : MonoBehaviour
         int vertex = 0;
         int triangle = 0;
 
-        for (int z = 0; z < _height; z++)
+        for (int z = 0; z < width; z++)
         {
-            for (int x = 0; x < _width; x++)
+            for (int x = 0; x < length; x++)
             {
                 _triangles[triangle + 0] = vertex + 0;
-                _triangles[triangle + 1] = vertex + _width + 1;
+                _triangles[triangle + 1] = vertex + length + 1;
                 _triangles[triangle + 2] = vertex + 1;
                 _triangles[triangle + 3] = vertex + 1;
-                _triangles[triangle + 4] = vertex + _width + 1;
-                _triangles[triangle + 5] = vertex + _width + 2;
+                _triangles[triangle + 4] = vertex + length + 1;
+                _triangles[triangle + 5] = vertex + length + 2;
 
                 vertex++;
                 triangle += 6;
@@ -97,15 +98,19 @@ public class ProceduralGlassFloor : MonoBehaviour
 
         Mesh colliderMesh = new();
 
-        if (_colliderResolution == 1f)
+        int length = _floorSettings.Length;
+        int width = _floorSettings.Width;
+        float colliderResolution = _floorSettings.ColliderResolution;
+
+        if (colliderResolution == 1f)
         {
             colliderMesh.vertices = _mesh.vertices;
             colliderMesh.triangles = _mesh.triangles;
         }
         else
         {
-            int simplifiedWidth = Mathf.RoundToInt(_width * _colliderResolution);
-            int simplifiedHeight = Mathf.RoundToInt(_height * _colliderResolution);
+            int simplifiedWidth = Mathf.RoundToInt(length * colliderResolution);
+            int simplifiedHeight = Mathf.RoundToInt(width * colliderResolution);
 
             Vector3[] colliderVertices = new Vector3[(simplifiedWidth + 1) * (simplifiedHeight + 1)];
             int[] colliderTriangles = new int[simplifiedWidth * simplifiedHeight * 6];
@@ -114,14 +119,14 @@ public class ProceduralGlassFloor : MonoBehaviour
             {
                 for (int x = 0; x <= simplifiedWidth; x++)
                 {
-                    int originX = Mathf.FloorToInt(x / _colliderResolution);
-                    int originZ = Mathf.FloorToInt(z / _colliderResolution);
+                    int originX = Mathf.FloorToInt(x / colliderResolution);
+                    int originZ = Mathf.FloorToInt(z / colliderResolution);
 
                     int vertexIndex = z * (simplifiedWidth + 1) + x;
-                    int originIndex1 = originZ * (_width + 1) + originX;
-                    int originIndex2 = originZ * (_width + 1) + Mathf.Min(originX + 1, _width);
-                    int originIndex3 = Mathf.Min(originZ + 1, _height) * (_width + 1) + originX;
-                    int originIndex4 = Mathf.Min(originZ + 1, _height) * (_width + 1) + Mathf.Min(originX + 1, _width);
+                    int originIndex1 = originZ * (length + 1) + originX;
+                    int originIndex2 = originZ * (length + 1) + Mathf.Min(originX + 1, length);
+                    int originIndex3 = Mathf.Min(originZ + 1, width) * (length + 1) + originX;
+                    int originIndex4 = Mathf.Min(originZ + 1, width) * (length + 1) + Mathf.Min(originX + 1, length);
 
                     Vector3 avgPosition = (_vertices[originIndex1] + _vertices[originIndex2] + _vertices[originIndex3] + _vertices[originIndex4]) / 4f;
                     colliderVertices[vertexIndex] = avgPosition;
