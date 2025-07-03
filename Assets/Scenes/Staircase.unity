@@ -832,7 +832,7 @@ MonoBehaviour:
     TypeName: 
   autoRun: 1
   autoInjectGameObjects: []
-  _glassFloorGenerator: {fileID: 0}
+  _glassFloorGenerator: {fileID: 1316901}
 --- !u!1 &977685680
 GameObject:
   m_ObjectHideFlags: 0
