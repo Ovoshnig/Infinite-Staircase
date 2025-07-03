@@ -33,6 +33,7 @@ public class MusicPlayer : MonoBehaviour
     private async void Start()
     {
         _cts = new CancellationTokenSource();
+
         try
         {
             _musicClipKeys = await _clipLoader.LoadClipKeysAsync(_cts.Token);
@@ -59,7 +60,7 @@ public class MusicPlayer : MonoBehaviour
 
         if (_musicClipKeys.TryGetValue(category, out IEnumerable<object> clipKeys))
         {
-            PlayMusic(clipKeys).Forget();
+            PlayMusicAsync(clipKeys).Forget();
 
             return true;
         }
@@ -71,7 +72,7 @@ public class MusicPlayer : MonoBehaviour
         }
     }
 
-    private async UniTask PlayMusic(IEnumerable<object> clipKeys)
+    private async UniTask PlayMusicAsync(IEnumerable<object> clipKeys)
     {
         _musicQueue.SetClipKeys(clipKeys);
         _musicQueue.ShuffleClipKeys();

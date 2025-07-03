@@ -15,9 +15,9 @@ public class StaircaseGenerator : IInitializable, IDisposable
     private readonly Transform _startPoint;
     private readonly StaircaseGenerationSettings _staircaseGenerationSettings;
     private readonly CancellationTokenSource _cts = new();
+
     private GameObject[] _stairs;
     private StairConnection[] _stairConnections;
-    private Vector3 _size;
     private Random _random;
 
     public StaircaseGenerator(SaveStorage saveStorage, StairsLoader stairsLoader,
@@ -34,18 +34,15 @@ public class StaircaseGenerator : IInitializable, IDisposable
         int seed = _saveStorage.Get(SaveConstants.SeedKey, 0);
         _random = new Random(seed);
 
-        using CancellationTokenSource cts = new();
-        IEnumerable<GameObject> stairs = await _stairsLoader.LoadStairsAsync(cts.Token);
-        _stairs = stairs.ToArray();
-        _size = _stairs[0].GetComponent<Stair>().Size;
-
-        using CancellationTokenSource cts1 = new();
-        IEnumerable<StairConnection> stairConnections = await _stairsLoader
-            .LoadStairConnectionsAsync(cts1.Token);
-        _stairConnections = stairConnections.ToArray();
-
         try
         {
+            IEnumerable<GameObject> stairs = await _stairsLoader.LoadStairsAsync(_cts.Token);
+            _stairs = stairs.ToArray();
+
+            IEnumerable<StairConnection> stairConnections = await _stairsLoader
+                .LoadStairConnectionsAsync(_cts.Token);
+            _stairConnections = stairConnections.ToArray();
+
             await GenerateAsync(_cts.Token);
         }
         catch (OperationCanceledException)
@@ -66,8 +63,10 @@ public class StaircaseGenerator : IInitializable, IDisposable
         StairConnection[] startingConnections = _stairConnections.Where(x => x.CanBeInStart).ToArray();
         int index = _random.Next(startingConnections.Length);
         StairConnection stairConnection = startingConnections[index];
+
         Vector3 position = _startPoint.position;
-        position.y += _size.y / 2f;
+        Vector3 size = _stairs[0].GetComponent<Stair>().Size;
+        position.y += size.y / 2f;
         Vector3 rotation = _startPoint.eulerAngles;
 
         (position, rotation) = await GenerateSegmentAsync(stairConnection, position, rotation,
@@ -97,7 +96,7 @@ public class StaircaseGenerator : IInitializable, IDisposable
             position += stair.transform.TransformDirection(positionDifference);
             rotation += rotationDifference;
 
-            await UniTask.Yield(token);
+            await UniTask.Yield(cancellationToken: token);
         }
 
         return (position, rotation);

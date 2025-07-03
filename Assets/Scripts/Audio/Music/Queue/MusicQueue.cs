@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using Random = System.Random;
 
 public class MusicQueue
@@ -19,7 +20,7 @@ public class MusicQueue
         List<object> clips = new(_clipKeysQueue);
         _clipKeysQueue.Clear();
 
-        while (clips.Count > 0)
+        while (clips.Any())
         {
             int index = _random.Next(clips.Count);
             _clipKeysQueue.Enqueue(clips[index]);

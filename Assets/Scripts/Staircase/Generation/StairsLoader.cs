@@ -37,12 +37,7 @@ public class StairsLoader
         return null;
     }
 
-    public void ReleaseStairs()
-    {
-        if (_stairsHandle.IsValid())
-            _stairsHandle.Release();
+    public void ReleaseStairs() => _stairsHandle.Release();
 
-        if (_connectionsHandle.IsValid())
-            _connectionsHandle.Release();
-    }
+    public void ReleaseStairConnections() => _connectionsHandle.Release();
 }
