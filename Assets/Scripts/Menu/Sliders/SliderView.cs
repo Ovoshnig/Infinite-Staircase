@@ -5,6 +5,9 @@ using UnityEngine.UI;
 [RequireComponent(typeof(Slider))]
 public abstract class SliderView : MonoBehaviour
 {
+    [SerializeField] private Image _fillingImage;
+    [SerializeField] private Sprite[] _fillingSprites;
+
     private readonly ReactiveProperty<float> _value = new(default);
 
     private Slider _slider = null;
@@ -29,7 +32,18 @@ public abstract class SliderView : MonoBehaviour
             .AddTo(this);
     }
 
-    public void SetValue(float value) => Slider.SetValueWithoutNotify(value);
+    public void SetValue(float value)
+    {
+        Slider.SetValueWithoutNotify(value);
+
+        if (_fillingImage != null && _fillingSprites.Length > 1)
+        {
+            float percentagePerImage = 1f / (_fillingSprites.Length - 1);
+            float fillingPercentage = (value - _slider.minValue) / (_slider.maxValue - _slider.minValue);
+            int spriteIndex = Mathf.CeilToInt(fillingPercentage / percentagePerImage);
+            _fillingImage.sprite = _fillingSprites[spriteIndex];
+        }
+    }
 
     public void SetMinValue(float value) => Slider.minValue = value;
 
