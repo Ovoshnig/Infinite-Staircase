@@ -6,6 +6,7 @@ using UnityEngine.UI;
 public abstract class ButtonView : MonoBehaviour
 {
     private readonly ReactiveProperty<Unit> _clicked = new(default);
+
     private Button _button = null;
 
     public ReadOnlyReactiveProperty<Unit> Clicked => _clicked;

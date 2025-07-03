@@ -5,6 +5,7 @@ using Random = System.Random;
 public class MusicQueue
 {
     private readonly Random _random = new();
+
     private Queue<object> _clipKeysQueue = new();
 
     public void SetClipKeys(IEnumerable<object> clips)

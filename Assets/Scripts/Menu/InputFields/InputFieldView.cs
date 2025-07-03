@@ -5,6 +5,7 @@ using UnityEngine;
 public class InputFieldView : MonoBehaviour
 {
     private readonly ReactiveProperty<string> _text = new(string.Empty);
+
     private TMP_InputField _inputField;
 
     public ReadOnlyReactiveProperty<string> Text => _text;

@@ -17,6 +17,7 @@ public class SceneSwitch : IInitializable, IDisposable
     private readonly SaveStorage _saveStorage;
     private readonly SceneSettings _sceneSettings;
     private readonly ReactiveProperty<bool> _isSceneLoading = new(true);
+
     private uint _achievedLevel;
     private uint _currentLevel;
 

@@ -13,6 +13,7 @@ public class PlayerInputHandler : IInitializable, IDisposable
     private readonly ReactiveProperty<bool> _isJumpPressed = new(false);
     private readonly ReactiveProperty<bool> _isTogglePerspectivePressed = new(false);
     private readonly CompositeDisposable _compositeDisposable = new();
+
     private InputActions.PlayerActions _playerActions;
 
     public PlayerInputHandler(InputActions inputActions) => _inputActions = inputActions;

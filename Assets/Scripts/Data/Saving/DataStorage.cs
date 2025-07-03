@@ -13,6 +13,7 @@ public abstract class DataStorage : IInitializable, IDisposable
         TypeNameHandling = TypeNameHandling.Auto
     };
     private readonly Dictionary<string, object> _defaultDataStore = new();
+
     private Dictionary<string, object> _dataStore = new();
 
     protected abstract string SaveFileName { get; }

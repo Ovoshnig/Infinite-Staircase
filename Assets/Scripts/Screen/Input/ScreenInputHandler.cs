@@ -8,6 +8,7 @@ public class ScreenInputHandler : IInitializable, IDisposable
     private readonly InputActions _inputActions;
     private readonly ReactiveProperty<bool> _isSwitchFullScreenPressed = new(false);
     private readonly ReactiveProperty<bool> _isPassSplashImagePressed = new(false);
+
     private InputActions.ScreenActions _screenActions;
 
     public ScreenInputHandler(InputActions inputActions) => _inputActions = inputActions;

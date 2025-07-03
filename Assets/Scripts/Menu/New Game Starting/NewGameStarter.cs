@@ -5,6 +5,7 @@ public class NewGameStarter
 {
     private readonly SaveStorage _saveStorage;
     private readonly WorldGenerationSettings _generationSettings;
+
     private string _seedText = string.Empty;
 
     public event Action NewGameStarted;

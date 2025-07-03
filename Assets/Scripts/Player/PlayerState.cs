@@ -13,6 +13,7 @@ public class PlayerState : IInitializable, IDisposable
     private readonly ReactiveProperty<bool> _isLooking = new(false);
     private readonly ReactiveProperty<bool> _isGrounded = new(false);
     private readonly CompositeDisposable _compositeDisposable = new();
+
     private PlayerInputHandler _playerInputHandler;
     private CharacterController _characterController;
 

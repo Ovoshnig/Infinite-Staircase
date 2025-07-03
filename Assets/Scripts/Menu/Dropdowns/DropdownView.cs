@@ -7,6 +7,7 @@ using UnityEngine;
 public abstract class DropdownView : MonoBehaviour
 {
     private readonly ReactiveProperty<int> _value = new(0);
+
     private TMP_Dropdown _dropdown = null;
 
     public ReadOnlyReactiveProperty<int> Value => _value;

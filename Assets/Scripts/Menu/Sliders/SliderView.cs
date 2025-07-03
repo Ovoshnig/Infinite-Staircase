@@ -6,6 +6,7 @@ using UnityEngine.UI;
 public abstract class SliderView : MonoBehaviour
 {
     private readonly ReactiveProperty<float> _value = new(default);
+
     private Slider _slider = null;
 
     public ReadOnlyReactiveProperty<float> Value => _value;

@@ -7,6 +7,7 @@ public class MenuInputHandler : IInitializable, IDisposable
 {
     private readonly InputActions _inputActions;
     private readonly ReactiveProperty<bool> _closeCurrentPressed = new();
+
     private InputActions.MenuActions _menuActions;
 
     public MenuInputHandler(InputActions inputActions) => _inputActions = inputActions;

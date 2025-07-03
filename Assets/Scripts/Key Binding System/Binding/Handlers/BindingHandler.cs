@@ -8,6 +8,7 @@ public abstract class BindingHandler : IBindingHandler
     private readonly InputAction _inputAction;
     private readonly ReactiveProperty<bool> _isListening = new(false);
     private readonly ReactiveProperty<string> _bindingText = new(string.Empty);
+
     private CompositeDisposable _compositeDisposable = new();
 
     public BindingHandler(KeyListeningTracker listeningTracker, 

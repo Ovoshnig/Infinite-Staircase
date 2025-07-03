@@ -8,6 +8,7 @@ public abstract class WindowSwitch : IWindowSwitch, IInitializable, IDisposable
     private readonly WindowTracker _windowTracker;
     private readonly ReactiveProperty<bool> _isOpen = new(false);
     private readonly CompositeDisposable _compositeDisposable = new();
+
     private bool _isMainPanelActive = false;
 
     public WindowSwitch(WindowInputHandler windowInputHandler, WindowTracker windowTracker)

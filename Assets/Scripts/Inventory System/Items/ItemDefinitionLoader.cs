@@ -8,6 +8,7 @@ using Random = System.Random;
 public class ItemDefinitionLoader
 {
     private readonly Random random = new();
+
     private List<ItemDefinition> _items = null;
 
     public async UniTask<ItemDefinition> GetItemByNameAsync(string name)

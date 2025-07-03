@@ -6,6 +6,7 @@ using UnityEngine.UI;
 public class ResumeButtonView : MonoBehaviour
 {
     private readonly ReactiveProperty<Unit> _buttonClicked = new(default);
+
     private Button _button;
 
     public ReadOnlyReactiveProperty<Unit> ButtonClicked => _buttonClicked;

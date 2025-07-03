@@ -7,6 +7,7 @@ public class CameraSwitch : IInitializable, IDisposable
 {
     private readonly ReactiveProperty<bool> _isFirstPerson = new(true);
     private readonly CompositeDisposable _compositeDisposable = new();
+
     private PlayerInputHandler _playerInputHandler;
 
     [Inject]

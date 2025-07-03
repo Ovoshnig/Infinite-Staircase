@@ -9,6 +9,7 @@ public class WindowInputHandler : IInitializable, IDisposable
     private readonly ReactiveProperty<bool> _closeCurrentPressed = new();
     private readonly ReactiveProperty<bool> _pauseMenuSwitchPressed = new();
     private readonly ReactiveProperty<bool> _inventorySwitchPressed = new();
+
     private InputActions.WindowsActions _windowsActions;
 
     public WindowInputHandler(InputActions inputActions) => _inputActions = inputActions;
