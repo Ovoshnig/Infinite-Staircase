@@ -36,14 +36,12 @@ public class Inventory
 
     public bool TryRemoveItem(Slot slot)
     {
-        if (slot.HasItem)
-        {
-            Debug.Log($"Removing item: {slot.ItemData.CurrentValue.Name}");
-            slot.TakeItem();
-            return true;
-        }
+        if (slot.IsEmpty || IsDragging)
+            return false;
 
-        return false;
+        Debug.Log($"Removing item: {slot.ItemData.CurrentValue.Name}");
+        slot.TakeItem();
+        return true;
     }
 
     public void SelectSlot(Slot slot) => HoveredSlot = slot;
