@@ -15,10 +15,7 @@ MonoBehaviour:
   _timeSettings:
     <NormalTimeScale>k__BackingField: 1
     <PauseTimeScale>k__BackingField: 0.0001
-  _controlSettings:
-    <MinSensitivity>k__BackingField: 0
-    <MaxSensitivity>k__BackingField: 100
-  _levelSettings:
+  _sceneSettings:
     <FirstGameplayLevel>k__BackingField: 1
     <GameplayLevelsCount>k__BackingField: 2
     <LevelTransitionDuration>k__BackingField: 5
@@ -38,6 +35,5 @@ MonoBehaviour:
     <JumpForce>k__BackingField: 5
     <GravityForce>k__BackingField: 9.81
     <ZoomMultiplier>k__BackingField: 25
-  _inventorySettings:
-    <RowCount>k__BackingField: 4
-    <ColumnCount>k__BackingField: 6
+    <MinSensitivity>k__BackingField: 0
+    <MaxSensitivity>k__BackingField: 150
