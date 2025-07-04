@@ -1,6 +1,7 @@
 using Cysharp.Threading.Tasks;
 using JetBrains.Annotations;
 using R3;
+using System;
 using System.Threading;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
@@ -12,6 +13,8 @@ public class PlayerSoundPlayer : MonoBehaviour
 {
     [SerializeField] private AssetReference _footstepReference;
     [SerializeField] private AssetReference _landReference;
+
+    private readonly CancellationTokenSource _cts = new();
 
     private PlayerState _playerState;
 	private AudioSource _audioSource;
@@ -31,20 +34,26 @@ public class PlayerSoundPlayer : MonoBehaviour
 
     private async void Start()
     {
-        using CancellationTokenSource cts = new();
-        var (footstepResource, landResource) = await _soundLoader
-            .LoadSoundsAsync(_footstepReference, _landReference, cts.Token);
-        _footstepResource = footstepResource;
-        _landResource = landResource;
+        try
+        {
+            (_footstepResource, _landResource) = await _soundLoader
+                .LoadSoundsAsync(_footstepReference, _landReference, _cts.Token);
 
-        _playerState.IsGrounded
+            _playerState.IsGrounded
             .Where(value => value)
             .Subscribe(_ => PlayLandSound())
             .AddTo(this);
+        }
+        catch (OperationCanceledException)
+        {
+            return;
+        }
     }
 
     private void OnDestroy()
     {
+        _cts?.CancelAndDispose();
+
         _soundLoader.ReleaseSounds();
         Resources.UnloadAsset(_footstepResource);
         Resources.UnloadAsset(_landResource);
