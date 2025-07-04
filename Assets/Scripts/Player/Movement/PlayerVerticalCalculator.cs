@@ -22,7 +22,6 @@ public class PlayerVerticalCalculator
             movement.y -= _playerSettings.GravityForce * Time.deltaTime;
 
         Vector3 multipliedMovement = movement * Time.deltaTime;
-
         return multipliedMovement;
     }
 }

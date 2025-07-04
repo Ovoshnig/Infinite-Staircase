@@ -43,7 +43,7 @@ public class SaveStorage : DataStorage
         using SHA256 sha256 = SHA256.Create();
         byte[] fileBytes = File.ReadAllBytes(filePath);
         byte[] hashBytes = sha256.ComputeHash(fileBytes);
-
-        return Convert.ToBase64String(hashBytes);
+        string hash = Convert.ToBase64String(hashBytes);
+        return hash;
     }
 }

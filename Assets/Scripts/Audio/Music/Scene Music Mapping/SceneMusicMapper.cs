@@ -16,7 +16,6 @@ public sealed class SceneMusicMapper : ISceneMusicMapper
             return category;
 
         Debug.LogWarning($"No suitable music category for {sceneType} scene type");
-
         return MusicCategory.MainMenu;
     }
 }

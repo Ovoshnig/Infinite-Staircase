@@ -39,7 +39,6 @@ public abstract class DataStorage : IInitializable, IDisposable
             catch (Exception e)
             {
                 Debug.LogWarning($"Failed to deserialize value for key {key}: {e.Message}");
-
                 return defaultValue;
             }
         }

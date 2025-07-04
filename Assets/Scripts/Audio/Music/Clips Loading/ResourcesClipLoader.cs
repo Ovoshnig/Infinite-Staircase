@@ -19,7 +19,6 @@ public sealed class ResourcesClipLoader : IClipLoader
         if (resourcesList == null)
         {
             Debug.LogError($"Failed to load the resource list.");
-
             return musicClipKeys;
         }
 
@@ -44,7 +43,6 @@ public sealed class ResourcesClipLoader : IClipLoader
     public async UniTask<AudioClip> LoadClipAsync(object address, CancellationToken cancellationToken)
     {
         ResourceRequest request = Resources.LoadAsync<AudioClip>(address.ToString());
-
         return await request.ToUniTask(cancellationToken: cancellationToken) as AudioClip;
     }
 

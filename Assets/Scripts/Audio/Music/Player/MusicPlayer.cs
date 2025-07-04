@@ -61,13 +61,11 @@ public class MusicPlayer : MonoBehaviour
         if (_musicClipKeys.TryGetValue(category, out IEnumerable<object> clipKeys))
         {
             PlayMusicAsync(clipKeys).Forget();
-
             return true;
         }
         else
         {
             Debug.LogWarning($"No music found for category {category}");
-
             return false;
         }
     }

@@ -14,7 +14,6 @@ public class WindowTracker
 
         _currentWindow.Value = windowSwitch;
         _isOpen.Value = true;
-
         return true;
     }
 
@@ -25,7 +24,6 @@ public class WindowTracker
 
         _currentWindow.Value = null;
         _isOpen.Value = false;
-
         return true;
     }
 }

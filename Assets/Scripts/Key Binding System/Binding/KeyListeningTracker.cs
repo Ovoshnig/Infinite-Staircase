@@ -12,7 +12,6 @@ public class KeyListeningTracker
             return false;
 
         _isListening.Value = true;
-
         return true;
     }
 

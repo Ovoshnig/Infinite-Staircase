@@ -22,7 +22,6 @@ public class ButtonBindingHandler : BindingHandler
     {
         string actionName = InputAction.controls[0].name;
         actionName = char.ToUpper(actionName[0]) + actionName[1..];
-
         return actionName;
     }
 

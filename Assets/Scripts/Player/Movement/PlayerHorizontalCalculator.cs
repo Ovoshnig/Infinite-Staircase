@@ -39,7 +39,6 @@ public class PlayerHorizontalCalculator
         Vector3 inputDirection = new(walkInput.x, 0f, walkInput.y);
         float targetAngle = Mathf.Atan2(inputDirection.x, inputDirection.z) * Mathf.Rad2Deg;
         targetAngle += cameraAngle;
-
         return targetAngle;
     }
 
@@ -50,7 +49,6 @@ public class PlayerHorizontalCalculator
     {
         float radians = targetAngle * Mathf.Deg2Rad;
         Vector3 forward = new(Mathf.Sin(radians), 0f, Mathf.Cos(radians));
-
         return forward;
     }
 
@@ -60,7 +58,6 @@ public class PlayerHorizontalCalculator
             ? _playerSettings.RunSpeed
             : _playerSettings.WalkSpeed;
         Vector3 movement = speed * Time.deltaTime * direction;
-
         return movement;
     }
 }

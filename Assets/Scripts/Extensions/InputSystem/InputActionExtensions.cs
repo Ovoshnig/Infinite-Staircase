@@ -7,7 +7,6 @@ public static class InputActionExtensions
     {
         action.performed += handler;
         action.canceled += handler;
-
         return action;
     }
 
@@ -15,7 +14,6 @@ public static class InputActionExtensions
     {
         action.performed -= handler;
         action.canceled -= handler;
-
         return action;
     }
 }

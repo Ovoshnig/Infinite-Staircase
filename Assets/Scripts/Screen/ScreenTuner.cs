@@ -86,7 +86,6 @@ public class ScreenTuner : IInitializable, IDisposable
         if (number < 0 || number >= Resolutions.Count)
         {
             Debug.LogError($"Resolution with index {number} not found");
-
             return;
         }
 

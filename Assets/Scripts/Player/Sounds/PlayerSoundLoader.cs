@@ -17,11 +17,13 @@ public class PlayerSoundLoader
 
         _footstepHandle = Addressables.LoadAssetAsync<AudioResource>(footstepReference);
         await _footstepHandle.ToUniTask(cancellationToken: token);
+
         if (_footstepHandle.Status == AsyncOperationStatus.Succeeded)
             footstepResource = _footstepHandle.Result;
 
         _landHandle = Addressables.LoadAssetAsync<AudioResource>(landReference);
         await _landHandle.ToUniTask(cancellationToken: token);
+
         if (_landHandle.Status == AsyncOperationStatus.Succeeded)
             landResource = _landHandle.Result;
 

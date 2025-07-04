@@ -44,7 +44,6 @@ public class AddressablesClipLoader : IClipLoader
         if (_handle.Status == AsyncOperationStatus.Succeeded)
         {
             AudioClip clip = _handle.Result;
-
             return clip;
         }
 

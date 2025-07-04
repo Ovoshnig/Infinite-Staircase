@@ -26,7 +26,6 @@ public class Vector2BindingHandler : BindingHandler
         get
         {
             object ordinalNumber = Enum.GetValues(typeof(Vector2Directions)).GetValue(_keyInputNumber);
-
             return $"ќжидание ввода {ordinalNumber} клавиши...";
         }
     }
@@ -53,7 +52,6 @@ public class Vector2BindingHandler : BindingHandler
         {
             string name = c.name;
             name = char.ToUpper(name[0]) + name[1..];
-
             return name;
         }));
 

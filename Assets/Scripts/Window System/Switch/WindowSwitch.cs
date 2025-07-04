@@ -42,7 +42,6 @@ public abstract class WindowSwitch : IWindowSwitch, IInitializable, IDisposable
             return false;
 
         _isOpen.Value = true;
-
         return true;
     }
 
@@ -52,7 +51,6 @@ public abstract class WindowSwitch : IWindowSwitch, IInitializable, IDisposable
             return false;
 
         _isOpen.Value = false;
-
         return true;
     }
 
