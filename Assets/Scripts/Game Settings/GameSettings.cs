@@ -1,7 +1,7 @@
 using UnityEngine;
 
-[CreateAssetMenu(fileName = GameSettingsConstants.FileName, 
-    menuName = GameSettingsConstants.MenuName)]
+[CreateAssetMenu(fileName = nameof(GameSettings),
+    menuName = "Scriptable Objects/Game Settings")]
 public class GameSettings : ScriptableObject
 {
     [SerializeField] private TimeSettings _timeSettings;

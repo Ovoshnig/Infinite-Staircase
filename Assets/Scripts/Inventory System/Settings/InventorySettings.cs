@@ -1,7 +1,7 @@
 using UnityEngine;
 
-[CreateAssetMenu(fileName = InventorySettingsConstants.FileName, 
-    menuName = InventorySettingsConstants.MenuName)]
+[CreateAssetMenu(fileName = nameof(InventorySettings),
+    menuName = "Scriptable Objects/Inventory Settings")]
 public class InventorySettings : ScriptableObject
 {
     [field: SerializeField, Min(1)] public uint RowCount { get; private set; } = 4;

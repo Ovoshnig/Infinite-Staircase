@@ -1,6 +1,7 @@
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "FloorSettings", menuName = "Scriptable Objects/Floor Settings")]
+[CreateAssetMenu(fileName = nameof(GlassFloorSettings),
+    menuName = "Scriptable Objects/Glass Floor Settings")]
 public class GlassFloorSettings : ScriptableObject
 {
     [field: SerializeField, Min(1)] public int Length { get; private set; } = 10;
