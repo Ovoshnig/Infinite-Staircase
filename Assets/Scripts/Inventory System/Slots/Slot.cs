@@ -1,5 +1,6 @@
 using Cysharp.Threading.Tasks;
 using R3;
+using System.Threading;
 using UnityEngine;
 
 public class Slot
@@ -42,7 +43,8 @@ public class Slot
 
     public SlotData ToData() => new() { ItemName = _itemData.Value?.Name };
 
-    public async UniTask LoadFromDataAsync(SlotData slotData, ItemDefinitionLoader itemDefinitionLoader)
+    public async UniTask LoadFromDataAsync(SlotData slotData, 
+        ItemDefinitionLoader itemDefinitionLoader, CancellationToken token)
     {
         slotData ??= new SlotData();
 
@@ -52,7 +54,8 @@ public class Slot
         }
         else
         {
-            ItemDefinition itemDefinition = await itemDefinitionLoader.GetItemByNameAsync(slotData.ItemName);
+            ItemDefinition itemDefinition = await itemDefinitionLoader
+                .GetItemByNameAsync(slotData.ItemName, token);
 
             if (itemDefinition == null)
             {

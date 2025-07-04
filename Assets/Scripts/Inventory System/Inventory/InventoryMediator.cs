@@ -1,5 +1,6 @@
 ﻿using Cysharp.Threading.Tasks;
 using System;
+using System.Threading;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using VContainer.Unity;
@@ -10,6 +11,7 @@ public class InventoryMediator : IInitializable, ITickable, IDisposable
     private readonly Inventory _inventory;
     private readonly InventorySaver _inventorySaver;
     private readonly InventorySettings _inventorySettings;
+    private readonly CancellationTokenSource _cts = new();
 
     private SlotMediator[] _slotMediators;
     private ItemView _draggedItemView;
@@ -24,7 +26,7 @@ public class InventoryMediator : IInitializable, ITickable, IDisposable
         _inventorySettings = inventorySettings;
     }
 
-    public void Initialize()
+    public async void Initialize()
     {
         _slotMediators = new SlotMediator[_inventorySettings.SlotCount];
 
@@ -38,7 +40,14 @@ public class InventoryMediator : IInitializable, ITickable, IDisposable
         _inventory.DragStarted += OnDragStarted;
         _inventory.DragEnded += OnDragEnded;
 
-        _inventorySaver.LoadInventoryAsync(_inventory).Forget();
+        try
+        {
+            await _inventorySaver.LoadInventoryAsync(_inventory, _cts.Token);
+        }
+        catch (OperationCanceledException)
+        {
+            return;
+        }
     }
 
     public void Tick()
@@ -57,6 +66,9 @@ public class InventoryMediator : IInitializable, ITickable, IDisposable
 
     public void Dispose()
     {
+        _cts?.Cancel();
+        _cts?.Dispose();
+
         for (int i = 0; i < _inventorySettings.SlotCount; i++)
             _slotMediators[i].Dispose();
 

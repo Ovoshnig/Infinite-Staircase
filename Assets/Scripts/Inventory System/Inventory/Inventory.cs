@@ -1,6 +1,7 @@
+using Cysharp.Threading.Tasks;
 using System;
 using System.Linq;
-using Cysharp.Threading.Tasks;
+using System.Threading;
 using UnityEngine;
 
 public class Inventory
@@ -89,11 +90,12 @@ public class Inventory
 
     public SlotData[] ToData() => _slots.Select(slot => slot.ToData()).ToArray();
 
-    public async UniTask LoadFromDataAsync(SlotData[] slotDataArray, ItemDefinitionLoader itemDefinitionLoader)
+    public async UniTask LoadFromDataAsync(SlotData[] slotDataArray, 
+        ItemDefinitionLoader itemDefinitionLoader, CancellationToken token)
     {
         int count = Mathf.Min(_slots.Length, slotDataArray.Length);
 
         for (int i = 0; i < count; i++)
-            await _slots[i].LoadFromDataAsync(slotDataArray[i], itemDefinitionLoader);
+            await _slots[i].LoadFromDataAsync(slotDataArray[i], itemDefinitionLoader, token);
     }
 }
