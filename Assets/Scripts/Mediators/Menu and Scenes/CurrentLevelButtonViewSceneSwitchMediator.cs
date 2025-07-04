@@ -1,3 +1,5 @@
+using Cysharp.Threading.Tasks;
+
 public sealed class CurrentLevelButtonViewSceneSwitchMediator : SceneButtonViewSceneSwitchMediator
 {
     public CurrentLevelButtonViewSceneSwitchMediator(CurrentLevelButtonView currentLevelButtonView,
@@ -6,5 +8,5 @@ public sealed class CurrentLevelButtonViewSceneSwitchMediator : SceneButtonViewS
     {
     }
 
-    protected override void OnButtonClicked() => SceneSwitch.LoadCurrentLevel();
+    protected override void OnButtonClicked() => SceneSwitch.LoadCurrentLevelAsync().Forget();
 }

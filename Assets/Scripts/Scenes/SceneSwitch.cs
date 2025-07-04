@@ -1,7 +1,7 @@
 using Cysharp.Threading.Tasks;
 using R3;
 using System;
-using UnityEngine;
+using System.Threading;
 using UnityEngine.SceneManagement;
 using VContainer.Unity;
 
@@ -17,6 +17,7 @@ public class SceneSwitch : IInitializable, IDisposable
     private readonly SaveStorage _saveStorage;
     private readonly SceneSettings _sceneSettings;
     private readonly ReactiveProperty<bool> _isSceneLoading = new(true);
+    private readonly CancellationTokenSource _cts = new();
 
     private uint _achievedLevel;
     private uint _currentLevel;
@@ -41,39 +42,62 @@ public class SceneSwitch : IInitializable, IDisposable
         WaitForFirstSceneLoadAsync().Forget();
     }
 
-    public void Dispose() => _saveStorage.Set(SaveConstants.AchievedLevelKey, _achievedLevel);
+    public void Dispose()
+    {
+        _cts?.Cancel();
+        _cts?.Dispose();
+
+        _saveStorage.Set(SaveConstants.AchievedLevelKey, _achievedLevel);
+    }
 
     public async UniTask LoadAchievedLevelAsync() => await LoadLevelAsync(_achievedLevel);
 
+    public async UniTask LoadCurrentLevelAsync() => await LoadLevelAsync(_currentLevel);
+
     public async UniTask LoadFirstLevelAsync()
     {
-        ResetProgress();
+        ResetAchievedLevel();
         await LoadAchievedLevelAsync();
     }
 
-    public void ResetProgress() => _achievedLevel = _sceneSettings.FirstGameplayLevel;
-
-    public void LoadCurrentLevel() => LoadLevelAsync(_currentLevel).Forget();
-
     public async UniTask LoadLevelAsync(uint index)
     {
-        SceneType sceneType = GetSceneTypeByIndex(index);
-        _isSceneLoading.Value = true;
+        try
+        {
+            SceneType sceneType = GetSceneTypeByIndex(index);
+            _isSceneLoading.Value = true;
 
-        await SceneManager.LoadSceneAsync((int)index);
+            await SceneManager.LoadSceneAsync((int)index)
+                .ToUniTask(cancellationToken: _cts.Token);
 
-        _currentLevel = index;
-        CurrentSceneType = sceneType;
-        _isSceneLoading.Value = false;
+            _currentLevel = index;
+            CurrentSceneType = sceneType;
+            _isSceneLoading.Value = false;
+        }
+        catch (OperationCanceledException)
+        {
+            return;
+        }
     }
 
     private async UniTask WaitForFirstSceneLoadAsync()
     {
-        await UniTask.WaitUntil(() => SceneManager.GetActiveScene().isLoaded);
-        SceneType sceneType = GetSceneTypeByIndex(_currentLevel);
-        CurrentSceneType = sceneType;
-        _isSceneLoading.Value = false;
+        try
+        {
+            await UniTask.WaitUntil(() => SceneManager
+                .GetActiveScene().isLoaded, cancellationToken: _cts.Token);
+
+            SceneType sceneType = GetSceneTypeByIndex(_currentLevel);
+            CurrentSceneType = sceneType;
+            _isSceneLoading.Value = false;
+        }
+        catch (OperationCanceledException)
+        {
+            return;
+        }
     }
+
+    private void ResetAchievedLevel() => _achievedLevel = _sceneSettings.FirstGameplayLevel;
 
     private SceneType GetSceneTypeByIndex(uint index)
     {
