@@ -79,7 +79,7 @@ public class KeyBindingsGenerator : MonoBehaviour
 
                 var keyBinder = bindingBlock.GetComponent<KeyBinderView>();
                 string formattedName = Regex.Replace(action.name, "([A-Z])", " $1").ToLower();
-                keyBinder.SetInputAction(InputActionReference.Create(action), formattedName);
+                keyBinder.SetInputActionReference(InputActionReference.Create(action), formattedName);
             }
         }
 

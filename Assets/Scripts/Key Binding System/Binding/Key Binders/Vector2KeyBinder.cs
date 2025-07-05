@@ -2,7 +2,7 @@ using System;
 using System.Linq;
 using UnityEngine.InputSystem;
 
-public class Vector2BindingHandler : BindingHandler
+public class Vector2KeyBinder : KeyBinder
 {
     private enum Vector2Directions
     {
@@ -15,7 +15,7 @@ public class Vector2BindingHandler : BindingHandler
     private InputControl[] _temporaryControls;
     private int _keyInputNumber;
 
-    public Vector2BindingHandler(KeyListeningTracker listeningTracker, 
+    public Vector2KeyBinder(KeyListeningTracker listeningTracker, 
         InputActions inputActions, InputAction inputAction) :
         base(listeningTracker, inputActions, inputAction)
     {
@@ -116,6 +116,8 @@ public class Vector2BindingHandler : BindingHandler
                     InputAction action = InputActions.FindAction(InputAction.name);
                     InputAction.ApplyBindingOverride(i + 1, _temporaryControls[i].path);
                     action.ApplyBindingOverride(i + 1, _temporaryControls[i].path);
+
+                    EnableOverrides();
                 }
             }
         }

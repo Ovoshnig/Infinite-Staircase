@@ -1,17 +1,20 @@
 using R3;
+using System.Linq;
 using UnityEngine.InputSystem;
+using VContainer.Unity;
 
-public abstract class BindingHandler : IBindingHandler
+public abstract class KeyBinder : IKeyBinder, IInitializable
 {
     private readonly KeyListeningTracker _listeningTracker;
     private readonly InputActions _inputActions;
     private readonly InputAction _inputAction;
+    private readonly ReactiveProperty<bool> _hasOverrides = new(false);
+    private readonly ReactiveProperty<string> _bindingText = new("Key");
     private readonly ReactiveProperty<bool> _isListening = new(false);
-    private readonly ReactiveProperty<string> _bindingText = new(string.Empty);
 
     private CompositeDisposable _compositeDisposable = new();
 
-    public BindingHandler(KeyListeningTracker listeningTracker, 
+    public KeyBinder(KeyListeningTracker listeningTracker, 
         InputActions InputActions, InputAction inputAction)
     {
         _listeningTracker = listeningTracker;
@@ -19,17 +22,21 @@ public abstract class BindingHandler : IBindingHandler
         _inputAction = inputAction;
     }
 
-    public ReadOnlyReactiveProperty<bool> IsListening => _isListening;
+    public ReadOnlyReactiveProperty<bool> HasOverrides => _hasOverrides;
     public ReadOnlyReactiveProperty<string> BindingText => _bindingText;
+    public ReadOnlyReactiveProperty<bool> IsListening => _isListening;
 
     protected KeyListeningTracker ListeningTracker => _listeningTracker;
     protected InputActions InputActions => _inputActions;
     protected InputAction InputAction => _inputAction;
     protected abstract string WaitInputText { get; }
 
-    public void Initialize() => _bindingText.Value = GetActionDisplayName();
+    public virtual void Initialize()
+    {
+        _hasOverrides.Value = _inputAction.bindings.Any(b => b.hasOverrides);
 
-    public void Dispose() { }
+        _bindingText.Value = GetActionDisplayName();
+    }
 
     public virtual void StartListening()
     {
@@ -44,12 +51,16 @@ public abstract class BindingHandler : IBindingHandler
 
     public virtual void ResetBinding()
     {
+        _hasOverrides.Value = false;
+
         _inputAction.RemoveAllBindingOverrides();
         _inputActions.RemoveAllBindingOverrides();
         _bindingText.Value = GetActionDisplayName();
     }
 
     public abstract string GetActionDisplayName();
+
+    public void EnableOverrides() => _hasOverrides.Value = true;
 
     protected abstract void OnAnyButtonPressed(InputControl control);
 

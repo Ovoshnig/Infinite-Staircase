@@ -1,8 +1,9 @@
+using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class ButtonBindingHandler : BindingHandler
+public class ButtonKeyBinder : KeyBinder
 {
-    public ButtonBindingHandler(KeyListeningTracker listeningTracker,
+    public ButtonKeyBinder(KeyListeningTracker listeningTracker,
         InputActions inputActions, InputAction inputAction) :
         base(listeningTracker, inputActions, inputAction)
     {
@@ -52,6 +53,8 @@ public class ButtonBindingHandler : BindingHandler
                 InputAction.ApplyBindingOverride(control.path);
                 InputAction action = InputActions.FindAction(InputAction.name);
                 action.ApplyBindingOverride(control.path);
+
+                EnableOverrides();
             }
         }
         

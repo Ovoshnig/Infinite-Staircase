@@ -1,4 +1,4 @@
-public interface IBindingHandler
+public interface IKeyBinder
 {
     void StartListening();
     void ResetBinding();
