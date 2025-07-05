@@ -17,7 +17,15 @@ public class KeyBinderMediator : IInitializable, IDisposable
     public void Initialize()
     {
         _keyBinder.IsListening
-            .Subscribe(_keyBinderView.SetColor)
+            .Subscribe(value =>
+            {
+                _keyBinderView.SetColor(value);
+
+                if (value)
+                    _keyBinderView.SetResetButtonInteractable(false);
+                else
+                    _keyBinderView.SetResetButtonInteractable(_keyBinder.HasOverrides.CurrentValue);
+            })
             .AddTo(_compositeDisposable);
         _keyBinder.BindingText
             .Subscribe(_keyBinderView.SetBindingText)
