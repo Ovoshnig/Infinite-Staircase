@@ -8,7 +8,7 @@ public abstract class SliderView : MonoBehaviour
     [SerializeField] private Image _fillingImage;
     [SerializeField] private Sprite[] _fillingSprites;
 
-    private readonly ReactiveProperty<float> _value = new(default);
+    private readonly ReactiveProperty<float> _value = new(0f);
 
     private Slider _slider = null;
 

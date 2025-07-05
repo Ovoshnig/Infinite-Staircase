@@ -18,7 +18,6 @@ public class WarningResetButtonView : ButtonView
         base.Start();
 
         Clicked
-            .Skip(1)
             .Subscribe(_ => OnButtonClicked())
             .AddTo(this);
     }

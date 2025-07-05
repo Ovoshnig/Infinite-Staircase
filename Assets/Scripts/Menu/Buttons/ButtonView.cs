@@ -5,11 +5,11 @@ using UnityEngine.UI;
 [RequireComponent(typeof(Button))]
 public abstract class ButtonView : MonoBehaviour
 {
-    private readonly ReactiveProperty<Unit> _clicked = new(default);
+    private readonly Subject<Unit> _clicked = new();
 
     private Button _button = null;
 
-    public ReadOnlyReactiveProperty<Unit> Clicked => _clicked;
+    public Observable<Unit> Clicked => _clicked;
 
     private Button Button
     {

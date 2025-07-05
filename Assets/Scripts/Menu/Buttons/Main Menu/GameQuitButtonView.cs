@@ -8,7 +8,6 @@ public class GameQuitButtonView : ButtonView
         base.Start();
 
         Clicked
-            .Skip(1)
             .Subscribe(value => OnButtonClicked())
             .AddTo(this);
     }

@@ -5,11 +5,11 @@ using UnityEngine.UI;
 [RequireComponent(typeof(Button))]
 public class ResumeButtonView : MonoBehaviour
 {
-    private readonly ReactiveProperty<Unit> _buttonClicked = new(default);
+    private readonly Subject<Unit> _buttonClicked = new();
 
     private Button _button;
 
-    public ReadOnlyReactiveProperty<Unit> ButtonClicked => _buttonClicked;
+    public Observable<Unit> ButtonClicked => _buttonClicked;
 
     private void Awake() => _button = GetComponent<Button>();
 

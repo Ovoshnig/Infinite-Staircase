@@ -20,7 +20,6 @@ public abstract class SceneButtonViewSceneSwitchMediator : IInitializable, IDisp
     public void Initialize()
     {
         _sceneButtonView.Clicked
-            .Skip(1)
             .Subscribe(_ => OnButtonClicked())
             .AddTo(_compositeDisposable);
     }

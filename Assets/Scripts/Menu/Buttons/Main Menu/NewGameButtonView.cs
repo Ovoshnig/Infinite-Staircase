@@ -21,7 +21,6 @@ public class NewGameButtonView : ButtonView
         base.Start();
 
         Clicked
-            .Skip(1)
             .Subscribe(_ => OnNewGameButtonClicked())
             .AddTo(this);
 
