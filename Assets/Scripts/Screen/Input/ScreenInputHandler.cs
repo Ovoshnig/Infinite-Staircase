@@ -5,20 +5,18 @@ using VContainer.Unity;
 
 public class ScreenInputHandler : IInitializable, IDisposable
 {
-    private readonly InputActions _inputActions;
     private readonly ReactiveProperty<bool> _isSwitchFullScreenPressed = new(false);
     private readonly ReactiveProperty<bool> _isPassSplashImagePressed = new(false);
 
     private InputActions.ScreenActions _screenActions;
 
-    public ScreenInputHandler(InputActions inputActions) => _inputActions = inputActions;
+    public ScreenInputHandler(InputActions inputActions) => _screenActions = inputActions.Screen;
 
     public ReadOnlyReactiveProperty<bool> IsSwitchFullScreenPressed => _isSwitchFullScreenPressed;
     public ReadOnlyReactiveProperty<bool> IsPassSplashImagePressed => _isPassSplashImagePressed;
 
     public void Initialize()
     {
-        _screenActions = _inputActions.Screen;
         _screenActions.Enable();
 
         _screenActions.SwitchFullScreen.Subscribe(OnFullScreenSwitch);

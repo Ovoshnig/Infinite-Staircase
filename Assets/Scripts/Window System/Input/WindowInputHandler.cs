@@ -5,14 +5,13 @@ using VContainer.Unity;
 
 public class WindowInputHandler : IInitializable, IDisposable
 {
-    private readonly InputActions _inputActions;
     private readonly ReactiveProperty<bool> _closeCurrentPressed = new();
     private readonly ReactiveProperty<bool> _pauseMenuSwitchPressed = new();
     private readonly ReactiveProperty<bool> _inventorySwitchPressed = new();
 
     private InputActions.WindowsActions _windowsActions;
 
-    public WindowInputHandler(InputActions inputActions) => _inputActions = inputActions;
+    public WindowInputHandler(InputActions inputActions) => _windowsActions = inputActions.Windows;
 
     public ReadOnlyReactiveProperty<bool> CloseCurrentPressed => _closeCurrentPressed;
     public ReadOnlyReactiveProperty<bool> PauseMenuSwitchPressed => _pauseMenuSwitchPressed;
@@ -20,7 +19,6 @@ public class WindowInputHandler : IInitializable, IDisposable
 
     public void Initialize()
     {
-        _windowsActions = _inputActions.Windows;
         _windowsActions.Enable();
 
         _windowsActions.CloseCurrent.Subscribe(OnCloseCurrent);

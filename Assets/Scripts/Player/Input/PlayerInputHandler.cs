@@ -6,17 +6,15 @@ using VContainer.Unity;
 
 public class PlayerInputHandler : IInitializable, IDisposable
 {
-    private readonly InputActions _inputActions;
     private readonly ReactiveProperty<bool> _isWalkPressed = new(false);
     private readonly ReactiveProperty<bool> _isRunPressed = new(false);
     private readonly ReactiveProperty<bool> _isLookPressed = new(false);
     private readonly ReactiveProperty<bool> _isJumpPressed = new(false);
     private readonly ReactiveProperty<bool> _isTogglePerspectivePressed = new(false);
-    private readonly CompositeDisposable _compositeDisposable = new();
 
     private InputActions.PlayerActions _playerActions;
 
-    public PlayerInputHandler(InputActions inputActions) => _inputActions = inputActions;
+    public PlayerInputHandler(InputActions inputActions) => _playerActions = inputActions.Player;
 
     public Vector2 WalkInput { get; private set; } = Vector2.zero;
     public Vector2 LookInput { get; private set; } = Vector2.zero;
@@ -28,7 +26,7 @@ public class PlayerInputHandler : IInitializable, IDisposable
 
     public void Initialize()
     {
-        _playerActions = _inputActions.Player;
+        _playerActions.Enable();
 
         _playerActions.Walk.Subscribe(OnWalk);
         _playerActions.Run.Subscribe(OnRun);
@@ -46,8 +44,6 @@ public class PlayerInputHandler : IInitializable, IDisposable
         _playerActions.Look.Unsubscribe(OnLook);
         _playerActions.Jump.Unsubscribe(OnJump);
         _playerActions.TogglePerspective.Unsubscribe(OnTogglePerspective);
-
-        _compositeDisposable?.Dispose();
     }
 
     private void OnWalk(InputAction.CallbackContext context)
