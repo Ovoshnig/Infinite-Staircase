@@ -23,7 +23,7 @@ public abstract class PanelChangeButtonView : ButtonView
             .AddTo(this);
     }
 
-    protected void Change()
+    public void Change()
     {
         _newPanel.SetActive(true);
         _currentPanel.SetActive(false);

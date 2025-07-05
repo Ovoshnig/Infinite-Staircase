@@ -6,7 +6,7 @@ using VContainer.Unity;
 public class MenuInputHandler : IInitializable, IDisposable
 {
     private readonly InputActions _inputActions;
-    private readonly ReactiveProperty<bool> _closeCurrentPressed = new();
+    private readonly ReactiveProperty<bool> _closeCurrentPressed = new(false);
 
     private InputActions.MenuActions _menuActions;
 
