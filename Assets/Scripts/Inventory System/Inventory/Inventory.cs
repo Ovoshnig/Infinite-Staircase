@@ -1,5 +1,6 @@
 using Cysharp.Threading.Tasks;
 using R3;
+using System;
 using System.Linq;
 using System.Threading;
 using UnityEngine;
@@ -19,6 +20,7 @@ public class Inventory
 
     public ReadOnlyReactiveProperty<Slot> DraggingSlot => _draggingSlot;
     public ReadOnlyReactiveProperty<Slot> HoveredSlot => _hoveredSlot;
+    public int DraggingSlotIndex => Array.IndexOf(_slots, _draggingSlot.Value);
     public bool IsDragging => _draggingSlot.CurrentValue != null;
 
     public Slot GetSlot(int index) => _slots[index];
