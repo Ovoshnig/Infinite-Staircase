@@ -1,3 +1,4 @@
+using UnityEngine;
 using VContainer;
 using VContainer.Unity;
 
@@ -7,14 +8,14 @@ public class PauseMenuScenesMediatorsLifetimeScope : LifetimeScope
     {
         builder.Register(resolver =>
         {
-            WindowView windowView = resolver.Resolve<WindowView>();
-            return windowView.GetComponentInChildren<CurrentLevelButtonView>(includeInactive: true);
+            Canvas windowCanvas = resolver.Resolve<Canvas>();
+            return windowCanvas.GetComponentInChildren<CurrentLevelButtonView>(includeInactive: true);
         }, Lifetime.Singleton);
 
         builder.Register(resolver =>
         {
-            WindowView windowView = resolver.Resolve<WindowView>();
-            return windowView.GetComponentInChildren<MainMenuButtonView>(includeInactive: true);
+            Canvas windowCanvas = resolver.Resolve<Canvas>();
+            return windowCanvas.GetComponentInChildren<MainMenuButtonView>(includeInactive: true);
         }, Lifetime.Singleton);
 
         builder.RegisterEntryPoint<CurrentLevelButtonViewSceneSwitchMediator>(Lifetime.Singleton);

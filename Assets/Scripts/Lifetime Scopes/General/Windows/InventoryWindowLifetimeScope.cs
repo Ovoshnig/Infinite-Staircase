@@ -11,7 +11,7 @@ public sealed class InventoryWindowLifetimeScope : WindowLifetimeScope
     {
         builder.RegisterInstance(_inventorySettings);
 
-        builder.RegisterEntryPoint<InventorySwitch>(Lifetime.Singleton).As<WindowSwitch>();
+        builder.RegisterEntryPoint<InventoryWindow>(Lifetime.Singleton).As<Window>();
         builder.RegisterEntryPoint<InventoryMediator>();
 
         builder.Register<Inventory>(Lifetime.Singleton);
@@ -19,8 +19,8 @@ public sealed class InventoryWindowLifetimeScope : WindowLifetimeScope
         builder.Register<ItemDefinitionLoader>(Lifetime.Singleton);
         builder.Register(resolver =>
         {
-            WindowView windowView = resolver.Resolve<WindowView>();
-            return windowView.GetComponentInChildren<InventoryView>();
+            Canvas windowCanvas = resolver.Resolve<Canvas>();
+            return windowCanvas.GetComponentInChildren<InventoryView>();
         }, Lifetime.Singleton);
 
         base.Configure(builder);

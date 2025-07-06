@@ -1,8 +1,8 @@
 using R3;
 
-public class InventorySwitch : WindowSwitch
+public class InventoryWindow : Window
 {
-    public InventorySwitch(WindowInputHandler windowInputHandler, WindowTracker windowTracker) 
+    public InventoryWindow(WindowInputHandler windowInputHandler, WindowTracker windowTracker) 
         : base(windowInputHandler, windowTracker)
     {
     }

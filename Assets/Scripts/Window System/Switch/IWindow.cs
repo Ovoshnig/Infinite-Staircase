@@ -1,6 +1,6 @@
 ﻿using R3;
 
-public interface IWindowSwitch
+public interface IWindow
 {
     public bool TryOpen();
     public bool TryClose();

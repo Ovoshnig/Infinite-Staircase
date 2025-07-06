@@ -8,7 +8,6 @@ using VContainer;
 
 public class InputAxisController : InputAxisControllerBase<InputAxisController.Reader>
 {
-    private InputActions _inputActions;
     private SensitivityKeeper _sensitivityKeeper;
     private PlayerSettings _playerSettings;
     private InputActions.PlayerActions _playerActions;
@@ -17,15 +16,13 @@ public class InputAxisController : InputAxisControllerBase<InputAxisController.R
     public void Construct(InputActions inputActions, SensitivityKeeper sensitivityKeeper, 
         PlayerSettings playerSettings)
     {
-        _inputActions = inputActions;
+        _playerActions = inputActions.Player;
         _sensitivityKeeper = sensitivityKeeper;
         _playerSettings = playerSettings;
     }
 
     private void Start()
     {
-        _playerActions = _inputActions.Player;
-
         _playerActions.Look.Subscribe(OnLook);
         _playerActions.Zoom.Subscribe(OnZoom);
 

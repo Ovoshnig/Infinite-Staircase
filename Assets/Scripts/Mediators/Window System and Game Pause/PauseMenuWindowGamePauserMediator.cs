@@ -2,21 +2,21 @@ using R3;
 using System;
 using VContainer.Unity;
 
-public class PauseMenuSwitchGamePauserMediator : IInitializable, IDisposable
+public class PauseMenuWindowGamePauserMediator : IInitializable, IDisposable
 {
-    private readonly PauseMenuSwitch _pauseMenuSwitch;
+    private readonly PauseMenuWindow _pauseMenuWindow;
     private readonly GamePauser _gamePauser;
     private readonly CompositeDisposable _compositeDisposable = new();
 
-    public PauseMenuSwitchGamePauserMediator(PauseMenuSwitch pauseMenuSwitch, GamePauser gamePauser)
+    public PauseMenuWindowGamePauserMediator(PauseMenuWindow pauseMenuWindow, GamePauser gamePauser)
     {
-        _pauseMenuSwitch = pauseMenuSwitch;
+        _pauseMenuWindow = pauseMenuWindow;
         _gamePauser = gamePauser;
     }
 
     public void Initialize()
     {
-        _pauseMenuSwitch.IsOpen
+        _pauseMenuWindow.IsOpen
             .Subscribe(value =>
             {
                 if (value)

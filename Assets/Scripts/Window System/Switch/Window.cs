@@ -2,16 +2,16 @@
 using System;
 using VContainer.Unity;
 
-public abstract class WindowSwitch : IWindowSwitch, IInitializable, IDisposable
+public abstract class Window : IWindow, IInitializable, IDisposable
 {
     private readonly WindowInputHandler _windowInputHandler;
     private readonly WindowTracker _windowTracker;
     private readonly ReactiveProperty<bool> _isOpen = new(false);
     private readonly CompositeDisposable _compositeDisposable = new();
 
-    private bool _isMainPanelActive = false;
+    private bool _isWindowActive = false;
 
-    public WindowSwitch(WindowInputHandler windowInputHandler, WindowTracker windowTracker)
+    public Window(WindowInputHandler windowInputHandler, WindowTracker windowTracker)
     {
         _windowInputHandler = windowInputHandler;
         _windowTracker = windowTracker;
@@ -47,14 +47,14 @@ public abstract class WindowSwitch : IWindowSwitch, IInitializable, IDisposable
 
     public virtual bool TryClose()
     {
-        if (!_isMainPanelActive || !_windowTracker.TryCloseWindow())
+        if (!_isWindowActive || !_windowTracker.TryCloseWindow())
             return false;
 
         _isOpen.Value = false;
         return true;
     }
 
-    public void SetMainPanelActive(bool value) => _isMainPanelActive = value;
+    public void SetWindowActive(bool value) => _isWindowActive = value;
 
     protected virtual void OnWindowSwitchPressed()
     {

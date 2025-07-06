@@ -5,7 +5,7 @@ public sealed class PauseMenuWindowLifetimeScope : WindowLifetimeScope
 {
     protected override void Configure(IContainerBuilder builder)
     {
-        builder.RegisterEntryPoint<PauseMenuSwitch>(Lifetime.Singleton).AsSelf().As<WindowSwitch>();
+        builder.RegisterEntryPoint<PauseMenuWindow>(Lifetime.Singleton).AsSelf().As<Window>();
 
         base.Configure(builder);
     }

@@ -1,8 +1,8 @@
 using R3;
 
-public class PauseMenuSwitch : WindowSwitch
+public class PauseMenuWindow : Window
 {
-    public PauseMenuSwitch(WindowInputHandler windowInputHandler, WindowTracker windowTracker) 
+    public PauseMenuWindow(WindowInputHandler windowInputHandler, WindowTracker windowTracker) 
         : base(windowInputHandler, windowTracker)
     {
     }

@@ -1,3 +1,4 @@
+using UnityEngine;
 using VContainer;
 using VContainer.Unity;
 
@@ -7,20 +8,20 @@ public class PauseMenuSliderMediatorsLifetimeScope : LifetimeScope
     {
         builder.Register(resolver =>
         {
-            WindowView windowView = resolver.Resolve<WindowView>();
-            return windowView.GetComponentInChildren<SensitivitySliderView>(includeInactive: true);
+            Canvas windowCanvas = resolver.Resolve<Canvas>();
+            return windowCanvas.GetComponentInChildren<SensitivitySliderView>(includeInactive: true);
         }, Lifetime.Singleton);
 
         builder.Register(resolver =>
         {
-            WindowView windowView = resolver.Resolve<WindowView>();
-            return windowView.GetComponentInChildren<SoundSliderView>(includeInactive: true);
+            Canvas windowCanvas = resolver.Resolve<Canvas>();
+            return windowCanvas.GetComponentInChildren<SoundSliderView>(includeInactive: true);
         }, Lifetime.Singleton);
 
         builder.Register(resolver =>
         {
-            WindowView windowView = resolver.Resolve<WindowView>();
-            return windowView.GetComponentInChildren<MusicSliderView>(includeInactive: true);
+            Canvas windowCanvas = resolver.Resolve<Canvas>();
+            return windowCanvas.GetComponentInChildren<MusicSliderView>(includeInactive: true);
         }, Lifetime.Singleton);
 
         builder.RegisterEntryPoint<SensitivitySliderDataKeeperMediator>(Lifetime.Singleton);

@@ -2,22 +2,22 @@
 using System;
 using VContainer.Unity;
 
-public class ResumeButtonViewWindowSwitchMediator : IInitializable, IDisposable
+public class ResumeButtonViewWindowMediator : IInitializable, IDisposable
 { 
     private readonly ResumeButtonView _resumeButtonView;
-    private readonly WindowSwitch _windowSwitch;
+    private readonly Window _window;
     private readonly CompositeDisposable _compositeDisposable = new();
 
-    public ResumeButtonViewWindowSwitchMediator(ResumeButtonView resumeButtonView, WindowSwitch windowSwitch)
+    public ResumeButtonViewWindowMediator(ResumeButtonView resumeButtonView, Window window)
     {
         _resumeButtonView = resumeButtonView;
-        _windowSwitch = windowSwitch;
+        _window = window;
     }
 
     public void Initialize()
     {
         _resumeButtonView.ButtonClicked
-            .Subscribe(_ => _windowSwitch.TryClose())
+            .Subscribe(_ => _window.TryClose())
             .AddTo(_compositeDisposable);
     }
 

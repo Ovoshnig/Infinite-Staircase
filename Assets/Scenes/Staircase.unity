@@ -424,7 +424,7 @@ MonoBehaviour:
     TypeName: WindowsRootLifetimeScope
   autoRun: 1
   autoInjectGameObjects: []
-  _windowView: {fileID: 6849666653976752735, guid: ff63e6bdb3799b74fabe58bfac3240a1, type: 3}
+  _windowCanvas: {fileID: 7824020766905238943, guid: ff63e6bdb3799b74fabe58bfac3240a1, type: 3}
   _inventorySettings: {fileID: 11400000, guid: 181e5f6e881c1474c964db47dea5dcd3, type: 2}
   _itemGenerator: {fileID: 1932447964}
 --- !u!1 &481872784
@@ -966,7 +966,7 @@ MonoBehaviour:
     TypeName: WindowsRootLifetimeScope
   autoRun: 1
   autoInjectGameObjects: []
-  _windowView: {fileID: 6023541660057097807, guid: 430f92455e684724abfd5d02368be160, type: 3}
+  _windowCanvas: {fileID: 5874090302914460108, guid: 430f92455e684724abfd5d02368be160, type: 3}
 --- !u!1001 &1657208059
 PrefabInstance:
   m_ObjectHideFlags: 0
