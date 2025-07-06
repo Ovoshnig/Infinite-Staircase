@@ -2,13 +2,14 @@ using R3;
 using System;
 using VContainer.Unity;
 
-public class ButtonViewNewGameStarterMediator : IInitializable, IDisposable
+public class FirstLevelButtonViewNewGameStarterMediator : IInitializable, IDisposable
 {
     private readonly FirstLevelButtonView _firstLevelButtonView;
     private readonly NewGameStarter _newGameStarter;
     private readonly CompositeDisposable _compositeDisposable = new();
 
-    public ButtonViewNewGameStarterMediator(FirstLevelButtonView firstLevelButtonView, NewGameStarter newGameStarter)
+    public FirstLevelButtonViewNewGameStarterMediator(FirstLevelButtonView firstLevelButtonView, 
+        NewGameStarter newGameStarter)
     {
         _firstLevelButtonView = firstLevelButtonView;
         _newGameStarter = newGameStarter;
@@ -17,11 +18,9 @@ public class ButtonViewNewGameStarterMediator : IInitializable, IDisposable
     public void Initialize()
     {
         _firstLevelButtonView.Clicked
-            .Subscribe(_ => OnButtonClicked())
+            .Subscribe(_ => _newGameStarter.StartGame())
             .AddTo(_compositeDisposable);
     }
 
     public void Dispose() => _compositeDisposable?.Dispose();
-
-    private void OnButtonClicked() => _newGameStarter.StartGame();
 }

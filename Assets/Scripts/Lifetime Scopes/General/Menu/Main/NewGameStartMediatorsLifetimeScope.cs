@@ -15,6 +15,6 @@ public class NewGameStartMediatorsLifetimeScope : LifetimeScope
         builder.Register<NewGameStarter>(Lifetime.Singleton);
 
         builder.RegisterEntryPoint<SeedInputFieldNewGameStarterMediator>(Lifetime.Singleton);
-        builder.RegisterEntryPoint<ButtonViewNewGameStarterMediator>(Lifetime.Singleton);
+        builder.RegisterEntryPoint<FirstLevelButtonViewNewGameStarterMediator>(Lifetime.Singleton);
     }
 }
