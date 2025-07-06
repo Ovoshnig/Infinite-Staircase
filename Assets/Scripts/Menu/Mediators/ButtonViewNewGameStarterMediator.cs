@@ -17,7 +17,6 @@ public class ButtonViewNewGameStarterMediator : IInitializable, IDisposable
     public void Initialize()
     {
         _firstLevelButtonView.Clicked
-            .Skip(1)
             .Subscribe(_ => OnButtonClicked())
             .AddTo(_compositeDisposable);
     }
