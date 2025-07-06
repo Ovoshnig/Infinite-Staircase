@@ -1,4 +1,4 @@
-using System;
+using R3;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -9,12 +9,16 @@ public class SlotView : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     [SerializeField] private RectTransform _itemParent;
     [SerializeField] private float _itemPadding = 0f;
 
-    public event Action<PointerEventData> PointerDown;
-    public event Action<PointerEventData> PointerUp;
-    public event Action PointerEntered;
-    public event Action PointerExited;
+    private readonly Subject<PointerEventData> _pointerDown = new();
+    private readonly Subject<PointerEventData> _pointerUp = new();
+    private readonly Subject<PointerEventData> _pointerEntered = new();
+    private readonly Subject<PointerEventData> _pointerExited = new();
 
     public ItemView ItemView => _itemView;
+    public Observable<PointerEventData> PointerDown => _pointerDown;
+    public Observable<PointerEventData> PointerUp => _pointerUp;
+    public Observable<PointerEventData> PointerEntered => _pointerEntered;
+    public Observable<PointerEventData> PointerExited => _pointerExited;
 
     private void Awake()
     {
@@ -22,13 +26,13 @@ public class SlotView : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
             _itemView.Clear();
     }
 
-    public void OnPointerDown(PointerEventData eventData) => PointerDown?.Invoke(eventData);
+    public void OnPointerDown(PointerEventData eventData) => _pointerDown.OnNext(eventData);
 
-    public void OnPointerUp(PointerEventData eventData) => PointerUp?.Invoke(eventData);
+    public void OnPointerUp(PointerEventData eventData) => _pointerUp.OnNext(eventData);
 
-    public void OnPointerEnter(PointerEventData eventData) => PointerEntered?.Invoke();
+    public void OnPointerEnter(PointerEventData eventData) => _pointerEntered.OnNext(eventData);
 
-    public void OnPointerExit(PointerEventData eventData) => PointerExited?.Invoke();
+    public void OnPointerExit(PointerEventData eventData) => _pointerExited.OnNext(eventData);
 
     public void SetItemPadding(float value) => _itemPadding = value;
 
@@ -45,6 +49,7 @@ public class SlotView : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     private void ApplyItemLayout()
     {
         RectTransform itemRectTransform = _itemView.transform as RectTransform;
+
         itemRectTransform.localScale = Vector3.one;
 
         itemRectTransform.anchorMin = Vector2.zero;

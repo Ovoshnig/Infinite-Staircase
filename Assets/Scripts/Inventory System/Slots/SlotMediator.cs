@@ -23,25 +23,25 @@ public class SlotMediator : IInitializable, IDisposable
 
     public void Subscribe()
     {
-        _slotView.PointerDown += OnPointerDown;
-        _slotView.PointerUp += OnPointerUp;
-        _slotView.PointerEntered += OnPointerEntered;
-        _slotView.PointerExited += OnPointerExited;
+        _slotView.PointerDown
+            .Subscribe(OnPointerDown)
+            .AddTo(_compositeDisposable);
+        _slotView.PointerUp
+            .Subscribe(OnPointerUp)
+            .AddTo(_compositeDisposable);
+        _slotView.PointerEntered
+            .Subscribe(OnPointerEntered)
+            .AddTo(_compositeDisposable);
+        _slotView.PointerExited
+            .Subscribe(OnPointerExited)
+            .AddTo(_compositeDisposable);
 
         _slot.ItemData
             .Subscribe(OnItemChanged)
             .AddTo(_compositeDisposable);
     }
 
-    public void Unsubscribe()
-    {
-        _slotView.PointerDown -= OnPointerDown;
-        _slotView.PointerUp -= OnPointerUp;
-        _slotView.PointerEntered -= OnPointerEntered;
-        _slotView.PointerExited -= OnPointerExited;
-
-        _compositeDisposable?.Dispose();
-    }
+    public void Unsubscribe() => _compositeDisposable?.Dispose();
 
     private void OnPointerDown(PointerEventData eventData)
     {
@@ -57,9 +57,9 @@ public class SlotMediator : IInitializable, IDisposable
             _inventory.EndDrag();
     }
 
-    private void OnPointerEntered() => _inventory.SelectSlot(_slot);
+    private void OnPointerEntered(PointerEventData eventData) => _inventory.SelectSlot(_slot);
 
-    private void OnPointerExited() => _inventory.DeselectSlot(_slot);
+    private void OnPointerExited(PointerEventData eventData) => _inventory.DeselectSlot(_slot);
 
     private void OnItemChanged(ItemData itemData)
     {
