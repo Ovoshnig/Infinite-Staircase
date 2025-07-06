@@ -18,7 +18,7 @@ public class InventoryWindowInventoryMediator : IInitializable, IDisposable
     {
         _inventoryWindow.IsOpen
             .Where(value => !value)
-            .Subscribe(_ => _inventory.Drop())
+            .Subscribe(_ => _inventory.EndDrag())
             .AddTo(_compositeDisposable);
     }
 

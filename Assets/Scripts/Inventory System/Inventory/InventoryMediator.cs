@@ -1,4 +1,4 @@
-﻿using Cysharp.Threading.Tasks;
+﻿using R3;
 using System;
 using System.Threading;
 using UnityEngine;
@@ -12,6 +12,7 @@ public class InventoryMediator : IInitializable, ITickable, IDisposable
     private readonly InventorySaver _inventorySaver;
     private readonly InventorySettings _inventorySettings;
     private readonly CancellationTokenSource _cts = new();
+    private readonly CompositeDisposable _compositeDisposable = new();
 
     private SlotMediator[] _slotMediators;
     private ItemView _draggedItemView;
@@ -37,8 +38,15 @@ public class InventoryMediator : IInitializable, ITickable, IDisposable
             _slotMediators[i] = slotMediator;
         }
 
-        _inventory.DragStarted += OnDragStarted;
-        _inventory.DragEnded += OnDragEnded;
+        _inventory.DraggingSlot
+            .Subscribe(value =>
+            {
+                if (value != null)
+                    OnDragStarted();
+                else 
+                    OnDragEnded();
+            })
+            .AddTo(_compositeDisposable);
 
         try
         {
@@ -72,17 +80,16 @@ public class InventoryMediator : IInitializable, ITickable, IDisposable
         for (int i = 0; i < _inventorySettings.SlotCount; i++)
             _slotMediators[i].Dispose();
 
-        _inventory.DragStarted -= OnDragStarted;
-        _inventory.DragEnded -= OnDragEnded;
+        _compositeDisposable?.Dispose();
 
         _inventorySaver.SaveInventory(_inventory);
     }
 
-    private void OnDragStarted(ItemData itemData)
+    private void OnDragStarted()
     {
         for (int i = 0; i < _inventorySettings.SlotCount; i++)
         {
-            if (_inventory.GetSlot(i) == _inventory.DraggingSlot)
+            if (_inventory.GetSlot(i) == _inventory.DraggingSlot.CurrentValue)
             {
                 _draggedItemView = _inventoryView.SlotViews[i].ItemView;
                 break;

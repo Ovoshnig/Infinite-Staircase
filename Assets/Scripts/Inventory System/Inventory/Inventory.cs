@@ -1,19 +1,14 @@
 using Cysharp.Threading.Tasks;
-using System;
+using R3;
 using System.Linq;
 using System.Threading;
 using UnityEngine;
 
 public class Inventory
 {
-    public event Action<ItemData> DragStarted;
-    public event Action DragEnded;
-
     private readonly Slot[] _slots;
-
-    public Slot DraggingSlot { get; private set; }
-    public Slot HoveredSlot { get; private set; }
-    public bool IsDragging => DraggingSlot != null;
+    private readonly ReactiveProperty<Slot> _draggingSlot = new(null);
+    private readonly ReactiveProperty<Slot> _hoveredSlot = new(null);
 
     public Inventory(InventorySettings inventorySettings)
     {
@@ -21,6 +16,10 @@ public class Inventory
             .Select(_ => new Slot())
             .ToArray();
     }
+
+    public ReadOnlyReactiveProperty<Slot> DraggingSlot => _draggingSlot;
+    public ReadOnlyReactiveProperty<Slot> HoveredSlot => _hoveredSlot;
+    public bool IsDragging => _draggingSlot.CurrentValue != null;
 
     public Slot GetSlot(int index) => _slots[index];
 
@@ -45,12 +44,12 @@ public class Inventory
         return true;
     }
 
-    public void SelectSlot(Slot slot) => HoveredSlot = slot;
+    public void SelectSlot(Slot slot) => _hoveredSlot.Value = slot;
 
     public void DeselectSlot(Slot slot)
     {
-        if (HoveredSlot == slot)
-            HoveredSlot = null;
+        if (_hoveredSlot.Value == slot)
+            _hoveredSlot.Value = null;
     }
 
     public void BeginDrag(Slot slot)
@@ -58,39 +57,37 @@ public class Inventory
         if (slot.IsEmpty || IsDragging)
             return;
 
-        DraggingSlot = slot;
-        DragStarted?.Invoke(DraggingSlot.ItemData.CurrentValue);
+        _draggingSlot.Value = slot;
     }
 
-    public void Drop()
+    public void EndDrag()
     {
         if (!IsDragging)
             return;
 
-        ItemData draggedItem = DraggingSlot.TakeItem();
+        ItemData draggedItem = _draggingSlot.Value.TakeItem();
 
-        if (HoveredSlot != null && HoveredSlot != DraggingSlot)
+        if (_hoveredSlot.Value != null && _hoveredSlot.Value != _draggingSlot.Value)
         {
-            if (HoveredSlot.HasItem)
+            if (_hoveredSlot.Value.HasItem)
             {
-                ItemData itemToSwap = HoveredSlot.TakeItem();
-                DraggingSlot.PlaceItem(itemToSwap);
+                ItemData itemToSwap = _hoveredSlot.Value.TakeItem();
+                _draggingSlot.Value.PlaceItem(itemToSwap);
             }
 
-            HoveredSlot.PlaceItem(draggedItem);
+            _hoveredSlot.Value.PlaceItem(draggedItem);
         }
         else
         {
-            DraggingSlot.PlaceItem(draggedItem);
+            _draggingSlot.Value.PlaceItem(draggedItem);
         }
 
-        DraggingSlot = null;
-        DragEnded?.Invoke();
+        _draggingSlot.Value = null;
     }
 
     public SlotData[] ToData() => _slots.Select(slot => slot.ToData()).ToArray();
 
-    public async UniTask LoadFromDataAsync(SlotData[] slotDataArray, 
+    public async UniTask LoadFromDataAsync(SlotData[] slotDataArray,
         ItemDefinitionLoader itemDefinitionLoader, CancellationToken token)
     {
         int count = Mathf.Min(_slots.Length, slotDataArray.Length);

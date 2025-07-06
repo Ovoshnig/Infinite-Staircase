@@ -54,7 +54,7 @@ public class SlotMediator : IInitializable, IDisposable
     private void OnPointerUp(PointerEventData eventData)
     {
         if (eventData.button == PointerEventData.InputButton.Left)
-            _inventory.Drop();
+            _inventory.EndDrag();
     }
 
     private void OnPointerEntered() => _inventory.SelectSlot(_slot);
