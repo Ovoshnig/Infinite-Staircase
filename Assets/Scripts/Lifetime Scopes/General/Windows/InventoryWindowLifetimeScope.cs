@@ -11,8 +11,9 @@ public sealed class InventoryWindowLifetimeScope : WindowLifetimeScope
     {
         builder.RegisterInstance(_inventorySettings);
 
-        builder.RegisterEntryPoint<InventoryWindow>(Lifetime.Singleton).As<Window>();
+        builder.RegisterEntryPoint<InventoryWindow>(Lifetime.Singleton).AsSelf().As<Window>();
         builder.RegisterEntryPoint<InventoryMediator>();
+        builder.RegisterEntryPoint<InventoryWindowInventoryMediator>();
 
         builder.Register<Inventory>(Lifetime.Singleton);
         builder.Register<InventorySaver>(Lifetime.Singleton);
