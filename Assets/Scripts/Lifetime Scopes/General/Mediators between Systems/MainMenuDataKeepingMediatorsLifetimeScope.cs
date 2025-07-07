@@ -10,9 +10,9 @@ public class MainMenuDataKeepingMediatorsLifetimeScope : LifetimeScope
 
     protected override void Configure(IContainerBuilder builder)
     {
-        builder.RegisterComponent(_sensitivitySliderView);
-        builder.RegisterComponent(_soundSliderView);
-        builder.RegisterComponent(_musicSliderView);
+        builder.RegisterInstance(_sensitivitySliderView);
+        builder.RegisterInstance(_soundSliderView);
+        builder.RegisterInstance(_musicSliderView);
 
         builder.RegisterEntryPoint<SensitivitySliderDataKeeperMediator>(Lifetime.Singleton);
         builder.RegisterEntryPoint<SoundSliderDataKeeperMediator>(Lifetime.Singleton);

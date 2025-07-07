@@ -1,11 +1,9 @@
 ﻿using R3;
 using UnityEngine;
-using UnityEngine.UI;
 using VContainer;
 
 public class NewGameButtonView : ButtonView
 {
-    [SerializeField] private Button _continueGameButton;
     [SerializeField] private GameObject _menuPanel;
     [SerializeField] private GameObject _resetWarningPanel;
     [SerializeField] private GameObject _gameCreationPanel;
@@ -23,9 +21,6 @@ public class NewGameButtonView : ButtonView
         Clicked
             .Subscribe(_ => OnNewGameButtonClicked())
             .AddTo(this);
-
-        bool saveCreated = _saveStorage.Get(SaveConstants.SaveCreatedKey, false);
-        _continueGameButton.interactable = saveCreated;
     }
 
     private void OnNewGameButtonClicked()

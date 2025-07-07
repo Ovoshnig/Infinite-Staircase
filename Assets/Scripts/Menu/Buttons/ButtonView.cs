@@ -32,4 +32,6 @@ public abstract class ButtonView : MonoBehaviour
     }
 
     protected virtual void OnDestroy() { }
+
+    public void SetInteractable(bool interactable) => Button.interactable = interactable;
 }
