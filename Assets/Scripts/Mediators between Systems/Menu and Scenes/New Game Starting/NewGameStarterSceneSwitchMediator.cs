@@ -1,13 +1,10 @@
 using Cysharp.Threading.Tasks;
 using R3;
-using System;
-using VContainer.Unity;
 
-public class NewGameStarterSceneSwitchMediator : IInitializable, IDisposable
+public class NewGameStarterSceneSwitchMediator : Mediator
 {
     private readonly NewGameStarter _newGameStarter;
     private readonly SceneSwitch _sceneSwitch;
-    private readonly CompositeDisposable _compositeDisposable = new();
 
     public NewGameStarterSceneSwitchMediator(NewGameStarter newGameStarter, SceneSwitch sceneSwitch)
     {
@@ -15,12 +12,10 @@ public class NewGameStarterSceneSwitchMediator : IInitializable, IDisposable
         _sceneSwitch = sceneSwitch;
     }
 
-    public void Initialize()
+    public override void Initialize()
     {
         _newGameStarter.NewGameStarted
             .Subscribe(_ => _sceneSwitch.LoadFirstLevelAsync().Forget())
-            .AddTo(_compositeDisposable);
+            .AddTo(CompositeDisposable);
     }
-
-    public void Dispose() => _compositeDisposable?.Dispose();
 }

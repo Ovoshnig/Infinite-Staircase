@@ -1,12 +1,9 @@
 using R3;
-using System;
-using VContainer.Unity;
 
-public abstract class SceneButtonViewSceneSwitchMediator : IInitializable, IDisposable
+public abstract class SceneButtonViewSceneSwitchMediator : Mediator
 {
     private readonly SceneButtonView _sceneButtonView;
     private readonly SceneSwitch _sceneSwitch;
-    private readonly CompositeDisposable _compositeDisposable = new();
 
     public SceneButtonViewSceneSwitchMediator(SceneButtonView sceneButtonView, 
         SceneSwitch sceneSwitch)
@@ -17,14 +14,12 @@ public abstract class SceneButtonViewSceneSwitchMediator : IInitializable, IDisp
 
     protected SceneSwitch SceneSwitch => _sceneSwitch;
 
-    public void Initialize()
+    public override void Initialize()
     {
         _sceneButtonView.Clicked
             .Subscribe(_ => OnButtonClicked())
-            .AddTo(_compositeDisposable);
+            .AddTo(CompositeDisposable);
     }
-
-    public void Dispose() => _compositeDisposable?.Dispose();
 
     protected abstract void OnButtonClicked();
 }

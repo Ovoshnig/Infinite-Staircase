@@ -1,12 +1,9 @@
 using R3;
-using System;
-using VContainer.Unity;
 
-public class WindowTrackerPlayerInputMediator : IInitializable, IDisposable
+public class WindowTrackerPlayerInputMediator : Mediator
 {
     private readonly WindowTracker _windowTracker;
     private readonly InputActions _inputActions;
-    private readonly CompositeDisposable _compositeDisposable = new();
 
     public WindowTrackerPlayerInputMediator(WindowTracker windowTracker, InputActions inputActions)
     {
@@ -14,7 +11,7 @@ public class WindowTrackerPlayerInputMediator : IInitializable, IDisposable
         _inputActions = inputActions;
     }
 
-    public void Initialize()
+    public override void Initialize()
     {
         InputActions.PlayerActions playerActions = _inputActions.Player;
 
@@ -26,8 +23,6 @@ public class WindowTrackerPlayerInputMediator : IInitializable, IDisposable
                 else
                     playerActions.Enable();
             })
-            .AddTo(_compositeDisposable);
+            .AddTo(CompositeDisposable);
     }
-
-    public void Dispose() => _compositeDisposable?.Dispose();
 }

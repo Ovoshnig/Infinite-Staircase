@@ -1,12 +1,9 @@
 ﻿using R3;
-using System;
-using VContainer.Unity;
 
-public class WarningResetButtonViewSaveStorageMediator : IInitializable, IDisposable
+public class WarningResetButtonViewSaveStorageMediator : Mediator
 {
     private readonly WarningResetButtonView _warningResetButtonView;
     private readonly SaveStorage _saveStorage;
-    private readonly CompositeDisposable _compositeDisposable = new();
 
     public WarningResetButtonViewSaveStorageMediator(WarningResetButtonView warningResetButtonView, 
         SaveStorage saveStorage)
@@ -15,12 +12,10 @@ public class WarningResetButtonViewSaveStorageMediator : IInitializable, IDispos
         _saveStorage = saveStorage;
     }
 
-    public void Initialize()
+    public override void Initialize()
     {
         _warningResetButtonView.Clicked
             .Subscribe(_ => _saveStorage.ResetData())
-            .AddTo(_compositeDisposable);
+            .AddTo(CompositeDisposable);
     }
-
-    public void Dispose() => _compositeDisposable?.Dispose();
 }

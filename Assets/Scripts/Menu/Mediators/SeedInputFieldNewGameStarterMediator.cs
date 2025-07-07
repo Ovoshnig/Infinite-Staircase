@@ -1,12 +1,9 @@
 using R3;
-using System;
-using VContainer.Unity;
 
-public class SeedInputFieldNewGameStarterMediator : IInitializable, IDisposable
+public class SeedInputFieldNewGameStarterMediator : Mediator
 {
     private readonly SeedInputFieldView _seedInputView;
     private readonly NewGameStarter _newGameStarter;
-    private readonly CompositeDisposable _compositeDisposable = new();
 
     public SeedInputFieldNewGameStarterMediator(SeedInputFieldView seedInputView, 
         NewGameStarter newGameStarter)
@@ -15,12 +12,10 @@ public class SeedInputFieldNewGameStarterMediator : IInitializable, IDisposable
         _newGameStarter = newGameStarter;
     }
 
-    public void Initialize()
+    public override void Initialize()
     {
         _seedInputView.Text
             .Subscribe(value => _newGameStarter.SetSeedText(value))
-            .AddTo(_compositeDisposable);
+            .AddTo(CompositeDisposable);
     }
-
-    public void Dispose() => _compositeDisposable?.Dispose();
 }

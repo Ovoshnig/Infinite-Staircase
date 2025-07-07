@@ -1,12 +1,9 @@
 ﻿using R3;
-using System;
-using VContainer.Unity;
 
-public class ResumeButtonViewWindowMediator : IInitializable, IDisposable
+public class ResumeButtonViewWindowMediator : Mediator
 { 
     private readonly ResumeButtonView _resumeButtonView;
     private readonly Window _window;
-    private readonly CompositeDisposable _compositeDisposable = new();
 
     public ResumeButtonViewWindowMediator(ResumeButtonView resumeButtonView, Window window)
     {
@@ -14,12 +11,10 @@ public class ResumeButtonViewWindowMediator : IInitializable, IDisposable
         _window = window;
     }
 
-    public void Initialize()
+    public override void Initialize()
     {
         _resumeButtonView.ButtonClicked
             .Subscribe(_ => _window.TryClose())
-            .AddTo(_compositeDisposable);
+            .AddTo(CompositeDisposable);
     }
-
-    public void Dispose() => _compositeDisposable?.Dispose();
 }

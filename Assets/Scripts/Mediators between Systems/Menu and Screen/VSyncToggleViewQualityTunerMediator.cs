@@ -1,12 +1,9 @@
 using R3;
-using System;
-using VContainer.Unity;
 
-public class VSyncToggleViewQualityTunerMediator : IInitializable, IDisposable
+public class VSyncToggleViewQualityTunerMediator : Mediator
 {
     private readonly VSyncToggleView _vSyncToggleView;
     private readonly QualityTuner _qualityTuner;
-    private readonly CompositeDisposable _compositeDisposable = new();
 
     public VSyncToggleViewQualityTunerMediator(VSyncToggleView vSyncToggleView,
         QualityTuner qualityTuner)
@@ -15,7 +12,7 @@ public class VSyncToggleViewQualityTunerMediator : IInitializable, IDisposable
         _qualityTuner = qualityTuner;
     }
 
-    public void Initialize()
+    public override void Initialize()
     {
         _vSyncToggleView.IsOn
             .Skip(1)
@@ -26,7 +23,8 @@ public class VSyncToggleViewQualityTunerMediator : IInitializable, IDisposable
                 else
                     _qualityTuner.DisableVSync();
             })
-            .AddTo(_compositeDisposable);
+            .AddTo(CompositeDisposable);
+            
         _qualityTuner.IsVSyncEnabled
             .Subscribe(value =>
             {
@@ -35,8 +33,6 @@ public class VSyncToggleViewQualityTunerMediator : IInitializable, IDisposable
                 else
                     _vSyncToggleView.Disable();
             })
-            .AddTo(_compositeDisposable);
+            .AddTo(CompositeDisposable);
     }
-
-    public void Dispose() => _compositeDisposable?.Dispose();
 }

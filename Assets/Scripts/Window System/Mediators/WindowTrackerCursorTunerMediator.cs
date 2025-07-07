@@ -1,12 +1,9 @@
 ﻿using R3;
-using System;
-using VContainer.Unity;
 
-public class WindowTrackerCursorTunerMediator : IInitializable, IDisposable
+public class WindowTrackerCursorTunerMediator : Mediator
 {
     private readonly WindowTracker _windowTracker;
     private readonly CursorTuner _cursorTuner;
-    private readonly CompositeDisposable _compositeDisposable = new();
 
     public WindowTrackerCursorTunerMediator(WindowTracker windowTracker, CursorTuner cursorTuner)
     {
@@ -14,7 +11,7 @@ public class WindowTrackerCursorTunerMediator : IInitializable, IDisposable
         _cursorTuner = cursorTuner;
     }
 
-    public void Initialize()
+    public override void Initialize()
     {
         _windowTracker.IsOpen
             .Subscribe(value =>
@@ -24,8 +21,6 @@ public class WindowTrackerCursorTunerMediator : IInitializable, IDisposable
                 else
                     _cursorTuner.HideCursor();
             })
-            .AddTo(_compositeDisposable);
+            .AddTo(CompositeDisposable);
     }
-
-    public void Dispose() => _compositeDisposable?.Dispose();
 }

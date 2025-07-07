@@ -1,14 +1,11 @@
 ﻿using R3;
-using System;
 using UnityEngine.EventSystems;
-using VContainer.Unity;
 
-public class SlotMediator : IInitializable, IDisposable
+public class SlotMediator : Mediator
 {
     private readonly Slot _slot;
     private readonly SlotView _slotView;
     private readonly Inventory _inventory;
-    private readonly CompositeDisposable _compositeDisposable = new();
 
     public SlotMediator(Slot slot, SlotView slotView, Inventory inventory)
     {
@@ -17,31 +14,25 @@ public class SlotMediator : IInitializable, IDisposable
         _inventory = inventory;
     }
 
-    public void Initialize() => Subscribe();
-
-    public void Dispose() => Unsubscribe();
-
-    public void Subscribe()
+    public override void Initialize()
     {
         _slotView.PointerDown
             .Subscribe(OnPointerDown)
-            .AddTo(_compositeDisposable);
+            .AddTo(CompositeDisposable);
         _slotView.PointerUp
             .Subscribe(OnPointerUp)
-            .AddTo(_compositeDisposable);
+            .AddTo(CompositeDisposable);
         _slotView.PointerEntered
             .Subscribe(OnPointerEntered)
-            .AddTo(_compositeDisposable);
+            .AddTo(CompositeDisposable);
         _slotView.PointerExited
             .Subscribe(OnPointerExited)
-            .AddTo(_compositeDisposable);
+            .AddTo(CompositeDisposable);
 
         _slot.ItemData
             .Subscribe(OnItemChanged)
-            .AddTo(_compositeDisposable);
+            .AddTo(CompositeDisposable);
     }
-
-    public void Unsubscribe() => _compositeDisposable?.Dispose();
 
     private void OnPointerDown(PointerEventData eventData)
     {

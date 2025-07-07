@@ -1,12 +1,9 @@
 ﻿using R3;
-using System;
-using VContainer.Unity;
 
-public class WindowMediator : IInitializable, IDisposable
+public class WindowMediator : Mediator
 {
     private readonly Window _window;
     private readonly WindowView _windowView;
-    private readonly CompositeDisposable _compositeDisposable = new();
 
     public WindowMediator(Window window, WindowView windowView)
     {
@@ -14,17 +11,15 @@ public class WindowMediator : IInitializable, IDisposable
         _windowView = windowView;
     }
 
-    public void Initialize()
+    public override void Initialize()
     {
         _window.IsOpen
             .Subscribe(_windowView.gameObject.SetActive)
-            .AddTo(_compositeDisposable);
+            .AddTo(CompositeDisposable);
 
         Observable
             .EveryValueChanged(_windowView, w => w.isActiveAndEnabled)
             .Subscribe(_window.SetWindowActive)
-            .AddTo(_compositeDisposable);
+            .AddTo(CompositeDisposable);
     }
-
-    public void Dispose() => _compositeDisposable?.Dispose();
 }

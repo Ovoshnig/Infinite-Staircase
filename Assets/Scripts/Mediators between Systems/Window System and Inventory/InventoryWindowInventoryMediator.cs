@@ -1,12 +1,9 @@
 ﻿using R3;
-using System;
-using VContainer.Unity;
 
-public class InventoryWindowInventoryMediator : IInitializable, IDisposable
+public class InventoryWindowInventoryMediator : Mediator
 {
     private readonly InventoryWindow _inventoryWindow;
     private readonly Inventory _inventory;
-    private readonly CompositeDisposable _compositeDisposable = new();
 
     public InventoryWindowInventoryMediator(InventoryWindow inventoryWindow, Inventory inventory)
     {
@@ -14,13 +11,11 @@ public class InventoryWindowInventoryMediator : IInitializable, IDisposable
         _inventory = inventory;
     }
 
-    public void Initialize()
+    public override void Initialize()
     {
         _inventoryWindow.IsOpen
             .Where(value => !value)
             .Subscribe(_ => _inventory.EndDrag())
-            .AddTo(_compositeDisposable);
+            .AddTo(CompositeDisposable);
     }
-
-    public void Dispose() => _compositeDisposable?.Dispose();
 }

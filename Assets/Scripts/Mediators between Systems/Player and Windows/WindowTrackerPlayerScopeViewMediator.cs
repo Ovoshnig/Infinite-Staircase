@@ -1,16 +1,13 @@
 using R3;
-using System;
 using UnityEngine;
 using UnityEngine.UI;
-using VContainer.Unity;
 
 [RequireComponent(typeof(Image))]
-public class WindowTrackerPlayerScopeViewMediator : IInitializable, IDisposable
+public class WindowTrackerPlayerScopeViewMediator : Mediator
 {
     private readonly WindowTracker _windowTracker;
     private readonly PlayerScopeView _playerScopeView;
     private readonly CameraSwitch _cameraSwitch;
-    private readonly CompositeDisposable _compositeDisposable = new();
 
     public WindowTrackerPlayerScopeViewMediator(WindowTracker windowTracker, 
         PlayerScopeView playerScopeView, CameraSwitch cameraSwitch)
@@ -20,7 +17,7 @@ public class WindowTrackerPlayerScopeViewMediator : IInitializable, IDisposable
         _cameraSwitch = cameraSwitch;
     }
 
-    public void Initialize()
+    public override void Initialize()
     {
         _windowTracker.IsOpen
             .Where(_ => _cameraSwitch.IsFirstPerson.CurrentValue)
@@ -31,8 +28,6 @@ public class WindowTrackerPlayerScopeViewMediator : IInitializable, IDisposable
                 else
                     _playerScopeView.Enable();
             })
-            .AddTo(_compositeDisposable);
+            .AddTo(CompositeDisposable);
     }
-
-    public void Dispose() => _compositeDisposable?.Dispose();
 }

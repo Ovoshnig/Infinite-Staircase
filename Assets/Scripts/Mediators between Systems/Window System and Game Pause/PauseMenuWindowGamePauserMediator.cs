@@ -1,12 +1,9 @@
 using R3;
-using System;
-using VContainer.Unity;
 
-public class PauseMenuWindowGamePauserMediator : IInitializable, IDisposable
+public class PauseMenuWindowGamePauserMediator : Mediator
 {
     private readonly PauseMenuWindow _pauseMenuWindow;
     private readonly GamePauser _gamePauser;
-    private readonly CompositeDisposable _compositeDisposable = new();
 
     public PauseMenuWindowGamePauserMediator(PauseMenuWindow pauseMenuWindow, GamePauser gamePauser)
     {
@@ -14,7 +11,7 @@ public class PauseMenuWindowGamePauserMediator : IInitializable, IDisposable
         _gamePauser = gamePauser;
     }
 
-    public void Initialize()
+    public override void Initialize()
     {
         _pauseMenuWindow.IsOpen
             .Subscribe(value =>
@@ -24,8 +21,6 @@ public class PauseMenuWindowGamePauserMediator : IInitializable, IDisposable
                 else
                     _gamePauser.Unpause();
             })
-            .AddTo(_compositeDisposable);
+            .AddTo(CompositeDisposable);
     }
-
-    public void Dispose() => _compositeDisposable?.Dispose();
 }

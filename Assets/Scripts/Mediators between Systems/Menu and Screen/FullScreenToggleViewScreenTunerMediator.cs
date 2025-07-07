@@ -1,12 +1,9 @@
 using R3;
-using System;
-using VContainer.Unity;
 
-public class FullScreenToggleViewScreenTunerMediator : IInitializable, IDisposable
+public class FullScreenToggleViewScreenTunerMediator : Mediator
 {
     private readonly FullScreenToggleView _fullScreenToggleView;
     private readonly ScreenTuner _screenTuner;
-    private readonly CompositeDisposable _compositeDisposable = new();
 
     public FullScreenToggleViewScreenTunerMediator(FullScreenToggleView fullScreenToggleView, 
         ScreenTuner screenTuner)
@@ -15,7 +12,7 @@ public class FullScreenToggleViewScreenTunerMediator : IInitializable, IDisposab
         _screenTuner = screenTuner;
     }
 
-    public void Initialize()
+    public override void Initialize()
     {
         _fullScreenToggleView.IsOn
             .Skip(1)
@@ -26,7 +23,7 @@ public class FullScreenToggleViewScreenTunerMediator : IInitializable, IDisposab
                 else
                     _screenTuner.DisableFullScreen();
             })
-            .AddTo(_compositeDisposable);
+            .AddTo(CompositeDisposable);
         _screenTuner.IsFullScreen
             .Subscribe(value =>
             {
@@ -35,8 +32,6 @@ public class FullScreenToggleViewScreenTunerMediator : IInitializable, IDisposab
                 else
                     _fullScreenToggleView.Disable();
             })
-            .AddTo(_compositeDisposable);
+            .AddTo(CompositeDisposable);
     }
-
-    public void Dispose() => _compositeDisposable?.Dispose();
 }

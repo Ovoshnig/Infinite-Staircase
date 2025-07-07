@@ -1,13 +1,10 @@
 ﻿using R3;
-using System;
 using System.Linq;
-using VContainer.Unity;
 
-public class WindowInputHandlerPanelCloseButtonViewMediator : IInitializable, IDisposable
+public class WindowInputHandlerPanelCloseButtonViewMediator : Mediator
 {
     private readonly WindowInputHandler _windowInputHandler;
     private readonly PanelCloseButtonView[] _panelCloseButtonViews;
-    private readonly CompositeDisposable _compositeDisposable = new();
 
     public WindowInputHandlerPanelCloseButtonViewMediator(WindowInputHandler windowInputHandler, 
         PanelCloseButtonView[] panelCloseButtonViews)
@@ -16,7 +13,7 @@ public class WindowInputHandlerPanelCloseButtonViewMediator : IInitializable, ID
         _panelCloseButtonViews = panelCloseButtonViews;
     }
 
-    public void Initialize()
+    public override void Initialize()
     {
         _windowInputHandler.CloseCurrentPressed
             .Where(value => value)
@@ -28,8 +25,6 @@ public class WindowInputHandlerPanelCloseButtonViewMediator : IInitializable, ID
                 if (enabledButtonView != null)
                     enabledButtonView.Change();
             })
-            .AddTo(_compositeDisposable);
+            .AddTo(CompositeDisposable);
     }
-
-    public void Dispose() => _compositeDisposable?.Dispose();
 }

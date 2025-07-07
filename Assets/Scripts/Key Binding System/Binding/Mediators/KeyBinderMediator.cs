@@ -1,12 +1,9 @@
 ﻿using R3;
-using System;
-using VContainer.Unity;
 
-public class KeyBinderMediator : IInitializable, IDisposable
+public class KeyBinderMediator : Mediator
 {
     private readonly KeyBinder _keyBinder;
     private readonly KeyBinderView _keyBinderView;
-    private readonly CompositeDisposable _compositeDisposable = new();
 
     public KeyBinderMediator(KeyBinder keyBinder, KeyBinderView keyBinderView)
     {
@@ -14,7 +11,7 @@ public class KeyBinderMediator : IInitializable, IDisposable
         _keyBinderView = keyBinderView;
     }
 
-    public void Initialize()
+    public override void Initialize()
     {
         _keyBinder.IsListening
             .Subscribe(value =>
@@ -26,23 +23,21 @@ public class KeyBinderMediator : IInitializable, IDisposable
                 else
                     _keyBinderView.SetResetButtonInteractable(_keyBinder.HasOverrides.CurrentValue);
             })
-            .AddTo(_compositeDisposable);
+            .AddTo(CompositeDisposable);
         _keyBinder.BindingText
             .Subscribe(_keyBinderView.SetBindingText)
-            .AddTo(_compositeDisposable);
+            .AddTo(CompositeDisposable);
         _keyBinder.HasOverrides
             .Subscribe(_keyBinderView.SetResetButtonInteractable)
-            .AddTo(_compositeDisposable);
+            .AddTo(CompositeDisposable);
 
         _keyBinderView.BindingClicked
             .Subscribe(_ => _keyBinder.StartListening())
-            .AddTo(_compositeDisposable);
+            .AddTo(CompositeDisposable);
         _keyBinderView.ResetClicked
             .Subscribe(_ => _keyBinder.ResetBinding())
-            .AddTo(_compositeDisposable);
+            .AddTo(CompositeDisposable);
 
         _keyBinder.Initialize();
     }
-
-    public void Dispose() => _compositeDisposable?.Dispose();
 }

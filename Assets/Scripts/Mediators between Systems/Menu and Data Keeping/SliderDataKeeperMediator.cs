@@ -1,12 +1,9 @@
 using R3;
-using System;
-using VContainer.Unity;
 
-public abstract class SliderDataKeeperMediator : IInitializable, IDisposable
+public abstract class SliderDataKeeperMediator : Mediator
 {
     private readonly SliderView _sliderView;
     private readonly DataKeeper<float> _dataKeeper;
-    private readonly CompositeDisposable _compositeDisposable = new();
 
     public SliderDataKeeperMediator(SliderView sliderView,
         DataKeeper<float> dataKeeper)
@@ -18,19 +15,18 @@ public abstract class SliderDataKeeperMediator : IInitializable, IDisposable
     protected abstract float MinValue { get; }
     protected abstract float MaxValue { get; }
 
-    public void Initialize()
+    public override void Initialize()
     {
         _sliderView.SetMinValue(MinValue);
         _sliderView.SetMaxValue(MaxValue);
 
         _dataKeeper.Data
             .Subscribe(_sliderView.SetValue)
-            .AddTo(_compositeDisposable);
+            .AddTo(CompositeDisposable);
+
         _sliderView.Value
             .Skip(1)
             .Subscribe(_dataKeeper.SetValue)
-            .AddTo(_compositeDisposable);
+            .AddTo(CompositeDisposable);
     }
-
-    public void Dispose() => _compositeDisposable?.Dispose();
 }

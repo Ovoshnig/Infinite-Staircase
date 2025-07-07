@@ -4,14 +4,13 @@ using System.Threading;
 using UnityEngine;
 using VContainer.Unity;
 
-public class InventoryMediator : IInitializable, ITickable, IDisposable
+public class InventoryMediator : Mediator, ITickable
 {
     private readonly InventoryView _inventoryView;
     private readonly Inventory _inventory;
     private readonly InventorySaver _inventorySaver;
     private readonly InventorySettings _inventorySettings;
     private readonly CancellationTokenSource _cts = new();
-    private readonly CompositeDisposable _compositeDisposable = new();
 
     private SlotMediator[] _slotMediators;
 
@@ -24,7 +23,7 @@ public class InventoryMediator : IInitializable, ITickable, IDisposable
         _inventorySettings = inventorySettings;
     }
 
-    public async void Initialize()
+    public override async void Initialize()
     {
         _slotMediators = new SlotMediator[_inventorySettings.SlotCount];
 
@@ -48,7 +47,7 @@ public class InventoryMediator : IInitializable, ITickable, IDisposable
                     _inventoryView.OnDragEnded();
                 }
             })
-            .AddTo(_compositeDisposable);
+            .AddTo(CompositeDisposable);
 
         try
         {
@@ -66,15 +65,15 @@ public class InventoryMediator : IInitializable, ITickable, IDisposable
             _inventoryView.MoveItemToMouse();
     }
 
-    public void Dispose()
+    public override void Dispose()
     {
+        base.Dispose();
+        
         _cts?.Cancel();
         _cts?.Dispose();
 
         for (int i = 0; i < _inventorySettings.SlotCount; i++)
             _slotMediators[i].Dispose();
-
-        _compositeDisposable?.Dispose();
 
         _inventorySaver.SaveInventory(_inventory);
     }
