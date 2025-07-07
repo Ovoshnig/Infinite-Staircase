@@ -62,16 +62,16 @@ public abstract class KeyBinder : IKeyBinder, IInitializable
 
     public void EnableOverrides() => _hasOverrides.Value = true;
 
-    protected abstract void OnAnyButtonPressed(InputControl control);
-
-    protected virtual void ApplyBinding(InputControl _)
+    public virtual void CancelListening()
     {
         _bindingText.Value = GetActionDisplayName();
 
         StopListening();
     }
 
-    protected virtual void CancelListening()
+    protected abstract void OnAnyButtonPressed(InputControl control);
+
+    protected virtual void ApplyBinding(InputControl _)
     {
         _bindingText.Value = GetActionDisplayName();
 

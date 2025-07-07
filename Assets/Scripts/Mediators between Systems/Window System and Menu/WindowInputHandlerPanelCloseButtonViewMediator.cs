@@ -6,7 +6,7 @@ public class WindowInputHandlerPanelCloseButtonViewMediator : Mediator
     private readonly WindowInputHandler _windowInputHandler;
     private readonly PanelCloseButtonView[] _panelCloseButtonViews;
 
-    public WindowInputHandlerPanelCloseButtonViewMediator(WindowInputHandler windowInputHandler, 
+    public WindowInputHandlerPanelCloseButtonViewMediator(WindowInputHandler windowInputHandler,
         PanelCloseButtonView[] panelCloseButtonViews)
     {
         _windowInputHandler = windowInputHandler;
@@ -17,14 +17,19 @@ public class WindowInputHandlerPanelCloseButtonViewMediator : Mediator
     {
         _windowInputHandler.CloseCurrentPressed
             .Where(value => value)
-            .Subscribe(_ =>
-            {
-                PanelCloseButtonView enabledButtonView = _panelCloseButtonViews
-                    .FirstOrDefault(b => b.isActiveAndEnabled);
-
-                if (enabledButtonView != null)
-                    enabledButtonView.Change();
-            })
+            .Subscribe(_ => TryClosePanel())
             .AddTo(CompositeDisposable);
+    }
+
+    private bool TryClosePanel()
+    {
+        PanelCloseButtonView enabledButtonView = _panelCloseButtonViews
+            .FirstOrDefault(b => b.isActiveAndEnabled);
+
+        if (enabledButtonView == null)
+            return false;
+
+        enabledButtonView.Change();
+        return true;
     }
 }

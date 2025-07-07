@@ -7,9 +7,8 @@ using VContainer.Unity;
 public class KeyBindingLifetimeScope : LifetimeScope
 {
     [SerializeField] private GameObject _bindingsRoot;
-    [SerializeField] private KeyBindingsCloseView _bindingsCloseView;
 
-    private List<KeyBinderMediator> _keyBinderMediators = new();
+    private readonly List<KeyBinderMediator> _keyBinderMediators = new();
 
     protected override void Configure(IContainerBuilder builder) => 
         builder.Register<KeyListeningTracker>(Lifetime.Singleton);
@@ -37,9 +36,6 @@ public class KeyBindingLifetimeScope : LifetimeScope
 
         foreach (var keyBinderMediator in _keyBinderMediators)
             keyBinderMediator.Initialize();
-
-        if (_bindingsCloseView != null)
-            Container.Inject(_bindingsCloseView);
     }
 
     protected override void OnDestroy()
