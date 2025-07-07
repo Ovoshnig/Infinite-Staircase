@@ -18,7 +18,7 @@ public class SaveStorageAchievedLevelButtonViewMediator : IInitializable, IDispo
     public void Initialize()
     {
         Observable
-            .EveryValueChanged(_achievedLevelButtonView, _ => _achievedLevelButtonView.isActiveAndEnabled)
+            .EveryValueChanged(_achievedLevelButtonView, b => b.isActiveAndEnabled)
             .Where(value => value)
             .Subscribe(_ =>
             {

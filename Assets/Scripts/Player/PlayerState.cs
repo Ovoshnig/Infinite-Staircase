@@ -56,7 +56,7 @@ public class PlayerState : IInitializable, IDisposable
            .AddTo(_compositeDisposable);
 
         Observable
-           .EveryValueChanged(this, c => _characterController.isGrounded)
+           .EveryValueChanged(this, p => _characterController.isGrounded)
            .Subscribe(value => _isGrounded.OnNext(value))
            .AddTo(_compositeDisposable);
 

@@ -21,7 +21,7 @@ public class WindowMediator : IInitializable, IDisposable
             .AddTo(_compositeDisposable);
 
         Observable
-            .EveryValueChanged(_windowView.gameObject, _ => _windowView.isActiveAndEnabled)
+            .EveryValueChanged(_windowView, w => w.isActiveAndEnabled)
             .Subscribe(_window.SetWindowActive)
             .AddTo(_compositeDisposable);
     }
