@@ -2,7 +2,7 @@
     "name": "Audio.Music.Resources.Editor",
     "rootNamespace": "",
     "references": [
-        "GUID:25ed75e4e256da14189a25c37bab7f2d"
+        "GUID:c7960cacd6767a1488608053305785fa"
     ],
     "includePlatforms": [
         "Editor"
