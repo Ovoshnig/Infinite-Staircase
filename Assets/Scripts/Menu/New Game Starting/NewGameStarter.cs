@@ -33,7 +33,6 @@ public class NewGameStarter
             seed = random.Next(_generationSettings.MinSeed, _generationSettings.MaxSeed);
         }
 
-        _saveStorage.ResetData();
         _saveStorage.Set(SaveConstants.SaveCreatedKey, true);
         _saveStorage.Set(SaveConstants.SeedKey, seed);
         _newGameStarted.OnNext(Unit.Default);

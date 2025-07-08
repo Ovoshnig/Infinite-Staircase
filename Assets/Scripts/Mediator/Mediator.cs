@@ -4,9 +4,9 @@ using VContainer.Unity;
 
 public abstract class Mediator : IInitializable, IDisposable
 {
-    private readonly CompositeDisposable compositeDisposable = new();
+    private readonly CompositeDisposable _compositeDisposable = new();
 
-    protected CompositeDisposable CompositeDisposable => compositeDisposable;
+    protected CompositeDisposable CompositeDisposable => _compositeDisposable;
 
     public abstract void Initialize();
 

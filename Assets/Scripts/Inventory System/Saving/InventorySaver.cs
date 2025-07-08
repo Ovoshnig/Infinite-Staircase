@@ -1,4 +1,5 @@
 using Cysharp.Threading.Tasks;
+using R3;
 using System;
 using System.Threading;
 using VContainer.Unity;
@@ -9,6 +10,7 @@ public class InventorySaver : IInitializable, IDisposable
     private readonly SaveStorage _saveStorage;
     private readonly ItemDefinitionLoader _itemDefinitionLoader;
     private readonly CancellationTokenSource _cts = new();
+    private readonly CompositeDisposable _compositeDisposable = new();
 
     public InventorySaver(Inventory inventory, SaveStorage saveStorage, 
         ItemDefinitionLoader itemDefinitionLoader)
@@ -23,6 +25,10 @@ public class InventorySaver : IInitializable, IDisposable
         try
         {
             await LoadInventoryAsync(_cts.Token);
+
+            _saveStorage.ResetHappened
+                .Subscribe(async _ => await LoadInventoryAsync(_cts.Token))
+                .AddTo(_compositeDisposable);
         }
         catch (OperationCanceledException)
         {
@@ -34,6 +40,8 @@ public class InventorySaver : IInitializable, IDisposable
     {
         _cts?.Cancel();
         _cts?.Dispose();
+
+        _compositeDisposable?.Dispose();
 
         SaveInventory();
     }

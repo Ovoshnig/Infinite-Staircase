@@ -18,6 +18,7 @@ public class SceneSwitch : IInitializable, IDisposable
     private readonly SceneSettings _sceneSettings;
     private readonly ReactiveProperty<bool> _isSceneLoading = new(true);
     private readonly CancellationTokenSource _cts = new();
+    private readonly CompositeDisposable _compositeDisposable = new();
 
     private uint _achievedLevel;
     private uint _currentLevel;
@@ -34,6 +35,11 @@ public class SceneSwitch : IInitializable, IDisposable
     public void Initialize()
     {
         _achievedLevel = _saveStorage.Get(SaveConstants.AchievedLevelKey, _sceneSettings.FirstGameplayLevel);
+
+        _saveStorage.ResetHappened
+            .Subscribe(_ => ResetAchievedLevel())
+            .AddTo(_compositeDisposable);
+
         _currentLevel = (uint)SceneManager.GetActiveScene().buildIndex;
 
         if (_currentLevel > _achievedLevel && _currentLevel <= _sceneSettings.LastGameplayLevel)
@@ -46,6 +52,8 @@ public class SceneSwitch : IInitializable, IDisposable
     {
         _cts?.Cancel();
         _cts?.Dispose();
+
+        _compositeDisposable?.Dispose();
 
         _saveStorage.Set(SaveConstants.AchievedLevelKey, _achievedLevel);
     }

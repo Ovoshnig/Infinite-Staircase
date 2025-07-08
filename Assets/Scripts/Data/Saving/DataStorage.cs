@@ -1,5 +1,6 @@
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using R3;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -13,8 +14,11 @@ public abstract class DataStorage : IInitializable, IDisposable
         TypeNameHandling = TypeNameHandling.Auto
     };
     private readonly Dictionary<string, object> _defaultDataStore = new();
+    private readonly Subject<Unit> _resetHappened = new();
 
     private Dictionary<string, object> _dataStore = new();
+
+    public Observable<Unit> ResetHappened => _resetHappened;
 
     protected abstract string SaveFileName { get; }
     protected string FilePath => Path.Combine(Application.persistentDataPath, SaveFileName);
@@ -57,6 +61,8 @@ public abstract class DataStorage : IInitializable, IDisposable
             else
                 _dataStore[key] = default;
         }
+
+        _resetHappened.OnNext(Unit.Default);
     }
 
     protected virtual void LoadData()
