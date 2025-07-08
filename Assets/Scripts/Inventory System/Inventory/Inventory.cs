@@ -7,16 +7,14 @@ using UnityEngine;
 
 public class Inventory
 {
-    private readonly Slot[] _slots;
+    private readonly InventorySettings _inventorySettings;
     private readonly ReactiveProperty<Slot> _draggingSlot = new(null);
     private readonly ReactiveProperty<Slot> _hoveredSlot = new(null);
 
-    public Inventory(InventorySettings inventorySettings)
-    {
-        _slots = Enumerable.Range(0, (int)inventorySettings.SlotCount)
-            .Select(_ => new Slot())
-            .ToArray();
-    }
+    private Slot[] _slots;
+
+    public Inventory(InventorySettings inventorySettings) => 
+        _inventorySettings = inventorySettings;
 
     public ReadOnlyReactiveProperty<Slot> DraggingSlot => _draggingSlot;
     public ReadOnlyReactiveProperty<Slot> HoveredSlot => _hoveredSlot;
@@ -85,6 +83,13 @@ public class Inventory
         }
 
         _draggingSlot.Value = null;
+    }
+
+    public void ResetData()
+    {
+        _slots = Enumerable.Range(0, (int)_inventorySettings.SlotCount)
+            .Select(_ => new Slot())
+            .ToArray();
     }
 
     public SlotData[] ToData() => _slots.Select(slot => slot.ToData()).ToArray();

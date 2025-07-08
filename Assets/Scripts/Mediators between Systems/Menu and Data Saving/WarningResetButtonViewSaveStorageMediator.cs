@@ -1,6 +1,4 @@
 ﻿using R3;
-using System.Linq;
-using UnityEngine;
 
 public class WarningResetButtonViewSaveStorageMediator : Mediator
 {
@@ -17,11 +15,7 @@ public class WarningResetButtonViewSaveStorageMediator : Mediator
     public override void Initialize()
     {
         _warningResetButtonView.Clicked
-            .Subscribe(_ =>
-            {
-                _saveStorage.ResetData();
-                //Debug.Log(_saveStorage.Get(SaveConstants.InventoryKey, Enumerable.Range(0, 15).Select(_ => new Slot()).ToArray()));
-            })
+            .Subscribe(_ => _saveStorage.ResetData())
             .AddTo(CompositeDisposable);
     }
 }

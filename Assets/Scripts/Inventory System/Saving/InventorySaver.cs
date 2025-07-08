@@ -48,6 +48,7 @@ public class InventorySaver : IInitializable, IDisposable
 
     public async UniTask LoadInventoryAsync(CancellationToken token)
     {
+        _inventory.ResetData();
         SlotData[] defaultSlotArray = _inventory.ToData();
         SlotData[] slotDataArray = _saveStorage.Get(SaveConstants.InventoryKey, defaultSlotArray);
         await _inventory.LoadFromDataAsync(slotDataArray, _itemDefinitionLoader, token);
