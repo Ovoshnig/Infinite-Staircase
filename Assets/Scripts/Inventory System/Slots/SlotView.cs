@@ -1,108 +1,60 @@
+using R3;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using VContainer;
 
-public class SlotView : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerDownHandler
+public class SlotView : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, 
+    IPointerDownHandler, IPointerUpHandler
 {
-    [SerializeField] private InventoryView _inventoryView;
-    [SerializeField] private GameObject _itemPrefab;
+    [SerializeField] private ItemView _itemView;
+    [SerializeField] private RectTransform _itemParent;
+    [SerializeField] private float _itemPadding = 0f;
 
-    private readonly Vector2 _halfVector2 = Vector2.one / 2f;
-    private RectTransform _storedItem;
-    private DraggedItemHolder _draggedItemHolder;
-    private SlotModel _slotModel;
+    private readonly Subject<PointerEventData> _pointerDown = new();
+    private readonly Subject<PointerEventData> _pointerUp = new();
+    private readonly Subject<PointerEventData> _pointerEntered = new();
+    private readonly Subject<PointerEventData> _pointerExited = new();
 
-    [Inject]
-    public void Construct(DraggedItemHolder draggedItemHolder)
+    public ItemView ItemView => _itemView;
+    public Observable<PointerEventData> PointerDown => _pointerDown;
+    public Observable<PointerEventData> PointerUp => _pointerUp;
+    public Observable<PointerEventData> PointerEntered => _pointerEntered;
+    public Observable<PointerEventData> PointerExited => _pointerExited;
+
+    private void Awake()
     {
-        _draggedItemHolder = draggedItemHolder;
-
-        _slotModel = new SlotModel();
+        if (_itemView != null)
+            _itemView.Clear();
     }
 
-    public SlotModel SlotModel => _slotModel;
+    public void OnPointerDown(PointerEventData eventData) => _pointerDown.OnNext(eventData);
 
-    private Transform CanvasTransform => transform.parent.parent.parent;
+    public void OnPointerUp(PointerEventData eventData) => _pointerUp.OnNext(eventData);
 
-    public void OnPointerEnter(PointerEventData _) => _inventoryView.SelectedSlot = this;
+    public void OnPointerEnter(PointerEventData eventData) => _pointerEntered.OnNext(eventData);
 
-    public void OnPointerExit(PointerEventData _) => _inventoryView.SelectedSlot = null;
+    public void OnPointerExit(PointerEventData eventData) => _pointerExited.OnNext(eventData);
 
-    public void OnPointerDown(PointerEventData eventData)
+    public void SetItemPadding(float value) => _itemPadding = value;
+
+    public void DisplayItem(ItemData itemData)
     {
-        if (eventData.button != PointerEventData.InputButton.Left)
-            return;
+        _itemView.transform.SetParent(_itemParent, false);
+        _itemView.Render(itemData);
 
-        TakeItem();
+        ApplyItemLayout();
     }
 
-    public void PlaceItem()
+    public void HideItem() => _itemView.Clear();
+
+    private void ApplyItemLayout()
     {
-        if (_draggedItemHolder.DraggedItem != null)
-        {
-            _storedItem = _draggedItemHolder.DraggedItem;
-            _slotModel.PlaceItem(_storedItem.GetComponent<ItemView>().ItemModel);
-            _draggedItemHolder.DraggedItem = null;
-            InitializeStoredItem();
-        }
-    }
+        RectTransform itemRectTransform = _itemView.transform as RectTransform;
 
-    public void PlaceItem(ItemModel itemModel)
-    {
-        GameObject itemObject = InstantiateItem(itemModel);
-        _storedItem = itemObject.GetComponent<RectTransform>();
-        _slotModel.PlaceItem(itemModel);
-        InitializeStoredItem();
-    }
+        itemRectTransform.localScale = Vector3.one;
 
-    public void TakeItem()
-    {
-        if (_storedItem != null)
-        {
-            _storedItem.transform.SetParent(CanvasTransform);
-            _draggedItemHolder.DraggedItem = _storedItem;
-            _slotModel.TakeItem();
-            _storedItem = null;
-            _inventoryView.StartingSlot = this;
-        }
-    }
-
-    public SlotData Save() => _slotModel.Save();
-
-    public void Load(SlotData slotData, ItemDataRepository itemDataRepository)
-    {
-        _slotModel.Load(slotData, itemDataRepository);
-
-        if (_slotModel.HasItem)
-        {
-            GameObject itemObject = InstantiateItem(_slotModel.ItemModel);
-            _storedItem = itemObject.GetComponent<RectTransform>();
-            _storedItem.transform.SetParent(transform);
-            _storedItem.anchorMax = _halfVector2;
-            _storedItem.anchorMin = _halfVector2;
-            _storedItem.anchoredPosition = Vector2.zero;
-
-            _slotModel.PlaceItem(_storedItem.GetComponent<ItemView>().ItemModel);
-        }
-        else
-        {
-            _storedItem = null;
-        }
-    }
-
-    private GameObject InstantiateItem(ItemModel itemModel)
-    {
-        GameObject itemObject = Instantiate(_itemPrefab);
-        ItemView itemView = itemObject.GetComponent<ItemView>();
-        itemView.Initialize(itemModel);
-        return itemObject;
-    }
-
-    private void InitializeStoredItem()
-    {
-        _storedItem.transform.SetParent(transform);
-        _storedItem.anchorMax = _halfVector2;
-        _storedItem.anchorMin = _halfVector2;
-        _storedItem.anchoredPosition = Vector2.zero;
+        itemRectTransform.anchorMin = Vector2.zero;
+        itemRectTransform.anchorMax = Vector2.one;
+        itemRectTransform.offsetMin = new Vector2(_itemPadding, _itemPadding);
+        itemRectTransform.offsetMax = new Vector2(-_itemPadding, -_itemPadding);
     }
 }

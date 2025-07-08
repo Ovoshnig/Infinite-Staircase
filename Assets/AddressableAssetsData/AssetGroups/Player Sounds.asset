@@ -1,0 +1,127 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
+  m_Name: Player Sounds
+  m_EditorClassIdentifier: 
+  m_GroupName: Player Sounds
+  m_GUID: 6a07fad7548cf9d46acdb6856e2e5c37
+  m_SerializeEntries:
+  - m_GUID: 06c2f60a0c00a9c4290ee7677899bfcb
+    m_Address: Assets/Resources_moved/Audio/SFX/Player/Footsteps/Player_Footstep_03.wav
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - audio
+    - player
+    - sfx
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 380547b5475b7ce44a14b42e939d96b3
+    m_Address: Audio/SFX/Player/Footsteps/Player_Footstep_01.wav
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - audio
+    - player
+    - sfx
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 39efff57c11abed47be33c89977e82ba
+    m_Address: Assets/Resources_moved/Audio/SFX/Player/Footsteps/Player_Footstep_04.wav
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - audio
+    - player
+    - sfx
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 578a3276cf1ae5444af970c76056a9f9
+    m_Address: Assets/Resources_moved/Audio/SFX/Player/Footsteps/Player_Footstep_07.wav
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - audio
+    - player
+    - sfx
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 65f189c418a40f64297907d84624792d
+    m_Address: Assets/Resources_moved/Audio/SFX/Player/Footsteps/Player_Footstep_10.wav
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - audio
+    - player
+    - sfx
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 78b3d77611d414a4186fa5b1b93f8d3d
+    m_Address: Assets/Resources_moved/Audio/SFX/Player/Footsteps/Player_Footstep_06.wav
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - audio
+    - player
+    - sfx
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 7ce6c711d11924a4b9dd5e8d819404c0
+    m_Address: Assets/Resources_moved/Audio/SFX/Player/Footsteps/Player_Footstep_08.wav
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - audio
+    - player
+    - sfx
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b1c68c9a28701dc43a2fd74acb193b5d
+    m_Address: Audio/SFX/Player/Land/PlayerLandRandomContainer.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - audio
+    - player
+    - sfx
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b363e3a987e93c64da8f77af99a24bf0
+    m_Address: Assets/Resources_moved/Audio/SFX/Player/Footsteps/Player_Footstep_02.wav
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - audio
+    - player
+    - sfx
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c8cb4fe4d5ee6404ea8968c4abffa5ed
+    m_Address: Assets/Resources_moved/Audio/SFX/Player/Footsteps/Player_Footstep_05.wav
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - audio
+    - player
+    - sfx
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: dddb155c45a7207458ede43931ce5986
+    m_Address: Audio/SFX/Player/Footsteps/PlayerFootstepsRandomContainer.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - audio
+    - player
+    - sfx
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e191ea7abd44437479657d235c6a9685
+    m_Address: Audio/SFX/Player/Land/Player_Land.wav
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - audio
+    - player
+    - sfx
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f95c98ef46560cd4993bf73cc3b9250b
+    m_Address: Assets/Resources_moved/Audio/SFX/Player/Footsteps/Player_Footstep_09.wav
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - audio
+    - player
+    - sfx
+    FlaggedDuringContentUpdateRestriction: 0
+  m_ReadOnly: 0
+  m_Settings: {fileID: 11400000, guid: abb42a486b86dd0459d8bd909fdf3dba, type: 2}
+  m_SchemaSet:
+    m_Schemas:
+    - {fileID: 11400000, guid: f7bbd8e94b9d96b46a417b7681c0804a, type: 2}
+    - {fileID: 11400000, guid: cf37b79e09b4650429c9f616b0e47b4f, type: 2}

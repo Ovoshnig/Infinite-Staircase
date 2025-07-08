@@ -90,20 +90,32 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3136494955626142587, guid: 723194aaa30a36e43ad28ddddaeeb499, type: 3}
       propertyPath: m_Name
-      value: Button Variant
+      value: PauseMenuButton
+      objectReference: {fileID: 0}
+    - target: {fileID: 4230476776402574984, guid: 723194aaa30a36e43ad28ddddaeeb499, type: 3}
+      propertyPath: m_Color.b
+      value: 0.754717
       objectReference: {fileID: 0}
     - target: {fileID: 4230476776402574984, guid: 723194aaa30a36e43ad28ddddaeeb499, type: 3}
       propertyPath: m_Color.g
-      value: 0.972549
+      value: 0.90260684
       objectReference: {fileID: 0}
     - target: {fileID: 4230476776402574984, guid: 723194aaa30a36e43ad28ddddaeeb499, type: 3}
       propertyPath: m_Color.r
-      value: 0.8200542
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4648900923960772367, guid: 723194aaa30a36e43ad28ddddaeeb499, type: 3}
+      propertyPath: m_fontSize
+      value: 45
+      objectReference: {fileID: 0}
+    - target: {fileID: 4648900923960772367, guid: 723194aaa30a36e43ad28ddddaeeb499, type: 3}
+      propertyPath: m_fontSizeBase
+      value: 45
       objectReference: {fileID: 0}
     - target: {fileID: 4648900923960772367, guid: 723194aaa30a36e43ad28ddddaeeb499, type: 3}
       propertyPath: m_sharedMaterial
       value: 
-      objectReference: {fileID: 416467011290700998, guid: 6aa730cf6ff0722459e6551d78702d11, type: 2}
+      objectReference: {fileID: 5028661192562900701, guid: c11bc1c4fd6f15d4c9ee39d2f3d905fb, type: 2}
     - target: {fileID: 4648900923960772367, guid: 723194aaa30a36e43ad28ddddaeeb499, type: 3}
       propertyPath: m_hasFontAssetChanged
       value: 0

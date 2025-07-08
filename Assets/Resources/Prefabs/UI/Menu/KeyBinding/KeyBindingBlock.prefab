@@ -81,16 +81,9 @@ MonoBehaviour:
   _bindingButton: {fileID: 5215717425924694835}
   _bindingResetButton: {fileID: 7778082662215887520}
   _actionNameText: {fileID: 6599954011534530538}
-  _waitingTextColor: {r: 0.4339621, g: 0.104595244, b: 0.05526871, a: 1}
-  _inputAction:
-    m_Name: Input
-    m_Type: 0
-    m_ExpectedControlType: 
-    m_Id: 439ed0e2-4da7-45c4-8c72-e060e58f9e2f
-    m_Processors: 
-    m_Interactions: 
-    m_SingletonActionBindings: []
-    m_Flags: 0
+  _bindingButtonText: {fileID: 3053419468822837999}
+  _inputActionReference: {fileID: 0}
+  _keyBindingSettings: {fileID: 11400000, guid: 4f7bde9c39ecedf46ba83fc75c97381a, type: 2}
 --- !u!1001 &887136218892550641
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -115,6 +108,10 @@ PrefabInstance:
       propertyPath: m_fontSizeBase
       value: 35
       objectReference: {fileID: 0}
+    - target: {fileID: 2742781665675524894, guid: 530458200879ce544b4494f4f8612b17, type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: 5028661192562900701, guid: c11bc1c4fd6f15d4c9ee39d2f3d905fb, type: 2}
     - target: {fileID: 2742781665675524894, guid: 530458200879ce544b4494f4f8612b17, type: 3}
       propertyPath: m_enableAutoSizing
       value: 1
@@ -220,6 +217,17 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 530458200879ce544b4494f4f8612b17, type: 3}
+--- !u!114 &3053419468822837999 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2742781665675524894, guid: 530458200879ce544b4494f4f8612b17, type: 3}
+  m_PrefabInstance: {fileID: 887136218892550641}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &5215717425924694835 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 4912951026534261442, guid: 530458200879ce544b4494f4f8612b17, type: 3}
@@ -255,7 +263,7 @@ PrefabInstance:
     - target: {fileID: 4340154353747558020, guid: ada1e80840d50a740865295f82d3bbe8, type: 3}
       propertyPath: m_sharedMaterial
       value: 
-      objectReference: {fileID: 416467011290700998, guid: 6aa730cf6ff0722459e6551d78702d11, type: 2}
+      objectReference: {fileID: 5028661192562900701, guid: c11bc1c4fd6f15d4c9ee39d2f3d905fb, type: 2}
     - target: {fileID: 4340154353747558020, guid: ada1e80840d50a740865295f82d3bbe8, type: 3}
       propertyPath: m_enableAutoSizing
       value: 1
@@ -473,6 +481,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: BindingResetButton
       objectReference: {fileID: 0}
+    - target: {fileID: 8568028864028143556, guid: e7cc06b2f2e5b5946945ab203dd97def, type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: 5028661192562900701, guid: c11bc1c4fd6f15d4c9ee39d2f3d905fb, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

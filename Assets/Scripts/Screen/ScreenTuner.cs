@@ -22,9 +22,13 @@ public class ScreenTuner : IInitializable, IDisposable
         get
         {
             if (_isFullScreen.Value)
-                return (Screen.currentResolution.width, Screen.currentResolution.height, Screen.currentResolution.refreshRateRatio);
+                return (Screen.currentResolution.width, 
+                    Screen.currentResolution.height, 
+                    Screen.currentResolution.refreshRateRatio);
             else
-                return (Screen.width, Screen.height, Screen.currentResolution.refreshRateRatio);
+                return (Screen.width, 
+                    Screen.height, 
+                    Screen.currentResolution.refreshRateRatio);
         }
     }
 
@@ -51,16 +55,30 @@ public class ScreenTuner : IInitializable, IDisposable
 
         _screenInputHandler.IsSwitchFullScreenPressed
             .Where(value => value)
-            .Subscribe(_ => SwitchFullScreen())
+            .Subscribe(_ => OnSwitchFullScreenPressed())
             .AddTo(_compositeDisposable);
     }
 
     public void Dispose() => _compositeDisposable?.Dispose();
 
-    public void SwitchFullScreen()
+    public void OnSwitchFullScreenPressed()
     {
-        _isFullScreen.Value = !_isFullScreen.Value;
-        Screen.fullScreen = _isFullScreen.Value;
+        if (IsFullScreen.CurrentValue)
+            DisableFullScreen();
+        else
+            EnableFullScreen();
+    }
+
+    public void EnableFullScreen()
+    {
+        Screen.fullScreen = true;
+        _isFullScreen.Value = true;
+    }
+
+    public void DisableFullScreen()
+    {
+        Screen.fullScreen = false;
+        _isFullScreen.Value = false;
     }
 
     public void SetResolution(int number)
@@ -68,7 +86,6 @@ public class ScreenTuner : IInitializable, IDisposable
         if (number < 0 || number >= Resolutions.Count)
         {
             Debug.LogError($"Resolution with index {number} not found");
-
             return;
         }
 

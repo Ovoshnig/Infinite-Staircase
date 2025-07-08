@@ -98,7 +98,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7478185641077048318, guid: 92bb28fdbbcc4624396cea55e5957fe7, type: 3}
       propertyPath: m_Name
-      value: PausePanelNameText Variant
+      value: PauseMenuPanelName
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

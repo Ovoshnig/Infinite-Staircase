@@ -1,6 +1,7 @@
 using UnityEngine;
 
-[CreateAssetMenu(fileName = nameof(StairConnection), menuName = "Scriptable Objects/StairConnection")]
+[CreateAssetMenu(fileName = nameof(StairConnection),
+    menuName = "Scriptable Objects/Stair Connection")]
 public class StairConnection : ScriptableObject
 {
     [SerializeField] private GameObject _prefab;

@@ -6,16 +6,19 @@ using VContainer.Unity;
 public class AudioMixerTuner : IStartable, IDisposable
 {
     private readonly AudioMixerGroup _audioMixerGroup;
-    private readonly AudioTuner _audioTuner;
+    private readonly SoundVolumeKeeper _soundVolumeKeeper;
+    private readonly MusicVolumeKeeper _musicVolumeKeeper;
     private readonly AudioSettings _audioSettings;
     private readonly GamePauser _gamePauser;
     private readonly CompositeDisposable _compositeDisposable = new();
 
-    public AudioMixerTuner(AudioMixerGroup audioMixerGroup, AudioTuner audioTuner, 
+    public AudioMixerTuner(AudioMixerGroup audioMixerGroup, 
+        SoundVolumeKeeper soundVolumeKeeper, MusicVolumeKeeper musicVolumeKeeper,
         AudioSettings audioSettings, GamePauser gamePauser)
     {
         _audioMixerGroup = audioMixerGroup;
-        _audioTuner = audioTuner;
+        _soundVolumeKeeper = soundVolumeKeeper;
+        _musicVolumeKeeper = musicVolumeKeeper;
         _audioSettings = audioSettings;
         _gamePauser = gamePauser;
     }
@@ -24,16 +27,14 @@ public class AudioMixerTuner : IStartable, IDisposable
 
     public void Start()
     {
-        _audioTuner.SoundVolume
+        _soundVolumeKeeper.Data
             .Subscribe(value => 
             AudioMixer.SetFloat(AudioMixerConstants.SoundGroupName, value))
             .AddTo(_compositeDisposable);
-
-        _audioTuner.MusicVolume
+        _musicVolumeKeeper.Data
             .Subscribe(value =>
             AudioMixer.SetFloat(AudioMixerConstants.MusicGroupName, value))
             .AddTo(_compositeDisposable);
-
         _gamePauser.IsPause
             .Subscribe(value => OnPauseValueChanged(value))
             .AddTo(_compositeDisposable);

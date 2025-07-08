@@ -10,7 +10,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1519124215760132835, guid: 8c32878ae634b2b499722f1ae8cfb007, type: 3}
       propertyPath: m_Name
-      value: Panel Variant
+      value: MainMenuPanel
       objectReference: {fileID: 0}
     - target: {fileID: 3552931024355162621, guid: 8c32878ae634b2b499722f1ae8cfb007, type: 3}
       propertyPath: m_Pivot.x

@@ -1,36 +1,46 @@
-using Random = System.Random;
+using Cysharp.Threading.Tasks;
+using System;
+using System.Threading;
 using UnityEngine;
 using VContainer;
 
 public class ItemGenerator : MonoBehaviour
 {
-    private readonly string[] _itemNames = new string[] { "Gear", "Music", "Play" };
-    private InventoryView _inventoryView;
-    private ItemDataRepository _itemDataRepository;
-    private Random _random;
+    private readonly CancellationTokenSource _cts = new();
 
-    private void Awake() => _random = new Random();
+    private Inventory _inventory;
+    private ItemDefinitionLoader _itemDefinitionLoader;
 
     [Inject]
-    public void Construct(InventoryView inventoryView, ItemDataRepository itemDataRepository)
+    public void Construct(Inventory inventory, ItemDefinitionLoader itemDefinitionLoader)
     {
-        _inventoryView = inventoryView;
-        _itemDataRepository = itemDataRepository;
+        _inventory = inventory;
+        _itemDefinitionLoader = itemDefinitionLoader;
     }
 
-    private void OnTriggerEnter(Collider other)
+    private async void OnTriggerEnter(Collider other)
     {
-        ItemModel itemModel = GenerateRandomItem();
-        _inventoryView.TryAddItem(itemModel);
+        try
+        {
+            ItemData itemData = await GenerateRandomItemAsync(_cts.Token);
+            _inventory.TryAddItem(itemData);
+        }
+        catch (OperationCanceledException)
+        {
+            return;
+        }
     }
 
-    private ItemModel GenerateRandomItem()
+    private void OnDestroy()
     {
-        int index = _random.Next(0, _itemNames.Length);
-        string name = _itemNames[index];
-        ItemDataSO itemDataSO = _itemDataRepository.GetItemDataByName(name);
-        ItemModel itemModel = new(name, itemDataSO.Icon);
+        _cts?.Cancel();
+        _cts?.Dispose();
+    }
 
-        return itemModel;
+    private async UniTask<ItemData> GenerateRandomItemAsync(CancellationToken token)
+    {
+        ItemDefinition itemDataSO = await _itemDefinitionLoader.GetRandomItemAsync(token);
+        ItemData itemData = new(itemDataSO.name, itemDataSO.Icon);
+        return itemData;
     }
 }

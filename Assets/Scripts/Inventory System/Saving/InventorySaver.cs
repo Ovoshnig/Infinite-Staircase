@@ -1,30 +1,62 @@
-using System.Linq;
+using Cysharp.Threading.Tasks;
+using R3;
+using System;
+using System.Threading;
+using VContainer.Unity;
 
-public class InventorySaver
+public class InventorySaver : IInitializable, IDisposable
 {
+    private readonly Inventory _inventory;
     private readonly SaveStorage _saveStorage;
-    private readonly ItemDataRepository _itemDataRepository;
+    private readonly ItemDefinitionLoader _itemDefinitionLoader;
+    private readonly CancellationTokenSource _cts = new();
+    private readonly CompositeDisposable _compositeDisposable = new();
 
-    public InventorySaver(SaveStorage saveStorage, ItemDataRepository itemDataRepository)
+    public InventorySaver(Inventory inventory, SaveStorage saveStorage, 
+        ItemDefinitionLoader itemDefinitionLoader)
     {
+        _inventory = inventory;
         _saveStorage = saveStorage;
-        _itemDataRepository = itemDataRepository;
+        _itemDefinitionLoader = itemDefinitionLoader;
     }
 
-    public void LoadSlots(SlotView[] slotViews)
+    public async void Initialize()
     {
-        SlotData[] defaultSlotArray = slotViews.Select(_ => new SlotData()).ToArray();
+        try
+        {
+            await LoadInventoryAsync(_cts.Token);
+
+            _saveStorage.ResetHappened
+                .Subscribe(async _ => await LoadInventoryAsync(_cts.Token))
+                .AddTo(_compositeDisposable);
+        }
+        catch (OperationCanceledException)
+        {
+            return;
+        }
+    }
+
+    public void Dispose()
+    {
+        _cts?.Cancel();
+        _cts?.Dispose();
+
+        _compositeDisposable?.Dispose();
+
+        SaveInventory();
+    }
+
+    public async UniTask LoadInventoryAsync(CancellationToken token)
+    {
+        _inventory.ResetData();
+        SlotData[] defaultSlotArray = _inventory.ToData();
         SlotData[] slotDataArray = _saveStorage.Get(SaveConstants.InventoryKey, defaultSlotArray);
-
-        for (int i = 0; i < slotViews.Length; i++)
-            slotViews[i].Load(slotDataArray[i], _itemDataRepository);
+        await _inventory.LoadFromDataAsync(slotDataArray, _itemDefinitionLoader, token);
     }
 
-    public void SaveSlots(SlotView[] slotViews, SlotData[] slotDataArray)
+    public void SaveInventory()
     {
-        for (int i = 0; i < slotViews.Length; i++)
-            slotDataArray[i] = slotViews[i].Save();
-
+        SlotData[] slotDataArray = _inventory.ToData();
         _saveStorage.Set(SaveConstants.InventoryKey, slotDataArray);
     }
 }

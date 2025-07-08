@@ -1,33 +1,63 @@
+using Cysharp.Threading.Tasks;
 using JetBrains.Annotations;
 using R3;
-using UnityEngine.Audio;
+using System;
+using System.Threading;
 using UnityEngine;
+using UnityEngine.AddressableAssets;
+using UnityEngine.Audio;
 using VContainer;
 
 [RequireComponent(typeof(AudioSource))]
 public class PlayerSoundPlayer : MonoBehaviour
 {
-    [SerializeField] private AudioResource _footstepResource;
-    [SerializeField] private AudioResource _landResource;
+    [SerializeField] private AssetReference _footstepReference;
+    [SerializeField] private AssetReference _landReference;
 
-	private readonly CompositeDisposable _compositeDisposable = new();
-	private PlayerState _playerState;
+    private readonly CancellationTokenSource _cts = new();
+
+    private PlayerState _playerState;
 	private AudioSource _audioSource;
+    private PlayerSoundLoader _soundLoader;
+    private AudioResource _footstepResource;
+    private AudioResource _landResource;
 
     [Inject]
     public void Construct(PlayerState playerState) => _playerState = playerState;
 
-    private void Awake() => _audioSource = GetComponent<AudioSource>();
-
-    private void Start()
+    private void Awake() 
     {
-        _playerState.IsGrounded
-            .Where(value => value)
-            .Subscribe(_ => PlayLandSound())
-            .AddTo(_compositeDisposable);
+        _audioSource = GetComponent<AudioSource>();
+
+        _soundLoader = new PlayerSoundLoader();
     }
 
-    private void OnDestroy() => _compositeDisposable?.Dispose();
+    private async void Start()
+    {
+        try
+        {
+            (_footstepResource, _landResource) = await _soundLoader
+                .LoadSoundsAsync(_footstepReference, _landReference, _cts.Token);
+
+            _playerState.IsGrounded
+            .Where(value => value)
+            .Subscribe(_ => PlayLandSound())
+            .AddTo(this);
+        }
+        catch (OperationCanceledException)
+        {
+            return;
+        }
+    }
+
+    private void OnDestroy()
+    {
+        _cts?.CancelAndDispose();
+
+        _soundLoader.ReleaseSounds();
+        Resources.UnloadAsset(_footstepResource);
+        Resources.UnloadAsset(_landResource);
+    }
 
     [UsedImplicitly]
     private void PlayStepSound()
