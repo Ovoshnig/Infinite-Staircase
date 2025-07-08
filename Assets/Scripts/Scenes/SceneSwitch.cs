@@ -98,6 +98,11 @@ public class SceneSwitch : IInitializable, IDisposable
             SceneType sceneType = GetSceneTypeByIndex(_currentLevel);
             CurrentSceneType = sceneType;
             _isSceneLoading.Value = false;
+
+            bool saveCreated = _saveStorage.Get(SaveConstants.SaveCreatedKey, false);
+
+            if (sceneType != SceneType.MainMenu && !saveCreated )
+                _saveStorage.Set(SaveConstants.SaveCreatedKey, true);
         }
         catch (OperationCanceledException)
         {
