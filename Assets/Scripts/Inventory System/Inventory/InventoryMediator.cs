@@ -1,29 +1,23 @@
 ﻿using R3;
-using System;
-using System.Threading;
-using UnityEngine;
 using VContainer.Unity;
 
 public class InventoryMediator : Mediator, ITickable
 {
     private readonly InventoryView _inventoryView;
     private readonly Inventory _inventory;
-    private readonly InventorySaver _inventorySaver;
     private readonly InventorySettings _inventorySettings;
-    private readonly CancellationTokenSource _cts = new();
 
     private SlotMediator[] _slotMediators;
 
     public InventoryMediator(InventoryView inventoryView, Inventory inventory,
-        InventorySaver inventorySaver, InventorySettings inventorySettings)
+        InventorySettings inventorySettings)
     {
         _inventoryView = inventoryView;
         _inventory = inventory;
-        _inventorySaver = inventorySaver;
         _inventorySettings = inventorySettings;
     }
 
-    public override async void Initialize()
+    public override void Initialize()
     {
         _slotMediators = new SlotMediator[_inventorySettings.SlotCount];
 
@@ -48,15 +42,6 @@ public class InventoryMediator : Mediator, ITickable
                 }
             })
             .AddTo(CompositeDisposable);
-
-        try
-        {
-            await _inventorySaver.LoadInventoryAsync(_inventory, _cts.Token);
-        }
-        catch (OperationCanceledException)
-        {
-            return;
-        }
     }
 
     public void Tick()
@@ -69,12 +54,7 @@ public class InventoryMediator : Mediator, ITickable
     {
         base.Dispose();
         
-        _cts?.Cancel();
-        _cts?.Dispose();
-
         for (int i = 0; i < _inventorySettings.SlotCount; i++)
             _slotMediators[i].Dispose();
-
-        _inventorySaver.SaveInventory(_inventory);
     }
 }

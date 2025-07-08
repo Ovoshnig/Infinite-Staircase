@@ -4,20 +4,14 @@ using VContainer.Unity;
 
 public sealed class InventoryWindowLifetimeScope : WindowLifetimeScope
 {
-    [SerializeField] private InventorySettings _inventorySettings;
     [SerializeField] private ItemGenerator _itemGenerator;
 
     protected override void Configure(IContainerBuilder builder)
     {
-        builder.RegisterInstance(_inventorySettings);
-
         builder.RegisterEntryPoint<InventoryWindow>(Lifetime.Singleton).AsSelf().As<Window>();
-        builder.RegisterEntryPoint<InventoryMediator>();
-        builder.RegisterEntryPoint<InventoryWindowInventoryMediator>();
-
-        builder.Register<Inventory>(Lifetime.Singleton);
-        builder.Register<InventorySaver>(Lifetime.Singleton);
-        builder.Register<ItemDefinitionLoader>(Lifetime.Singleton);
+        builder.RegisterEntryPoint<InventoryMediator>(Lifetime.Singleton);
+        builder.RegisterEntryPoint<InventoryWindowInventoryMediator>(Lifetime.Singleton);
+        
         builder.Register(resolver =>
         {
             Canvas windowCanvas = resolver.Resolve<Canvas>();

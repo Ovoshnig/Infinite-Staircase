@@ -8,6 +8,7 @@ public class ProjectLifetimeScope : LifetimeScope
     [SerializeField] private GameSettings _gameSettings;
     [SerializeField] private AudioMixerGroup _audioMixerGroup;
     [SerializeField] private MusicPlayer _musicPlayer;
+    [SerializeField] private InventorySettings _inventorySettings;
 
     protected override void Configure(IContainerBuilder builder)
     {
@@ -43,6 +44,11 @@ public class ProjectLifetimeScope : LifetimeScope
         builder.Register<MusicQueue>(Lifetime.Singleton);
         builder.RegisterComponentInNewPrefab(_musicPlayer, Lifetime.Singleton)
             .DontDestroyOnLoad();
+
+        builder.RegisterInstance(_inventorySettings);
+        builder.Register<ItemDefinitionLoader>(Lifetime.Singleton);
+        builder.Register<Inventory>(Lifetime.Singleton);
+        builder.RegisterEntryPoint<InventorySaver>(Lifetime.Singleton);
     }
 
     protected override void Awake()

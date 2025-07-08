@@ -51,3 +51,4 @@ MonoBehaviour:
   _gameSettings: {fileID: 11400000, guid: 0988861611452554ba55170e30c85ebb, type: 2}
   _audioMixerGroup: {fileID: 24300002, guid: 4589c14a7bd6ca145b694b55f7a0bc4e, type: 2}
   _musicPlayer: {fileID: 6516912311964683017, guid: 1bb08e8958a349646acc1b46149bbe5b, type: 3}
+  _inventorySettings: {fileID: 11400000, guid: 181e5f6e881c1474c964db47dea5dcd3, type: 2}
