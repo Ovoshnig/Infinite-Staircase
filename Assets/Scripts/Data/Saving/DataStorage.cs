@@ -4,6 +4,7 @@ using R3;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using UnityEngine;
 using VContainer.Unity;
 
@@ -54,12 +55,23 @@ public abstract class DataStorage : IInitializable, IDisposable
 
     public virtual void ResetData()
     {
-        foreach (var key in _defaultDataStore.Keys)
+        List<string> keys = _dataStore.Keys.ToList();
+
+        foreach (var key in keys)
         {
             if (_defaultDataStore.TryGetValue(key, out object value))
+            {
                 _dataStore[key] = value;
+            }
             else
-                _dataStore[key] = default;
+            {
+                object existingValue = _dataStore[key];
+                Type type = existingValue?.GetType();
+
+                _dataStore[key] = type != null
+                    ? (type.IsValueType ? Activator.CreateInstance(type) : null)
+                    : null;
+            }
         }
 
         _resetHappened.OnNext(Unit.Default);
