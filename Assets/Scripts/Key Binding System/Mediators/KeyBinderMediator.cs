@@ -42,7 +42,5 @@ public class KeyBinderMediator : Mediator
             .Where(value => !value)
             .Subscribe(_ => _keyBinder.CancelListening())
             .AddTo(CompositeDisposable);
-
-        _keyBinder.Initialize();
     }
 }
