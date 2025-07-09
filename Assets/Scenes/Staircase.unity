@@ -273,58 +273,9 @@ Transform:
   m_Children:
   - {fileID: 966094633}
   - {fileID: 1205798880}
-  - {fileID: 282229348}
+  - {fileID: 965924879}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &282229347
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 282229348}
-  - component: {fileID: 282229349}
-  m_Layer: 0
-  m_Name: MenuInputHandler
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &282229348
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 282229347}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 965924879}
-  m_Father: {fileID: 279571887}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &282229349
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 282229347}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 65d541b7cfa144944bac79eb10f4dbd8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  parentReference:
-    TypeName: 
-  autoRun: 1
-  autoInjectGameObjects: []
 --- !u!1 &366930857
 GameObject:
   m_ObjectHideFlags: 0
@@ -425,7 +376,6 @@ MonoBehaviour:
   autoRun: 1
   autoInjectGameObjects: []
   _windowCanvas: {fileID: 7824020766905238943, guid: ff63e6bdb3799b74fabe58bfac3240a1, type: 3}
-  _inventorySettings: {fileID: 11400000, guid: 181e5f6e881c1474c964db47dea5dcd3, type: 2}
   _itemGenerator: {fileID: 1932447964}
 --- !u!1 &481872784
 GameObject:
@@ -766,7 +716,7 @@ Transform:
   - {fileID: 403342396}
   - {fileID: 1593485767}
   - {fileID: 366930858}
-  m_Father: {fileID: 282229348}
+  m_Father: {fileID: 279571887}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &965924880
 MonoBehaviour:
@@ -781,7 +731,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   parentReference:
-    TypeName: MenuInputHandlerLifetimeScope
+    TypeName: 
   autoRun: 1
   autoInjectGameObjects: []
 --- !u!1 &966094632

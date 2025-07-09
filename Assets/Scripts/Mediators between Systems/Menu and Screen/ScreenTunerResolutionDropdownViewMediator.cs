@@ -3,16 +3,16 @@ using System.Collections.Generic;
 using System.Linq;
 using TMPro;
 
-public class ResolutionDropdownViewScreenTunerMediator : Mediator
+public class ScreenTunerResolutionDropdownViewMediator : Mediator
 {
-    private readonly ResolutionDropdownView _resolutionDropdownView;
     private readonly ScreenTuner _screenTuner;
+    private readonly ResolutionDropdownView _resolutionDropdownView;
 
-    public ResolutionDropdownViewScreenTunerMediator(ResolutionDropdownView resolutionDropdownView, 
-        ScreenTuner screenTuner)
+    public ScreenTunerResolutionDropdownViewMediator(ScreenTuner screenTuner,
+        ResolutionDropdownView resolutionDropdownView)
     {
-        _resolutionDropdownView = resolutionDropdownView;
         _screenTuner = screenTuner;
+        _resolutionDropdownView = resolutionDropdownView;
     }
 
     public override void Initialize()

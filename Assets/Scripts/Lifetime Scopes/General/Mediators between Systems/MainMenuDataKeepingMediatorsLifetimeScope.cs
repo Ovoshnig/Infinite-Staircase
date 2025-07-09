@@ -1,21 +1,36 @@
-using UnityEngine;
 using VContainer;
 using VContainer.Unity;
 
 public class MainMenuDataKeepingMediatorsLifetimeScope : LifetimeScope
 {
-    [SerializeField] private SensitivitySliderView _sensitivitySliderView;
-    [SerializeField] private SoundSliderView _soundSliderView;
-    [SerializeField] private MusicSliderView _musicSliderView;
-
     protected override void Configure(IContainerBuilder builder)
     {
-        builder.RegisterInstance(_sensitivitySliderView);
-        builder.RegisterInstance(_soundSliderView);
-        builder.RegisterInstance(_musicSliderView);
+        MainMenuCanvasView canvasView = FindFirstObjectByType<MainMenuCanvasView>();
+        SensitivitySliderView sensitivitySliderView = canvasView
+            .GetComponentInChildren<SensitivitySliderView>(true);
 
-        builder.RegisterEntryPoint<SensitivitySliderDataKeeperMediator>(Lifetime.Singleton);
-        builder.RegisterEntryPoint<SoundSliderDataKeeperMediator>(Lifetime.Singleton);
-        builder.RegisterEntryPoint<MusicSliderDataKeeperMediator>(Lifetime.Singleton);
+        if (sensitivitySliderView != null)
+        {
+            builder.RegisterInstance(sensitivitySliderView);
+            builder.RegisterEntryPoint<SensitivitySliderDataKeeperMediator>(Lifetime.Singleton);
+        }
+
+        SoundSliderView soundSliderView = canvasView
+            .GetComponentInChildren<SoundSliderView>(true);
+
+        if (soundSliderView != null)
+        {
+            builder.RegisterInstance(soundSliderView);
+            builder.RegisterEntryPoint<SoundSliderDataKeeperMediator>(Lifetime.Singleton);
+        }
+
+        MusicSliderView musicSliderView = canvasView
+            .GetComponentInChildren<MusicSliderView>(true);
+
+        if (musicSliderView != null)
+        {
+            builder.RegisterInstance(musicSliderView);
+            builder.RegisterEntryPoint<MusicSliderDataKeeperMediator>(Lifetime.Singleton);
+        }
     }
 }

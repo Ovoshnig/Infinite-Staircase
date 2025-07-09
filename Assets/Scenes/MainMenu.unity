@@ -2442,60 +2442,16 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 374890503}
   m_CullTransparentMesh: 1
+--- !u!1 &383113215 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5070337348088267490, guid: d8e105ccc665eef4a95eee3e8aba6541, type: 3}
+  m_PrefabInstance: {fileID: 520922011}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &385145155 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 5553912703846147946, guid: 530458200879ce544b4494f4f8612b17, type: 3}
   m_PrefabInstance: {fileID: 489958051}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &407347779
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 407347780}
-  - component: {fileID: 407347781}
-  m_Layer: 0
-  m_Name: MenuInputHandler
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &407347780
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 407347779}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 1784977741}
-  m_Father: {fileID: 1027829602}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &407347781
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 407347779}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 65d541b7cfa144944bac79eb10f4dbd8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  parentReference:
-    TypeName: KeyBindingLifetimeScope
-  autoRun: 1
-  autoInjectGameObjects: []
 --- !u!1 &428687452
 GameObject:
   m_ObjectHideFlags: 0
@@ -3367,7 +3323,10 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 7467374396927711317, guid: d8e105ccc665eef4a95eee3e8aba6541, type: 3}
       insertIndex: -1
       addedObject: {fileID: 463786218}
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 5070337348088267490, guid: d8e105ccc665eef4a95eee3e8aba6541, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 882483480}
   m_SourcePrefab: {fileID: 100100000, guid: d8e105ccc665eef4a95eee3e8aba6541, type: 3}
 --- !u!224 &520922012 stripped
 RectTransform:
@@ -3648,7 +3607,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 566659039}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -3671,8 +3630,6 @@ MonoBehaviour:
     TypeName: 
   autoRun: 1
   autoInjectGameObjects: []
-  _warningResetButtonView: {fileID: 1616897021}
-  _achievedLevelButtonView: {fileID: 759212175}
 --- !u!1 &567900453
 GameObject:
   m_ObjectHideFlags: 0
@@ -4066,17 +4023,6 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 4504044347362564531, guid: 23e19269040b67941b6564b9d786d5fc, type: 3}
   m_PrefabInstance: {fileID: 583961032}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &583961039 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 7971263766048798925, guid: 23e19269040b67941b6564b9d786d5fc, type: 3}
-  m_PrefabInstance: {fileID: 583961032}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cae369b1d433cdc4cb943b6244eebb90, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &609319421
 GameObject:
   m_ObjectHideFlags: 0
@@ -4937,7 +4883,7 @@ PrefabInstance:
     - target: {fileID: 2742781665675524894, guid: 530458200879ce544b4494f4f8612b17, type: 3}
       propertyPath: m_sharedMaterial
       value: 
-      objectReference: {fileID: 416467011290700998, guid: 6aa730cf6ff0722459e6551d78702d11, type: 2}
+      objectReference: {fileID: 5028661192562900701, guid: c11bc1c4fd6f15d4c9ee39d2f3d905fb, type: 2}
     - target: {fileID: 2742781665675524894, guid: 530458200879ce544b4494f4f8612b17, type: 3}
       propertyPath: m_hasFontAssetChanged
       value: 0
@@ -5818,11 +5764,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 878092090}
   m_CullTransparentMesh: 1
---- !u!223 &882483477 stripped
-Canvas:
-  m_CorrespondingSourceObject: {fileID: 1183938464703546559, guid: d8e105ccc665eef4a95eee3e8aba6541, type: 3}
-  m_PrefabInstance: {fileID: 520922011}
+--- !u!114 &882483480
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 383113215}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e13dde9805e104044818739fc4040ecc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &887510223
 GameObject:
   m_ObjectHideFlags: 0
@@ -6596,7 +6549,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 407347780}
+  - {fileID: 1784977741}
   m_Father: {fileID: 1347566815}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1027829603
@@ -6838,17 +6791,6 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 56093845246662599, guid: 6bc53bbb2e50b8b429963fa92095b203, type: 3}
   m_PrefabInstance: {fileID: 1117595123}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1117595126 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 802016509920297466, guid: 6bc53bbb2e50b8b429963fa92095b203, type: 3}
-  m_PrefabInstance: {fileID: 1117595123}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: da3076b174ab3404ab4edc52ec99277d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1121475469
 GameObject:
   m_ObjectHideFlags: 0
@@ -7605,17 +7547,6 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 56093845246662599, guid: 343cf26c1174d3b41bfba48fe7815155, type: 3}
   m_PrefabInstance: {fileID: 1166663387}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1166663390 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 1454200534817467045, guid: 343cf26c1174d3b41bfba48fe7815155, type: 3}
-  m_PrefabInstance: {fileID: 1166663387}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6f15554717125bf4d9c80cba3c35dd71, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &1179661031
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -7932,8 +7863,6 @@ MonoBehaviour:
     TypeName: 
   autoRun: 1
   autoInjectGameObjects: []
-  _seedInputView: {fileID: 1355593905}
-  _firstLevelLoadView: {fileID: 753684675}
 --- !u!1 &1237190237
 GameObject:
   m_ObjectHideFlags: 0
@@ -8239,9 +8168,6 @@ MonoBehaviour:
     TypeName: 
   autoRun: 1
   autoInjectGameObjects: []
-  _sensitivitySliderView: {fileID: 583961039}
-  _soundSliderView: {fileID: 1166663390}
-  _musicSliderView: {fileID: 1117595126}
 --- !u!1 &1317129103
 GameObject:
   m_ObjectHideFlags: 0
@@ -11788,7 +11714,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 407347780}
+  m_Father: {fileID: 1027829602}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1784977742
 MonoBehaviour:
@@ -11803,10 +11729,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   parentReference:
-    TypeName: MenuInputHandlerLifetimeScope
+    TypeName: KeyBindingLifetimeScope
   autoRun: 1
   autoInjectGameObjects: []
-  _mainMenuCanvas: {fileID: 882483477}
+  _mainMenuCanvasView: {fileID: 882483480}
 --- !u!1 &1806313846 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 5553912703846147946, guid: 530458200879ce544b4494f4f8612b17, type: 3}
@@ -13469,7 +13395,6 @@ MonoBehaviour:
     TypeName: NewGameStartMediatorsLifetimeScope
   autoRun: 1
   autoInjectGameObjects: []
-  _achievedLevelLoadView: {fileID: 759212175}
 --- !u!1001 &2108186561
 PrefabInstance:
   m_ObjectHideFlags: 0

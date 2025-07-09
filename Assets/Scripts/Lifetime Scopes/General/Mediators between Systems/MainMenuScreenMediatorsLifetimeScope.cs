@@ -1,21 +1,36 @@
-using UnityEngine;
 using VContainer;
 using VContainer.Unity;
 
 public class MainMenuScreenMediatorsLifetimeScope : LifetimeScope
 {
-    [SerializeField] private FullScreenToggleView _fullScreenToggleView;
-    [SerializeField] private VSyncToggleView _vSyncToggleView;
-    [SerializeField] private ResolutionDropdownView _resolutionDropdownView;
-
     protected override void Configure(IContainerBuilder builder)
     {
-        builder.RegisterInstance(_fullScreenToggleView);
-        builder.RegisterInstance(_vSyncToggleView);
-        builder.RegisterInstance(_resolutionDropdownView);
+        MainMenuCanvasView canvasView = FindFirstObjectByType<MainMenuCanvasView>();
+        FullScreenToggleView fullScreenToggleView = canvasView
+            .GetComponentInChildren<FullScreenToggleView>(true);
 
-        builder.RegisterEntryPoint<FullScreenToggleViewScreenTunerMediator>();
-        builder.RegisterEntryPoint<VSyncToggleViewQualityTunerMediator>();
-        builder.RegisterEntryPoint<ResolutionDropdownViewScreenTunerMediator>();
+        if (fullScreenToggleView != null)
+        {
+            builder.RegisterInstance(fullScreenToggleView);
+            builder.RegisterEntryPoint<ScreenTunerFullScreenToggleViewMediator>();
+        }
+
+        VSyncToggleView vSyncToggleView = canvasView
+            .GetComponentInChildren<VSyncToggleView>(true);
+
+        if (vSyncToggleView != null)
+        {
+            builder.RegisterInstance(vSyncToggleView);
+            builder.RegisterEntryPoint<QualityTunerVSyncToggleViewMediator>();
+        }
+
+        ResolutionDropdownView resolutionDropdownView = canvasView
+            .GetComponentInChildren<ResolutionDropdownView>(true);
+
+        if (resolutionDropdownView != null)
+        {
+            builder.RegisterInstance(resolutionDropdownView);
+            builder.RegisterEntryPoint<ScreenTunerResolutionDropdownViewMediator>();
+        }
     }
 }

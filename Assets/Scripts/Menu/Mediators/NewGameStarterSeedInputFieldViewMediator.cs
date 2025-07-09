@@ -1,15 +1,15 @@
 using R3;
 
-public class SeedInputFieldNewGameStarterMediator : Mediator
+public class NewGameStarterSeedInputFieldViewMediator : Mediator
 {
-    private readonly SeedInputFieldView _seedInputView;
     private readonly NewGameStarter _newGameStarter;
+    private readonly SeedInputFieldView _seedInputView;
 
-    public SeedInputFieldNewGameStarterMediator(SeedInputFieldView seedInputView, 
-        NewGameStarter newGameStarter)
+    public NewGameStarterSeedInputFieldViewMediator(NewGameStarter newGameStarter,
+        SeedInputFieldView seedInputView)
     {
-        _seedInputView = seedInputView;
         _newGameStarter = newGameStarter;
+        _seedInputView = seedInputView;
     }
 
     public override void Initialize()

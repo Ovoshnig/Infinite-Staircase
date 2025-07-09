@@ -1,22 +1,22 @@
 using R3;
 
-public class FullScreenToggleViewScreenTunerMediator : Mediator
+public class ScreenTunerFullScreenToggleViewMediator : Mediator
 {
-    private readonly FullScreenToggleView _fullScreenToggleView;
     private readonly ScreenTuner _screenTuner;
+    private readonly FullScreenToggleView _fullScreenToggleView;
 
-    public FullScreenToggleViewScreenTunerMediator(FullScreenToggleView fullScreenToggleView, 
-        ScreenTuner screenTuner)
+    public ScreenTunerFullScreenToggleViewMediator(ScreenTuner screenTuner,
+        FullScreenToggleView fullScreenToggleView)
     {
-        _fullScreenToggleView = fullScreenToggleView;
         _screenTuner = screenTuner;
+        _fullScreenToggleView = fullScreenToggleView;
     }
 
     public override void Initialize()
     {
         _fullScreenToggleView.IsOn
             .Skip(1)
-            .Subscribe(value => 
+            .Subscribe(value =>
             {
                 if (value)
                     _screenTuner.EnableFullScreen();

@@ -1,18 +1,27 @@
-using UnityEngine;
 using VContainer;
 using VContainer.Unity;
 
 public class MainMenuDataSavingMediatorsLifetimeScope : LifetimeScope
 {
-    [SerializeField] private WarningResetButtonView _warningResetButtonView;
-    [SerializeField] private AchievedLevelButtonView _achievedLevelButtonView;
-
     protected override void Configure(IContainerBuilder builder)
     {
-        builder.RegisterInstance(_warningResetButtonView);
-        builder.RegisterInstance(_achievedLevelButtonView);
+        MainMenuCanvasView canvasView = FindFirstObjectByType<MainMenuCanvasView>();
+        WarningResetButtonView warningResetButtonView = canvasView
+            .GetComponentInChildren<WarningResetButtonView>(true);
 
-        builder.RegisterEntryPoint<WarningResetButtonViewSaveStorageMediator>(Lifetime.Singleton);
-        builder.RegisterEntryPoint<SaveStorageAchievedLevelButtonViewMediator>(Lifetime.Singleton);
+        if (warningResetButtonView != null)
+        {
+            builder.RegisterInstance(warningResetButtonView);
+            builder.RegisterEntryPoint<SaveStorageWarningResetButtonViewMediator>(Lifetime.Singleton);
+        }
+
+        AchievedLevelButtonView achievedLevelButtonView = canvasView
+            .GetComponentInChildren<AchievedLevelButtonView>(true);
+
+        if (achievedLevelButtonView != null)
+        {
+            builder.RegisterInstance(achievedLevelButtonView);
+            builder.RegisterEntryPoint<SaveStorageAchievedLevelButtonViewMediator>(Lifetime.Singleton);
+        }
     }
 }

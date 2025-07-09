@@ -1,20 +1,29 @@
-using UnityEngine;
 using VContainer;
 using VContainer.Unity;
 
 public class NewGameStartMediatorsLifetimeScope : LifetimeScope
 {
-    [SerializeField] private SeedInputFieldView _seedInputView;
-    [SerializeField] private FirstLevelButtonView _firstLevelLoadView;
-
     protected override void Configure(IContainerBuilder builder)
     {
-        builder.RegisterInstance(_seedInputView);
-        builder.RegisterInstance(_firstLevelLoadView);
-
         builder.Register<NewGameStarter>(Lifetime.Singleton);
 
-        builder.RegisterEntryPoint<SeedInputFieldNewGameStarterMediator>(Lifetime.Singleton);
-        builder.RegisterEntryPoint<FirstLevelButtonViewNewGameStarterMediator>(Lifetime.Singleton);
+        MainMenuCanvasView canvasView = FindFirstObjectByType<MainMenuCanvasView>();
+        SeedInputFieldView seedInputFieldView = canvasView
+            .GetComponentInChildren<SeedInputFieldView>(true);
+
+        if (seedInputFieldView != null)
+        {
+            builder.RegisterInstance(seedInputFieldView);
+            builder.RegisterEntryPoint<NewGameStarterSeedInputFieldViewMediator>(Lifetime.Singleton);
+        }
+
+        FirstLevelButtonView firstLevelButtonView = canvasView
+            .GetComponentInChildren<FirstLevelButtonView>(true);
+
+        if (firstLevelButtonView != null)
+        {
+            builder.RegisterInstance(firstLevelButtonView);
+            builder.RegisterEntryPoint<NewGameStarterFirstLevelButtonViewMediator>(Lifetime.Singleton);
+        }
     }
 }

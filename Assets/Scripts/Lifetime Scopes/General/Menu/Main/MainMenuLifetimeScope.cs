@@ -1,21 +1,22 @@
-using UnityEngine;
 using VContainer;
 using VContainer.Unity;
 
 public class MainMenuLifetimeScope : LifetimeScope
 {
-    [SerializeField] private Canvas _mainMenuCanvas;
+    private MainMenuCanvasView _mainMenuCanvasView;
 
     protected override void Configure(IContainerBuilder builder)
     {
-        PanelCloseButtonView[] panelCloseButtonViews = _mainMenuCanvas
+        _mainMenuCanvasView = FindFirstObjectByType<MainMenuCanvasView>();
+        PanelCloseButtonView[] panelCloseButtonViews = _mainMenuCanvasView
             .GetComponentsInChildren<PanelCloseButtonView>(true);
 
         builder.RegisterInstance(panelCloseButtonViews);
 
+        builder.RegisterEntryPoint<MenuInputHandler>(Lifetime.Singleton).AsSelf();
         builder.RegisterEntryPoint<MenuInputHandlerPanelCloseButtonViewMediator>(Lifetime.Singleton);
     }
 
     private void Start() =>
-        Container.InjectGameObject(_mainMenuCanvas.gameObject);
+        Container.InjectGameObject(_mainMenuCanvasView.gameObject);
 }
