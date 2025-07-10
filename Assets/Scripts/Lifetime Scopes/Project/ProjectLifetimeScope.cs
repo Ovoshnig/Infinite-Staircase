@@ -24,7 +24,7 @@ public class ProjectLifetimeScope : LifetimeScope
         builder.RegisterEntryPoint<ScreenInputHandler>(Lifetime.Singleton).AsSelf();
         builder.RegisterEntryPoint<ScreenTuner>(Lifetime.Singleton).AsSelf();
         builder.RegisterEntryPoint<QualityTuner>(Lifetime.Singleton).AsSelf();
-        
+
         builder.Register<InputActions>(Lifetime.Singleton);
 
         builder.RegisterInstance(_gameSettings.TimeSettings);
@@ -39,20 +39,7 @@ public class ProjectLifetimeScope : LifetimeScope
         builder.RegisterEntryPoint<GamePauserAudioMixerTunerMediator>(Lifetime.Singleton);
         builder.RegisterEntryPoint<SoundSliderModel>(Lifetime.Singleton).AsSelf();
         builder.RegisterEntryPoint<MusicSliderModel>(Lifetime.Singleton).AsSelf();
-
-        builder.RegisterEntryPoint(resolver =>
-        {
-            SoundSliderModel soundSliderModel = resolver.Resolve<SoundSliderModel>();
-            AudioMixerTuner audioMixerTuner = resolver.Resolve<AudioMixerTuner>();
-            return new SoundSliderAudioMixerTunerMediator(soundSliderModel, audioMixerTuner);
-        }, Lifetime.Singleton);
-
-        builder.RegisterEntryPoint(resolver =>
-        {
-            MusicSliderModel musicSliderModel = resolver.Resolve<MusicSliderModel>();
-            AudioMixerTuner audioMixerTuner = resolver.Resolve<AudioMixerTuner>();
-            return new MusicSliderAudioMixerTunerMediator(musicSliderModel, audioMixerTuner);
-        }, Lifetime.Singleton);
+        builder.Register<SliderAudioMixerTunerMediatorFactory>(Lifetime.Singleton);
 
         builder.Register<IClipLoader, AddressablesClipLoader>(Lifetime.Singleton);
         builder.Register<ISceneMusicMapper, SceneMusicMapper>(Lifetime.Singleton);
@@ -66,9 +53,16 @@ public class ProjectLifetimeScope : LifetimeScope
         builder.RegisterEntryPoint<InventorySaver>(Lifetime.Singleton);
     }
 
-    protected override void Awake()
+    private void Start()
     {
-        base.Awake();
+        SliderAudioMixerTunerMediatorFactory sliderAudioMixerTunerMediatorFactory = Container
+            .Resolve<SliderAudioMixerTunerMediatorFactory>();
+
+        SoundSliderModel soundSliderModel = Container.Resolve<SoundSliderModel>();
+        sliderAudioMixerTunerMediatorFactory.Create(soundSliderModel);
+
+        MusicSliderModel musicSliderModel = Container.Resolve<MusicSliderModel>();
+        sliderAudioMixerTunerMediatorFactory.Create(musicSliderModel);
 
         Container.Resolve<MusicPlayer>();
     }

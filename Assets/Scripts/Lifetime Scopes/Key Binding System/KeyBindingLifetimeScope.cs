@@ -14,9 +14,9 @@ public class KeyBindingLifetimeScope : LifetimeScope
         MainMenuCanvasView canvasView = FindFirstObjectByType<MainMenuCanvasView>();
         KeyBinderView[] views = canvasView.GetComponentsInChildren<KeyBinderView>(true);
 
-        KeyBinderMediatorFactory factory = Container.Resolve<KeyBinderMediatorFactory>();
+        KeyBinderMediatorFactory mediatorFactory = Container.Resolve<KeyBinderMediatorFactory>();
 
         foreach (var view in views)
-            factory.Create(view);
+            mediatorFactory.Create(view);
     }
 }

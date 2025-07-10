@@ -1,6 +1,6 @@
 ﻿using UnityEngine.InputSystem;
 
-public class KeyBinderMediatorFactory : MediatorFactory<KeyBinderMediator, KeyBinderView>
+public class KeyBinderMediatorFactory : MediatorViewFactory<KeyBinderMediator, KeyBinderView>
 {
     private readonly KeyListeningTracker _listeningTracker;
     private readonly InputActions _inputActions;
@@ -16,8 +16,8 @@ public class KeyBinderMediatorFactory : MediatorFactory<KeyBinderMediator, KeyBi
     public override KeyBinderMediator Create(KeyBinderView view)
     {
         KeyBinder keyBinder = view.InputAction.type == InputActionType.Button
-                ? new ButtonKeyBinder(_listeningTracker, _inputActions, view.InputAction)
-                : new Vector2KeyBinder(_listeningTracker, _inputActions, view.InputAction);
+            ? new ButtonKeyBinder(_listeningTracker, _inputActions, view.InputAction)
+            : new Vector2KeyBinder(_listeningTracker, _inputActions, view.InputAction);
         keyBinder.Initialize();
 
         KeyBinderMediator mediator = new(keyBinder, view);

@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using UnityEngine;
 
-public abstract class MediatorFactory<TMediator, TView> : IDisposable
+public abstract class MediatorFactory<TMediator, TDependency> : IDisposable
     where TMediator : Mediator 
-    where TView : Component
 {
     public List<IDisposable> Disposables { get; private set; } = new();
 
@@ -14,5 +12,5 @@ public abstract class MediatorFactory<TMediator, TView> : IDisposable
             disposable.Dispose();
     }
 
-    public abstract TMediator Create(TView view);
+    public abstract TMediator Create(TDependency dependency);
 }
