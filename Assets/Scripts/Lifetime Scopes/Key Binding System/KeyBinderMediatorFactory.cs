@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using UnityEngine.InputSystem;
+﻿using UnityEngine.InputSystem;
 
-public class KeyBinderMediatorFactory : IDisposable
+public class KeyBinderMediatorFactory : MediatorFactory<KeyBinderMediator, KeyBinderView>
 {
     private readonly KeyListeningTracker _listeningTracker;
     private readonly InputActions _inputActions;
-    private readonly List<IDisposable> _disposables = new();
 
     public KeyBinderMediatorFactory(
         KeyListeningTracker listeningTracker,
@@ -16,22 +13,16 @@ public class KeyBinderMediatorFactory : IDisposable
         _inputActions = inputActions;
     }
 
-    public void Dispose()
+    public override KeyBinderMediator Create(KeyBinderView view)
     {
-        foreach (var disposable in _disposables)
-            disposable.Dispose();
-    }
-
-    public KeyBinderMediator Create(KeyBinderView view)
-    {
-        KeyBinder binder = view.InputAction.type == InputActionType.Button
+        KeyBinder keyBinder = view.InputAction.type == InputActionType.Button
                 ? new ButtonKeyBinder(_listeningTracker, _inputActions, view.InputAction)
                 : new Vector2KeyBinder(_listeningTracker, _inputActions, view.InputAction);
-        binder.Initialize();
+        keyBinder.Initialize();
 
-        KeyBinderMediator mediator = new(binder, view);
+        KeyBinderMediator mediator = new(keyBinder, view);
         mediator.Initialize();
-        _disposables.Add(mediator);
+        Disposables.Add(mediator);
         return mediator;
     }
 }
