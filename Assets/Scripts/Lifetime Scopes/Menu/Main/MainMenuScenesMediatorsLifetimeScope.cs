@@ -14,7 +14,7 @@ public class MainMenuScenesMediatorsLifetimeScope : LifetimeScope
         if (achievedLevelButtonView != null)
         {
             builder.RegisterInstance(achievedLevelButtonView);
-            builder.RegisterEntryPoint<AchievedLevelButtonViewSceneSwitchMediator>(Lifetime.Singleton);
+            builder.RegisterEntryPoint<SceneSwitchAchievedViewMediator>(Lifetime.Singleton);
         }
     }
 }

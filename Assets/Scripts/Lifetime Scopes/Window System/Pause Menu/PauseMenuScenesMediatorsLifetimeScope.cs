@@ -18,7 +18,7 @@ public class PauseMenuScenesMediatorsLifetimeScope : LifetimeScope
             return windowCanvas.GetComponentInChildren<MainMenuButtonView>(includeInactive: true);
         }, Lifetime.Singleton);
 
-        builder.RegisterEntryPoint<CurrentLevelButtonViewSceneSwitchMediator>(Lifetime.Singleton);
-        builder.RegisterEntryPoint<MainMenuButtonViewSceneSwitchMediator>(Lifetime.Singleton);
+        builder.RegisterEntryPoint<SceneSwitchCurrentViewMediator>(Lifetime.Singleton);
+        builder.RegisterEntryPoint<SceneSwitchMenuViewMediator>(Lifetime.Singleton);
     }
 }

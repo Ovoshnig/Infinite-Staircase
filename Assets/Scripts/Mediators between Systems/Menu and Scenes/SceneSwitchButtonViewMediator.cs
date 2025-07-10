@@ -1,15 +1,15 @@
 using R3;
 
-public abstract class SceneButtonViewSceneSwitchMediator : Mediator
+public abstract class SceneSwitchButtonViewMediator : Mediator
 {
-    private readonly SceneButtonView _sceneButtonView;
     private readonly SceneSwitch _sceneSwitch;
+    private readonly SceneButtonView _sceneButtonView;
 
-    public SceneButtonViewSceneSwitchMediator(SceneButtonView sceneButtonView, 
-        SceneSwitch sceneSwitch)
+    public SceneSwitchButtonViewMediator(SceneSwitch sceneSwitch, 
+        SceneButtonView sceneButtonView)
     {
-        _sceneButtonView = sceneButtonView;
         _sceneSwitch = sceneSwitch;
+        _sceneButtonView = sceneButtonView;
     }
 
     protected SceneSwitch SceneSwitch => _sceneSwitch;
