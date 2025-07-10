@@ -1,5 +1,3 @@
-using System;
-
 public class SoundSliderModel : SliderModel
 {
     private readonly AudioSettings _audioSettings;
@@ -13,11 +11,4 @@ public class SoundSliderModel : SliderModel
 
     protected override string DataKey => SettingsConstants.SoundVolumeKey;
     protected override float DefaultValue => _audioSettings.DefaultVolume;
-
-    public override void SetValue(float value)
-    {
-        value = Math.Clamp(value, _audioSettings.MinVolume, _audioSettings.MaxVolume);
-        
-        base.SetValue(value);
-    }
 }

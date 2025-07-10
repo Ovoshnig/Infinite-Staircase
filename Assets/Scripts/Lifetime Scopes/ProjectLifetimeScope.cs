@@ -19,8 +19,6 @@ public class ProjectLifetimeScope : LifetimeScope
         builder.RegisterEntryPoint<SettingsStorage>(Lifetime.Singleton).AsSelf();
         builder.RegisterEntryPoint<KeyBindingOverridesSaver>(Lifetime.Singleton).AsSelf();
         builder.RegisterEntryPoint<SensitivitySliderModel>(Lifetime.Singleton).AsSelf();
-        builder.RegisterEntryPoint<SoundSliderModel>(Lifetime.Singleton).AsSelf();
-        builder.RegisterEntryPoint<MusicSliderModel>(Lifetime.Singleton).AsSelf();
         builder.RegisterEntryPoint<SceneSwitch>(Lifetime.Singleton).AsSelf();
         builder.RegisterEntryPoint<GamePauser>(Lifetime.Singleton).AsSelf();
         builder.RegisterEntryPoint<ScreenInputHandler>(Lifetime.Singleton).AsSelf();
@@ -39,6 +37,8 @@ public class ProjectLifetimeScope : LifetimeScope
         builder.RegisterInstance(_audioMixerGroup);
         builder.Register<AudioMixerTuner>(Lifetime.Singleton).AsSelf();
         builder.RegisterEntryPoint<GamePauserAudioMixerTunerMediator>(Lifetime.Singleton);
+        builder.RegisterEntryPoint<SoundSliderModel>(Lifetime.Singleton).AsSelf();
+        builder.RegisterEntryPoint<MusicSliderModel>(Lifetime.Singleton).AsSelf();
 
         builder.RegisterEntryPoint(resolver =>
         {

@@ -1,6 +1,7 @@
 using R3;
+using VContainer.Unity;
 
-public class MusicSliderAudioMixerTunerMediator : Mediator
+public class MusicSliderAudioMixerTunerMediator : Mediator, IStartable
 {
     private readonly MusicSliderModel _sliderModel;
     private readonly AudioMixerTuner _audioMixerTuner;
@@ -12,6 +13,10 @@ public class MusicSliderAudioMixerTunerMediator : Mediator
     }
 
     public override void Initialize()
+    {
+    }
+
+    public void Start()
     {
         _sliderModel.Value
             .Subscribe(value => _audioMixerTuner.SetMusicVolume(value))

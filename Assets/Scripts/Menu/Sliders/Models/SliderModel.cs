@@ -19,11 +19,15 @@ public abstract class SliderModel : IInitializable, IDisposable
     public void Initialize()
     {
         float value = _dataStorage.Get(DataKey, DefaultValue);
-        SetValue(value);
+        SetClampedValue(value);
     }
 
     public void Dispose() =>
         _dataStorage.Set(DataKey, _value.Value);
 
-    public virtual void SetValue(float value) => _value.Value = value;
+    public void SetClampedValue(float value)
+    {
+        float clampedValue = Math.Clamp(value, MinValue, MaxValue);
+        _value.Value = clampedValue;
+    }
 }
