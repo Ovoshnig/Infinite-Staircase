@@ -30,7 +30,7 @@ public abstract class DropdownView : MonoBehaviour
             .AddTo(this);
     }
 
-    public void SetOptions(List<TMP_Dropdown.OptionData> options) => 
+    public void SetOptions(List<TMP_Dropdown.OptionData> options) =>
         Dropdown.options = options;
 
     public void SetValue(int value) => Dropdown.value = value;
