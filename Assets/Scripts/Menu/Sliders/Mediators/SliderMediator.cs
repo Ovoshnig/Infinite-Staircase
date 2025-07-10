@@ -5,10 +5,9 @@ public class SliderMediator : Mediator
     private readonly SliderModel _sliderModel;
     private readonly SliderView _sliderView;
 
-    public SliderMediator(SliderModel dataKeeper,
-        SliderView sliderView)
+    public SliderMediator(SliderModel sliderModel, SliderView sliderView)
     {
-        _sliderModel = dataKeeper;
+        _sliderModel = sliderModel;
         _sliderView = sliderView;
     }
 

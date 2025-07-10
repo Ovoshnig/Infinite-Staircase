@@ -3620,7 +3620,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 566659039}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d5afd547755cd3847b1967bd2198ac11, type: 3}
+  m_Script: {fileID: 11500000, guid: fef4dee1760ac164da2845a06ee3f9ca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   parentReference:
@@ -8271,7 +8271,7 @@ GameObject:
   - component: {fileID: 1302316609}
   - component: {fileID: 1302316611}
   m_Layer: 0
-  m_Name: MainMenuDataKeepingMediators
+  m_Name: MainMenuSliderMediators
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -8301,7 +8301,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1302316608}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8011322713a487146a09def8eec7e049, type: 3}
+  m_Script: {fileID: 11500000, guid: d5afd547755cd3847b1967bd2198ac11, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   parentReference:

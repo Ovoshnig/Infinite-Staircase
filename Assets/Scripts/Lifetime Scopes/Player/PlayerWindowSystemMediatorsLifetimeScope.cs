@@ -2,7 +2,7 @@ using UnityEngine;
 using VContainer;
 using VContainer.Unity;
 
-public class WindowsPlayerMediatorsLifetimeScope : LifetimeScope
+public class PlayerWindowSystemMediatorsLifetimeScope : LifetimeScope
 {
     protected override void Configure(IContainerBuilder builder)
     {

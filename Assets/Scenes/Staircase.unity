@@ -322,7 +322,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   parentReference:
-    TypeName: WindowsRootLifetimeScope
+    TypeName: WindowSystemLifetimeScope
   autoRun: 1
   autoInjectGameObjects: []
   _characterController: {fileID: 9036547352052814359, guid: 7eaf84d7312f3c54c8e31b402647ff4c, type: 3}
@@ -372,7 +372,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   parentReference:
-    TypeName: WindowsRootLifetimeScope
+    TypeName: WindowSystemLifetimeScope
   autoRun: 1
   autoInjectGameObjects: []
   _windowCanvas: {fileID: 7824020766905238943, guid: ff63e6bdb3799b74fabe58bfac3240a1, type: 3}
@@ -481,7 +481,7 @@ GameObject:
   - component: {fileID: 578508140}
   - component: {fileID: 578508141}
   m_Layer: 0
-  m_Name: WindowsPlayerMediators
+  m_Name: PlayerWindowSystemMediators
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -694,7 +694,7 @@ GameObject:
   - component: {fileID: 965924879}
   - component: {fileID: 965924880}
   m_Layer: 0
-  m_Name: WindowsRoot
+  m_Name: WindowSystem
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -913,7 +913,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   parentReference:
-    TypeName: WindowsRootLifetimeScope
+    TypeName: WindowSystemLifetimeScope
   autoRun: 1
   autoInjectGameObjects: []
   _windowCanvas: {fileID: 5874090302914460108, guid: 430f92455e684724abfd5d02368be160, type: 3}
