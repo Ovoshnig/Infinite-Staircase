@@ -12,7 +12,11 @@ public class MainMenuDataKeepingMediatorsLifetimeScope : LifetimeScope
         if (sensitivitySliderView != null)
         {
             builder.RegisterInstance(sensitivitySliderView);
-            builder.RegisterEntryPoint<SensitivitySliderDataKeeperMediator>(Lifetime.Singleton);
+            builder.RegisterEntryPoint(resolver =>
+            {
+                SensitivitySliderModel sensitivityModel = resolver.Resolve<SensitivitySliderModel>();
+                return new SliderMediator(sensitivityModel, sensitivitySliderView);
+            }, Lifetime.Scoped);
         }
 
         SoundSliderView soundSliderView = canvasView
@@ -21,7 +25,11 @@ public class MainMenuDataKeepingMediatorsLifetimeScope : LifetimeScope
         if (soundSliderView != null)
         {
             builder.RegisterInstance(soundSliderView);
-            builder.RegisterEntryPoint<SoundSliderDataKeeperMediator>(Lifetime.Singleton);
+            builder.RegisterEntryPoint(resolver =>
+            {
+                SoundSliderModel soundVolumeModel = resolver.Resolve<SoundSliderModel>();
+                return new SliderMediator(soundVolumeModel, soundSliderView);
+            }, Lifetime.Scoped);
         }
 
         MusicSliderView musicSliderView = canvasView
@@ -30,7 +38,11 @@ public class MainMenuDataKeepingMediatorsLifetimeScope : LifetimeScope
         if (musicSliderView != null)
         {
             builder.RegisterInstance(musicSliderView);
-            builder.RegisterEntryPoint<MusicSliderDataKeeperMediator>(Lifetime.Singleton);
+            builder.RegisterEntryPoint(resolver =>
+            {
+                MusicSliderModel musicVolumeModel = resolver.Resolve<MusicSliderModel>();
+                return new SliderMediator(musicVolumeModel, musicSliderView);
+            }, Lifetime.Scoped);
         }
     }
 }

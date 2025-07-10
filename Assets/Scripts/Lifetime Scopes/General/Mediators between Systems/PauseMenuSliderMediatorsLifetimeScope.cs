@@ -6,26 +6,37 @@ public class PauseMenuSliderMediatorsLifetimeScope : LifetimeScope
 {
     protected override void Configure(IContainerBuilder builder)
     {
-        builder.Register(resolver =>
+        builder.RegisterEntryPoint(resolver =>
         {
-            Canvas windowCanvas = resolver.Resolve<Canvas>();
-            return windowCanvas.GetComponentInChildren<SensitivitySliderView>(includeInactive: true);
-        }, Lifetime.Singleton);
+            SensitivitySliderModel sensitivityModel = resolver.Resolve<SensitivitySliderModel>();
 
-        builder.Register(resolver =>
+            Canvas windowCanvas = resolver.Resolve<Canvas>();
+            SensitivitySliderView sensitivityView = windowCanvas
+                .GetComponentInChildren<SensitivitySliderView>(includeInactive: true);
+
+            return new SliderMediator(sensitivityModel, sensitivityView);
+        }, Lifetime.Scoped);
+
+        builder.RegisterEntryPoint(resolver =>
         {
-            Canvas windowCanvas = resolver.Resolve<Canvas>();
-            return windowCanvas.GetComponentInChildren<SoundSliderView>(includeInactive: true);
-        }, Lifetime.Singleton);
+            SoundSliderModel soundModel = resolver.Resolve<SoundSliderModel>();
 
-        builder.Register(resolver =>
+            Canvas windowCanvas = resolver.Resolve<Canvas>();
+            SoundSliderView soundView = windowCanvas
+                .GetComponentInChildren<SoundSliderView>(includeInactive: true);
+
+            return new SliderMediator(soundModel, soundView);
+        }, Lifetime.Scoped);
+
+        builder.RegisterEntryPoint(resolver =>
         {
-            Canvas windowCanvas = resolver.Resolve<Canvas>();
-            return windowCanvas.GetComponentInChildren<MusicSliderView>(includeInactive: true);
-        }, Lifetime.Singleton);
+            MusicSliderModel musicModel = resolver.Resolve<MusicSliderModel>();
 
-        builder.RegisterEntryPoint<SensitivitySliderDataKeeperMediator>(Lifetime.Singleton);
-        builder.RegisterEntryPoint<SoundSliderDataKeeperMediator>(Lifetime.Singleton);
-        builder.RegisterEntryPoint<MusicSliderDataKeeperMediator>(Lifetime.Singleton);
+            Canvas windowCanvas = resolver.Resolve<Canvas>();
+            MusicSliderView musicView = windowCanvas
+                .GetComponentInChildren<MusicSliderView>(includeInactive: true);
+
+            return new SliderMediator(musicModel, musicView);
+        }, Lifetime.Scoped);
     }
 }

@@ -22,11 +22,29 @@ public class PlayerLifetimeScope : LifetimeScope
             return characterController.GetComponentInChildren<FirstCameraPriorityChanger>();
         }, Lifetime.Singleton);
 
+        builder.RegisterEntryPoint(resolver =>
+        {
+            SensitivitySliderModel sensitivitySliderModel = resolver.Resolve<SensitivitySliderModel>();
+
+            FirstCameraPriorityChanger firstCameraChanger = resolver.Resolve<FirstCameraPriorityChanger>();
+            InputAxisController firstAxisController = firstCameraChanger.GetComponent<InputAxisController>();
+            return new SensitivitySliderInputAxisControllerMediator(sensitivitySliderModel, firstAxisController);
+        }, Lifetime.Scoped);
+
         builder.Register(resolver =>
         {
             CharacterController characterController = resolver.Resolve<CharacterController>();
             return characterController.GetComponentInChildren<ThirdCameraPriorityChanger>();
         }, Lifetime.Singleton);
+
+        builder.RegisterEntryPoint(resolver =>
+        {
+            SensitivitySliderModel sensitivitySliderModel = resolver.Resolve<SensitivitySliderModel>();
+
+            ThirdCameraPriorityChanger thirdCameraChanger = resolver.Resolve<ThirdCameraPriorityChanger>();
+            InputAxisController thirdAxisController = thirdCameraChanger.GetComponent<InputAxisController>();
+            return new SensitivitySliderInputAxisControllerMediator(sensitivitySliderModel, thirdAxisController);
+        }, Lifetime.Scoped);
     }
 
     private void Start()

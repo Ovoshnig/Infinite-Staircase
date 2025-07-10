@@ -18,15 +18,14 @@ public class ProjectLifetimeScope : LifetimeScope
         builder.RegisterEntryPoint<SaveStorage>(Lifetime.Singleton).AsSelf();
         builder.RegisterEntryPoint<SettingsStorage>(Lifetime.Singleton).AsSelf();
         builder.RegisterEntryPoint<KeyBindingOverridesSaver>(Lifetime.Singleton).AsSelf();
-        builder.RegisterEntryPoint<SensitivityKeeper>(Lifetime.Singleton).AsSelf();
-        builder.RegisterEntryPoint<SoundVolumeKeeper>(Lifetime.Singleton).AsSelf();
-        builder.RegisterEntryPoint<MusicVolumeKeeper>(Lifetime.Singleton).AsSelf();
+        builder.RegisterEntryPoint<SensitivitySliderModel>(Lifetime.Singleton).AsSelf();
+        builder.RegisterEntryPoint<SoundSliderModel>(Lifetime.Singleton).AsSelf();
+        builder.RegisterEntryPoint<MusicSliderModel>(Lifetime.Singleton).AsSelf();
         builder.RegisterEntryPoint<SceneSwitch>(Lifetime.Singleton).AsSelf();
         builder.RegisterEntryPoint<GamePauser>(Lifetime.Singleton).AsSelf();
         builder.RegisterEntryPoint<ScreenInputHandler>(Lifetime.Singleton).AsSelf();
         builder.RegisterEntryPoint<ScreenTuner>(Lifetime.Singleton).AsSelf();
         builder.RegisterEntryPoint<QualityTuner>(Lifetime.Singleton).AsSelf();
-        builder.RegisterEntryPoint<AudioMixerTuner>(Lifetime.Singleton).AsSelf();
         
         builder.Register<InputActions>(Lifetime.Singleton);
 
@@ -38,6 +37,22 @@ public class ProjectLifetimeScope : LifetimeScope
         builder.RegisterInstance(_gameSettings.PlayerSettings);
 
         builder.RegisterInstance(_audioMixerGroup);
+        builder.Register<AudioMixerTuner>(Lifetime.Singleton).AsSelf();
+        builder.RegisterEntryPoint<GamePauserAudioMixerTunerMediator>(Lifetime.Singleton);
+
+        builder.RegisterEntryPoint(resolver =>
+        {
+            SoundSliderModel soundSliderModel = resolver.Resolve<SoundSliderModel>();
+            AudioMixerTuner audioMixerTuner = resolver.Resolve<AudioMixerTuner>();
+            return new SoundSliderAudioMixerTunerMediator(soundSliderModel, audioMixerTuner);
+        }, Lifetime.Singleton);
+
+        builder.RegisterEntryPoint(resolver =>
+        {
+            MusicSliderModel musicSliderModel = resolver.Resolve<MusicSliderModel>();
+            AudioMixerTuner audioMixerTuner = resolver.Resolve<AudioMixerTuner>();
+            return new MusicSliderAudioMixerTunerMediator(musicSliderModel, audioMixerTuner);
+        }, Lifetime.Singleton);
 
         builder.Register<IClipLoader, AddressablesClipLoader>(Lifetime.Singleton);
         builder.Register<ISceneMusicMapper, SceneMusicMapper>(Lifetime.Singleton);

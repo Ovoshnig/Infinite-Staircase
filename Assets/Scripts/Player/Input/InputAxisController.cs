@@ -1,4 +1,3 @@
-using R3;
 using System;
 using System.Linq;
 using UnityEngine;
@@ -8,27 +7,22 @@ using VContainer;
 
 public class InputAxisController : InputAxisControllerBase<InputAxisController.Reader>
 {
-    private SensitivityKeeper _sensitivityKeeper;
-    private PlayerSettings _playerSettings;
     private InputActions.PlayerActions _playerActions;
+    private PlayerSettings _playerSettings;
 
     [Inject]
-    public void Construct(InputActions inputActions, SensitivityKeeper sensitivityKeeper, 
-        PlayerSettings playerSettings)
+    public void Construct(InputActions inputActions, PlayerSettings playerSettings)
     {
         _playerActions = inputActions.Player;
-        _sensitivityKeeper = sensitivityKeeper;
         _playerSettings = playerSettings;
     }
 
     private void Start()
     {
+        _playerActions.Enable();
+
         _playerActions.Look.Subscribe(OnLook);
         _playerActions.Zoom.Subscribe(OnZoom);
-
-        _sensitivityKeeper.Data
-            .Subscribe(value => Controllers.ForEach(controller => controller.Input.Multiplier = value))
-            .AddTo(this);
     }
 
     private void OnDestroy()
@@ -43,6 +37,12 @@ public class InputAxisController : InputAxisControllerBase<InputAxisController.R
     {
         if (Application.isPlaying)
             UpdateControllers();
+    }
+
+    public void SetControllersMultiplier(float value)
+    {
+        foreach (var controller in Controllers)
+            controller.Input.Multiplier = value;
     }
 
     private void OnLook(InputAction.CallbackContext context)

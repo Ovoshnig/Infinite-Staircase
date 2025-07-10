@@ -32,7 +32,7 @@ public abstract class SliderView : MonoBehaviour
             .AddTo(this);
     }
 
-    public void SetValue(float value)
+    public void SetValueWithoutNotify(float value)
     {
         Slider.SetValueWithoutNotify(value);
 
