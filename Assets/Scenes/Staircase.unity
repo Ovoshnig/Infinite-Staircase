@@ -1184,7 +1184,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1802542993}
-  - component: {fileID: 1802542994}
+  - component: {fileID: 1802542997}
   - component: {fileID: 1802542995}
   - component: {fileID: 1802542996}
   m_Layer: 0
@@ -1209,22 +1209,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1593485767}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1802542994
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1802542992}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: aa3dca9828b930043afdbad9e85f26e1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  parentReference:
-    TypeName: PauseMenuWindowLifetimeScope
-  autoRun: 1
-  autoInjectGameObjects: []
 --- !u!114 &1802542995
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1251,6 +1235,22 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 636271a5fe9ae974c81a63e1ceb7af3e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  parentReference:
+    TypeName: PauseMenuWindowLifetimeScope
+  autoRun: 1
+  autoInjectGameObjects: []
+--- !u!114 &1802542997
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1802542992}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8011322713a487146a09def8eec7e049, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   parentReference:

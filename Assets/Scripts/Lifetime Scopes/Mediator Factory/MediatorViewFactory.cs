@@ -5,3 +5,9 @@ public abstract class MediatorViewFactory<TMediator, TView> : MediatorFactory<TM
     where TView : Component
 {
 }
+
+public abstract class MediatorViewFactory<TMediator, TDependency, TView> : MediatorFactory<TMediator, TDependency, TView>
+    where TMediator : Mediator
+    where TView : Component
+{
+}
