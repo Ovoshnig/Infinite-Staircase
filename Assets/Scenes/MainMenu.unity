@@ -7983,8 +7983,7 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 2089902060}
+  m_Children: []
   m_Father: {fileID: 1347566815}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1227242315
@@ -8486,6 +8485,7 @@ Transform:
   m_Children:
   - {fileID: 1027829602}
   - {fileID: 1227242314}
+  - {fileID: 2089902060}
   - {fileID: 566659040}
   - {fileID: 1302316609}
   - {fileID: 370425614}
@@ -13516,7 +13516,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1227242314}
+  m_Father: {fileID: 1347566815}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &2089902061
 MonoBehaviour:
@@ -13531,7 +13531,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   parentReference:
-    TypeName: NewGameStartMediatorsLifetimeScope
+    TypeName: 
   autoRun: 1
   autoInjectGameObjects: []
 --- !u!1001 &2108186561

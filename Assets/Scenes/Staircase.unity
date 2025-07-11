@@ -1185,7 +1185,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1802542993}
   - component: {fileID: 1802542997}
-  - component: {fileID: 1802542995}
+  - component: {fileID: 1802542998}
   - component: {fileID: 1802542996}
   m_Layer: 0
   m_Name: PauseMenuMediators
@@ -1209,22 +1209,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1593485767}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1802542995
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1802542992}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c3a96bcf270d42b45920e73057da523c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  parentReference:
-    TypeName: PauseMenuWindowLifetimeScope
-  autoRun: 1
-  autoInjectGameObjects: []
 --- !u!114 &1802542996
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1251,6 +1235,22 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8011322713a487146a09def8eec7e049, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  parentReference:
+    TypeName: PauseMenuWindowLifetimeScope
+  autoRun: 1
+  autoInjectGameObjects: []
+--- !u!114 &1802542998
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1802542992}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d9c20716a1406ad4aad16ed24d568868, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   parentReference:
