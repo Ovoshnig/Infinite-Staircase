@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using VContainer;
 
 public abstract class MediatorViewFactory<TMediator, TView> : MediatorFactory<TMediator, TView>
@@ -8,17 +7,14 @@ public abstract class MediatorViewFactory<TMediator, TView> : MediatorFactory<TM
 {
     public abstract override TMediator Create(TView view);
 
-    public virtual List<TMediator> CreateForEachView(IObjectResolver container)
+    public virtual TMediator[] CreateForEachView(IObjectResolver container)
     {
         Canvas canvas = container.Resolve<Canvas>();
         TView[] views = canvas.GetComponentsInChildren<TView>(true);
-        List<TMediator> mediators = new();
+        TMediator[] mediators = new TMediator[views.Length];
 
-        foreach (var view in views)
-        {
-            TMediator mediator = Create(view);
-            mediators.Add(mediator);
-        }
+        for (int i = 0; i < views.Length; i++)
+            mediators[i] = Create(views[i]);
 
         return mediators;
     }
@@ -30,17 +26,16 @@ public abstract class MediatorViewFactory<TMediator, TDependency, TView> : Media
 {
     public abstract override TMediator Create(TDependency dependency, TView view);
 
-    public virtual List<TMediator> CreateForEachView(IObjectResolver container)
+    public virtual TMediator[] CreateForEachView(IObjectResolver container)
     {
         Canvas canvas = container.Resolve<Canvas>();
         TView[] views = canvas.GetComponentsInChildren<TView>(true);
-        List<TMediator> mediators = new();
+        TMediator[] mediators = new TMediator[views.Length];
 
-        foreach (var view in views)
+        for (int i = 0; i < views.Length; i++)
         {
             TDependency dependency = container.Resolve<TDependency>();
-            TMediator mediator = Create(dependency, view);
-            mediators.Add(mediator);
+            mediators[i] = Create(dependency, views[i]);
         }
 
         return mediators;

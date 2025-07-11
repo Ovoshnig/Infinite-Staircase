@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using UnityEngine;
 using VContainer;
 
@@ -12,14 +11,15 @@ public class SliderMediatorFactory : MediatorViewFactory<SliderMediator, SliderM
         return sliderMediator;
     }
 
-    public override List<SliderMediator> CreateForEachView(IObjectResolver container)
+    public override SliderMediator[] CreateForEachView(IObjectResolver container)
     {
         Canvas canvas = container.Resolve<Canvas>();
         SliderView[] views = canvas.GetComponentsInChildren<SliderView>(true);
-        List<SliderMediator> mediators = new();
+        SliderMediator[] mediators = new SliderMediator[views.Length];
 
-        foreach (var view in views)
+        for (int i = 0; i < views.Length; i++)
         {
+            SliderView view = views[i];
             SliderModel model = view switch
             {
                 SensitivitySliderView => container.Resolve<SensitivitySliderModel>(),
@@ -27,8 +27,8 @@ public class SliderMediatorFactory : MediatorViewFactory<SliderMediator, SliderM
                 MusicSliderView => container.Resolve<MusicSliderModel>(),
                 _ => throw new System.Exception($"Unknown slider view type: {view.GetType().Name}"),
             };
-            SliderMediator mediator = Create(model, view);
-            mediators.Add(mediator);
+
+            mediators[i] = Create(model, view);
         }
 
         return mediators;
