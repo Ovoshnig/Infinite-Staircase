@@ -1,4 +1,3 @@
-using UnityEngine;
 using VContainer;
 using VContainer.Unity;
 
@@ -9,12 +8,8 @@ public class MenuGameQuitLifetimeScope : LifetimeScope
 
     private void Start()
     {
-        Canvas canvas = Container.Resolve<Canvas>();
-        ApplicationGameQuitViewMediatorFactory factory = Container
+        ApplicationGameQuitViewMediatorFactory mediatorFactory = Container
             .Resolve<ApplicationGameQuitViewMediatorFactory>();
-        GameQuitButtonView[] views = canvas.GetComponentsInChildren<GameQuitButtonView>(true);
-
-        foreach (var view in views)
-            factory.Create(view);
+        mediatorFactory.CreateForEachView(Container);
     }
 }

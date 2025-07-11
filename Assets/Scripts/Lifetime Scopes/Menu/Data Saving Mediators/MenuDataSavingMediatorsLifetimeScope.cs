@@ -1,4 +1,3 @@
-using UnityEngine;
 using VContainer;
 using VContainer.Unity;
 
@@ -12,22 +11,12 @@ public class MenuDataSavingMediatorsLifetimeScope : LifetimeScope
 
     private void Start()
     {
-        Canvas canvas = Container.Resolve<Canvas>();
-
         SaveStorageResetViewMediatorFactory saveStorageResetViewMediatorFactory = Container
             .Resolve<SaveStorageResetViewMediatorFactory>();
-        SaveResetButtonView[] saveResetButtonViews = canvas
-            .GetComponentsInChildren<SaveResetButtonView>(true);
-
-        foreach (var view in saveResetButtonViews)
-            saveStorageResetViewMediatorFactory.Create(view);
+        saveStorageResetViewMediatorFactory.CreateForEachView(Container);
 
         SaveStorageAchievedViewMediatorFactory saveStorageAchievedViewMediatorFactory = Container
             .Resolve<SaveStorageAchievedViewMediatorFactory>();
-        AchievedLevelButtonView[] achievedLevelButtonViews = canvas
-            .GetComponentsInChildren<AchievedLevelButtonView>(true);
-
-        foreach (var view in achievedLevelButtonViews)
-            saveStorageAchievedViewMediatorFactory.Create(view);
+        saveStorageAchievedViewMediatorFactory.CreateForEachView(Container);
     }
 }

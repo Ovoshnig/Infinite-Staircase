@@ -1,4 +1,3 @@
-using UnityEngine;
 using VContainer;
 using VContainer.Unity;
 
@@ -9,12 +8,8 @@ public class MenuSceneMediatorsLifetimeScope : LifetimeScope
 
     private void Start()
     {
-        SceneSwitchButtonViewMediatorFactory factory = Container
+        SceneSwitchButtonViewMediatorFactory mediatorFactory = Container
             .Resolve<SceneSwitchButtonViewMediatorFactory>();
-        Canvas canvas = Container.Resolve<Canvas>();
-        SceneButtonView[] views = canvas.GetComponentsInChildren<SceneButtonView>(true);
-
-        foreach (var view in views)
-            factory.Create(view);
+        mediatorFactory.CreateForEachView(Container);
     }
 }
