@@ -22,8 +22,9 @@ public class ProjectLifetimeScope : LifetimeScope
         builder.RegisterEntryPoint<SceneSwitch>(Lifetime.Singleton).AsSelf();
         builder.RegisterEntryPoint<GamePauser>(Lifetime.Singleton).AsSelf();
         builder.RegisterEntryPoint<ScreenInputHandler>(Lifetime.Singleton).AsSelf();
-        builder.RegisterEntryPoint<ScreenTuner>(Lifetime.Singleton).AsSelf();
-        builder.RegisterEntryPoint<QualityTuner>(Lifetime.Singleton).AsSelf();
+        builder.RegisterEntryPoint<FullScreenTuner>(Lifetime.Singleton).AsSelf();
+        builder.RegisterEntryPoint<VSyncTuner>(Lifetime.Singleton).AsSelf();
+        builder.RegisterEntryPoint<ResolutionTuner>(Lifetime.Singleton).AsSelf();
 
         builder.Register<InputActions>(Lifetime.Singleton);
 

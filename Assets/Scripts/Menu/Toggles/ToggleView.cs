@@ -5,7 +5,7 @@ using UnityEngine.UI;
 [RequireComponent(typeof(Toggle))]
 public abstract class ToggleView : MonoBehaviour
 {
-    private readonly ReactiveProperty<bool> _isOn = new(false);
+    private readonly ReactiveProperty<bool> _isOn = new();
 
     private Toggle _toggle = null;
 
@@ -29,7 +29,15 @@ public abstract class ToggleView : MonoBehaviour
             .AddTo(this);
     }
 
-    public void Enable() => Toggle.SetIsOnWithoutNotify(true);
+    public void SetIsOn(bool value)
+    {
+        Toggle.isOn = value;
+        _isOn.Value = value;
+    }
 
-    public void Disable() => Toggle.SetIsOnWithoutNotify(false);
+    public void SetIsOnWithoutNotify(bool value)
+    {
+        Toggle.SetIsOnWithoutNotify(value);
+        _isOn.Value = value;
+    }
 }

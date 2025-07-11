@@ -12,7 +12,7 @@ public class MainMenuScreenMediatorsLifetimeScope : LifetimeScope
         if (fullScreenToggleView != null)
         {
             builder.RegisterInstance(fullScreenToggleView);
-            builder.RegisterEntryPoint<ScreenTunerFullScreenToggleViewMediator>();
+            builder.RegisterEntryPoint<FullScreenTunerToggleViewMediator>();
         }
 
         VSyncToggleView vSyncToggleView = canvasView
@@ -21,7 +21,7 @@ public class MainMenuScreenMediatorsLifetimeScope : LifetimeScope
         if (vSyncToggleView != null)
         {
             builder.RegisterInstance(vSyncToggleView);
-            builder.RegisterEntryPoint<QualityTunerVSyncToggleViewMediator>();
+            builder.RegisterEntryPoint<VSyncTunerToggleViewMediator>();
         }
 
         ResolutionDropdownView resolutionDropdownView = canvasView
@@ -30,7 +30,7 @@ public class MainMenuScreenMediatorsLifetimeScope : LifetimeScope
         if (resolutionDropdownView != null)
         {
             builder.RegisterInstance(resolutionDropdownView);
-            builder.RegisterEntryPoint<ScreenTunerResolutionDropdownViewMediator>();
+            builder.RegisterEntryPoint<ResolutionTunerDropdownViewMediator>();
         }
     }
 }

@@ -3,12 +3,12 @@ using System;
 using UnityEngine;
 using VContainer.Unity;
 
-public class QualityTuner : IInitializable, IDisposable
+public class VSyncTuner : IInitializable, IDisposable
 {
     private readonly SettingsStorage _settingsStorage;
-    private readonly ReactiveProperty<bool> _isVSyncEnabled = new(false);
+    private readonly ReactiveProperty<bool> _isVSyncEnabled = new();
 
-    public QualityTuner(SettingsStorage settingsStorage) => _settingsStorage = settingsStorage;
+    public VSyncTuner(SettingsStorage settingsStorage) => _settingsStorage = settingsStorage;
 
     public ReadOnlyReactiveProperty<bool> IsVSyncEnabled => _isVSyncEnabled;
 

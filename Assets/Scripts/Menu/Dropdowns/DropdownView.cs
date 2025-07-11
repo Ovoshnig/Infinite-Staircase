@@ -6,7 +6,7 @@ using UnityEngine;
 [RequireComponent(typeof(TMP_Dropdown))]
 public abstract class DropdownView : MonoBehaviour
 {
-    private readonly ReactiveProperty<int> _value = new(0);
+    private readonly ReactiveProperty<int> _value = new();
 
     private TMP_Dropdown _dropdown = null;
 
@@ -33,5 +33,15 @@ public abstract class DropdownView : MonoBehaviour
     public void SetOptions(List<TMP_Dropdown.OptionData> options) =>
         Dropdown.options = options;
 
-    public void SetValue(int value) => Dropdown.value = value;
+    public void SetValue(int value)
+    {
+        Dropdown.value = value;
+        _value.Value = value;
+    }
+
+    public void SetValueWithoutNotify(int value)
+    {
+        Dropdown.SetValueWithoutNotify(value);
+        _value.Value = value;
+    }
 }
