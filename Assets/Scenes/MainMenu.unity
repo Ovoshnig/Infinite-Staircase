@@ -8001,7 +8001,7 @@ GameObject:
   - component: {fileID: 1227242314}
   - component: {fileID: 1227242315}
   m_Layer: 0
-  m_Name: GameStartMediators
+  m_Name: MenuGameStartMediators
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

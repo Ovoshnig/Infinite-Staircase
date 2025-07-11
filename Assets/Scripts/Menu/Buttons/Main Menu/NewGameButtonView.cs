@@ -1,6 +1,4 @@
-﻿using R3;
-using UnityEngine;
-using VContainer;
+﻿using UnityEngine;
 
 public class NewGameButtonView : ButtonView
 {
@@ -8,30 +6,9 @@ public class NewGameButtonView : ButtonView
     [SerializeField] private GameObject _resetWarningPanel;
     [SerializeField] private GameObject _gameCreationPanel;
 
-    private SaveStorage _saveStorage;
+    public void SetActiveResetWarningPanel(bool value) => _resetWarningPanel.SetActive(value);
 
-    [Inject]
-    public void Construct(SaveStorage saveStorage) => 
-        _saveStorage = saveStorage;
+    public void SetActiveGameCreationPanel(bool value) => _gameCreationPanel.SetActive(value);
 
-    protected override void Start()
-    {
-        base.Start();
-
-        Clicked
-            .Subscribe(_ => OnNewGameButtonClicked())
-            .AddTo(this);
-    }
-
-    private void OnNewGameButtonClicked()
-    {
-        bool isSaveCreated = _saveStorage.Get(SaveConstants.SaveCreatedKey, false);
-
-        if (isSaveCreated)
-            _resetWarningPanel.SetActive(true);
-        else
-            _gameCreationPanel.SetActive(true);
-
-        _menuPanel.SetActive(false);
-    }
+    public void SetActiveMenuPanel(bool value) => _menuPanel.SetActive(value);
 }

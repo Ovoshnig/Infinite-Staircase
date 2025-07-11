@@ -2,11 +2,12 @@ using UnityEngine;
 using VContainer;
 using VContainer.Unity;
 
-public class GameStartMediatorsLifetimeScope : LifetimeScope
+public class MenuGameStartMediatorsLifetimeScope : LifetimeScope
 {
     protected override void Configure(IContainerBuilder builder)
     {
         builder.Register<GameStarter>(Lifetime.Singleton);
+        builder.Register<SaveStorageNewGameViewMediatorFactory>(Lifetime.Singleton);
         builder.Register<GameStarterSeedViewMediatorFactory>(Lifetime.Singleton);
         builder.Register<GameStarterFirstLevelViewMediatorFactory>(Lifetime.Singleton);
     }
@@ -14,6 +15,13 @@ public class GameStartMediatorsLifetimeScope : LifetimeScope
     private void Start()
     {
         Canvas canvas = Container.Resolve<Canvas>();
+
+        NewGameButtonView[] newGameViews = canvas.GetComponentsInChildren<NewGameButtonView>();
+        SaveStorageNewGameViewMediatorFactory saveStorageNewGameViewMediatorFactory = Container
+            .Resolve<SaveStorageNewGameViewMediatorFactory>();
+
+        foreach (var newGameView in newGameViews)
+            saveStorageNewGameViewMediatorFactory.Create(newGameView);
 
         SeedInputFieldView[] seedViews = canvas.GetComponentsInChildren<SeedInputFieldView>(true);
         GameStarterSeedViewMediatorFactory gameStarterSeedViewMediatorFactory = Container
