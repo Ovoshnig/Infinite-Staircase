@@ -2295,12 +2295,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 370425613}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1347566815}
+  m_Father: {fileID: 1784977741}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &370425615
 MonoBehaviour:
@@ -2315,7 +2315,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   parentReference:
-    TypeName: 
+    TypeName: MainMenuLifetimeScope
   autoRun: 1
   autoInjectGameObjects: []
 --- !u!1 &374890503
@@ -5773,6 +5773,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e13dde9805e104044818739fc4040ecc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!223 &882483483 stripped
+Canvas:
+  m_CorrespondingSourceObject: {fileID: 1183938464703546559, guid: d8e105ccc665eef4a95eee3e8aba6541, type: 3}
+  m_PrefabInstance: {fileID: 520922011}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &887510223
 GameObject:
   m_ObjectHideFlags: 0
@@ -6545,9 +6550,8 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 1784977741}
-  m_Father: {fileID: 1347566815}
+  m_Children: []
+  m_Father: {fileID: 1784977741}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1027829603
 MonoBehaviour:
@@ -6562,7 +6566,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   parentReference:
-    TypeName: 
+    TypeName: MainMenuLifetimeScope
   autoRun: 1
   autoInjectGameObjects: []
 --- !u!224 &1038149808 stripped
@@ -8284,12 +8288,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1302316608}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1347566815}
+  m_Father: {fileID: 1784977741}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1302316611
 MonoBehaviour:
@@ -8304,7 +8308,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   parentReference:
-    TypeName: 
+    TypeName: MainMenuLifetimeScope
   autoRun: 1
   autoInjectGameObjects: []
 --- !u!1 &1317129103
@@ -8483,12 +8487,9 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 1027829602}
+  - {fileID: 1784977741}
   - {fileID: 1227242314}
-  - {fileID: 2089902060}
   - {fileID: 566659040}
-  - {fileID: 1302316609}
-  - {fileID: 370425614}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1349074715 stripped
@@ -11853,8 +11854,12 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 1027829602}
+  m_Children:
+  - {fileID: 1027829602}
+  - {fileID: 2089902060}
+  - {fileID: 1302316609}
+  - {fileID: 370425614}
+  m_Father: {fileID: 1347566815}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1784977742
 MonoBehaviour:
@@ -11869,9 +11874,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   parentReference:
-    TypeName: KeyBindingLifetimeScope
+    TypeName: 
   autoRun: 1
   autoInjectGameObjects: []
+  _mainMenuCanvas: {fileID: 882483483}
 --- !u!1 &1806313846 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 5553912703846147946, guid: 530458200879ce544b4494f4f8612b17, type: 3}
@@ -13516,7 +13522,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1347566815}
+  m_Father: {fileID: 1784977741}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &2089902061
 MonoBehaviour:
@@ -13531,7 +13537,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   parentReference:
-    TypeName: 
+    TypeName: MainMenuLifetimeScope
   autoRun: 1
   autoInjectGameObjects: []
 --- !u!1001 &2108186561

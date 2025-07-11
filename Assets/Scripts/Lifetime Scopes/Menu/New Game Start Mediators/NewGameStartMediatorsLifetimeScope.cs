@@ -1,3 +1,4 @@
+using UnityEngine;
 using VContainer;
 using VContainer.Unity;
 
@@ -7,8 +8,8 @@ public class NewGameStartMediatorsLifetimeScope : LifetimeScope
     {
         builder.Register<NewGameStarter>(Lifetime.Singleton);
 
-        MainMenuCanvasView canvasView = FindFirstObjectByType<MainMenuCanvasView>();
-        SeedInputFieldView seedInputFieldView = canvasView
+        Canvas canvas = FindFirstObjectByType<Canvas>();
+        SeedInputFieldView seedInputFieldView = canvas
             .GetComponentInChildren<SeedInputFieldView>(true);
 
         if (seedInputFieldView != null)
@@ -17,7 +18,7 @@ public class NewGameStartMediatorsLifetimeScope : LifetimeScope
             builder.RegisterEntryPoint<NewGameStarterSeedInputFieldViewMediator>(Lifetime.Singleton);
         }
 
-        FirstLevelButtonView firstLevelButtonView = canvasView
+        FirstLevelButtonView firstLevelButtonView = canvas
             .GetComponentInChildren<FirstLevelButtonView>(true);
 
         if (firstLevelButtonView != null)

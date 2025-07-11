@@ -11,8 +11,7 @@ public class MenuSceneMediatorsLifetimeScope : LifetimeScope
     {
         SceneSwitchButtonViewMediatorFactory factory = Container
             .Resolve<SceneSwitchButtonViewMediatorFactory>();
-
-        Canvas canvas = FindFirstObjectByType<Canvas>();
+        Canvas canvas = Container.Resolve<Canvas>();
         SceneButtonView[] views = canvas.GetComponentsInChildren<SceneButtonView>(true);
 
         foreach (var view in views)

@@ -13,7 +13,7 @@ public class MenuScreenMediatorsLifetimeScope : LifetimeScope
 
     private void Start()
     {
-        Canvas canvas = FindFirstObjectByType<Canvas>();
+        Canvas canvas = Container.Resolve<Canvas>();
 
         FullScreenToggleView[] fullScreenViews = canvas
             .GetComponentsInChildren<FullScreenToggleView>(true);

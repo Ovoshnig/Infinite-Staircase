@@ -10,8 +10,7 @@ public class MenuSliderMediatorsLifetimeScope : LifetimeScope
     private void Start()
     {
         SliderMediatorFactory sliderMediatorFactory = Container.Resolve<SliderMediatorFactory>();
-
-        Canvas canvas = FindFirstObjectByType<Canvas>();
+        Canvas canvas = Container.Resolve<Canvas>();
         SliderView[] views = canvas.GetComponentsInChildren<SliderView>(true);
 
         foreach (SliderView view in views)

@@ -1,3 +1,4 @@
+using UnityEngine;
 using VContainer;
 using VContainer.Unity;
 
@@ -5,8 +6,8 @@ public class MainMenuDataSavingMediatorsLifetimeScope : LifetimeScope
 {
     protected override void Configure(IContainerBuilder builder)
     {
-        MainMenuCanvasView canvasView = FindFirstObjectByType<MainMenuCanvasView>();
-        WarningResetButtonView warningResetButtonView = canvasView
+        Canvas canvas = FindFirstObjectByType<Canvas>();
+        WarningResetButtonView warningResetButtonView = canvas
             .GetComponentInChildren<WarningResetButtonView>(true);
 
         if (warningResetButtonView != null)
@@ -15,7 +16,7 @@ public class MainMenuDataSavingMediatorsLifetimeScope : LifetimeScope
             builder.RegisterEntryPoint<SaveStorageWarningResetButtonViewMediator>(Lifetime.Singleton);
         }
 
-        AchievedLevelButtonView achievedLevelButtonView = canvasView
+        AchievedLevelButtonView achievedLevelButtonView = canvas
             .GetComponentInChildren<AchievedLevelButtonView>(true);
 
         if (achievedLevelButtonView != null)
