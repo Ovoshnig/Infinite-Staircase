@@ -8,7 +8,7 @@ public abstract class SliderView : MonoBehaviour
     [SerializeField] private Image _fillingImage;
     [SerializeField] private Sprite[] _fillingSprites;
 
-    private readonly ReactiveProperty<float> _value = new(0f);
+    private readonly ReactiveProperty<float> _value = new();
 
     private Slider _slider = null;
 
@@ -32,10 +32,28 @@ public abstract class SliderView : MonoBehaviour
             .AddTo(this);
     }
 
+    public void SetValue(float value)
+    {
+        Slider.value = value;
+        _value.Value = value;
+
+        SetFillingSprite(value);
+    }
+
     public void SetValueWithoutNotify(float value)
     {
         Slider.SetValueWithoutNotify(value);
+        _value.Value = value;
 
+        SetFillingSprite(value);
+    }
+
+    public void SetMinValue(float value) => Slider.minValue = value;
+
+    public void SetMaxValue(float value) => Slider.maxValue = value;
+
+    private void SetFillingSprite(float value)
+    {
         if (_fillingImage != null && _fillingSprites.Length > 1)
         {
             float percentagePerImage = 1f / (_fillingSprites.Length - 1);
@@ -44,8 +62,4 @@ public abstract class SliderView : MonoBehaviour
             _fillingImage.sprite = _fillingSprites[spriteIndex];
         }
     }
-
-    public void SetMinValue(float value) => Slider.minValue = value;
-
-    public void SetMaxValue(float value) => Slider.maxValue = value;
 }
