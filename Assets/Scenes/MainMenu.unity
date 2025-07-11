@@ -3582,7 +3582,7 @@ GameObject:
   - component: {fileID: 566659040}
   - component: {fileID: 566659041}
   m_Layer: 0
-  m_Name: MainMenuDataSavingMediators
+  m_Name: MenuDataSavingMediators
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3601,7 +3601,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1347566815}
+  m_Father: {fileID: 1784977741}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &566659041
 MonoBehaviour:
@@ -3616,7 +3616,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   parentReference:
-    TypeName: 
+    TypeName: MenuSliderMediatorsLifetimeScope
   autoRun: 1
   autoInjectGameObjects: []
 --- !u!1 &567900453
@@ -8468,7 +8468,6 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1784977741}
-  - {fileID: 566659040}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1349074715 stripped
@@ -11839,6 +11838,7 @@ Transform:
   - {fileID: 1302316609}
   - {fileID: 370425614}
   - {fileID: 1227242314}
+  - {fileID: 566659040}
   m_Father: {fileID: 1347566815}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1784977742

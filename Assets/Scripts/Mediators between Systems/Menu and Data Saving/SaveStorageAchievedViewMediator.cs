@@ -1,11 +1,11 @@
 ﻿using R3;
 
-public class SaveStorageAchievedLevelButtonViewMediator : Mediator
+public class SaveStorageAchievedViewMediator : Mediator
 {
     private readonly SaveStorage _saveStorage;
     private readonly AchievedLevelButtonView _achievedLevelButtonView;
 
-    public SaveStorageAchievedLevelButtonViewMediator(SaveStorage saveStorage, 
+    public SaveStorageAchievedViewMediator(SaveStorage saveStorage, 
         AchievedLevelButtonView achievedLevelButtonView)
     {
         _saveStorage = saveStorage;
