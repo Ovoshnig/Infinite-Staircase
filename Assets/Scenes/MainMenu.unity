@@ -2281,7 +2281,7 @@ GameObject:
   - component: {fileID: 370425614}
   - component: {fileID: 370425615}
   m_Layer: 0
-  m_Name: MainMenuScreenMediators
+  m_Name: MenuScreenMediators
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -8270,7 +8270,7 @@ GameObject:
   - component: {fileID: 1302316609}
   - component: {fileID: 1302316611}
   m_Layer: 0
-  m_Name: MainMenuSliderMediators
+  m_Name: MenuSliderMediators
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -13497,7 +13497,7 @@ GameObject:
   - component: {fileID: 2089902060}
   - component: {fileID: 2089902061}
   m_Layer: 0
-  m_Name: MainMenuScenesMediators
+  m_Name: MenuScenesMediators
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
