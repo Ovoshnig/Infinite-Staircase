@@ -1,21 +1,21 @@
 using R3;
 
-public class NewGameStarterFirstLevelButtonViewMediator : Mediator
+public class GameStarterFirstLevelViewMediator : Mediator
 {
-    private readonly NewGameStarter _newGameStarter;
+    private readonly GameStarter _gameStarter;
     private readonly FirstLevelButtonView _firstLevelButtonView;
 
-    public NewGameStarterFirstLevelButtonViewMediator(NewGameStarter newGameStarter, 
+    public GameStarterFirstLevelViewMediator(GameStarter gameStarter, 
         FirstLevelButtonView firstLevelButtonView)
     {
-        _newGameStarter = newGameStarter;
+        _gameStarter = gameStarter;
         _firstLevelButtonView = firstLevelButtonView;
     }
 
     public override void Initialize()
     {
         _firstLevelButtonView.Clicked
-            .Subscribe(_ => _newGameStarter.StartGame())
+            .Subscribe(_ => _gameStarter.StartGame())
             .AddTo(CompositeDisposable);
     }
 }

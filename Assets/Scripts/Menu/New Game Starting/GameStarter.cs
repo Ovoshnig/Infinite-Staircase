@@ -1,7 +1,7 @@
 using R3;
 using Random = System.Random;
 
-public class NewGameStarter
+public class GameStarter
 {
     private readonly SaveStorage _saveStorage;
     private readonly WorldGenerationSettings _generationSettings;
@@ -9,7 +9,7 @@ public class NewGameStarter
 
     private string _seedText = string.Empty;
 
-    public NewGameStarter(SaveStorage saveStorage, WorldGenerationSettings generationSettings)
+    public GameStarter(SaveStorage saveStorage, WorldGenerationSettings generationSettings)
     {
         _saveStorage = saveStorage;
         _generationSettings = generationSettings;
