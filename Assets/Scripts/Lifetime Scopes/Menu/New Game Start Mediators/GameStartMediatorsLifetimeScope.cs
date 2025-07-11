@@ -7,24 +7,27 @@ public class GameStartMediatorsLifetimeScope : LifetimeScope
     protected override void Configure(IContainerBuilder builder)
     {
         builder.Register<GameStarter>(Lifetime.Singleton);
+        builder.Register<GameStarterSeedViewMediatorFactory>(Lifetime.Singleton);
+        builder.Register<GameStarterFirstLevelViewMediatorFactory>(Lifetime.Singleton);
+    }
 
-        Canvas canvas = FindFirstObjectByType<Canvas>();
-        SeedInputFieldView seedInputFieldView = canvas
-            .GetComponentInChildren<SeedInputFieldView>(true);
+    private void Start()
+    {
+        Canvas canvas = Container.Resolve<Canvas>();
 
-        if (seedInputFieldView != null)
-        {
-            builder.RegisterInstance(seedInputFieldView);
-            builder.RegisterEntryPoint<GameStarterSeedViewMediator>(Lifetime.Singleton);
-        }
+        SeedInputFieldView[] seedViews = canvas.GetComponentsInChildren<SeedInputFieldView>(true);
+        GameStarterSeedViewMediatorFactory gameStarterSeedViewMediatorFactory = Container
+            .Resolve<GameStarterSeedViewMediatorFactory>();
 
-        FirstLevelButtonView firstLevelButtonView = canvas
-            .GetComponentInChildren<FirstLevelButtonView>(true);
+        foreach (var seedView in seedViews)
+            gameStarterSeedViewMediatorFactory.Create(seedView);
 
-        if (firstLevelButtonView != null)
-        {
-            builder.RegisterInstance(firstLevelButtonView);
-            builder.RegisterEntryPoint<GameStarterFirstLevelViewMediator>(Lifetime.Singleton);
-        }
+        FirstLevelButtonView[] firstLevelViews = canvas
+            .GetComponentsInChildren<FirstLevelButtonView>(true);
+        GameStarterFirstLevelViewMediatorFactory gameStarterFirstLevelViewMediatorFactory = Container
+            .Resolve<GameStarterFirstLevelViewMediatorFactory>();
+
+        foreach (var firstLevelView in firstLevelViews)
+            gameStarterFirstLevelViewMediatorFactory.Create(firstLevelView);
     }
 }
