@@ -19,6 +19,7 @@ public class KeyBinderMediatorFactory : MediatorViewFactory<KeyBinderMediator, K
             ? new ButtonKeyBinder(_listeningTracker, _inputActions, view.InputAction)
             : new Vector2KeyBinder(_listeningTracker, _inputActions, view.InputAction);
         keyBinder.Initialize();
+        Disposables.Add(keyBinder);
 
         KeyBinderMediator mediator = new(keyBinder, view);
         mediator.Initialize();

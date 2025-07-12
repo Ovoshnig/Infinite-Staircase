@@ -1,9 +1,10 @@
 using R3;
+using System;
 using System.Linq;
 using UnityEngine.InputSystem;
 using VContainer.Unity;
 
-public abstract class KeyBinder : IKeyBinder, IInitializable
+public abstract class KeyBinder : IKeyBinder, IInitializable, IDisposable
 {
     private readonly KeyListeningTracker _listeningTracker;
     private readonly InputActions _inputActions;
@@ -11,8 +12,7 @@ public abstract class KeyBinder : IKeyBinder, IInitializable
     private readonly ReactiveProperty<bool> _hasOverrides = new(false);
     private readonly ReactiveProperty<string> _bindingText = new("Key");
     private readonly ReactiveProperty<bool> _isListening = new(false);
-
-    private CompositeDisposable _compositeDisposable = new();
+    private readonly CompositeDisposable _compositeDisposable = new();
 
     public KeyBinder(KeyListeningTracker listeningTracker, 
         InputActions InputActions, InputAction inputAction)
@@ -38,10 +38,13 @@ public abstract class KeyBinder : IKeyBinder, IInitializable
         _bindingText.Value = GetActionDisplayName();
     }
 
+    public virtual void Dispose() => _compositeDisposable?.Dispose();
+
     public virtual void StartListening()
     {
         InputSystem.onAnyButtonPress
             .ToObservable()
+            .Where(control => control.device is Keyboard)
             .Subscribe(OnAnyButtonPressed)
             .AddTo(_compositeDisposable);
 
@@ -80,9 +83,7 @@ public abstract class KeyBinder : IKeyBinder, IInitializable
 
     protected virtual void StopListening()
     {
-        _compositeDisposable?.Dispose();
-        _compositeDisposable = new CompositeDisposable();
-
+        _compositeDisposable.Clear();
         _listeningTracker.StopListening();
         _isListening.Value = false;
     }

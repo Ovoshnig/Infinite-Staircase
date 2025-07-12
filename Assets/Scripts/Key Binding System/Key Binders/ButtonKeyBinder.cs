@@ -1,3 +1,4 @@
+using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class ButtonKeyBinder : KeyBinder
@@ -27,9 +28,6 @@ public class ButtonKeyBinder : KeyBinder
 
     protected override void OnAnyButtonPressed(InputControl control)
     {
-        if (control.device is not Keyboard)
-            return;
-
         if (control == Keyboard.current.escapeKey)
             CancelListening();
         else
