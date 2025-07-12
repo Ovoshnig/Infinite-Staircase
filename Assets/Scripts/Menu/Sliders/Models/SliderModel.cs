@@ -5,9 +5,10 @@ using VContainer.Unity;
 public abstract class SliderModel : IInitializable, IDisposable
 {
     private readonly ReactiveProperty<float> _value = new();
-    private readonly DataStorage _dataStorage;
+    private readonly SettingsStorage _settingsStorage;
+    private readonly CompositeDisposable _compositeDisposable = new();
 
-    public SliderModel(DataStorage dataStorage) => _dataStorage = dataStorage;
+    public SliderModel(SettingsStorage settingsStorage) => _settingsStorage = settingsStorage;
 
     public ReadOnlyReactiveProperty<float> Value => _value;
     public abstract float MinValue { get; }
@@ -18,12 +19,20 @@ public abstract class SliderModel : IInitializable, IDisposable
 
     public void Initialize()
     {
-        float value = _dataStorage.Get(DataKey, DefaultValue);
+        float value = _settingsStorage.Get(DataKey, DefaultValue);
         SetClampedValue(value);
+
+        _settingsStorage.ResetHappened
+            .Subscribe(_ => _value.Value = DefaultValue)
+            .AddTo(_compositeDisposable);
     }
 
-    public void Dispose() =>
-        _dataStorage.Set(DataKey, _value.Value);
+    public void Dispose()
+    {
+        _settingsStorage.Set(DataKey, _value.Value);
+
+        _compositeDisposable?.Dispose();
+    }
 
     public void SetClampedValue(float value)
     {

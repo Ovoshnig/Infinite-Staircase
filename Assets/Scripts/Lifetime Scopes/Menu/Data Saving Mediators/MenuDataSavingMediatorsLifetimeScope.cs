@@ -7,6 +7,7 @@ public class MenuDataSavingMediatorsLifetimeScope : LifetimeScope
     {
         builder.Register<SaveStorageResetViewMediatorFactory>(Lifetime.Singleton);
         builder.Register<SaveStorageAchievedViewMediatorFactory>(Lifetime.Singleton);
+        builder.Register<SettingsStorageResetViewMediatorFactory>(Lifetime.Singleton);
     }
 
     private void Start()
@@ -18,5 +19,9 @@ public class MenuDataSavingMediatorsLifetimeScope : LifetimeScope
         SaveStorageAchievedViewMediatorFactory saveStorageAchievedViewMediatorFactory = Container
             .Resolve<SaveStorageAchievedViewMediatorFactory>();
         saveStorageAchievedViewMediatorFactory.CreateForEachView(Container);
+
+        SettingsStorageResetViewMediatorFactory settingsStorageResetViewMediatorFactory = Container
+            .Resolve<SettingsStorageResetViewMediatorFactory>();
+        settingsStorageResetViewMediatorFactory.CreateForEachView(Container);
     }
 }
