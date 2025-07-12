@@ -2,24 +2,25 @@ using Cysharp.Threading.Tasks;
 using R3;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading;
 using UnityEngine;
-using VContainer;
+using VContainer.Unity;
 
-public class MusicPlayer : MonoBehaviour
+public class MusicPlayer : IInitializable, IDisposable
 {
-    private AudioSource _audioSource;
-    private MusicQueue _musicQueue;
-    private IClipLoader _clipLoader;
-    private ISceneMusicMapper _sceneMusicMapper;
-    private SceneSwitch _sceneSwitch;
+    private readonly MusicQueue _musicQueue;
+    private readonly IClipLoader _clipLoader;
+    private readonly ISceneMusicMapper _sceneMusicMapper;
+    private readonly SceneSwitch _sceneSwitch;
+    private readonly Subject<AudioClip> _playbackStarted = new();
+    private readonly Subject<Unit> _playbackEnded = new();
+    private readonly CompositeDisposable _compositeDisposable = new();
+
     private Dictionary<MusicCategory, IEnumerable<object>> _musicClipKeys;
     private AudioClip _pastClip = null;
-    private CancellationTokenSource _cts;
+    private CancellationTokenSource _cts = new();
 
-    [Inject]
-    public void Construct(IClipLoader clipLoader, MusicQueue musicQueue,
+    public MusicPlayer(IClipLoader clipLoader, MusicQueue musicQueue,
         ISceneMusicMapper sceneMusicMapper, SceneSwitch sceneSwitch)
     {
         _clipLoader = clipLoader;
@@ -28,12 +29,11 @@ public class MusicPlayer : MonoBehaviour
         _sceneSwitch = sceneSwitch;
     }
 
-    private void Awake() => _audioSource = GetComponent<AudioSource>();
+    public Observable<AudioClip> PlaybackStarted => _playbackStarted;
+    public Observable<Unit> PlaybackEnded => _playbackEnded;
 
-    private async void Start()
+    public async void Initialize()
     {
-        _cts = new CancellationTokenSource();
-
         try
         {
             _musicClipKeys = await _clipLoader.LoadClipKeysAsync(_cts.Token);
@@ -46,14 +46,18 @@ public class MusicPlayer : MonoBehaviour
         _sceneSwitch.IsSceneLoading
             .Where(value => !value)
             .Subscribe(value => TryPlayMusic())
-            .AddTo(this);
+            .AddTo(_compositeDisposable);
     }
 
-    private void OnDestroy() => _cts?.CancelAndDispose();
+    public void Dispose()
+    {
+        _cts?.CancelAndDispose();
+        _compositeDisposable?.Dispose();
+    }
 
     private bool TryPlayMusic()
     {
-        _cts?.Cancel();
+        _cts?.CancelAndDispose();
         _cts = new CancellationTokenSource();
 
         MusicCategory category = _sceneMusicMapper.GetMusicCategory(_sceneSwitch.CurrentSceneType);
@@ -75,7 +79,7 @@ public class MusicPlayer : MonoBehaviour
         _musicQueue.SetClipKeys(clipKeys);
         _musicQueue.ShuffleClipKeys();
 
-        while (!_cts.Token.IsCancellationRequested && isActiveAndEnabled)
+        while (!_cts.Token.IsCancellationRequested)
             await PlayNextClipAsync();
     }
 
@@ -93,17 +97,15 @@ public class MusicPlayer : MonoBehaviour
             return;
 
         AudioClip clip = await _clipLoader.LoadClipAsync(nextClipKey, _cts.Token);
-        _audioSource.clip = clip;
-        _audioSource.Play();
+        _playbackStarted.OnNext(clip);
         _pastClip = clip;
 
-        await UniTask.WaitWhile(() => _audioSource.isPlaying, cancellationToken: _cts.Token);
+        await UniTask.WaitForSeconds(clip.length, cancellationToken: _cts.Token);
     }
 
     private void ReleaseClip(AudioClip clip)
     {
-        _audioSource.Stop();
-        _audioSource.clip = null;
+        _playbackEnded.OnNext(Unit.Default);
         _clipLoader.UnloadClip(clip);
         Resources.UnloadAsset(clip);
     }

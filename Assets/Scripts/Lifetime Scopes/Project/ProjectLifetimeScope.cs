@@ -7,7 +7,7 @@ public class ProjectLifetimeScope : LifetimeScope
 {
     [SerializeField] private GameSettings _gameSettings;
     [SerializeField] private AudioMixerGroup _audioMixerGroup;
-    [SerializeField] private MusicPlayer _musicPlayer;
+    [SerializeField] private MusicPlayerView _musicPlayerView;
     [SerializeField] private InventorySettings _inventorySettings;
 
     protected override void Configure(IContainerBuilder builder)
@@ -45,8 +45,10 @@ public class ProjectLifetimeScope : LifetimeScope
         builder.Register<IClipLoader, AddressablesClipLoader>(Lifetime.Singleton);
         builder.Register<ISceneMusicMapper, SceneMusicMapper>(Lifetime.Singleton);
         builder.Register<MusicQueue>(Lifetime.Singleton);
-        builder.RegisterComponentInNewPrefab(_musicPlayer, Lifetime.Singleton)
+        builder.RegisterEntryPoint<MusicPlayer>(Lifetime.Singleton).AsSelf();
+        builder.RegisterComponentInNewPrefab(_musicPlayerView, Lifetime.Singleton)
             .DontDestroyOnLoad();
+        builder.RegisterEntryPoint<MusicPlayerMediator>(Lifetime.Singleton);
 
         builder.RegisterInstance(_inventorySettings);
         builder.Register<ItemDefinitionLoader>(Lifetime.Singleton);
@@ -65,6 +67,6 @@ public class ProjectLifetimeScope : LifetimeScope
         MusicSliderModel musicSliderModel = Container.Resolve<MusicSliderModel>();
         sliderAudioMixerTunerMediatorFactory.Create(musicSliderModel);
 
-        Container.Resolve<MusicPlayer>();
+        Container.Resolve<MusicPlayerView>();
     }
 }
