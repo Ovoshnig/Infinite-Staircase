@@ -34,7 +34,6 @@ public class PlayerSoundPlayer : IDisposable
             (_footstepResource, _landResource) = await _soundLoader
                 .LoadSoundsAsync(_footstepReference, _landReference, _cts.Token);
             _resourcesLoaded.OnNext((_footstepResource, _landResource));
-
         }
         catch (OperationCanceledException)
         {
