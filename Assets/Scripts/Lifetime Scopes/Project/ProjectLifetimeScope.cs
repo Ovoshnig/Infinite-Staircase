@@ -45,10 +45,11 @@ public class ProjectLifetimeScope : LifetimeScope
         builder.Register<IClipLoader, AddressablesClipLoader>(Lifetime.Singleton);
         builder.Register<ISceneMusicMapper, SceneMusicMapper>(Lifetime.Singleton);
         builder.Register<MusicQueue>(Lifetime.Singleton);
-        builder.RegisterEntryPoint<MusicPlayer>(Lifetime.Singleton).AsSelf();
+        builder.Register<MusicPlayer>(Lifetime.Singleton);
         builder.RegisterComponentInNewPrefab(_musicPlayerView, Lifetime.Singleton)
             .DontDestroyOnLoad();
         builder.RegisterEntryPoint<MusicPlayerMediator>(Lifetime.Singleton);
+        builder.RegisterEntryPoint<SceneSwitchMusicPlayerMediator>(Lifetime.Singleton);
 
         builder.RegisterInstance(_inventorySettings);
         builder.Register<ItemDefinitionLoader>(Lifetime.Singleton);

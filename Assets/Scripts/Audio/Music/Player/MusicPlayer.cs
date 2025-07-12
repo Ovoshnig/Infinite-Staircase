@@ -6,7 +6,7 @@ using System.Threading;
 using UnityEngine;
 using VContainer.Unity;
 
-public class MusicPlayer : IInitializable, IDisposable
+public class MusicPlayer : IDisposable
 {
     private readonly MusicQueue _musicQueue;
     private readonly IClipLoader _clipLoader;
@@ -14,9 +14,8 @@ public class MusicPlayer : IInitializable, IDisposable
     private readonly SceneSwitch _sceneSwitch;
     private readonly Subject<AudioClip> _playbackStarted = new();
     private readonly Subject<Unit> _playbackEnded = new();
-    private readonly CompositeDisposable _compositeDisposable = new();
 
-    private Dictionary<MusicCategory, IEnumerable<object>> _musicClipKeys;
+    private Dictionary<MusicCategory, IEnumerable<object>> _musicClipKeys = null;
     private AudioClip _pastClip = null;
     private CancellationTokenSource _cts = new();
 
@@ -32,27 +31,19 @@ public class MusicPlayer : IInitializable, IDisposable
     public Observable<AudioClip> PlaybackStarted => _playbackStarted;
     public Observable<Unit> PlaybackEnded => _playbackEnded;
 
-    public async void Initialize()
+    public void Dispose() => _cts?.CancelAndDispose();
+
+    public async UniTask LoadClipKeys()
     {
         try
         {
-            _musicClipKeys = await _clipLoader.LoadClipKeysAsync(_cts.Token);
+            _musicClipKeys ??= await _clipLoader.LoadClipKeysAsync(_cts.Token);
+            TryPlayMusic();
         }
         catch (OperationCanceledException)
         {
             return;
         }
-
-        _sceneSwitch.IsSceneLoading
-            .Where(value => !value)
-            .Subscribe(value => TryPlayMusic())
-            .AddTo(_compositeDisposable);
-    }
-
-    public void Dispose()
-    {
-        _cts?.CancelAndDispose();
-        _compositeDisposable?.Dispose();
     }
 
     private bool TryPlayMusic()
