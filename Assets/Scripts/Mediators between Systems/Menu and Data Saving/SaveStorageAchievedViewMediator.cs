@@ -16,7 +16,7 @@ public class SaveStorageAchievedViewMediator : Mediator
     {
         Observable
             .EveryValueChanged(_achievedLevelButtonView, b => b.isActiveAndEnabled)
-            .Where(value => value)
+            .Where(isActiveAndEnabled => isActiveAndEnabled)
             .Subscribe(_ =>
             {
                 bool saveCreated = _saveStorage.Get(SaveConstants.SaveCreatedKey, false);

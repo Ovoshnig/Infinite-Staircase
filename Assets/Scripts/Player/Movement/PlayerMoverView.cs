@@ -35,11 +35,11 @@ public class PlayerMoverView : MonoBehaviour
     private void Start()
     {
         _playerState.IsJumping
-            .Where(value => value)
+            .Where(isJumping => isJumping)
             .Subscribe(_ => _playerVerticalCalculator.CalculateJumping(ref _verticalMovement))
             .AddTo(this);
         _playerState.IsGrounded
-            .Where(value => value)
+            .Where(isGrounded => isGrounded)
             .Subscribe(_ => _playerVerticalCalculator.CalculateLanding(ref _verticalMovement))
             .AddTo(this);
     }

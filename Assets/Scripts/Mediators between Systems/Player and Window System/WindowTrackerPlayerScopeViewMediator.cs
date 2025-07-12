@@ -1,8 +1,5 @@
 using R3;
-using UnityEngine;
-using UnityEngine.UI;
 
-[RequireComponent(typeof(Image))]
 public class WindowTrackerPlayerScopeViewMediator : Mediator
 {
     private readonly WindowTracker _windowTracker;
@@ -20,14 +17,18 @@ public class WindowTrackerPlayerScopeViewMediator : Mediator
     public override void Initialize()
     {
         _windowTracker.IsOpen
-            .Where(_ => _cameraSwitch.IsFirstPerson.CurrentValue)
-            .Subscribe(value =>
-            {
-                if (value)
-                    _playerScopeView.Disable();
-                else
-                    _playerScopeView.Enable();
-            })
+            .Subscribe(OnWindowOpen)
             .AddTo(CompositeDisposable);
+    }
+    
+    private void OnWindowOpen(bool isOpen)
+    {
+        if (!_cameraSwitch.IsFirstPerson.CurrentValue)
+            return;
+
+        if (isOpen)
+            _playerScopeView.Disable();
+        else
+            _playerScopeView.Enable();
     }
 }

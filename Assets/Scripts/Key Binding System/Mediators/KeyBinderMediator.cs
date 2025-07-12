@@ -14,11 +14,11 @@ public class KeyBinderMediator : Mediator
     public override void Initialize()
     {
         _keyBinder.IsListening
-            .Subscribe(value =>
+            .Subscribe(isListening =>
             {
-                _keyBinderView.SetColor(value);
+                _keyBinderView.SetColor(isListening);
 
-                if (value)
+                if (isListening)
                     _keyBinderView.SetResetButtonInteractable(false);
                 else
                     _keyBinderView.SetResetButtonInteractable(_keyBinder.HasOverrides.CurrentValue);
@@ -39,7 +39,7 @@ public class KeyBinderMediator : Mediator
             .AddTo(CompositeDisposable);
         Observable
             .EveryValueChanged(_keyBinderView, v => v.isActiveAndEnabled)
-            .Where(value => !value)
+            .Where(isActiveAndEnabled => !isActiveAndEnabled)
             .Subscribe(_ => _keyBinder.CancelListening())
             .AddTo(CompositeDisposable);
     }

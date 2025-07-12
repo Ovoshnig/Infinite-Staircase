@@ -21,20 +21,20 @@ public class PlayerAnimator : MonoBehaviour
     private void Start()
     {
         _playerState.IsWalking
-            .Subscribe(value => _animator.SetBool(s_isWalkingId, value))
+            .Subscribe(isWalking => _animator.SetBool(s_isWalkingId, isWalking))
             .AddTo(this);
 
         _playerState.IsRunning
-            .Subscribe(value => _animator.SetBool(s_isRunningId, value))
+            .Subscribe(isRunning => _animator.SetBool(s_isRunningId, isRunning))
             .AddTo(this);
 
         _playerState.IsJumping
-            .Where(value => value)
+            .Where(isJumping => isJumping)
             .Subscribe(_ => _animator.SetTrigger(s_isJumpingId))
             .AddTo(this);
 
         _playerState.IsGrounded
-            .Subscribe(value => _animator.SetBool(s_isGroundedId, value))
+            .Subscribe(isGrounded => _animator.SetBool(s_isGroundedId, isGrounded))
             .AddTo(this);
     }
 }

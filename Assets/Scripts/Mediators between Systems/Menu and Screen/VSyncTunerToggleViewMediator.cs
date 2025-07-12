@@ -19,9 +19,9 @@ public class VSyncTunerToggleViewMediator : Mediator
             .AddTo(CompositeDisposable);
 
         _vSyncToggleView.IsOn
-            .Subscribe(value =>
+            .Subscribe(isOn =>
             {
-                if (value)
+                if (isOn)
                     _vSyncTuner.EnableVSync();
                 else
                     _vSyncTuner.DisableVSync();

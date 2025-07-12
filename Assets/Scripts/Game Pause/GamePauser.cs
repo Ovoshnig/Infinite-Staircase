@@ -22,8 +22,8 @@ public class GamePauser : IInitializable, IDisposable
     public void Initialize()
     {
         _sceneSwitch.IsSceneLoading
-            .Where(value => !value)
-            .Subscribe(value => Unpause())
+            .Where(isLoading => !isLoading)
+            .Subscribe(_ => Unpause())
             .AddTo(_compositeDisposable);
     }
 

@@ -16,9 +16,9 @@ public class WindowTrackerPlayerInputMediator : Mediator
         InputActions.PlayerActions playerActions = _inputActions.Player;
 
         _windowTracker.IsOpen
-            .Subscribe(value =>
+            .Subscribe(isOpen =>
             {
-                if (value)
+                if (isOpen)
                     playerActions.Disable();
                 else
                     playerActions.Enable();

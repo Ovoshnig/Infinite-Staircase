@@ -15,7 +15,7 @@ public class GameStarterSeedViewMediator : Mediator
     public override void Initialize()
     {
         _seedInputView.Text
-            .Subscribe(value => _gameStarter.SetSeedText(value))
+            .Subscribe(text => _gameStarter.SetSeedText(text))
             .AddTo(CompositeDisposable);
     }
 }

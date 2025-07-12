@@ -18,7 +18,7 @@ public class FullScreenTuner : IInitializable, IDisposable
         _isFullScreen.Value = Screen.fullScreen;
 
         _screenInputHandler.IsSwitchFullScreenPressed
-            .Where(value => value)
+            .Where(isPressed => isPressed)
             .Subscribe(_ => OnSwitchFullScreenPressed())
             .AddTo(_compositeDisposable);
     }

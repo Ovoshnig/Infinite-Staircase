@@ -21,13 +21,13 @@ public class MenuInputHandlerPanelCloseButtonViewMediator : Mediator
     public override void Initialize()
     {
         _menuInputHandler.CloseCurrentPressed
-            .Where(value => value)
+            .Where(isPressed => isPressed)
             .Subscribe(_ => TryClosePanel())
             .AddTo(CompositeDisposable);
 
         _keyListeningTracker.IsListening
             .DelayFrame(1)
-            .Subscribe(value => _previousListening = value)
+            .Subscribe(isListening => _previousListening = isListening)
             .AddTo(CompositeDisposable);
     }
 

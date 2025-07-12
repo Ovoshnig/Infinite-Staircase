@@ -16,7 +16,7 @@ public class WindowInputHandlerPanelCloseButtonViewMediator : Mediator
     public override void Initialize()
     {
         _windowInputHandler.CloseCurrentPressed
-            .Where(value => value)
+            .Where(isPressed => isPressed)
             .Subscribe(_ => TryClosePanel())
             .AddTo(CompositeDisposable);
     }

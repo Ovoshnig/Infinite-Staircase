@@ -36,33 +36,33 @@ public class PlayerState : IInitializable, IDisposable
     public void Initialize()
     {
         _playerInputHandler.IsWalkPressed
-           .Subscribe(value =>
+           .Subscribe(isPressed =>
            {
-               _isWalking.OnNext(value);
-               _isRunning.OnNext(value && _playerInputHandler.IsRunPressed.CurrentValue);
+               _isWalking.Value = isPressed;
+               _isRunning.Value = isPressed && _playerInputHandler.IsRunPressed.CurrentValue;
            })
            .AddTo(_compositeDisposable);
 
         _playerInputHandler.IsRunPressed
-            .Subscribe(value => _isRunning.OnNext(value && IsWalking.CurrentValue))
+            .Subscribe(isPressed => _isRunning.Value = isPressed && IsWalking.CurrentValue)
             .AddTo(_compositeDisposable);
 
         _playerInputHandler.IsJumpPressed
-           .Subscribe(value => _isJumping.OnNext(value && _characterController.isGrounded))
+           .Subscribe(isPressed => _isJumping.Value = isPressed && _characterController.isGrounded)
            .AddTo(_compositeDisposable);
 
         _playerInputHandler.IsLookPressed
-           .Subscribe(value => _isLooking.OnNext(value))
+           .Subscribe(isPressed => _isLooking.Value = isPressed)
            .AddTo(_compositeDisposable);
 
         Observable
            .EveryValueChanged(this, p => _characterController.isGrounded)
-           .Subscribe(value => _isGrounded.OnNext(value))
+           .Subscribe(isGrounded => _isGrounded.Value = isGrounded)
            .AddTo(_compositeDisposable);
 
         _isGrounded
-            .Where(value => value)
-            .Subscribe(_ => _isJumping.OnNext(false))
+            .Where(isGrounded => isGrounded)
+            .Subscribe(_ => _isJumping.Value = false)
             .AddTo(_compositeDisposable);
     }
 

@@ -29,9 +29,9 @@ public class InventoryMediator : Mediator, ITickable
         }
 
         _inventory.DraggingSlot
-            .Subscribe(value =>
+            .Subscribe(slot =>
             {
-                if (value != null)
+                if (slot != null)
                 {
                     int index = _inventory.DraggingSlotIndex;
                     _inventoryView.OnDragStarted(index);

@@ -15,7 +15,7 @@ public class SplashScreenPasser : IInitializable, IDisposable
         Play();
 
         _screenInputHandler.IsPassSplashImagePressed
-            .Where(value => value)
+            .Where(isPressed => isPressed)
             .Subscribe(_ => OnPassPressed())
             .AddTo(_compositeDisposable);
     }

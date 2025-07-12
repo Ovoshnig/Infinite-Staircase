@@ -25,11 +25,12 @@ public abstract class Window : IWindow, IInitializable, IDisposable
     public virtual void Initialize() 
     {
         WindowSwitchPressed
-            .Where(value => value)
+            .Where(isPressed => isPressed)
             .Subscribe(_ => OnWindowSwitchPressed())
             .AddTo(_compositeDisposable);
+            
         WindowInputHandler.CloseCurrentPressed
-            .Where(value => value)
+            .Where(isPressed => isPressed)
             .Subscribe(_ => TryClose())
             .AddTo(_compositeDisposable);
     }

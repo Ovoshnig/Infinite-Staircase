@@ -14,9 +14,9 @@ public class WindowTrackerCursorTunerMediator : Mediator
     public override void Initialize()
     {
         _windowTracker.IsOpen
-            .Subscribe(value =>
+            .Subscribe(isOpen =>
             {
-                if (value)
+                if (isOpen)
                     _cursorTuner.ShowCursor();
                 else
                     _cursorTuner.HideCursor();

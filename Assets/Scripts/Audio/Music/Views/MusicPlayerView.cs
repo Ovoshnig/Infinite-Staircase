@@ -5,7 +5,7 @@ public class MusicPlayerView : MonoBehaviour
 {
     private AudioSource _audioSource = null;
 
-    public bool IsPlaying => _audioSource.isPlaying;
+    public bool IsPlaying => AudioSource.isPlaying;
 
     private AudioSource AudioSource
     {

@@ -40,7 +40,7 @@ public class PlayerSoundPlayer : MonoBehaviour
                 .LoadSoundsAsync(_footstepReference, _landReference, _cts.Token);
 
             _playerState.IsGrounded
-            .Where(value => value)
+            .Where(isGrounded => isGrounded)
             .Subscribe(_ => PlayLandSound())
             .AddTo(this);
         }

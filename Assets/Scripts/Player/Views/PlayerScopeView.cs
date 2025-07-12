@@ -17,7 +17,7 @@ public class PlayerScopeView : MonoBehaviour
     private void Start()
     {
         _cameraSwitch.IsFirstPerson
-            .Subscribe(value => _scopeImage.enabled = value)
+            .Subscribe(isFirstPerson => _scopeImage.enabled = isFirstPerson)
             .AddTo(this);
     }
 

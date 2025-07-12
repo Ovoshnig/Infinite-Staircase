@@ -7,7 +7,7 @@ public sealed class ThirdCameraPriorityChanger : CameraPriorityChanger
         base.Start();
 
         CameraSwitch.IsFirstPerson
-            .Subscribe(value => Camera.Priority = value ? 0 : 1)
+            .Subscribe(isFirstPerson => Camera.Priority = isFirstPerson ? 0 : 1)
             .AddTo(CompositeDisposable);
     }
 }
