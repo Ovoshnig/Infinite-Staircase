@@ -26,9 +26,6 @@ public class WindowTrackerPlayerScopeViewMediator : Mediator
         if (!_cameraSwitch.IsFirstPerson.CurrentValue)
             return;
 
-        if (isOpen)
-            _playerScopeView.Disable();
-        else
-            _playerScopeView.Enable();
+        _playerScopeView.SetActive(!isOpen);
     }
 }

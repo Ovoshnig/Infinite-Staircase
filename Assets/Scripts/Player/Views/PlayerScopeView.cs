@@ -1,27 +1,21 @@
-using R3;
 using UnityEngine;
 using UnityEngine.UI;
-using VContainer;
 
 [RequireComponent(typeof(Image))]
 public class PlayerScopeView : MonoBehaviour
 {
-    private CameraSwitch _cameraSwitch;
     private Image _scopeImage;
 
-    [Inject]
-    public void Construct(CameraSwitch cameraSwitch) => _cameraSwitch = cameraSwitch;
-
-    private void Awake() => _scopeImage = GetComponent<Image>();
-
-    private void Start()
+    private Image ScopeImage
     {
-        _cameraSwitch.IsFirstPerson
-            .Subscribe(isFirstPerson => _scopeImage.enabled = isFirstPerson)
-            .AddTo(this);
+        get
+        {
+            if (_scopeImage == null)
+                _scopeImage = GetComponent<Image>();
+
+            return _scopeImage;
+        }
     }
 
-    public void Enable() => _scopeImage.enabled = true;
-
-    public void Disable() => _scopeImage.enabled = false;
+    public void SetActive(bool value) => gameObject.SetActive(value);
 }
