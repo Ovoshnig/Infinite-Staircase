@@ -25,7 +25,6 @@ public class PlayerLifetimeScope : LifetimeScope
         builder.RegisterEntryPoint(resolver =>
         {
             SensitivitySliderModel sensitivitySliderModel = resolver.Resolve<SensitivitySliderModel>();
-
             FirstCameraPriorityChanger firstCameraChanger = resolver.Resolve<FirstCameraPriorityChanger>();
             InputAxisController firstAxisController = firstCameraChanger.GetComponent<InputAxisController>();
             return new SensitivitySliderInputAxisControllerMediator(sensitivitySliderModel, firstAxisController);
@@ -40,11 +39,18 @@ public class PlayerLifetimeScope : LifetimeScope
         builder.RegisterEntryPoint(resolver =>
         {
             SensitivitySliderModel sensitivitySliderModel = resolver.Resolve<SensitivitySliderModel>();
-
             ThirdCameraPriorityChanger thirdCameraChanger = resolver.Resolve<ThirdCameraPriorityChanger>();
             InputAxisController thirdAxisController = thirdCameraChanger.GetComponent<InputAxisController>();
             return new SensitivitySliderInputAxisControllerMediator(sensitivitySliderModel, thirdAxisController);
         }, Lifetime.Scoped);
+
+        builder.Register(resolver =>
+        {
+            CharacterController characterController = resolver.Resolve<CharacterController>();
+            return characterController.GetComponentInChildren<SkinnedMeshRendererView>();
+        }, Lifetime.Singleton);
+
+        builder.RegisterEntryPoint<CameraSwitchSkinnedMeshViewMediator>(Lifetime.Singleton);
     }
 
     private void Start()
