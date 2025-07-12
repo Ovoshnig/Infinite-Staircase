@@ -1,11 +1,10 @@
-using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class ButtonKeyBinder : KeyBinder
 {
-    public ButtonKeyBinder(KeyListeningTracker listeningTracker,
+    public ButtonKeyBinder(KeyListeningTracker listeningTracker, SettingsStorage settingsStorage,
         InputActions inputActions, InputAction inputAction) :
-        base(listeningTracker, inputActions, inputAction)
+        base(listeningTracker, settingsStorage, inputActions, inputAction)
     {
     }
 
@@ -33,7 +32,7 @@ public class ButtonKeyBinder : KeyBinder
         else
             ApplyBinding(control);
     }
-     
+
     protected override void ApplyBinding(InputControl control)
     {
         if (InputAction.controls[0].path != control.path)
@@ -54,7 +53,7 @@ public class ButtonKeyBinder : KeyBinder
                 EnableOverrides();
             }
         }
-        
+
         base.ApplyBinding(control);
     }
 }

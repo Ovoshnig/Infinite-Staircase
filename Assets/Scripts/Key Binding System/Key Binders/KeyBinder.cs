@@ -7,17 +7,20 @@ using VContainer.Unity;
 public abstract class KeyBinder : IKeyBinder, IInitializable, IDisposable
 {
     private readonly KeyListeningTracker _listeningTracker;
+    private readonly SettingsStorage _settingsStorage;
     private readonly InputActions _inputActions;
     private readonly InputAction _inputAction;
     private readonly ReactiveProperty<bool> _hasOverrides = new(false);
     private readonly ReactiveProperty<string> _bindingText = new("Key");
     private readonly ReactiveProperty<bool> _isListening = new(false);
-    private readonly CompositeDisposable _compositeDisposable = new();
+    private readonly CompositeDisposable _settingsDisposable = new();
+    private readonly CompositeDisposable _listeningDisposable = new();
 
-    public KeyBinder(KeyListeningTracker listeningTracker, 
+    public KeyBinder(KeyListeningTracker listeningTracker, SettingsStorage settingsStorage,
         InputActions InputActions, InputAction inputAction)
     {
         _listeningTracker = listeningTracker;
+        _settingsStorage = settingsStorage;
         _inputActions = InputActions;
         _inputAction = inputAction;
     }
@@ -34,11 +37,18 @@ public abstract class KeyBinder : IKeyBinder, IInitializable, IDisposable
     public virtual void Initialize()
     {
         _hasOverrides.Value = _inputAction.bindings.Any(b => b.hasOverrides);
-
         _bindingText.Value = GetActionDisplayName();
+
+        _settingsStorage.ResetHappened
+            .Subscribe(_ => ResetBinding())
+            .AddTo(_settingsDisposable);
     }
 
-    public virtual void Dispose() => _compositeDisposable?.Dispose();
+    public virtual void Dispose()
+    {
+        _settingsDisposable?.Dispose();
+        _listeningDisposable?.Dispose();
+    }
 
     public virtual void StartListening()
     {
@@ -46,7 +56,7 @@ public abstract class KeyBinder : IKeyBinder, IInitializable, IDisposable
             .ToObservable()
             .Where(control => control.device is Keyboard)
             .Subscribe(OnAnyButtonPressed)
-            .AddTo(_compositeDisposable);
+            .AddTo(_listeningDisposable);
 
         _isListening.Value = true;
         SetWaitingMessage();
@@ -83,7 +93,7 @@ public abstract class KeyBinder : IKeyBinder, IInitializable, IDisposable
 
     protected virtual void StopListening()
     {
-        _compositeDisposable.Clear();
+        _listeningDisposable.Clear();
         _listeningTracker.StopListening();
         _isListening.Value = false;
     }

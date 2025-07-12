@@ -15,9 +15,9 @@ public class Vector2KeyBinder : KeyBinder
     private InputControl[] _temporaryControls;
     private int _keyInputNumber;
 
-    public Vector2KeyBinder(KeyListeningTracker listeningTracker, 
+    public Vector2KeyBinder(KeyListeningTracker listeningTracker, SettingsStorage settingsStorage,
         InputActions inputActions, InputAction inputAction) :
-        base(listeningTracker, inputActions, inputAction)
+        base(listeningTracker, settingsStorage, inputActions, inputAction)
     {
     }
 
