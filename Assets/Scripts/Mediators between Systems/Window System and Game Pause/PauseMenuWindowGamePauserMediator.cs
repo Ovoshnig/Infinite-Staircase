@@ -19,7 +19,7 @@ public class PauseMenuWindowGamePauserMediator : Mediator
                 if (isOpen)
                     _gamePauser.Pause();
                 else
-                    _gamePauser.Unpause();
+                    _gamePauser.UnPause();
             })
             .AddTo(CompositeDisposable);
     }

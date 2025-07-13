@@ -12,6 +12,9 @@ public class PlayerSoundPlayerView : MonoBehaviour
     private AudioResource _footstepResource;
     private AudioResource _landResource;
 
+    public AssetReference FootstepReference => _footstepReference;
+    public AssetReference LandReference => _landReference;
+
     private AudioSource AudioSource
     {
         get
@@ -22,9 +25,6 @@ public class PlayerSoundPlayerView : MonoBehaviour
             return _audioSource;
         }
     }
-
-    public AssetReference FootstepReference => _footstepReference;
-    public AssetReference LandReference => _landReference;
 
     public void SetResources(AudioResource footstepResource, AudioResource landResource)
     {

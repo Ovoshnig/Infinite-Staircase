@@ -12,8 +12,8 @@ public class PlayerSoundPlayingLifetimeScope : LifetimeScope
             return characterController.GetComponentInChildren<PlayerSoundPlayerView>();
         }, Lifetime.Singleton);
 
-        builder.Register<PlayerSoundPlayer>(Lifetime.Singleton);
-        builder.RegisterEntryPoint<PlayerSoundPlayerMediator>(Lifetime.Singleton);
+        builder.Register<PlayerSoundLoader>(Lifetime.Singleton);
+        builder.RegisterEntryPoint<PlayerSoundLoaderSoundPlayerViewMediator>(Lifetime.Singleton);
         builder.RegisterEntryPoint<PlayerStateSoundPlayerViewMediator>(Lifetime.Singleton);
     }
 }
