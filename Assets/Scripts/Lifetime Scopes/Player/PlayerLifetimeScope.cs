@@ -48,6 +48,5 @@ public class PlayerLifetimeScope : LifetimeScope
     private void Start()
     {
         GameObject player = Container.Resolve<CharacterController>().gameObject;
-        Container.InjectGameObject(player);
     }
 }

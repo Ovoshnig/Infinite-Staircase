@@ -226,7 +226,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 2839248306953733993}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4d1cfa79b134aef47baa46bab3752c35, type: 3}
+  m_Script: {fileID: 11500000, guid: 216a3270cecd3234bbc11e05c74d088d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!114 &4863336510614827535
@@ -238,7 +238,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 2839248306953733993}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c6b4cc3658bcc4646af19df843875a8d, type: 3}
+  m_Script: {fileID: 11500000, guid: fb99f6ee1ebce214ebeca9a85fed834c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   ScanRecursively: 1
@@ -273,7 +273,7 @@ MonoBehaviour:
       Enabled: 1
       Input:
         _actionReference: {fileID: 4619228427395069528, guid: dfc5194a2da461941bbc4e192fa012b3, type: 3}
-        _gain: 25
+        _gain: 20
         _invert: 1
       InputValue: 0
       Driver:
@@ -310,6 +310,6 @@ MonoBehaviour:
   m_GameObject: {fileID: 2839248306953733993}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1912720002677254c843e290071eb961, type: 3}
+  m_Script: {fileID: 11500000, guid: e9442e3181e41db46af21aac3de8459a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 

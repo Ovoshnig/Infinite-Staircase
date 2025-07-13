@@ -12,7 +12,7 @@ public class PlayerWindowSystemMediatorsLifetimeScope : LifetimeScope
             return characterController.GetComponentInChildren<PlayerScopeView>();
         }, Lifetime.Singleton);
 
-        builder.RegisterEntryPoint<CameraSwitchPlayerScopeViewMediator>(Lifetime.Singleton);
+        builder.RegisterEntryPoint<CameraSwitchScopeViewMediator>(Lifetime.Singleton);
         builder.RegisterEntryPoint<WindowTrackerPlayerInputMediator>(Lifetime.Singleton);
         builder.RegisterEntryPoint<WindowTrackerPlayerScopeViewMediator>(Lifetime.Singleton);
     }
