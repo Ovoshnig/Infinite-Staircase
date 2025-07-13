@@ -19,6 +19,9 @@ public abstract class InputAxisView : InputAxisControllerBase<InputAxisView.Read
 
     private void Start()
     {
+        if (!Application.isPlaying)
+            return;
+
         _playerActions.Enable();
 
         _playerActions.Look.Subscribe(OnLook);
@@ -27,6 +30,9 @@ public abstract class InputAxisView : InputAxisControllerBase<InputAxisView.Read
 
     private void OnDestroy()
     {
+        if (!Application.isPlaying)
+            return;
+
         _playerActions.Disable();
 
         _playerActions.Look.Unsubscribe(OnLook);
@@ -35,8 +41,10 @@ public abstract class InputAxisView : InputAxisControllerBase<InputAxisView.Read
 
     private void Update()
     {
-        if (Application.isPlaying)
-            UpdateControllers();
+        if (!Application.isPlaying)
+            return;
+
+        UpdateControllers();
     }
 
     public void SetControllersMultiplier(float value)
