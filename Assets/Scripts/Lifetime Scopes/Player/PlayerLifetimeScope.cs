@@ -19,30 +19,14 @@ public class PlayerLifetimeScope : LifetimeScope
         builder.Register(resolver =>
         {
             CharacterController characterController = resolver.Resolve<CharacterController>();
-            return characterController.GetComponentInChildren<FirstCameraPriorityChanger>();
+            return characterController.GetComponentInChildren<FirstCameraPriorityView>();
         }, Lifetime.Singleton);
-
-        builder.RegisterEntryPoint(resolver =>
-        {
-            SensitivitySliderModel sensitivitySliderModel = resolver.Resolve<SensitivitySliderModel>();
-            FirstCameraPriorityChanger firstCameraChanger = resolver.Resolve<FirstCameraPriorityChanger>();
-            InputAxisController firstAxisController = firstCameraChanger.GetComponent<InputAxisController>();
-            return new SensitivitySliderInputAxisControllerMediator(sensitivitySliderModel, firstAxisController);
-        }, Lifetime.Scoped);
 
         builder.Register(resolver =>
         {
             CharacterController characterController = resolver.Resolve<CharacterController>();
-            return characterController.GetComponentInChildren<ThirdCameraPriorityChanger>();
+            return characterController.GetComponentInChildren<ThirdCameraPriorityView>();
         }, Lifetime.Singleton);
-
-        builder.RegisterEntryPoint(resolver =>
-        {
-            SensitivitySliderModel sensitivitySliderModel = resolver.Resolve<SensitivitySliderModel>();
-            ThirdCameraPriorityChanger thirdCameraChanger = resolver.Resolve<ThirdCameraPriorityChanger>();
-            InputAxisController thirdAxisController = thirdCameraChanger.GetComponent<InputAxisController>();
-            return new SensitivitySliderInputAxisControllerMediator(sensitivitySliderModel, thirdAxisController);
-        }, Lifetime.Scoped);
 
         builder.Register(resolver =>
         {

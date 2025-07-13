@@ -17,8 +17,8 @@ public class PlayerMoverView : MonoBehaviour
     private Vector3 _verticalMovement = Vector3.zero;
 
     [Inject]
-    public void Construct(PlayerState playerState, FirstCameraPriorityChanger firstCamera,
-        ThirdCameraPriorityChanger thirdCamera, CameraSwitch cameraSwitch, PlayerSettings playerSettings)
+    public void Construct(PlayerState playerState, FirstCameraPriorityView firstCamera,
+        ThirdCameraPriorityView thirdCamera, CameraSwitch cameraSwitch, PlayerSettings playerSettings)
     {
         _playerState = playerState;
         _firstPersonCameraTransform = firstCamera.transform;

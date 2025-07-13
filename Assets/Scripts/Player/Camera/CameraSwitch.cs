@@ -4,10 +4,9 @@ using VContainer.Unity;
 
 public class CameraSwitch : IInitializable, IDisposable
 {
+    private readonly PlayerInputHandler _playerInputHandler;
     private readonly ReactiveProperty<bool> _isFirstPerson = new(true);
     private readonly CompositeDisposable _compositeDisposable = new();
-
-    private PlayerInputHandler _playerInputHandler;
 
     public CameraSwitch(PlayerInputHandler playerInputHandler) => 
         _playerInputHandler = playerInputHandler;
