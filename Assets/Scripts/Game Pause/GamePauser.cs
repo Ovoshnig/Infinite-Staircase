@@ -23,7 +23,7 @@ public class GamePauser : IInitializable, IDisposable
     {
         _sceneSwitch.IsSceneLoading
             .Where(isLoading => !isLoading)
-            .Subscribe(_ => Unpause())
+            .Subscribe(_ => UnPause())
             .AddTo(_compositeDisposable);
     }
 
@@ -31,7 +31,7 @@ public class GamePauser : IInitializable, IDisposable
 
     public void Pause() => SetPauseState(true);
 
-    public void Unpause() => SetPauseState(false);
+    public void UnPause() => SetPauseState(false);
 
     private void SetPauseState(bool pause)
     {
