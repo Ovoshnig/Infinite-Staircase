@@ -1,63 +1,60 @@
 ﻿using UnityEngine;
 
-public class PlayerHorizontalCalculator
+public readonly struct HorizontalMovementResult
+{
+    public readonly Vector3 Velocity;
+    public readonly float AngleY;
+
+    public HorizontalMovementResult(Vector3 velocity, float angleY)
+    {
+        Velocity = velocity;
+        AngleY = angleY;
+    }
+}
+
+public class PlayerHorizontalMovementCalculator
 {
     private readonly PlayerSettings _playerSettings;
-    private readonly PlayerState _playerState;
 
-    public PlayerHorizontalCalculator(PlayerSettings playerSettings, PlayerState playerState)
-    {
+    public PlayerHorizontalMovementCalculator(PlayerSettings playerSettings) => 
         _playerSettings = playerSettings;
-        _playerState = playerState;
+
+    public HorizontalMovementResult Calculate(Vector2 walkInput, float playerAngleY, float cameraAngleY, 
+        bool isWalking, bool isRunning)
+    {
+        if (!isWalking)
+            return new HorizontalMovementResult(Vector3.zero, playerAngleY);
+
+        float targetAngle = CalculateTargetAngle(walkInput, cameraAngleY);
+        float smoothedAngle = CalculateSmoothedAngle(playerAngleY, targetAngle);
+
+        Vector3 direction = CalculateForwardVector(targetAngle);
+
+        float speed = isRunning
+            ? _playerSettings.RunSpeed
+            : _playerSettings.WalkSpeed;
+        Vector3 velocity = direction * speed;
+
+        return new HorizontalMovementResult(velocity, smoothedAngle);
     }
 
-    public Vector3 CalculateHorizontalVector(ref Vector3 movement, Vector2 walkInput, 
-        float playerAngleY, float cameraAngleY)
+    private float CalculateTargetAngle(Vector2 walkInput, float cameraAngle)
     {
-        Vector3 eulerAngles;
-
-        if (_playerState.IsWalking.CurrentValue)
-        {
-            float targetAngle = CalculateTargetAngle(ref walkInput, ref cameraAngleY);
-            float smoothedAngle = CalculateSmoothedAngle(playerAngleY, targetAngle);
-            eulerAngles = new Vector3(0f, smoothedAngle, 0f);
-
-            Vector3 targetForward = CalculateForwardVector(targetAngle);
-            movement = MultiplyMovementVector(ref targetForward);
-        }
-        else
-        {
-            movement = Vector3.zero;
-            eulerAngles = new Vector3(0f, playerAngleY, 0f);
-        }
-
-        return eulerAngles;
-    }
-
-    private float CalculateTargetAngle(ref Vector2 walkInput, ref float cameraAngle)
-    {
-        Vector3 inputDirection = new(walkInput.x, 0f, walkInput.y);
+        Vector3 inputDirection = new Vector3(walkInput.x, 0f, walkInput.y).normalized;
         float targetAngle = Mathf.Atan2(inputDirection.x, inputDirection.z) * Mathf.Rad2Deg;
         targetAngle += cameraAngle;
         return targetAngle;
     }
 
-    private float CalculateSmoothedAngle(float playerAngle, float targetAngle) =>
-        Mathf.LerpAngle(playerAngle, targetAngle, Time.deltaTime * _playerSettings.SlewSpeed);
+    private float CalculateSmoothedAngle(float playerAngle, float targetAngle)
+    {
+        float maxDegreesDelta = _playerSettings.SlewSpeed * Time.deltaTime;
+        return Mathf.MoveTowardsAngle(playerAngle, targetAngle, maxDegreesDelta);
+    }
 
     private Vector3 CalculateForwardVector(float targetAngle)
     {
         float radians = targetAngle * Mathf.Deg2Rad;
-        Vector3 forward = new(Mathf.Sin(radians), 0f, Mathf.Cos(radians));
-        return forward;
-    }
-
-    private Vector3 MultiplyMovementVector(ref Vector3 direction)
-    {
-        float speed = _playerState.IsRunning.CurrentValue
-            ? _playerSettings.RunSpeed
-            : _playerSettings.WalkSpeed;
-        Vector3 movement = speed * Time.deltaTime * direction;
-        return movement;
+        return new Vector3(Mathf.Sin(radians), 0f, Mathf.Cos(radians));
     }
 }

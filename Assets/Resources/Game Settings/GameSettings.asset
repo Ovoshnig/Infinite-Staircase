@@ -31,9 +31,10 @@ MonoBehaviour:
   _playerSettings:
     <WalkSpeed>k__BackingField: 3.5
     <RunSpeed>k__BackingField: 8
-    <SlewSpeed>k__BackingField: 5
+    <SlewSpeed>k__BackingField: 250
     <JumpForce>k__BackingField: 5
     <GravityForce>k__BackingField: 9.81
+    <StickToGroundForce>k__BackingField: -2
     <ZoomMultiplier>k__BackingField: 25
     <MinSensitivity>k__BackingField: 0
     <MaxSensitivity>k__BackingField: 150

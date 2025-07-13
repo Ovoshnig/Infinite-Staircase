@@ -9,6 +9,7 @@ public class PlayerSettings
     [field: SerializeField, Min(1f)] public float SlewSpeed { get; private set; } = 5f;
     [field: SerializeField, Min(1f)] public float JumpForce { get; private set; } = 5f;
     [field: SerializeField, Min(1f)] public float GravityForce { get; private set; } = 9.81f;
+    [field: SerializeField] public float StickToGroundForce { get; private set; } = -2f;
     [field: SerializeField, Min(1f)] public float ZoomMultiplier { get; private set; } = 25f;
     [field: SerializeField, Min(0f)] public float MinSensitivity { get; private set; } = 0f;
     [field: SerializeField, Min(0f)] public float MaxSensitivity { get; private set; } = 50f;

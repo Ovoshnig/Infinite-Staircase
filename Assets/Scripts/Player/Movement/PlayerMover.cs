@@ -10,15 +10,13 @@ public class PlayerMover : IInitializable, ITickable, IDisposable
     private readonly Transform _thirdCameraTransform;
     private readonly CameraSwitch _cameraSwitch;
     private readonly PlayerSettings _playerSettings;
-    private readonly PlayerHorizontalCalculator _playerHorizontalCalculator;
-    private readonly PlayerVerticalCalculator _playerVerticalCalculator;
-    private readonly ReactiveProperty<Vector3> _horizontalMotion = new(Vector3.zero);
-    private readonly ReactiveProperty<Vector3> _fallingMotion = new(Vector3.zero);
+    private readonly PlayerHorizontalMovementCalculator _horizontalCalculator;
+    private readonly ReactiveProperty<Vector3> _frameMotion = new(Vector3.zero);
     private readonly ReactiveProperty<Vector3> _eulerAngles = new(Vector3.zero);
     private readonly CompositeDisposable _compositeDisposable = new();
 
-    private Vector3 _horizontalMovement = Vector3.zero;
-    private Vector3 _verticalMovement = Vector3.zero;
+    private Vector3 _velocity;
+
 
     public PlayerMover(PlayerState playerState, FirstCameraPriorityView firstCamera,
         ThirdCameraPriorityView thirdCamera, CameraSwitch cameraSwitch, PlayerSettings playerSettings)
@@ -29,22 +27,16 @@ public class PlayerMover : IInitializable, ITickable, IDisposable
         _cameraSwitch = cameraSwitch;
         _playerSettings = playerSettings;
 
-        _playerHorizontalCalculator = new PlayerHorizontalCalculator(_playerSettings, _playerState);
-        _playerVerticalCalculator = new PlayerVerticalCalculator(_playerSettings, _playerState);
+        _horizontalCalculator = new PlayerHorizontalMovementCalculator(_playerSettings);
     }
 
-    public ReadOnlyReactiveProperty<Vector3> HorizontalMotion => _horizontalMotion;
-    public ReadOnlyReactiveProperty<Vector3> FallingMotion => _fallingMotion;
+    public ReadOnlyReactiveProperty<Vector3> FrameMotion => _frameMotion;
     public ReadOnlyReactiveProperty<Vector3> EulerAngles => _eulerAngles;
 
     public void Initialize()
     {
-        _playerState.IsGrounded
-            .Where(isGrounded => isGrounded)
-            .Subscribe(_ => _playerVerticalCalculator.CalculateLanding(ref _verticalMovement))
-            .AddTo(_compositeDisposable);
         _playerState.Jumped
-            .Subscribe(_ => _playerVerticalCalculator.CalculateJumping(ref _verticalMovement))
+            .Subscribe(_ => _velocity.y = _playerSettings.JumpForce)
             .AddTo(_compositeDisposable);
     }
 
@@ -55,14 +47,20 @@ public class PlayerMover : IInitializable, ITickable, IDisposable
             ? _firstCameraTransform.eulerAngles.y
             : _thirdCameraTransform.eulerAngles.y;
 
-        Vector3 eulerAngles = _playerHorizontalCalculator
-            .CalculateHorizontalVector(ref _horizontalMovement, _playerState.WalkInput,
-            playerAngleY, cameraAngleY);
-        Vector3 fallingVector = _playerVerticalCalculator.CalculateFalling(ref _verticalMovement);
+        HorizontalMovementResult horizontalResult = _horizontalCalculator
+            .Calculate(_playerState.WalkInput, playerAngleY, cameraAngleY, 
+            _playerState.IsWalking.CurrentValue, _playerState.IsRunning.CurrentValue);
 
-        _horizontalMotion.Value = _horizontalMovement;
-        _fallingMotion.Value = fallingVector;
-        _eulerAngles.Value = eulerAngles;
+        _velocity.x = horizontalResult.Velocity.x;
+        _velocity.z = horizontalResult.Velocity.z;
+
+        if (_playerState.IsGrounded.CurrentValue && _velocity.y < 0)
+            _velocity.y = _playerSettings.StickToGroundForce;
+        else
+            _velocity.y -= _playerSettings.GravityForce * Time.deltaTime;
+
+        _frameMotion.Value = _velocity * Time.deltaTime;
+        _eulerAngles.Value = new Vector3(0, horizontalResult.AngleY, 0);
     }
 
     public void Dispose() => _compositeDisposable?.Dispose();

@@ -13,11 +13,8 @@ public class PlayerMoverMediator : Mediator
 
     public override void Initialize()
     {
-        _playerMover.HorizontalMotion
+        _playerMover.FrameMotion
             .Subscribe(_playerMoverView.Move)
-            .AddTo(CompositeDisposable);
-        _playerMover.FallingMotion
-            .Subscribe(_playerMoverView.Move) 
             .AddTo(CompositeDisposable);
         _playerMover.EulerAngles
             .Subscribe(_playerMoverView.SetEulerAngles)
