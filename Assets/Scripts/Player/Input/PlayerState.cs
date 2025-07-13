@@ -23,7 +23,7 @@ public class PlayerState : IInitializable, IDisposable
 
     public Vector2 WalkInput => _playerInputHandler.WalkInput;
     public Vector2 LookInput => _playerInputHandler.LookInput;
-    public Vector3 EulerAngels => _characterController.transform.eulerAngles;
+    public Vector3 EulerAngles => _characterController.transform.eulerAngles;
     public ReadOnlyReactiveProperty<bool> IsWalking => _isWalking;
     public ReadOnlyReactiveProperty<bool> IsRunning => _isRunning;
     public ReadOnlyReactiveProperty<bool> IsLooking => _isLooking;

@@ -19,6 +19,14 @@ public class PlayerLifetimeScope : LifetimeScope
         builder.Register(resolver =>
         {
             CharacterController characterController = resolver.Resolve<CharacterController>();
+            return characterController.GetComponentInChildren<PlayerMoverView>();
+        }, Lifetime.Singleton);
+        builder.RegisterEntryPoint<PlayerMover>(Lifetime.Singleton).AsSelf();
+        builder.RegisterEntryPoint<PlayerMoverMediator>(Lifetime.Singleton).AsSelf();
+
+        builder.Register(resolver =>
+        {
+            CharacterController characterController = resolver.Resolve<CharacterController>();
             return characterController.GetComponentInChildren<FirstCameraPriorityView>();
         }, Lifetime.Singleton);
 
