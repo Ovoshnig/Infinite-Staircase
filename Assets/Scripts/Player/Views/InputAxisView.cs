@@ -1,44 +1,10 @@
 using System;
-using System.Linq;
+using Unity.Cinemachine;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using Unity.Cinemachine;
-using VContainer;
 
 public abstract class InputAxisView : InputAxisControllerBase<InputAxisView.Reader>
 {
-    private InputActions.PlayerActions _playerActions;
-    private PlayerSettings _playerSettings;
-
-    [Inject]
-    public void Construct(InputActions inputActions, PlayerSettings playerSettings)
-    {
-        _playerActions = inputActions.Player;
-        _playerSettings = playerSettings;
-    }
-
-    private void Start()
-    {
-        if (!Application.isPlaying)
-            return;
-
-        _playerActions.Enable();
-
-        _playerActions.Look.Subscribe(OnLook);
-        _playerActions.Zoom.Subscribe(OnZoom);
-    }
-
-    private void OnDestroy()
-    {
-        if (!Application.isPlaying)
-            return;
-
-        _playerActions.Disable();
-
-        _playerActions.Look.Unsubscribe(OnLook);
-        _playerActions.Zoom.Unsubscribe(OnZoom);
-    }
-
     private void Update()
     {
         if (!Application.isPlaying)
@@ -47,42 +13,36 @@ public abstract class InputAxisView : InputAxisControllerBase<InputAxisView.Read
         UpdateControllers();
     }
 
-    public void SetControllersMultiplier(float value)
+    public void SetLookControllersGain(float value)
     {
         foreach (var controller in Controllers)
-            controller.Input.Multiplier = value;
+            if (controller.Input.InputAction.id == PlayerInputConstants.LookActionId)
+                controller.Input.SetGain(value);
     }
 
-    private void OnLook(InputAction.CallbackContext context)
+    public void ProcessInput(InputAction action)
     {
-        foreach (Controller controller in Controllers)
+        foreach (var controller in Controllers)
         {
-            if (controller.Name != CinemachineInputConstants.OrbitScaleControllerName)
-                controller.Input.ProcessLookInput(context.action);
+            if (controller.Input.InputAction.id == action.id)
+                controller.Input.ProcessInput(action);
         }
-    }
-
-    private void OnZoom(InputAction.CallbackContext context)
-    {
-        Controller orbitScaleController = Controllers
-            .FirstOrDefault(c => c.Name == CinemachineInputConstants.OrbitScaleControllerName);
-
-        if (orbitScaleController != default)
-            orbitScaleController.Input.ProcessZoomInput(context.action, _playerSettings.ZoomMultiplier);
     }
 
     [Serializable]
     public class Reader : IInputAxisReader
     {
-        [SerializeField] private InputActionReference _input;
+        [SerializeField] private InputActionReference _actionReference;
+        [SerializeField] private float _gain = 1f;
         [SerializeField] private bool _invert = false;
 
         private Vector2 _value;
-        public float Multiplier { get; set; } = 1f;
 
-        public void ProcessLookInput(InputAction action)
+        public InputAction InputAction => _actionReference.action;
+
+        public void ProcessInput(InputAction action)
         {
-            if (_input != null && _input.action.id == action.id)
+            if (_actionReference != null && _actionReference.action.id == action.id)
             {
                 _value = action.expectedControlType == nameof(Vector2)
                     ? action.ReadValue<Vector2>()
@@ -90,25 +50,13 @@ public abstract class InputAxisView : InputAxisControllerBase<InputAxisView.Read
 
                 int sign = _invert ? -1 : 1;
                 _value *= sign;
-                _value *= Multiplier;
+                _value *= _gain;
             }
         }
 
-        public void ProcessZoomInput(InputAction action, float zoomMultiplier)
-        {
-            if (_input != null && _input.action.id == action.id)
-            {
-                _value = action.expectedControlType == nameof(Vector2)
-                    ? action.ReadValue<Vector2>()
-                    : new Vector2(action.ReadValue<float>(), action.ReadValue<float>());
-
-                int sign = _invert ? -1 : 1;
-                _value *= sign;
-                _value *= zoomMultiplier;
-            }
-        }
-
-        public float GetValue(UnityEngine.Object context, IInputAxisOwner.AxisDescriptor.Hints hint) => 
+        public float GetValue(UnityEngine.Object context, IInputAxisOwner.AxisDescriptor.Hints hint) =>
             hint == IInputAxisOwner.AxisDescriptor.Hints.Y ? _value.y : _value.x;
+
+        public void SetGain(float value) => _gain = value;
     }
 }

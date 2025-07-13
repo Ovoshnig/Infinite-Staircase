@@ -250,7 +250,8 @@ MonoBehaviour:
       Owner: {fileID: 4200810987329945573}
       Enabled: 1
       Input:
-        _input: {fileID: -3469092977669108680, guid: dfc5194a2da461941bbc4e192fa012b3, type: 3}
+        _actionReference: {fileID: -3469092977669108680, guid: dfc5194a2da461941bbc4e192fa012b3, type: 3}
+        _gain: 1
         _invert: 0
       InputValue: 0
       Driver:
@@ -260,7 +261,8 @@ MonoBehaviour:
       Owner: {fileID: 4200810987329945573}
       Enabled: 1
       Input:
-        _input: {fileID: -3469092977669108680, guid: dfc5194a2da461941bbc4e192fa012b3, type: 3}
+        _actionReference: {fileID: -3469092977669108680, guid: dfc5194a2da461941bbc4e192fa012b3, type: 3}
+        _gain: 1
         _invert: 1
       InputValue: 0
       Driver:
@@ -270,8 +272,9 @@ MonoBehaviour:
       Owner: {fileID: 4200810987329945573}
       Enabled: 1
       Input:
-        _input: {fileID: 4619228427395069528, guid: dfc5194a2da461941bbc4e192fa012b3, type: 3}
-        _invert: 0
+        _actionReference: {fileID: 4619228427395069528, guid: dfc5194a2da461941bbc4e192fa012b3, type: 3}
+        _gain: 25
+        _invert: 1
       InputValue: 0
       Driver:
         AccelTime: 0
@@ -280,7 +283,8 @@ MonoBehaviour:
       Owner: {fileID: 5122574246869689079}
       Enabled: 1
       Input:
-        _input: {fileID: -3469092977669108680, guid: dfc5194a2da461941bbc4e192fa012b3, type: 3}
+        _actionReference: {fileID: -3469092977669108680, guid: dfc5194a2da461941bbc4e192fa012b3, type: 3}
+        _gain: 1
         _invert: 0
       InputValue: 0
       Driver:
@@ -290,7 +294,8 @@ MonoBehaviour:
       Owner: {fileID: 5122574246869689079}
       Enabled: 1
       Input:
-        _input: {fileID: -3469092977669108680, guid: dfc5194a2da461941bbc4e192fa012b3, type: 3}
+        _actionReference: {fileID: -3469092977669108680, guid: dfc5194a2da461941bbc4e192fa012b3, type: 3}
+        _gain: 1
         _invert: 1
       InputValue: 0
       Driver:

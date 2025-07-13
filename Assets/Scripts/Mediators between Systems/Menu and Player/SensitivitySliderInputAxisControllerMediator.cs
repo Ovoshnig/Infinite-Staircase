@@ -15,7 +15,7 @@ public class SensitivitySliderInputAxisControllerMediator : Mediator
     public override void Initialize()
     {
         _sensitivitySliderModel.Value
-            .Subscribe(_inputAxisController.SetControllersMultiplier)
+            .Subscribe(_inputAxisController.SetLookControllersGain)
             .AddTo(CompositeDisposable);
     }
 }
