@@ -20,12 +20,11 @@ public class PlayerStateAnimatorViewMediator : Mediator
         _playerState.IsRunning
             .Subscribe(isRunning => _playerAnimatorView.SetRunning(isRunning))
             .AddTo(CompositeDisposable);
-        _playerState.IsJumping
-            .Where(isJumping => isJumping)
-            .Subscribe(_ => _playerAnimatorView.SetJumping())
-            .AddTo(CompositeDisposable);
         _playerState.IsGrounded
             .Subscribe(isGrounded => _playerAnimatorView.SetGrounded(isGrounded))
+            .AddTo(CompositeDisposable);
+        _playerState.Jumped
+            .Subscribe(_ => _playerAnimatorView.SetJumping())
             .AddTo(CompositeDisposable);
     }
 }

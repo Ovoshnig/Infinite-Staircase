@@ -6,13 +6,12 @@ using VContainer.Unity;
 
 public class PlayerInputHandler : IInitializable, IDisposable
 {
+    private readonly InputActions.PlayerActions _playerActions;
     private readonly ReactiveProperty<bool> _isWalkPressed = new(false);
     private readonly ReactiveProperty<bool> _isRunPressed = new(false);
     private readonly ReactiveProperty<bool> _isLookPressed = new(false);
     private readonly ReactiveProperty<bool> _isJumpPressed = new(false);
     private readonly ReactiveProperty<bool> _isTogglePerspectivePressed = new(false);
-
-    private InputActions.PlayerActions _playerActions;
 
     public PlayerInputHandler(InputActions inputActions) => _playerActions = inputActions.Player;
 
