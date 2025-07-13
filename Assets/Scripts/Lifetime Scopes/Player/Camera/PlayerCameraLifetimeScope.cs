@@ -1,7 +1,7 @@
 using VContainer;
 using VContainer.Unity;
 
-public class PlayerCamerasLifetimeScope : LifetimeScope
+public class PlayerCameraLifetimeScope : LifetimeScope
 {
     protected override void Configure(IContainerBuilder builder)
     {

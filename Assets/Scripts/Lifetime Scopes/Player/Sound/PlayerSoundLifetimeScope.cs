@@ -2,7 +2,7 @@ using UnityEngine;
 using VContainer;
 using VContainer.Unity;
 
-public class PlayerSoundPlayingLifetimeScope : LifetimeScope
+public class PlayerSoundLifetimeScope : LifetimeScope
 {
     protected override void Configure(IContainerBuilder builder)
     {

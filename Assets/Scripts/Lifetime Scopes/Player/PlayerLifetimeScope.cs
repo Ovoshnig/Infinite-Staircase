@@ -19,14 +19,6 @@ public class PlayerLifetimeScope : LifetimeScope
         builder.Register(resolver =>
         {
             CharacterController characterController = resolver.Resolve<CharacterController>();
-            return characterController.GetComponentInChildren<PlayerMoverView>();
-        }, Lifetime.Singleton);
-        builder.RegisterEntryPoint<PlayerMover>(Lifetime.Singleton).AsSelf();
-        builder.RegisterEntryPoint<PlayerMoverMediator>(Lifetime.Singleton).AsSelf();
-
-        builder.Register(resolver =>
-        {
-            CharacterController characterController = resolver.Resolve<CharacterController>();
             return characterController.GetComponentInChildren<FirstCameraPriorityView>();
         }, Lifetime.Singleton);
 
@@ -35,14 +27,6 @@ public class PlayerLifetimeScope : LifetimeScope
             CharacterController characterController = resolver.Resolve<CharacterController>();
             return characterController.GetComponentInChildren<ThirdCameraPriorityView>();
         }, Lifetime.Singleton);
-
-        builder.Register(resolver =>
-        {
-            CharacterController characterController = resolver.Resolve<CharacterController>();
-            return characterController.GetComponentInChildren<SkinnedMeshRendererView>();
-        }, Lifetime.Singleton);
-
-        builder.RegisterEntryPoint<CameraSwitchSkinnedMeshViewMediator>(Lifetime.Singleton);
     }
 
     private void Start()
