@@ -14,5 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <Length>k__BackingField: 30
   <Width>k__BackingField: 30
-  <Height>k__BackingField: 0.8
+  <Height>k__BackingField: 0.4
   <ColliderResolution>k__BackingField: 1

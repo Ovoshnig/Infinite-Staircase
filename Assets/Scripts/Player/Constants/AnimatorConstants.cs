@@ -1,7 +1,9 @@
+using UnityEngine;
+
 public static class AnimatorConstants
 {
-    public const string IsWalking = "isWalking";
-    public const string IsRunning = "isRunning";
-    public const string IsJumping = "isJumping";
-    public const string IsGrounded = "isGrounded";
+    public static readonly int IsWalkingId = Animator.StringToHash("isWalking");
+    public static readonly int IsRunningId = Animator.StringToHash("isRunning");
+    public static readonly int IsGroundedId = Animator.StringToHash("isGrounded");
+    public static readonly int JumpedId = Animator.StringToHash("jumped");
 }

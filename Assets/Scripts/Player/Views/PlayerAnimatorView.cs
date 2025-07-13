@@ -3,11 +3,6 @@ using UnityEngine;
 [RequireComponent(typeof(Animator))]
 public class PlayerAnimatorView : MonoBehaviour
 {
-    private static readonly int s_isWalkingId = Animator.StringToHash(AnimatorConstants.IsWalking);
-    private static readonly int s_isRunningId = Animator.StringToHash(AnimatorConstants.IsRunning);
-    private static readonly int s_isJumpingId = Animator.StringToHash(AnimatorConstants.IsJumping);
-    private static readonly int s_isGroundedId = Animator.StringToHash(AnimatorConstants.IsGrounded);
-
     private Animator _animator;
 
     private Animator Animator
@@ -21,11 +16,11 @@ public class PlayerAnimatorView : MonoBehaviour
         }
     }
 
-    public void SetWalking(bool value) => Animator.SetBool(s_isWalkingId, value);
+    public void SetWalking(bool value) => Animator.SetBool(AnimatorConstants.IsWalkingId, value);
 
-    public void SetRunning(bool value) => Animator.SetBool(s_isRunningId, value);
+    public void SetRunning(bool value) => Animator.SetBool(AnimatorConstants.IsRunningId, value);
 
-    public void SetJumping() => Animator.SetTrigger(s_isJumpingId);
+    public void SetGrounded(bool value) => Animator.SetBool(AnimatorConstants.IsGroundedId, value);
 
-    public void SetGrounded(bool value) => Animator.SetBool(s_isGroundedId, value);
+    public void SetJumped() => Animator.SetTrigger(AnimatorConstants.JumpedId);
 }

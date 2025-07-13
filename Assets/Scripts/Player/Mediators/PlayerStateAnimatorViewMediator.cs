@@ -24,7 +24,7 @@ public class PlayerStateAnimatorViewMediator : Mediator
             .Subscribe(isGrounded => _playerAnimatorView.SetGrounded(isGrounded))
             .AddTo(CompositeDisposable);
         _playerState.Jumped
-            .Subscribe(_ => _playerAnimatorView.SetJumping())
+            .Subscribe(_ => _playerAnimatorView.SetJumped())
             .AddTo(CompositeDisposable);
     }
 }

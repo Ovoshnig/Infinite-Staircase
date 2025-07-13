@@ -168,7 +168,7 @@ Transform:
   m_GameObject: {fileID: 6603589245619016148}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: -3.293185e-24, w: 1}
-  m_LocalPosition: {x: 0, y: 0.82819986, z: 0.075}
+  m_LocalPosition: {x: 0, y: 0.842, z: -4.056}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -300,10 +300,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1601814965081601927}
     m_Modifications:
-    - target: {fileID: -5447245368467521835, guid: a12c5aa653b08fc41b854e07f188919f, type: 3}
-      propertyPath: m_ControllerManager.Controllers.Array.data[1].InputValue
-      value: -0
-      objectReference: {fileID: 0}
     - target: {fileID: 260423365766699274, guid: a12c5aa653b08fc41b854e07f188919f, type: 3}
       propertyPath: m_Name
       value: FirstPersonCamera
@@ -356,14 +352,6 @@ PrefabInstance:
       propertyPath: Target.TrackingTarget
       value: 
       objectReference: {fileID: 1601814965081601927}
-    - target: {fileID: 9128313231072524123, guid: a12c5aa653b08fc41b854e07f188919f, type: 3}
-      propertyPath: PanAxis.Value
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 9128313231072524123, guid: a12c5aa653b08fc41b854e07f188919f, type: 3}
-      propertyPath: TiltAxis.Value
-      value: 0
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1433,30 +1421,6 @@ PrefabInstance:
     - target: {fileID: 2839248306953733993, guid: 9f452c475aa18d146ac1de25904781c9, type: 3}
       propertyPath: m_Name
       value: ThirdPersonCamera
-      objectReference: {fileID: 0}
-    - target: {fileID: 4200810987329945573, guid: 9f452c475aa18d146ac1de25904781c9, type: 3}
-      propertyPath: VerticalAxis.Value
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4200810987329945573, guid: 9f452c475aa18d146ac1de25904781c9, type: 3}
-      propertyPath: HorizontalAxis.Value
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4863336510614827535, guid: 9f452c475aa18d146ac1de25904781c9, type: 3}
-      propertyPath: m_ControllerManager.Controllers.Array.data[1].InputValue
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4863336510614827535, guid: 9f452c475aa18d146ac1de25904781c9, type: 3}
-      propertyPath: m_ControllerManager.Controllers.Array.data[4].InputValue
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5122574246869689079, guid: 9f452c475aa18d146ac1de25904781c9, type: 3}
-      propertyPath: PanAxis.Value
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5122574246869689079, guid: 9f452c475aa18d146ac1de25904781c9, type: 3}
-      propertyPath: TiltAxis.Value
-      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 9176137172615115575, guid: 9f452c475aa18d146ac1de25904781c9, type: 3}
       propertyPath: m_StreamingVersion
