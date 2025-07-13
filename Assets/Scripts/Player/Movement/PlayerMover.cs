@@ -17,7 +17,6 @@ public class PlayerMover : IInitializable, ITickable, IDisposable
 
     private Vector3 _velocity;
 
-
     public PlayerMover(PlayerState playerState, FirstCameraPriorityView firstCamera,
         ThirdCameraPriorityView thirdCamera, CameraSwitch cameraSwitch, PlayerSettings playerSettings)
     {

@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class CameraDetacher : MonoBehaviour
+public class CameraDetacherView : MonoBehaviour
 {
     private void Start() => transform.SetParent(null);
 }

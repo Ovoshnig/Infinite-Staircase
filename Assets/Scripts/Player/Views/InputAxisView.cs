@@ -5,7 +5,7 @@ using UnityEngine.InputSystem;
 using Unity.Cinemachine;
 using VContainer;
 
-public class InputAxisController : InputAxisControllerBase<InputAxisController.Reader>
+public abstract class InputAxisView : InputAxisControllerBase<InputAxisView.Reader>
 {
     private InputActions.PlayerActions _playerActions;
     private PlayerSettings _playerSettings;

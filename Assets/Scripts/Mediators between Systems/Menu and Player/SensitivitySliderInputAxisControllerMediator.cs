@@ -3,10 +3,10 @@
 public class SensitivitySliderInputAxisControllerMediator : Mediator
 {
     private readonly SensitivitySliderModel _sensitivitySliderModel;
-    private readonly InputAxisController _inputAxisController;
+    private readonly InputAxisView _inputAxisController;
 
     public SensitivitySliderInputAxisControllerMediator(SensitivitySliderModel sensitivitySliderModel, 
-        InputAxisController inputAxisController)
+        InputAxisView inputAxisController)
     {
         _sensitivitySliderModel = sensitivitySliderModel;
         _inputAxisController = inputAxisController;
