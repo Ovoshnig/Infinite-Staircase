@@ -127,7 +127,7 @@ MonoBehaviour:
   VerticalAxis:
     Value: 0
     Center: 0
-    Range: {x: -70, y: 80}
+    Range: {x: -50, y: 90}
     Wrap: 0
     Recentering:
       Enabled: 0
@@ -171,7 +171,7 @@ MonoBehaviour:
   TiltAxis:
     Value: 0
     Center: 0
-    Range: {x: -70, y: 80}
+    Range: {x: -50, y: 90}
     Wrap: 0
     Recentering:
       Enabled: 0
