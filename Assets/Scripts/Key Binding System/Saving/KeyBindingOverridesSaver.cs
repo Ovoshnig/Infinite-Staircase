@@ -1,3 +1,4 @@
+using R3;
 using System;
 using UnityEngine.InputSystem;
 using VContainer.Unity;
@@ -6,6 +7,7 @@ public class KeyBindingOverridesSaver : IInitializable, IDisposable
 {
     private readonly SettingsStorage _settingsStorage;
     private readonly InputActions _inputActions;
+    private readonly CompositeDisposable _compositeDisposable = new();
 
     public KeyBindingOverridesSaver(SettingsStorage settingsStorage,
         InputActions inputActions)
@@ -16,14 +18,25 @@ public class KeyBindingOverridesSaver : IInitializable, IDisposable
 
     public void Initialize()
     {
-        string json = _settingsStorage.Get(SettingsConstants.BindingOverridesKey, string.Empty);
+        string defaultJson = string.Empty;
+        string json = _settingsStorage.Get(SettingsConstants.BindingOverridesKey, defaultJson);
         InputSystem.actions.LoadBindingOverridesFromJson(json);
         _inputActions.LoadBindingOverridesFromJson(json);
+
+        _settingsStorage.ResetHappened
+            .Subscribe(_ =>
+            {
+                InputSystem.actions.LoadBindingOverridesFromJson(defaultJson);
+                _inputActions.LoadBindingOverridesFromJson(defaultJson);
+            })
+            .AddTo(_compositeDisposable);
     }
 
     public void Dispose()
     {
         string json = InputSystem.actions.SaveBindingOverridesAsJson();
         _settingsStorage.Set(SettingsConstants.BindingOverridesKey, json);
+
+        _compositeDisposable?.Dispose();
     }
 }

@@ -14,7 +14,7 @@ public class InventoryWindowInventoryMediator : Mediator
     public override void Initialize()
     {
         _inventoryWindow.IsOpen
-            .Where(value => !value)
+            .Where(isOpen => !isOpen)
             .Subscribe(_ => _inventory.EndDrag())
             .AddTo(CompositeDisposable);
     }
