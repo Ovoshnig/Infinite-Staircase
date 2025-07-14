@@ -13,7 +13,7 @@ public class ResumeButtonViewWindowMediator : Mediator
 
     public override void Initialize()
     {
-        _resumeButtonView.ButtonClicked
+        _resumeButtonView.Clicked
             .Subscribe(_ => _window.TryClose())
             .AddTo(CompositeDisposable);
     }

@@ -14,7 +14,7 @@ public class WindowMediator : Mediator
     public override void Initialize()
     {
         _window.IsOpen
-            .Subscribe(_windowView.gameObject.SetActive)
+            .Subscribe(_windowView.SetActive)
             .AddTo(CompositeDisposable);
 
         _windowView.IsActive

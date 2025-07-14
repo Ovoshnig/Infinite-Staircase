@@ -14,4 +14,6 @@ public class WindowView : MonoBehaviour
             .Subscribe(activeSelf => _isActive.Value = activeSelf)
             .AddTo(this);
     }
+
+    public void SetActive(bool value) => gameObject.SetActive(value);
 }
