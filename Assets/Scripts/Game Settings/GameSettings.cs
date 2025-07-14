@@ -11,7 +11,9 @@ public class GameSettings : ScriptableObject
     [SerializeField] private StaircaseGenerationSettings _staircaseGeneration;
     [SerializeField] private GlassFloorSettings _glassFloorSettings;
     [SerializeField] private PlayerSettings _playerSettings;
-
+    [SerializeField] private KeyBindingSettings _keyBindingSettings;
+    [SerializeField] private InventorySettings _inventorySettings;
+         
     public TimeSettings TimeSettings => _timeSettings;
     public SceneSettings SceneSettings => _sceneSettings;
     public AudioSettings AudioSettings => _audioSettings;
@@ -19,4 +21,6 @@ public class GameSettings : ScriptableObject
     public StaircaseGenerationSettings StaircaseGeneration => _staircaseGeneration;
     public GlassFloorSettings GlassFloorSettings => _glassFloorSettings;
     public PlayerSettings PlayerSettings => _playerSettings;
+    public KeyBindingSettings KeyBindingSettings => _keyBindingSettings;
+    public InventorySettings InventorySettings => _inventorySettings;
 }

@@ -42,3 +42,13 @@ MonoBehaviour:
     <StickToGroundForce>k__BackingField: -2
     <MinSensitivity>k__BackingField: 0
     <MaxSensitivity>k__BackingField: 150
+  _keyBindingSettings:
+    <NormalTextColor>k__BackingField: {r: 0, g: 0, b: 0, a: 1}
+    <WaitingTextColor>k__BackingField: {r: 0.5803922, g: 0, b: 0.8274511, a: 1}
+  _inventorySettings:
+    <RowCount>k__BackingField: 3
+    <ColumnCount>k__BackingField: 5
+    <SpacingRatio>k__BackingField: 0.5
+    <ItemPaddingRatio>k__BackingField: 0.2
+    <ItemTransparentValue>k__BackingField: 0.8
+    <ItemOpaqueValue>k__BackingField: 1

@@ -8,7 +8,6 @@ public class ProjectLifetimeScope : LifetimeScope
     [SerializeField] private GameSettings _gameSettings;
     [SerializeField] private AudioMixerGroup _audioMixerGroup;
     [SerializeField] private MusicPlayerView _musicPlayerView;
-    [SerializeField] private InventorySettings _inventorySettings;
 
     protected override void Configure(IContainerBuilder builder)
     {
@@ -35,6 +34,8 @@ public class ProjectLifetimeScope : LifetimeScope
         builder.RegisterInstance(_gameSettings.StaircaseGeneration);
         builder.RegisterInstance(_gameSettings.GlassFloorSettings);
         builder.RegisterInstance(_gameSettings.PlayerSettings);
+        builder.RegisterInstance(_gameSettings.KeyBindingSettings);
+        builder.RegisterInstance(_gameSettings.InventorySettings);
 
         builder.RegisterInstance(_audioMixerGroup);
         builder.Register<AudioMixerTuner>(Lifetime.Singleton).AsSelf();
@@ -52,7 +53,6 @@ public class ProjectLifetimeScope : LifetimeScope
         builder.RegisterEntryPoint<MusicPlayerMediator>(Lifetime.Singleton);
         builder.RegisterEntryPoint<SceneSwitchMusicPlayerMediator>(Lifetime.Singleton);
 
-        builder.RegisterInstance(_inventorySettings);
         builder.Register<ItemDefinitionLoader>(Lifetime.Singleton);
         builder.Register<Inventory>(Lifetime.Singleton);
         builder.RegisterEntryPoint<InventorySaver>(Lifetime.Singleton);

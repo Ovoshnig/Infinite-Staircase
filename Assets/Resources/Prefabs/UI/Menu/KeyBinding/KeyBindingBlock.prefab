@@ -83,7 +83,7 @@ MonoBehaviour:
   _actionNameText: {fileID: 6599954011534530538}
   _bindingButtonText: {fileID: 3053419468822837999}
   _inputActionReference: {fileID: 0}
-  _keyBindingSettings: {fileID: 11400000, guid: 4f7bde9c39ecedf46ba83fc75c97381a, type: 2}
+  _gameSettings: {fileID: 11400000, guid: 0988861611452554ba55170e30c85ebb, type: 2}
 --- !u!1001 &887136218892550641
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -1,6 +1,5 @@
 using UnityEngine;
 
-[ExecuteInEditMode]
 [RequireComponent(typeof(MeshFilter), typeof(MeshRenderer))]
 public class GlassFloorGeneratorView : MonoBehaviour
 {

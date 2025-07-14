@@ -12,7 +12,7 @@ public class KeyBinderView : MonoBehaviour
     [SerializeField] private TMP_Text _actionNameText;
     [SerializeField] private TMP_Text _bindingButtonText;
     [SerializeField] private InputActionReference _inputActionReference;
-    [SerializeField] private KeyBindingSettings _keyBindingSettings;
+    [SerializeField] private GameSettings _gameSettings;
 
     private readonly Subject<Unit> _bindingClicked = new();
     private readonly Subject<Unit> _resetClicked = new();
@@ -20,6 +20,8 @@ public class KeyBinderView : MonoBehaviour
     public InputAction InputAction => _inputActionReference.action;
     public Observable<Unit> BindingClicked => _bindingClicked;
     public Observable<Unit> ResetClicked => _resetClicked;
+
+    private KeyBindingSettings KeyBindingSettings => _gameSettings.KeyBindingSettings;
 
     private void Start()
     {
@@ -43,9 +45,9 @@ public class KeyBinderView : MonoBehaviour
     public void SetColor(bool isListening)
     {
         if (isListening)
-            _bindingButtonText.color = _keyBindingSettings.WaitingTextColor;
+            _bindingButtonText.color = KeyBindingSettings.WaitingTextColor;
         else
-            _bindingButtonText.color = _keyBindingSettings.NormalTextColor;
+            _bindingButtonText.color = KeyBindingSettings.NormalTextColor;
     }
 
     public void SetBindingText(string text) => _bindingButtonText.text = text;

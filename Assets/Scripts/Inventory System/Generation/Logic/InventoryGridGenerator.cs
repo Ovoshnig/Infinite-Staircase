@@ -8,7 +8,9 @@ using UnityEngine.UI;
 public class InventoryGridGenerator : MonoBehaviour
 {
     [SerializeField] private GameObject _slotPrefab;
-    [SerializeField] private InventorySettings _inventorySettings;
+    [SerializeField] private GameSettings _gameSettings;
+
+    public InventorySettings InventorySettings => _gameSettings.InventorySettings;
 
     public void GenerateGrid()
     {
@@ -46,8 +48,8 @@ public class InventoryGridGenerator : MonoBehaviour
     private void GenerateNew()
     {
         GridLayoutGroup grid = GetComponent<GridLayoutGroup>();
-        int columns = (int)_inventorySettings.ColumnCount;
-        int rows = (int)_inventorySettings.RowCount;
+        int columns = (int)InventorySettings.ColumnCount;
+        int rows = (int)InventorySettings.RowCount;
 
         grid.constraint = GridLayoutGroup.Constraint.FixedColumnCount;
         grid.constraintCount = columns;
@@ -55,7 +57,7 @@ public class InventoryGridGenerator : MonoBehaviour
         RectTransform rectTransform = transform as RectTransform;
         float containerWidth = rectTransform.rect.width;
         float containerHeight = rectTransform.rect.height;
-        float spacingRatio = _inventorySettings.SpacingRatio;
+        float spacingRatio = InventorySettings.SpacingRatio;
 
         float cellWidth = containerWidth / (columns + (columns + 1) * spacingRatio);
         float cellHeight = containerHeight / (rows + (rows + 1) * spacingRatio);
@@ -67,7 +69,7 @@ public class InventoryGridGenerator : MonoBehaviour
         grid.spacing = new Vector2(spacing, spacing);
         grid.padding = new RectOffset(padding, padding, padding, padding);
 
-        float itemPadding = _inventorySettings.ItemPaddingRatio * cellSize;
+        float itemPadding = InventorySettings.ItemPaddingRatio * cellSize;
 
         for (int i = 0; i < rows; i++)
         {
