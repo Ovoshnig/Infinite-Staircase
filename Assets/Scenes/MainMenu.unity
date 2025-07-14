@@ -14091,6 +14091,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 1783310963}
     m_Modifications:
     - target: {fileID: 210077645077391229, guid: 8d658f426941261409299bcc6a5882af, type: 3}
+      propertyPath: m_Pivot.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 210077645077391229, guid: 8d658f426941261409299bcc6a5882af, type: 3}
       propertyPath: m_AnchorMax.y
       value: 1
       objectReference: {fileID: 0}
@@ -14272,6 +14276,18 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8149413407629851663, guid: 8d658f426941261409299bcc6a5882af, type: 3}
       propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8699754570592816805, guid: 8d658f426941261409299bcc6a5882af, type: 3}
+      propertyPath: m_Size
+      value: 0.53333336
+      objectReference: {fileID: 0}
+    - target: {fileID: 8699754570592816805, guid: 8d658f426941261409299bcc6a5882af, type: 3}
+      propertyPath: m_Value
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8699754570592816805, guid: 8d658f426941261409299bcc6a5882af, type: 3}
+      propertyPath: m_NumberOfSteps
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
