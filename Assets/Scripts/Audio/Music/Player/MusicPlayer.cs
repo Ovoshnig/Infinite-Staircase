@@ -31,7 +31,11 @@ public class MusicPlayer : IDisposable
     public Observable<AudioClip> PlaybackStarted => _playbackStarted;
     public Observable<Unit> PlaybackEnded => _playbackEnded;
 
-    public void Dispose() => _cts?.CancelAndDispose();
+    public void Dispose()
+    {
+        _cts?.Cancel();
+        _cts?.Dispose();
+    }
 
     public async UniTask LoadClipKeysAsync()
     {
@@ -48,7 +52,8 @@ public class MusicPlayer : IDisposable
 
     private bool TryPlayMusic()
     {
-        _cts?.CancelAndDispose();
+        _cts?.Cancel();
+        _cts?.Dispose();
         _cts = new CancellationTokenSource();
 
         MusicCategory category = _sceneMusicMapper.GetMusicCategory(_sceneSwitch.CurrentSceneType);

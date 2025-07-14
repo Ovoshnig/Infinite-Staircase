@@ -41,7 +41,8 @@ public class PlayerSoundLoader
 
     public void ReleaseSounds()
     {
-        _cts?.CancelAndDispose();
+        _cts?.Cancel();
+        _cts?.Dispose();
 
         if (_footstepHandle.IsValid())
             _footstepHandle.Release();
