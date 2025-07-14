@@ -131,7 +131,6 @@ GameObject:
   - component: {fileID: 1316899}
   - component: {fileID: 1316898}
   - component: {fileID: 1316900}
-  - component: {fileID: 1316901}
   m_Layer: 0
   m_Name: GlassFloor
   m_TagString: Untagged
@@ -229,19 +228,6 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 2006786774}
---- !u!114 &1316901
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1316895}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e80deaef628cfec45a71dddc955fe9dd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _floorSettings: {fileID: 11400000, guid: 5d3af90ca8a51e54cb9216f7140baf3c, type: 2}
 --- !u!1 &279571886
 GameObject:
   m_ObjectHideFlags: 0
@@ -381,7 +367,6 @@ MonoBehaviour:
   autoRun: 1
   autoInjectGameObjects: []
   _windowCanvas: {fileID: 7824020766905238943, guid: ff63e6bdb3799b74fabe58bfac3240a1, type: 3}
-  _itemGenerator: {fileID: 0}
 --- !u!43 &434502145
 Mesh:
   m_ObjectHideFlags: 0
@@ -1027,7 +1012,7 @@ MonoBehaviour:
     TypeName: 
   autoRun: 1
   autoInjectGameObjects: []
-  _glassFloorGenerator: {fileID: 1316901}
+  _glassFloorStartPoint: {fileID: 1316896}
 --- !u!1 &977685680
 GameObject:
   m_ObjectHideFlags: 0

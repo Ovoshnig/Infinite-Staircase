@@ -9,6 +9,7 @@ public class GameSettings : ScriptableObject
     [SerializeField] private AudioSettings _audioSettings;
     [SerializeField] private WorldGenerationSettings _worldGeneration;
     [SerializeField] private StaircaseGenerationSettings _staircaseGeneration;
+    [SerializeField] private GlassFloorSettings _glassFloorSettings;
     [SerializeField] private PlayerSettings _playerSettings;
 
     public TimeSettings TimeSettings => _timeSettings;
@@ -16,5 +17,6 @@ public class GameSettings : ScriptableObject
     public AudioSettings AudioSettings => _audioSettings;
     public WorldGenerationSettings WorldGeneration => _worldGeneration;
     public StaircaseGenerationSettings StaircaseGeneration => _staircaseGeneration;
+    public GlassFloorSettings GlassFloorSettings => _glassFloorSettings;
     public PlayerSettings PlayerSettings => _playerSettings;
 }

@@ -1,8 +1,8 @@
+using System;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = nameof(GlassFloorSettings),
-    menuName = "Scriptable Objects/Glass Floor Settings")]
-public class GlassFloorSettings : ScriptableObject
+[Serializable]
+public class GlassFloorSettings
 {
     [field: SerializeField, Min(1)] public int Length { get; private set; } = 10;
     [field: SerializeField, Min(1)] public int Width { get; private set; } = 10;

@@ -1,31 +1,27 @@
 using Random = System.Random;
 using UnityEngine;
-using VContainer;
+using VContainer.Unity;
 
-[RequireComponent(typeof(MeshFilter), typeof(MeshRenderer))]
-public class GlassFloorGenerator : MonoBehaviour
+public class GlassFloorGenerator : IInitializable
 {
-    [SerializeField] private GlassFloorSettings _floorSettings;
+    private readonly SaveStorage _saveStorage;
+    private readonly Transform _startPoint;
+    private readonly GlassFloorSettings _floorSettings;
 
-    private SaveStorage _saveStorage;
-    private Random _random;
+    private Random _random = new();
     private Mesh _mesh;
     private Vector3[] _vertices;
     private int[] _triangles;
 
-    [Inject]
-    public void Construct(SaveStorage saveStorage) => _saveStorage = saveStorage;
-
-    [ContextMenu(nameof(GenerateFloor))]
-    private void GenerateInEditor()
+    public GlassFloorGenerator(SaveStorage saveStorage, Transform startPoint, 
+        GlassFloorSettings floorSettings)
     {
-        int seed = 0;
-        _random = new Random(seed);
-
-        GenerateFloor();
+        _saveStorage = saveStorage;
+        _startPoint = startPoint;
+        _floorSettings = floorSettings;
     }
 
-    private void Start()
+    public void Initialize()
     {
         int seed = _saveStorage.Get(SaveConstants.SeedKey, 0);
         _random = new Random(seed);
@@ -36,7 +32,7 @@ public class GlassFloorGenerator : MonoBehaviour
     private void GenerateFloor()
     {
         _mesh = new Mesh();
-        GetComponent<MeshFilter>().mesh = _mesh;
+        _startPoint.GetComponent<MeshFilter>().mesh = _mesh;
 
         int length = _floorSettings.Length;
         int width = _floorSettings.Width;
@@ -93,8 +89,8 @@ public class GlassFloorGenerator : MonoBehaviour
 
     private void GenerateMeshCollider()
     {
-        if (!gameObject.TryGetComponent<MeshCollider>(out var meshCollider))
-            meshCollider = gameObject.AddComponent<MeshCollider>();
+        if (!_startPoint.gameObject.TryGetComponent<MeshCollider>(out var meshCollider))
+            meshCollider = _startPoint.gameObject.AddComponent<MeshCollider>();
 
         Mesh colliderMesh = new();
 
