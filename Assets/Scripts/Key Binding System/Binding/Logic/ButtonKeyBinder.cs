@@ -8,7 +8,7 @@ public class ButtonKeyBinder : KeyBinder
     {
     }
 
-    protected override string WaitInputText => InputConstants.WaitInputText;
+    protected override string WaitInputText => KeyBindingConstants.WaitInputText;
 
     public override void StartListening()
     {

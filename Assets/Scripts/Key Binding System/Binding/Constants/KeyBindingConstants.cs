@@ -1,4 +1,4 @@
-public static class InputConstants
+public static class KeyBindingConstants
 {
     public const string WaitInputText = "ќжидание ввода...";
 }
