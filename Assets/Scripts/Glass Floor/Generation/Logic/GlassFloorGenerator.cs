@@ -1,6 +1,7 @@
 using Random = System.Random;
 using UnityEngine;
 using VContainer.Unity;
+using VContainer;
 
 public class GlassFloorGenerator : IInitializable
 {
@@ -8,11 +9,20 @@ public class GlassFloorGenerator : IInitializable
     private readonly Transform _startPoint;
     private readonly GlassFloorSettings _floorSettings;
 
-    private Random _random = new();
+    private Random _random;
     private Mesh _mesh;
     private Vector3[] _vertices;
     private int[] _triangles;
 
+    public GlassFloorGenerator(Transform startPoint, GlassFloorSettings floorSettings,
+        int seed)
+    {
+        _startPoint = startPoint;
+        _floorSettings = floorSettings;
+        _random = new Random(seed);
+    }
+
+    [Inject]
     public GlassFloorGenerator(SaveStorage saveStorage, Transform startPoint, 
         GlassFloorSettings floorSettings)
     {
@@ -29,7 +39,7 @@ public class GlassFloorGenerator : IInitializable
         GenerateFloor();
     }
 
-    private void GenerateFloor()
+    public void GenerateFloor()
     {
         _mesh = new Mesh();
         _startPoint.GetComponent<MeshFilter>().mesh = _mesh;

@@ -28,7 +28,11 @@ MonoBehaviour:
     <MaxSeed>k__BackingField: 999999999
   _staircaseGeneration:
     <SegmentCount>k__BackingField: 30
-  _glassFloorSettings: {fileID: 11400000, guid: 5d3af90ca8a51e54cb9216f7140baf3c, type: 2}
+  _glassFloorSettings:
+    <Length>k__BackingField: 30
+    <Width>k__BackingField: 30
+    <Height>k__BackingField: 0.4
+    <ColliderResolution>k__BackingField: 1
   _playerSettings:
     <WalkSpeed>k__BackingField: 3.5
     <RunSpeed>k__BackingField: 8
