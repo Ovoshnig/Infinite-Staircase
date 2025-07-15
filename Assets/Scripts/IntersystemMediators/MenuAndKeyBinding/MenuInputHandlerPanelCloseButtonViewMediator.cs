@@ -39,7 +39,7 @@ public class MenuInputHandlerPanelCloseButtonViewMediator : Mediator
         if (enabledButtonView == null || _previousListening)
             return false;
 
-        enabledButtonView.Change();
+        enabledButtonView.Switch();
         return true;
     }
 }

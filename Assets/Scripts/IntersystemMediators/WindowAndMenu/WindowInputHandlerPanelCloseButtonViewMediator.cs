@@ -29,7 +29,7 @@ public class WindowInputHandlerPanelCloseButtonViewMediator : Mediator
         if (enabledButtonView == null)
             return false;
 
-        enabledButtonView.Change();
+        enabledButtonView.Switch();
         return true;
     }
 }

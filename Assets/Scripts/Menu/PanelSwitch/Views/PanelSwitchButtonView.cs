@@ -1,7 +1,7 @@
 using R3;
 using UnityEngine;
 
-public abstract class PanelChangeButtonView : ButtonView
+public abstract class PanelSwitchButtonView : ButtonView
 {
     [SerializeField] private GameObject _currentPanel;
     [SerializeField] private GameObject _newPanel;
@@ -23,11 +23,11 @@ public abstract class PanelChangeButtonView : ButtonView
             .AddTo(this);
     }
 
-    public void Change()
+    public void Switch()
     {
         _newPanel.SetActive(true);
         _currentPanel.SetActive(false);
     }
 
-    private void OnButtonClicked() => Change();
+    private void OnButtonClicked() => Switch();
 }
