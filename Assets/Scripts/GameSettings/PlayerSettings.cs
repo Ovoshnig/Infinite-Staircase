@@ -6,12 +6,12 @@ public class PlayerSettings
 {
     [field: SerializeField, Min(0f)] public float WalkSpeed { get; private set; } = 3.5f;
     [field: SerializeField, Min(0f)] public float RunSpeed { get; private set; } = 8f;
-    [field: SerializeField, Min(1f)] public float SlewSpeed { get; private set; } = 5f;
-    [field: SerializeField, Min(1f)] public float JumpForce { get; private set; } = 5f;
+    [field: SerializeField, Min(1f)] public float SlewSpeed { get; private set; } = 360f;
+    [field: SerializeField, Min(1f)] public float JumpForce { get; private set; } = 6f;
     [field: SerializeField, Min(1f)] public float GravityForce { get; private set; } = 9.81f;
     [field: SerializeField] public float StickToGroundForce { get; private set; } = -2f;
     [field: SerializeField, Min(0f)] public float MinSensitivity { get; private set; } = 0f;
-    [field: SerializeField, Min(0f)] public float MaxSensitivity { get; private set; } = 50f;
+    [field: SerializeField, Min(0f)] public float MaxSensitivity { get; private set; } = 200f;
 
     public float DefaultSensitivity => (MinSensitivity + MaxSensitivity) / 2f;
 }
