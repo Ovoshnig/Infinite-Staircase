@@ -20,9 +20,8 @@ public class ProjectLifetimeScope : LifetimeScope
         builder.RegisterEntryPoint<SensitivitySliderModel>(Lifetime.Singleton).AsSelf();
         builder.RegisterEntryPoint<SceneSwitch>(Lifetime.Singleton).AsSelf();
         builder.RegisterEntryPoint<GamePauser>(Lifetime.Singleton).AsSelf();
-        
-        builder.Register<InputActions>(Lifetime.Singleton);
 
+        new InputActionsInstaller().Install(builder);
         new GameSettingsInstaller(_gameSettings).Install(builder);
         new ScreenInstaller().Install(builder);
         new AudioTuningInstaller(_audioMixerGroup).Install(builder);
