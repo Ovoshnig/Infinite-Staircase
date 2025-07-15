@@ -51,10 +51,3 @@ MonoBehaviour:
   _gameSettings: {fileID: 11400000, guid: 0988861611452554ba55170e30c85ebb, type: 2}
   _audioMixerGroup: {fileID: 24300002, guid: 4589c14a7bd6ca145b694b55f7a0bc4e, type: 2}
   _musicPlayerView: {fileID: 3329204652785410564, guid: 1bb08e8958a349646acc1b46149bbe5b, type: 3}
-  _inventorySettings:
-    <RowCount>k__BackingField: 4
-    <ColumnCount>k__BackingField: 6
-    <SpacingRatio>k__BackingField: 0.5
-    <ItemPaddingRatio>k__BackingField: 0.2
-    <ItemTransparentValue>k__BackingField: 0.8
-    <ItemOpaqueValue>k__BackingField: 1

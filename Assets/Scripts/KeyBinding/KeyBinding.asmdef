@@ -1,5 +1,5 @@
 {
-    "name": "KeyBindingSystem",
+    "name": "KeyBinding",
     "rootNamespace": "",
     "references": [
         "GUID:3e45438da6e583745af8890138470615",
