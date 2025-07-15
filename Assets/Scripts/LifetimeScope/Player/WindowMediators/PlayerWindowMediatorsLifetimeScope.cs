@@ -1,0 +1,19 @@
+using UnityEngine;
+using VContainer;
+using VContainer.Unity;
+
+public class PlayerWindowMediatorsLifetimeScope : LifetimeScope
+{
+    protected override void Configure(IContainerBuilder builder)
+    {
+        builder.Register(resolver =>
+        {
+            CharacterController characterController = resolver.Resolve<CharacterController>();
+            return characterController.GetComponentInChildren<PlayerScopeView>();
+        }, Lifetime.Singleton);
+
+        builder.RegisterEntryPoint<CameraSwitchScopeViewMediator>(Lifetime.Singleton);
+        builder.RegisterEntryPoint<WindowTrackerPlayerInputMediator>(Lifetime.Singleton);
+        builder.RegisterEntryPoint<WindowTrackerPlayerScopeViewMediator>(Lifetime.Singleton);
+    }
+}
