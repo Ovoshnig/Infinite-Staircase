@@ -20,55 +20,15 @@ public class ProjectLifetimeScope : LifetimeScope
         builder.RegisterEntryPoint<SensitivitySliderModel>(Lifetime.Singleton).AsSelf();
         builder.RegisterEntryPoint<SceneSwitch>(Lifetime.Singleton).AsSelf();
         builder.RegisterEntryPoint<GamePauser>(Lifetime.Singleton).AsSelf();
-        builder.RegisterEntryPoint<ScreenInputHandler>(Lifetime.Singleton).AsSelf();
-        builder.RegisterEntryPoint<FullScreenTuner>(Lifetime.Singleton).AsSelf();
-        builder.RegisterEntryPoint<VSyncTuner>(Lifetime.Singleton).AsSelf();
-        builder.RegisterEntryPoint<ResolutionTuner>(Lifetime.Singleton).AsSelf();
-
+        
         builder.Register<InputActions>(Lifetime.Singleton);
 
-        builder.RegisterInstance(_gameSettings.TimeSettings);
-        builder.RegisterInstance(_gameSettings.SceneSettings);
-        builder.RegisterInstance(_gameSettings.AudioSettings);
-        builder.RegisterInstance(_gameSettings.WorldGeneration);
-        builder.RegisterInstance(_gameSettings.StaircaseGeneration);
-        builder.RegisterInstance(_gameSettings.GlassFloorSettings);
-        builder.RegisterInstance(_gameSettings.PlayerSettings);
-        builder.RegisterInstance(_gameSettings.KeyBindingSettings);
-        builder.RegisterInstance(_gameSettings.InventorySettings);
+        new GameSettingsInstaller(_gameSettings).Install(builder);
+        new ScreenInstaller().Install(builder);
+        new AudioTuningInstaller(_audioMixerGroup).Install(builder);
+        new MusicInstaller(_musicPlayerView).Install(builder);
+        new InventoryInstaller().Install(builder);
 
-        builder.RegisterInstance(_audioMixerGroup);
-        builder.Register<AudioMixerTuner>(Lifetime.Singleton).AsSelf();
-        builder.RegisterEntryPoint<GamePauserAudioMixerTunerMediator>(Lifetime.Singleton);
-        builder.RegisterEntryPoint<SoundSliderModel>(Lifetime.Singleton).AsSelf();
-        builder.RegisterEntryPoint<MusicSliderModel>(Lifetime.Singleton).AsSelf();
-        builder.Register<SliderAudioMixerTunerMediatorFactory>(Lifetime.Singleton);
-
-        builder.Register<IClipLoader, AddressablesClipLoader>(Lifetime.Singleton);
-        builder.Register<ISceneMusicMapper, SceneMusicMapper>(Lifetime.Singleton);
-        builder.Register<MusicQueue>(Lifetime.Singleton);
-        builder.Register<MusicPlayer>(Lifetime.Singleton);
-        builder.RegisterComponentInNewPrefab(_musicPlayerView, Lifetime.Singleton)
-            .DontDestroyOnLoad();
-        builder.RegisterEntryPoint<MusicPlayerMediator>(Lifetime.Singleton);
-        builder.RegisterEntryPoint<SceneSwitchMusicPlayerMediator>(Lifetime.Singleton);
-
-        builder.Register<ItemDefinitionLoader>(Lifetime.Singleton);
-        builder.Register<Inventory>(Lifetime.Singleton);
-        builder.RegisterEntryPoint<InventorySaver>(Lifetime.Singleton);
-    }
-
-    private void Start()
-    {
-        SliderAudioMixerTunerMediatorFactory sliderAudioMixerTunerMediatorFactory = Container
-            .Resolve<SliderAudioMixerTunerMediatorFactory>();
-
-        SoundSliderModel soundSliderModel = Container.Resolve<SoundSliderModel>();
-        sliderAudioMixerTunerMediatorFactory.Create(soundSliderModel);
-
-        MusicSliderModel musicSliderModel = Container.Resolve<MusicSliderModel>();
-        sliderAudioMixerTunerMediatorFactory.Create(musicSliderModel);
-
-        Container.Resolve<MusicPlayerView>();
+        builder.RegisterEntryPoint<AudioTuningInitializer>(Lifetime.Singleton);
     }
 }

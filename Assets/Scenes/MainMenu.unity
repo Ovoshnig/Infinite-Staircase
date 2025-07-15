@@ -3386,7 +3386,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   parentReference:
-    TypeName: MenuSliderMediatorsLifetimeScope
+    TypeName: MainMenuLifetimeScope
   autoRun: 1
   autoInjectGameObjects: []
 --- !u!1001 &583961032
@@ -11905,7 +11905,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   parentReference:
-    TypeName: 
+    TypeName: ProjectInventoryLifetimeScope
   autoRun: 1
   autoInjectGameObjects: []
   _mainMenuCanvas: {fileID: 882483483}
