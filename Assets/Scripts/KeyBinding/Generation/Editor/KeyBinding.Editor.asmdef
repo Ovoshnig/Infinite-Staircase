@@ -1,8 +1,8 @@
 {
-    "name": "InventorySystem.Editor",
+    "name": "KeyBinding.Editor",
     "rootNamespace": "",
     "references": [
-        "GUID:f3eb3fc0835044d42991c7c834e964c7"
+        "GUID:5b5601f7a82cc6346a7bd0759ae7839e"
     ],
     "includePlatforms": [
         "Editor"
