@@ -4,7 +4,6 @@ using UnityEngine;
     menuName = "Scriptable Objects/Game Settings")]
 public class GameSettings : ScriptableObject
 {
-    [field: SerializeField] public TimeSettings TimeSettings { get; private set; }
     [field: SerializeField] public SceneSettings SceneSettings { get; private set; }
     [field: SerializeField] public AudioSettings AudioSettings { get; private set; }
     [field: SerializeField] public WorldGenerationSettings WorldGeneration { get; private set; }

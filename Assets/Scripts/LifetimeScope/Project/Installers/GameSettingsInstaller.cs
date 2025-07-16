@@ -9,7 +9,6 @@ public class GameSettingsInstaller : IInstaller
 
     public void Install(IContainerBuilder builder)
     {
-        builder.RegisterInstance(_settings.TimeSettings);
         builder.RegisterInstance(_settings.SceneSettings);
         builder.RegisterInstance(_settings.AudioSettings);
         builder.RegisterInstance(_settings.WorldGeneration);

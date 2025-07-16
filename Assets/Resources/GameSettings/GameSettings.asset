@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <TimeSettings>k__BackingField:
     <NormalTimeScale>k__BackingField: 1
-    <PauseTimeScale>k__BackingField: 0
+    <PauseTimeScale>k__BackingField: 1
   <SceneSettings>k__BackingField:
     <FirstGameplayLevel>k__BackingField: 1
     <GameplayLevelsCount>k__BackingField: 1

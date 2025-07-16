@@ -16,6 +16,7 @@ public class PlayerMover : IInitializable, ITickable, IDisposable
     private readonly CompositeDisposable _compositeDisposable = new();
 
     private Vector3 _velocity;
+    private bool _isPause = false;
 
     public PlayerMover(PlayerState playerState, FirstCameraPriorityView firstCamera,
         ThirdCameraPriorityView thirdCamera, CameraSwitch cameraSwitch, PlayerSettings playerSettings)
@@ -35,12 +36,21 @@ public class PlayerMover : IInitializable, ITickable, IDisposable
     public void Initialize()
     {
         _playerState.Jumped
-            .Subscribe(_ => _velocity.y = _playerSettings.JumpForce)
+            .Subscribe(_ =>
+            {
+                if (_isPause)
+                    return;
+
+                _velocity.y = _playerSettings.JumpForce;
+            })
             .AddTo(_compositeDisposable);
     }
 
     public void Tick()
     {
+        if (_isPause)
+            return;
+
         float playerAngleY = _playerState.EulerAngles.y;
         float cameraAngleY = _cameraSwitch.IsFirstPerson.CurrentValue
             ? _firstCameraTransform.eulerAngles.y
@@ -63,4 +73,6 @@ public class PlayerMover : IInitializable, ITickable, IDisposable
     }
 
     public void Dispose() => _compositeDisposable.Dispose();
+
+    public void SetPause(bool value) => _isPause = value;
 }

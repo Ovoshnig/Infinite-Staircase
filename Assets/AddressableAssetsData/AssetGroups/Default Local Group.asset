@@ -15,11 +15,46 @@ MonoBehaviour:
   m_GroupName: Default Local Group
   m_GUID: 619f6c39f5d4e824f8d04613515e9d1b
   m_SerializeEntries:
+  - m_GUID: 26efd64a57a18934a94e19da1112a0e0
+    m_Address: Assets/Resources_moved/Audio/Music/Count/count00000000.mp3
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - audio
+    - music
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 2ab48be10a194f04ebec648ac6ffe369
+    m_Address: Assets/Resources_moved/Audio/Music/Count/count00000093.mp3
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - audio
+    - music
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 39112feb0a789744f953890fe9b8f47b
     m_Address: Assets/Resources_moved/Items/Exit.asset
     m_ReadOnly: 0
     m_SerializedLabels:
     - item
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 59ee935d46e23444ebb7189b0a99856e
+    m_Address: Assets/Resources_moved/Audio/Music/Count/count00000043.mp3
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - audio
+    - music
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 69ff3e8a69e8b39449c6694ac01e211e
+    m_Address: Assets/Resources_moved/Audio/Music/Count/count00000200.mp3
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - audio
+    - music
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 6ccc1df5af8f8b64da02610622c0c021
+    m_Address: Assets/Resources_moved/Audio/Music/Count/count00000308.mp3
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - audio
+    - music
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 7970ca7cbc041324b9777c10326a37a3
     m_Address: Assets/Resources_moved/Items/Cart.asset
@@ -27,11 +62,46 @@ MonoBehaviour:
     m_SerializedLabels:
     - item
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 7bf0818d17a14ef4bb13eca7766815db
+    m_Address: Assets/Resources_moved/Audio/Music/Count/count00000463.mp3
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - audio
+    - music
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 8952727b5d0d34a4aaad54309181ebcf
+    m_Address: Assets/Resources_moved/Audio/Music/Count/count00000253.mp3
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - audio
+    - music
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 9fefb76e14b21b7468058dfa9f013f0b
+    m_Address: Assets/Resources_moved/Audio/Music/Count/count00000147.mp3
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - audio
+    - music
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b97ae7520fa0f8d44bfa2b5b2f01f1ea
+    m_Address: Assets/Resources_moved/Audio/Music/Count/count00000361.mp3
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - audio
+    - music
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: bb77e4e707876674b8648d4ba5d90179
     m_Address: Assets/Resources_moved/Items/Question.asset
     m_ReadOnly: 0
     m_SerializedLabels:
     - item
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f1d13511fb8685747bc24e600510b093
+    m_Address: Assets/Resources_moved/Audio/Music/Count/count00000414.mp3
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - audio
+    - music
     FlaggedDuringContentUpdateRestriction: 0
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: abb42a486b86dd0459d8bd909fdf3dba, type: 2}

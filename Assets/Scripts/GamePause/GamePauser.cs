@@ -1,21 +1,14 @@
 using R3;
 using System;
-using UnityEngine;
 using VContainer.Unity;
 
 public class GamePauser : IInitializable, IDisposable
 {
     private readonly SceneSwitch _sceneSwitch;
-    private readonly TimeSettings _timeSettings;
     private readonly ReactiveProperty<bool> _isPause = new();
     private readonly CompositeDisposable _compositeDisposable = new();
 
-    public GamePauser(SceneSwitch sceneSwitch, 
-        TimeSettings timeSettings)
-    {
-        _sceneSwitch = sceneSwitch;
-        _timeSettings = timeSettings;
-    }
+    public GamePauser(SceneSwitch sceneSwitch) => _sceneSwitch = sceneSwitch;
 
     public ReadOnlyReactiveProperty<bool> IsPause => _isPause;
 
@@ -33,9 +26,5 @@ public class GamePauser : IInitializable, IDisposable
 
     public void UnPause() => SetPauseState(false);
 
-    private void SetPauseState(bool pause)
-    {
-        _isPause.OnNext(pause);
-        Time.timeScale = pause ? _timeSettings.PauseTimeScale : _timeSettings.NormalTimeScale;
-    }
+    private void SetPauseState(bool value) => _isPause.OnNext(value);
 }
