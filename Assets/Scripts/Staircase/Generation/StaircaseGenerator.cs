@@ -53,8 +53,8 @@ public class StaircaseGenerator : IInitializable, IDisposable
 
     public void Dispose()
     {
-        _cts?.Cancel();
-        _cts?.Dispose();
+        _cts.Cancel();
+        _cts.Dispose();
 
         _stairsLoader.ReleaseStairs();
     }

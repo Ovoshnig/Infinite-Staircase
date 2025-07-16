@@ -41,8 +41,8 @@ public class RandomItemGenerator : IInitializable, IDisposable
 
     public void Dispose()
     {
-        _cts?.Cancel();
-        _cts?.Dispose();
+        _cts.Cancel();
+        _cts.Dispose();
 
         _compositeDisposable.Dispose();
     }
