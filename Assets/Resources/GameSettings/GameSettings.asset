@@ -12,40 +12,40 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f052a82553564f49a319e8b23892e8f, type: 3}
   m_Name: GameSettings
   m_EditorClassIdentifier: 
-  _timeSettings:
+  <TimeSettings>k__BackingField:
     <NormalTimeScale>k__BackingField: 1
     <PauseTimeScale>k__BackingField: 0
-  _sceneSettings:
+  <SceneSettings>k__BackingField:
     <FirstGameplayLevel>k__BackingField: 1
-    <GameplayLevelsCount>k__BackingField: 2
+    <GameplayLevelsCount>k__BackingField: 1
     <LevelTransitionDuration>k__BackingField: 5
-  _audioSettings:
+  <AudioSettings>k__BackingField:
     <MinVolume>k__BackingField: -80
     <MaxVolume>k__BackingField: 0
     <SnapshotTransitionDuration>k__BackingField: 0
-  _worldGeneration:
+  <WorldGeneration>k__BackingField:
     <MinSeed>k__BackingField: -99999999
     <MaxSeed>k__BackingField: 999999999
-  _staircaseGeneration:
-    <SegmentCount>k__BackingField: 30
-  _glassFloorSettings:
+  <StaircaseGeneration>k__BackingField:
+    <SegmentCount>k__BackingField: 10
+  <GlassFloorSettings>k__BackingField:
     <Length>k__BackingField: 30
     <Width>k__BackingField: 30
     <Height>k__BackingField: 0.4
     <ColliderResolution>k__BackingField: 1
-  _playerSettings:
+  <PlayerSettings>k__BackingField:
     <WalkSpeed>k__BackingField: 3.5
     <RunSpeed>k__BackingField: 8
-    <SlewSpeed>k__BackingField: 400
+    <SlewSpeed>k__BackingField: 500
     <JumpForce>k__BackingField: 5
     <GravityForce>k__BackingField: 9.81
     <StickToGroundForce>k__BackingField: -2
     <MinSensitivity>k__BackingField: 0
-    <MaxSensitivity>k__BackingField: 150
-  _keyBindingSettings:
+    <MaxSensitivity>k__BackingField: 200
+  <KeyBindingSettings>k__BackingField:
     <NormalTextColor>k__BackingField: {r: 0, g: 0, b: 0, a: 1}
     <WaitingTextColor>k__BackingField: {r: 0.5803922, g: 0, b: 0.8274511, a: 1}
-  _inventorySettings:
+  <InventorySettings>k__BackingField:
     <RowCount>k__BackingField: 3
     <ColumnCount>k__BackingField: 5
     <SpacingRatio>k__BackingField: 0.5

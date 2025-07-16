@@ -20,21 +20,16 @@ public class KeyBindingOverridesSaver : IInitializable, IDisposable
     {
         string defaultJson = string.Empty;
         string json = _settingsStorage.Get(SettingsConstants.BindingOverridesKey, defaultJson);
-        InputSystem.actions.LoadBindingOverridesFromJson(json);
         _inputActions.LoadBindingOverridesFromJson(json);
 
         _settingsStorage.ResetHappened
-            .Subscribe(_ =>
-            {
-                InputSystem.actions.LoadBindingOverridesFromJson(defaultJson);
-                _inputActions.LoadBindingOverridesFromJson(defaultJson);
-            })
+            .Subscribe(_ => _inputActions.LoadBindingOverridesFromJson(defaultJson))
             .AddTo(_compositeDisposable);
     }
 
     public void Dispose()
     {
-        string json = InputSystem.actions.SaveBindingOverridesAsJson();
+        string json = _inputActions.SaveBindingOverridesAsJson();
         _settingsStorage.Set(SettingsConstants.BindingOverridesKey, json);
 
         _compositeDisposable?.Dispose();

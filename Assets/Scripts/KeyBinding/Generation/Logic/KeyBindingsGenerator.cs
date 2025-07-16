@@ -49,9 +49,9 @@ public class KeyBindingsGenerator : MonoBehaviour
 
     private void GenerateNew()
     {
-        InputActionAsset actionAsset = InputSystem.actions;
+        InputActionAsset inputActionAsset = new InputActions().asset;
 
-        foreach (var actionMap in actionAsset.actionMaps)
+        foreach (var actionMap in inputActionAsset.actionMaps)
         {
             List<InputAction> actionsToBind = new();
 
@@ -77,9 +77,9 @@ public class KeyBindingsGenerator : MonoBehaviour
                 GameObject bindingBlock = Instantiate(_keyBindingBlockPrefab, transform);
                 bindingBlock.name = $"🎬{action.name}";
 
-                var keyBinder = bindingBlock.GetComponent<KeyBinderView>();
+                KeyBinderView keyBinderView = bindingBlock.GetComponent<KeyBinderView>();
                 string formattedName = Regex.Replace(action.name, "([A-Z])", " $1").ToLower();
-                keyBinder.SetInputActionReference(InputActionReference.Create(action), formattedName);
+                keyBinderView.SetInputActionReference(InputActionReference.Create(action), formattedName);
             }
         }
 

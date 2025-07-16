@@ -16,8 +16,8 @@ public class Vector2KeyBinder : KeyBinder
     private int _keyInputNumber;
 
     public Vector2KeyBinder(KeyListeningTracker listeningTracker, SettingsStorage settingsStorage,
-        InputActions inputActions, InputAction inputAction) :
-        base(listeningTracker, settingsStorage, inputActions, inputAction)
+        InputAction inputAction) :
+        base(listeningTracker, settingsStorage, inputAction)
     {
     }
 
@@ -110,9 +110,7 @@ public class Vector2KeyBinder : KeyBinder
             {
                 for (int i = 0; i < 4; i++)
                 {
-                    InputAction action = InputActions.FindAction(InputAction.name);
                     InputAction.ApplyBindingOverride(i + 1, _temporaryControls[i].path);
-                    action.ApplyBindingOverride(i + 1, _temporaryControls[i].path);
 
                     EnableOverrides();
                 }

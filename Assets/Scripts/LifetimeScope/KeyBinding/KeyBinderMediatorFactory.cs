@@ -17,9 +17,13 @@ public class KeyBinderMediatorFactory : MediatorViewFactory<KeyBinderMediator, K
 
     public override KeyBinderMediator Create(KeyBinderView view)
     {
-        KeyBinder keyBinder = view.InputAction.type == InputActionType.Button
-            ? new ButtonKeyBinder(_listeningTracker, _settingsStorage, _inputActions, view.InputAction)
-            : new Vector2KeyBinder(_listeningTracker, _settingsStorage, _inputActions, view.InputAction);
+        InputAction viewAction = view.InputAction;
+        InputAction foundAction = _inputActions.FindAction(viewAction.id.ToString())
+            ?? throw new System.Exception($"Could not find InputAction {viewAction.name} with id {viewAction.id}");
+
+        KeyBinder keyBinder = foundAction.type == InputActionType.Button
+            ? new ButtonKeyBinder(_listeningTracker, _settingsStorage, foundAction)
+            : new Vector2KeyBinder(_listeningTracker, _settingsStorage, foundAction);
         keyBinder.Initialize();
         Disposables.Add(keyBinder);
 

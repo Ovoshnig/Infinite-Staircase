@@ -3,8 +3,8 @@ using UnityEngine.InputSystem;
 public class ButtonKeyBinder : KeyBinder
 {
     public ButtonKeyBinder(KeyListeningTracker listeningTracker, SettingsStorage settingsStorage,
-        InputActions inputActions, InputAction inputAction) :
-        base(listeningTracker, settingsStorage, inputActions, inputAction)
+        InputAction inputAction) :
+        base(listeningTracker, settingsStorage, inputAction)
     {
     }
 
@@ -47,8 +47,6 @@ public class ButtonKeyBinder : KeyBinder
             else
             {
                 InputAction.ApplyBindingOverride(control.path);
-                InputAction action = InputActions.FindAction(InputAction.name);
-                action.ApplyBindingOverride(control.path);
 
                 EnableOverrides();
             }

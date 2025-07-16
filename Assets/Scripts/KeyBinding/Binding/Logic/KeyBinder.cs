@@ -8,7 +8,6 @@ public abstract class KeyBinder : IKeyBinder, IInitializable, IDisposable
 {
     private readonly KeyListeningTracker _listeningTracker;
     private readonly SettingsStorage _settingsStorage;
-    private readonly InputActions _inputActions;
     private readonly InputAction _inputAction;
     private readonly ReactiveProperty<bool> _hasOverrides = new(false);
     private readonly ReactiveProperty<string> _bindingText = new("Key");
@@ -17,11 +16,10 @@ public abstract class KeyBinder : IKeyBinder, IInitializable, IDisposable
     private readonly CompositeDisposable _listeningDisposable = new();
 
     public KeyBinder(KeyListeningTracker listeningTracker, SettingsStorage settingsStorage,
-        InputActions InputActions, InputAction inputAction)
+        InputAction inputAction)
     {
         _listeningTracker = listeningTracker;
         _settingsStorage = settingsStorage;
-        _inputActions = InputActions;
         _inputAction = inputAction;
     }
 
@@ -30,7 +28,6 @@ public abstract class KeyBinder : IKeyBinder, IInitializable, IDisposable
     public ReadOnlyReactiveProperty<bool> IsListening => _isListening;
 
     protected KeyListeningTracker ListeningTracker => _listeningTracker;
-    protected InputActions InputActions => _inputActions;
     protected InputAction InputAction => _inputAction;
     protected abstract string WaitInputText { get; }
 
@@ -67,7 +64,6 @@ public abstract class KeyBinder : IKeyBinder, IInitializable, IDisposable
         _hasOverrides.Value = false;
 
         _inputAction.RemoveAllBindingOverrides();
-        _inputActions.RemoveAllBindingOverrides();
         _bindingText.Value = GetActionDisplayName();
     }
 
