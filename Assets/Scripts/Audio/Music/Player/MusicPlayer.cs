@@ -60,6 +60,8 @@ public class MusicPlayer : IDisposable
     private async UniTask PlayMusicAsync(IEnumerable<object> clipKeys,
         CancellationToken token)
     {
+        _musicQueue.Clear();
+
         while (!token.IsCancellationRequested)
         {
             if (_musicQueue.TryGetNextClipKey(out object clipKey))
