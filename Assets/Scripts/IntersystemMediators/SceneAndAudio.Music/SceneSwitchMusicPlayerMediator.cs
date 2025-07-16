@@ -16,7 +16,7 @@ public class SceneSwitchMusicPlayerMediator : Mediator
     {
         _sceneSwitch.IsSceneLoading
             .Where(loading => !loading)
-            .Subscribe(_ => _musicPlayer.LoadClipKeysAsync().Forget())
+            .Subscribe(_ => _musicPlayer.StartPlayMusicAsync(_sceneSwitch.CurrentSceneType).Forget())
             .AddTo(CompositeDisposable);
     }
 }

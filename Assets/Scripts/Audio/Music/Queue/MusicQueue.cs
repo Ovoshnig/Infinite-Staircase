@@ -14,7 +14,7 @@ public class MusicQueue
         _clipKeysQueue = new Queue<object>(clips);
     }
 
-    public object GetNextClipKey() => _clipKeysQueue.TryDequeue(out var key) ? key : null;
+    public bool TryGetNextClipKey(out object key) => _clipKeysQueue.TryDequeue(out key);
 
     public void ShuffleClipKeys()
     {

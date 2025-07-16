@@ -4,14 +4,12 @@ using System;
 using System.Collections.Generic;
 using System.Threading;
 using UnityEngine;
-using VContainer.Unity;
 
 public class MusicPlayer : IDisposable
 {
     private readonly MusicQueue _musicQueue;
     private readonly IClipLoader _clipLoader;
     private readonly ISceneMusicMapper _sceneMusicMapper;
-    private readonly SceneSwitch _sceneSwitch;
     private readonly Subject<AudioClip> _playbackStarted = new();
     private readonly Subject<Unit> _playbackEnded = new();
 
@@ -20,12 +18,11 @@ public class MusicPlayer : IDisposable
     private CancellationTokenSource _cts = new();
 
     public MusicPlayer(IClipLoader clipLoader, MusicQueue musicQueue,
-        ISceneMusicMapper sceneMusicMapper, SceneSwitch sceneSwitch)
+        ISceneMusicMapper sceneMusicMapper)
     {
         _clipLoader = clipLoader;
         _musicQueue = musicQueue;
         _sceneMusicMapper = sceneMusicMapper;
-        _sceneSwitch = sceneSwitch;
     }
 
     public Observable<AudioClip> PlaybackStarted => _playbackStarted;
@@ -37,12 +34,22 @@ public class MusicPlayer : IDisposable
         _cts.Dispose();
     }
 
-    public async UniTask LoadClipKeysAsync()
+    public async UniTask StartPlayMusicAsync(SceneSwitch.SceneType sceneType)
     {
+        _cts.Cancel();
+        _cts.Dispose();
+        _cts = new CancellationTokenSource();
+
         try
         {
             _musicClipKeys ??= await _clipLoader.LoadClipKeysAsync(_cts.Token);
-            TryPlayMusic();
+
+            MusicCategory category = _sceneMusicMapper.GetMusicCategory(sceneType);
+
+            if (_musicClipKeys.TryGetValue(category, out IEnumerable<object> clipKeys))
+                await PlayMusicAsync(clipKeys, _cts.Token);
+            else
+                Debug.LogWarning($"No music found for category {category}");
         }
         catch (OperationCanceledException)
         {
@@ -50,36 +57,24 @@ public class MusicPlayer : IDisposable
         }
     }
 
-    private bool TryPlayMusic()
+    private async UniTask PlayMusicAsync(IEnumerable<object> clipKeys,
+        CancellationToken token)
     {
-        _cts.Cancel();
-        _cts.Dispose();
-        _cts = new CancellationTokenSource();
-
-        MusicCategory category = _sceneMusicMapper.GetMusicCategory(_sceneSwitch.CurrentSceneType);
-
-        if (_musicClipKeys.TryGetValue(category, out IEnumerable<object> clipKeys))
+        while (!token.IsCancellationRequested)
         {
-            PlayMusicAsync(clipKeys).Forget();
-            return true;
-        }
-        else
-        {
-            Debug.LogWarning($"No music found for category {category}");
-            return false;
+            if (_musicQueue.TryGetNextClipKey(out object clipKey))
+            {
+                await PlayNextClipAsync(clipKey, token);
+            }
+            else
+            {
+                _musicQueue.SetClipKeys(clipKeys);
+                _musicQueue.ShuffleClipKeys();
+            }
         }
     }
 
-    private async UniTask PlayMusicAsync(IEnumerable<object> clipKeys)
-    {
-        _musicQueue.SetClipKeys(clipKeys);
-        _musicQueue.ShuffleClipKeys();
-
-        while (!_cts.Token.IsCancellationRequested)
-            await PlayNextClipAsync();
-    }
-
-    private async UniTask PlayNextClipAsync()
+    private async UniTask PlayNextClipAsync(object clipKey, CancellationToken token)
     {
         if (_pastClip != null)
         {
@@ -87,16 +82,11 @@ public class MusicPlayer : IDisposable
             _pastClip = null;
         }
 
-        object nextClipKey = _musicQueue.GetNextClipKey();
-
-        if (nextClipKey == null)
-            return;
-
-        AudioClip clip = await _clipLoader.LoadClipAsync(nextClipKey, _cts.Token);
+        AudioClip clip = await _clipLoader.LoadClipAsync(clipKey, token);
         _playbackStarted.OnNext(clip);
         _pastClip = clip;
 
-        await UniTask.WaitForSeconds(clip.length, cancellationToken: _cts.Token);
+        await UniTask.WaitForSeconds(clip.length, cancellationToken: token);
     }
 
     private void ReleaseClip(AudioClip clip)
