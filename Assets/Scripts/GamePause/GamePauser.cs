@@ -27,7 +27,7 @@ public class GamePauser : IInitializable, IDisposable
             .AddTo(_compositeDisposable);
     }
 
-    public void Dispose() => _compositeDisposable?.Dispose();
+    public void Dispose() => _compositeDisposable.Dispose();
 
     public void Pause() => SetPauseState(true);
 

@@ -59,5 +59,5 @@ public class PlayerState : IInitializable, IDisposable
             .AddTo(_compositeDisposable);
     }
 
-    public void Dispose() => _compositeDisposable?.Dispose();
+    public void Dispose() => _compositeDisposable.Dispose();
 }

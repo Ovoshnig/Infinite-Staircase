@@ -47,7 +47,7 @@ public class PlayerMover : IInitializable, ITickable, IDisposable
             : _thirdCameraTransform.eulerAngles.y;
 
         HorizontalMovementResult horizontalResult = _horizontalCalculator
-            .Calculate(_playerState.WalkInput, playerAngleY, cameraAngleY, 
+            .Calculate(_playerState.WalkInput, playerAngleY, cameraAngleY,
             _playerState.IsWalking.CurrentValue, _playerState.IsRunning.CurrentValue);
 
         _velocity.x = horizontalResult.Velocity.x;
@@ -62,5 +62,5 @@ public class PlayerMover : IInitializable, ITickable, IDisposable
         _eulerAngles.Value = new Vector3(0, horizontalResult.AngleY, 0);
     }
 
-    public void Dispose() => _compositeDisposable?.Dispose();
+    public void Dispose() => _compositeDisposable.Dispose();
 }

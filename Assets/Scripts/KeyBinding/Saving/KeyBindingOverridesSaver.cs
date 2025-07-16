@@ -32,6 +32,6 @@ public class KeyBindingOverridesSaver : IInitializable, IDisposable
         string json = _inputActions.SaveBindingOverridesAsJson();
         _settingsStorage.Set(SettingsConstants.BindingOverridesKey, json);
 
-        _compositeDisposable?.Dispose();
+        _compositeDisposable.Dispose();
     }
 }

@@ -10,5 +10,5 @@ public abstract class Mediator : IInitializable, IDisposable
 
     public abstract void Initialize();
 
-    public virtual void Dispose() => CompositeDisposable?.Dispose();
+    public virtual void Dispose() => CompositeDisposable.Dispose();
 }

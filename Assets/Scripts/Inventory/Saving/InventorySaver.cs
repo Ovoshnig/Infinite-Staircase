@@ -41,7 +41,7 @@ public class InventorySaver : IInitializable, IDisposable
         _cts?.Cancel();
         _cts?.Dispose();
 
-        _compositeDisposable?.Dispose();
+        _compositeDisposable.Dispose();
 
         SaveInventory();
     }

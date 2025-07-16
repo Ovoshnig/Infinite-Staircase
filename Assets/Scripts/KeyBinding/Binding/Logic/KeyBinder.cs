@@ -43,8 +43,8 @@ public abstract class KeyBinder : IKeyBinder, IInitializable, IDisposable
 
     public virtual void Dispose()
     {
-        _settingsDisposable?.Dispose();
-        _listeningDisposable?.Dispose();
+        _settingsDisposable.Dispose();
+        _listeningDisposable.Dispose();
     }
 
     public virtual void StartListening()

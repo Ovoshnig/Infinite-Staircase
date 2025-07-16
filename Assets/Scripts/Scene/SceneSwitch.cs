@@ -53,7 +53,7 @@ public class SceneSwitch : IInitializable, IDisposable
         _cts?.Cancel();
         _cts?.Dispose();
 
-        _compositeDisposable?.Dispose();
+        _compositeDisposable.Dispose();
 
         _saveStorage.Set(SaveConstants.AchievedLevelKey, _achievedLevel);
     }

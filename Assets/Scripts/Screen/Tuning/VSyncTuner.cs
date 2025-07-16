@@ -29,7 +29,7 @@ public class VSyncTuner : IInitializable, IDisposable
     {
         _settingsStorage.Set(SettingsConstants.VSyncKey, _isVSyncEnabled.Value);
 
-        _compositeDisposable?.Dispose();
+        _compositeDisposable.Dispose();
     }
 
     public void SwitchVSync()

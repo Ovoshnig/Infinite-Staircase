@@ -31,7 +31,7 @@ public abstract class SliderModel : IInitializable, IDisposable
     {
         _settingsStorage.Set(DataKey, _value.Value);
 
-        _compositeDisposable?.Dispose();
+        _compositeDisposable.Dispose();
     }
 
     public void SetClampedValue(float value)

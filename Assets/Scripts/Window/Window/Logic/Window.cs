@@ -35,7 +35,7 @@ public abstract class Window : IWindow, IInitializable, IDisposable
             .AddTo(_compositeDisposable);
     }
 
-    public virtual void Dispose() => _compositeDisposable?.Dispose();
+    public virtual void Dispose() => _compositeDisposable.Dispose();
 
     public virtual bool TryOpen()
     {

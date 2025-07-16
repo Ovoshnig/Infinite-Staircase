@@ -44,7 +44,7 @@ public class RandomItemGenerator : IInitializable, IDisposable
         _cts?.Cancel();
         _cts?.Dispose();
 
-        _compositeDisposable?.Dispose();
+        _compositeDisposable.Dispose();
     }
 
     private async UniTask<ItemData> GenerateRandomItemAsync(CancellationToken token)

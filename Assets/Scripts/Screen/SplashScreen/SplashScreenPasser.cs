@@ -20,7 +20,7 @@ public class SplashScreenPasser : IInitializable, IDisposable
             .AddTo(_compositeDisposable);
     }
 
-    public void Dispose() => _compositeDisposable?.Dispose();
+    public void Dispose() => _compositeDisposable.Dispose();
 
     private void Play()
     {
