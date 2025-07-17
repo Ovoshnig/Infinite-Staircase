@@ -39,9 +39,8 @@ public class PlayerState : IInitializable, IDisposable
         _playerInputHandler.IsWalkPressed
             .Subscribe(isPressed => _isWalking.Value = isPressed)
             .AddTo(_compositeDisposable);
-        Observable
+        _playerInputHandler.IsWalkPressed
             .CombineLatest(
-                _playerInputHandler.IsWalkPressed,
                 _playerInputHandler.IsRunPressed,
                 _isGrounded,
                 _isRunning,
