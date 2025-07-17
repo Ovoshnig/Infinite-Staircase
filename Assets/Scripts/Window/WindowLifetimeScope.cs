@@ -26,10 +26,4 @@ public abstract class WindowLifetimeScope : LifetimeScope
 
         builder.RegisterEntryPoint<WindowResumeButtonViewMediator>(Lifetime.Singleton);
     }
-
-    protected virtual void Start()
-    {
-        GameObject window = Container.Resolve<Canvas>().gameObject;
-        Container.InjectGameObject(window);
-    }
 }
