@@ -2,8 +2,8 @@
 
 public readonly struct HorizontalMovementResult
 {
-    public readonly Vector3 Velocity;
-    public readonly float AngleY;
+    public Vector3 Velocity { get; }
+    public float AngleY { get; }
 
     public HorizontalMovementResult(Vector3 velocity, float angleY)
     {
