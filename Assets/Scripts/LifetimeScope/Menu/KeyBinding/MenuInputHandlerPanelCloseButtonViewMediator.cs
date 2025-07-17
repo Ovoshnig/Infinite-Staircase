@@ -25,7 +25,7 @@ public class MenuInputHandlerPanelCloseButtonViewMediator : Mediator
             .Subscribe(_ => TryClosePanel())
             .AddTo(CompositeDisposable);
 
-        _keyListeningTracker.IsListening
+        _keyListeningTracker?.IsListening
             .DelayFrame(1)
             .Subscribe(isListening => _previousListening = isListening)
             .AddTo(CompositeDisposable);

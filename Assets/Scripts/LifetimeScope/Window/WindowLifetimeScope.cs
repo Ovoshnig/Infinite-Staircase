@@ -25,14 +25,6 @@ public abstract class WindowLifetimeScope : LifetimeScope
         }, Lifetime.Singleton);
 
         builder.RegisterEntryPoint<WindowResumeButtonViewMediator>(Lifetime.Singleton);
-
-        builder.Register(resolver =>
-        {
-            Canvas windowCanvas = resolver.Resolve<Canvas>();
-            return windowCanvas.GetComponentsInChildren<PanelCloseButtonView>(includeInactive: true);
-        }, Lifetime.Singleton);
-
-        builder.RegisterEntryPoint<WindowInputHandlerPanelCloseButtonViewMediator>(Lifetime.Singleton);
     }
 
     protected virtual void Start()
