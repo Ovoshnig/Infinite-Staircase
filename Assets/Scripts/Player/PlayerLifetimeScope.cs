@@ -28,9 +28,4 @@ public class PlayerLifetimeScope : LifetimeScope
             return characterController.GetComponentInChildren<ThirdCameraPriorityView>();
         }, Lifetime.Singleton);
     }
-
-    private void Start()
-    {
-        GameObject player = Container.Resolve<CharacterController>().gameObject;
-    }
 }

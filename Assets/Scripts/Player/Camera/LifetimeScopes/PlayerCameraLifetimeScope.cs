@@ -20,13 +20,6 @@ public class PlayerCameraLifetimeScope : LifetimeScope
 
         builder.RegisterEntryPoint(resolver =>
         {
-            SensitivitySliderModel sensitivitySliderModel = resolver.Resolve<SensitivitySliderModel>();
-            FirstInputAxisView firstInputAxisView = resolver.Resolve<FirstInputAxisView>();
-            return new SensitivitySliderInputAxisControllerMediator(sensitivitySliderModel, firstInputAxisView);
-        }, Lifetime.Scoped);
-
-        builder.RegisterEntryPoint(resolver =>
-        {
             PlayerInputHandler playerInputHandler = resolver.Resolve<PlayerInputHandler>();
             FirstInputAxisView firstInputAxisView = resolver.Resolve<FirstInputAxisView>();
             return new PlayerInputHandlerAxisViewMediator(playerInputHandler, firstInputAxisView);
@@ -43,13 +36,6 @@ public class PlayerCameraLifetimeScope : LifetimeScope
             CameraSwitch cameraSwitch = resolver.Resolve<CameraSwitch>();
             ThirdCameraPriorityView thirdCameraView = resolver.Resolve<ThirdCameraPriorityView>();
             return new CameraSwitchPriorityViewMediator(cameraSwitch, thirdCameraView);
-        }, Lifetime.Scoped);
-
-        builder.RegisterEntryPoint(resolver =>
-        {
-            SensitivitySliderModel sensitivitySliderModel = resolver.Resolve<SensitivitySliderModel>();
-            ThirdInputAxisView thirdInputAxisView = resolver.Resolve<ThirdInputAxisView>();
-            return new SensitivitySliderInputAxisControllerMediator(sensitivitySliderModel, thirdInputAxisView);
         }, Lifetime.Scoped);
 
         builder.RegisterEntryPoint(resolver =>
