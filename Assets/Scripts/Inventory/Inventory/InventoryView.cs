@@ -6,13 +6,20 @@ public class InventoryView : MonoBehaviour
 {
     [SerializeField] private RectTransform _canvasRectTransform;
 
-    private SlotView[] _slotViews;
+    private SlotView[] _slotViews = null;
     private ItemView _draggedItemView;
     private Transform _draggedItemParentTransform;
 
-    public SlotView[] SlotViews => _slotViews;
+    public SlotView[] SlotViews
+    {
+        get
+        {
+            if (_slotViews == null)
+                _slotViews = GetComponentsInChildren<SlotView>(true);
 
-    private void Awake() => _slotViews = GetComponentsInChildren<SlotView>();
+            return _slotViews;
+        }
+    }
 
     public void MoveItemToMouse()
     {

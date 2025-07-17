@@ -53,7 +53,7 @@ public class InventoryMediator : Mediator, ITickable
     public override void Dispose()
     {
         base.Dispose();
-        
+
         for (int i = 0; i < _inventorySettings.SlotCount; i++)
             _slotMediators[i].Dispose();
     }
