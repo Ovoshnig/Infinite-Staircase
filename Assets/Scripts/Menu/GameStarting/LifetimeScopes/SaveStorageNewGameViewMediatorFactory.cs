@@ -3,14 +3,9 @@
 {
     private readonly SaveStorage _saveStorage;
 
-    public SaveStorageNewGameViewMediatorFactory(SaveStorage saveStorage) => 
+    public SaveStorageNewGameViewMediatorFactory(SaveStorage saveStorage) =>
         _saveStorage = saveStorage;
 
-    public override SaveStorageNewGameViewMediator Create(NewGameButtonView view)
-    {
-        SaveStorageNewGameViewMediator mediator = new(_saveStorage, view);
-        mediator.Initialize();
-        Disposables.Add(mediator);
-        return mediator;
-    }
+    protected override SaveStorageNewGameViewMediator CreateMediatorInstance(NewGameButtonView view) =>
+        new(_saveStorage, view);
 }

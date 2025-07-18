@@ -6,11 +6,6 @@
     public GameStarterFirstLevelViewMediatorFactory(GameStarter gameStarter) =>
         _gameStarter = gameStarter;
 
-    public override GameStarterFirstLevelViewMediator Create(FirstLevelButtonView view)
-    {
-        GameStarterFirstLevelViewMediator mediator = new(_gameStarter, view);
-        mediator.Initialize();
-        Disposables.Add(mediator);
-        return mediator;
-    }
+    protected override GameStarterFirstLevelViewMediator CreateMediatorInstance(FirstLevelButtonView view) =>
+        new(_gameStarter, view);
 }

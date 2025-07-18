@@ -3,14 +3,9 @@ public class FullScreenTunerToggleViewMediatorFactory
 {
     private readonly FullScreenTuner _fullScreenTuner;
 
-    public FullScreenTunerToggleViewMediatorFactory(FullScreenTuner fullScreenTuner) => 
+    public FullScreenTunerToggleViewMediatorFactory(FullScreenTuner fullScreenTuner) =>
         _fullScreenTuner = fullScreenTuner;
 
-    public override FullScreenTunerToggleViewMediator Create(FullScreenToggleView view)
-    {
-        FullScreenTunerToggleViewMediator mediator = new(_fullScreenTuner, view);
-        mediator.Initialize();
-        Disposables.Add(mediator);
-        return mediator;
-    }
+    protected override FullScreenTunerToggleViewMediator CreateMediatorInstance(FullScreenToggleView view) =>
+        new(_fullScreenTuner, view);
 }

@@ -5,8 +5,6 @@ public abstract class MediatorViewFactory<TMediator, TView> : MediatorFactory<TM
     where TMediator : Mediator
     where TView : Component
 {
-    public abstract override TMediator Create(TView view);
-
     public virtual TMediator[] CreateForEachView(IObjectResolver container)
     {
         Canvas canvas = container.Resolve<Canvas>();
@@ -18,14 +16,15 @@ public abstract class MediatorViewFactory<TMediator, TView> : MediatorFactory<TM
 
         return mediators;
     }
+
+    protected abstract override TMediator CreateMediatorInstance(TView view);
 }
 
-public abstract class MediatorViewFactory<TMediator, TDependency, TView> : MediatorFactory<TMediator, TDependency, TView>
+public abstract class MediatorViewFactory<TMediator, TDependency, TView>
+    : MediatorFactory<TMediator, TDependency, TView>
     where TMediator : Mediator
     where TView : Component
 {
-    public abstract override TMediator Create(TDependency dependency, TView view);
-
     public virtual TMediator[] CreateForEachView(IObjectResolver container)
     {
         Canvas canvas = container.Resolve<Canvas>();
@@ -40,4 +39,6 @@ public abstract class MediatorViewFactory<TMediator, TDependency, TView> : Media
 
         return mediators;
     }
+
+    protected abstract override TMediator CreateMediatorInstance(TDependency dependency, TView view);
 }

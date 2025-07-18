@@ -2,14 +2,9 @@ public class SliderAudioMixerTunerMediatorFactory : MediatorFactory<SliderAudioM
 {
     private readonly AudioMixerTuner _audioMixerTuner;
 
-    public SliderAudioMixerTunerMediatorFactory(AudioMixerTuner audioMixerTuner) => 
+    public SliderAudioMixerTunerMediatorFactory(AudioMixerTuner audioMixerTuner) =>
         _audioMixerTuner = audioMixerTuner;
 
-    public override SliderAudioMixerTunerMediator Create(SliderModel sliderModel)
-    {
-        SliderAudioMixerTunerMediator mediator = new(sliderModel, _audioMixerTuner);
-        mediator.Initialize();
-        Disposables.Add(mediator);
-        return mediator;
-    }
+    protected override SliderAudioMixerTunerMediator CreateMediatorInstance(SliderModel sliderModel) =>
+        new(sliderModel, _audioMixerTuner);
 }

@@ -6,12 +6,7 @@
     public MenuInputHandlerPanelCloseButtonViewMediatorFactory(MenuInputHandler menuInputHandler) =>
         _menuInputHandler = menuInputHandler;
 
-    public override MenuInputHandlerPanelCloseButtonViewMediator
-        Create(KeyListeningTracker keyListeningTracker, PanelCloseButtonView[] views)
-    {
-        MenuInputHandlerPanelCloseButtonViewMediator mediator = new(_menuInputHandler, views, keyListeningTracker);
-        mediator.Initialize();
-        Disposables.Add(mediator);
-        return mediator;
-    }
+    protected override MenuInputHandlerPanelCloseButtonViewMediator CreateMediatorInstance(
+        KeyListeningTracker keyListeningTracker, PanelCloseButtonView[] views) =>
+        new(_menuInputHandler, views, keyListeningTracker);
 }

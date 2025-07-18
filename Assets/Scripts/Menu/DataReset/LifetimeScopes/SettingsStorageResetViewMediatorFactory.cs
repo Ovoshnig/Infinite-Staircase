@@ -6,11 +6,6 @@
     public SettingsStorageResetViewMediatorFactory(SettingsStorage settingsStorage) =>
         _settingsStorage = settingsStorage;
 
-    public override SettingsStorageResetViewMediator Create(SettingsResetButtonView view)
-    {
-        SettingsStorageResetViewMediator mediator = new(_settingsStorage, view);
-        mediator.Initialize();
-        Disposables.Add(mediator);
-        return mediator;
-    }
+    protected override SettingsStorageResetViewMediator CreateMediatorInstance(SettingsResetButtonView view) =>
+        new(_settingsStorage, view);
 }

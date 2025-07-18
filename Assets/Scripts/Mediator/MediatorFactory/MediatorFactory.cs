@@ -1,30 +1,40 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using R3;
+using System;
 
 public abstract class MediatorFactory<TMediator, TDependency> : IDisposable
     where TMediator : Mediator
 {
-    public List<IDisposable> Disposables { get; private set; } = new();
+    protected CompositeDisposable CompositeDisposable { get; } = new();
 
-    public void Dispose()
+    public void Dispose() => CompositeDisposable.Dispose();
+
+    public TMediator Create(TDependency dependency)
     {
-        foreach (var disposable in Disposables)
-            disposable.Dispose();
+        TMediator mediator = CreateMediatorInstance(dependency);
+
+        mediator.Initialize();
+        mediator.AddTo(CompositeDisposable);
+        return mediator;
     }
 
-    public abstract TMediator Create(TDependency dependency);
+    protected abstract TMediator CreateMediatorInstance(TDependency dependency);
 }
 
 public abstract class MediatorFactory<TMediator, TDependency1, TDependency2> : IDisposable
     where TMediator : Mediator
 {
-    public List<IDisposable> Disposables { get; private set; } = new();
+    protected CompositeDisposable CompositeDisposable { get; } = new();
 
-    public void Dispose()
+    public void Dispose() => CompositeDisposable.Dispose();
+
+    public TMediator Create(TDependency1 dependency1, TDependency2 dependency2)
     {
-        foreach (var disposable in Disposables)
-            disposable.Dispose();
+        TMediator mediator = CreateMediatorInstance(dependency1, dependency2);
+
+        mediator.Initialize();
+        mediator.AddTo(CompositeDisposable);
+        return mediator;
     }
 
-    public abstract TMediator Create(TDependency1 dependency1, TDependency2 dependency2);
+    protected abstract TMediator CreateMediatorInstance(TDependency1 dependency1, TDependency2 dependency2);
 }
