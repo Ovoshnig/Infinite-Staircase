@@ -1,7 +1,7 @@
 using VContainer;
 using VContainer.Unity;
 
-public class PlayerMenuMediatorsLifetimeScope : LifetimeScope
+public class PlayerMenuLifetimeScope : LifetimeScope
 {
     protected override void Configure(IContainerBuilder builder)
     {
@@ -9,14 +9,14 @@ public class PlayerMenuMediatorsLifetimeScope : LifetimeScope
         {
             SensitivitySliderModel sensitivitySliderModel = resolver.Resolve<SensitivitySliderModel>();
             FirstInputAxisView firstInputAxisView = resolver.Resolve<FirstInputAxisView>();
-            return new SensitivitySliderInputAxisControllerMediator(sensitivitySliderModel, firstInputAxisView);
+            return new SensitivitySliderInputAxisViewMediator(sensitivitySliderModel, firstInputAxisView);
         }, Lifetime.Scoped);
 
         builder.RegisterEntryPoint(resolver =>
         {
             SensitivitySliderModel sensitivitySliderModel = resolver.Resolve<SensitivitySliderModel>();
             ThirdInputAxisView thirdInputAxisView = resolver.Resolve<ThirdInputAxisView>();
-            return new SensitivitySliderInputAxisControllerMediator(sensitivitySliderModel, thirdInputAxisView);
+            return new SensitivitySliderInputAxisViewMediator(sensitivitySliderModel, thirdInputAxisView);
         }, Lifetime.Scoped);
     }
 }
