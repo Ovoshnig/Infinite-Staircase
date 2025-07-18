@@ -1,14 +1,14 @@
 ﻿using R3;
 
-public class GamePauserPlayerMoverMediator : Mediator
+public class PlayerMoverGamePauserMediator : Mediator
 {
-    private readonly GamePauser _gamePauser;
     private readonly PlayerMover _playerMover;
+    private readonly GamePauser _gamePauser;
 
-    public GamePauserPlayerMoverMediator(GamePauser gamePauser, PlayerMover playerMover)
+    public PlayerMoverGamePauserMediator(PlayerMover playerMover, GamePauser gamePauser)
     {
-        _gamePauser = gamePauser;
         _playerMover = playerMover;
+        _gamePauser = gamePauser;
     }
 
     public override void Initialize()

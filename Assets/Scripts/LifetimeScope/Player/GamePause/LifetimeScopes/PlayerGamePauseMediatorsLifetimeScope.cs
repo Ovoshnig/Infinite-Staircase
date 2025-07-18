@@ -4,5 +4,5 @@ using VContainer.Unity;
 public class PlayerGamePauseMediatorsLifetimeScope : LifetimeScope
 {
     protected override void Configure(IContainerBuilder builder) =>
-        builder.RegisterEntryPoint<GamePauserPlayerMoverMediator>(Lifetime.Singleton);
+        builder.RegisterEntryPoint<PlayerMoverGamePauserMediator>(Lifetime.Singleton);
 }
