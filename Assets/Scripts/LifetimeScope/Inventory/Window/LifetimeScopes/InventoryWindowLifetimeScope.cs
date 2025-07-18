@@ -6,7 +6,7 @@ public sealed class InventoryWindowLifetimeScope : WindowLifetimeScope
     protected override void Configure(IContainerBuilder builder)
     {
         builder.RegisterEntryPoint<InventoryWindow>(Lifetime.Singleton).AsSelf().As<Window>();
-        builder.RegisterEntryPoint<InventoryWindowInventoryMediator>(Lifetime.Singleton);
+        builder.RegisterEntryPoint<InventoryInventoryWindowMediator>(Lifetime.Singleton);
 
         base.Configure(builder);
     }

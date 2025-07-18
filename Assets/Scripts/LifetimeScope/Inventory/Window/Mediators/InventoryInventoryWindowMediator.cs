@@ -1,14 +1,14 @@
 ﻿using R3;
 
-public class InventoryWindowInventoryMediator : Mediator
+public class InventoryInventoryWindowMediator : Mediator
 {
-    private readonly InventoryWindow _inventoryWindow;
     private readonly Inventory _inventory;
+    private readonly InventoryWindow _inventoryWindow;
 
-    public InventoryWindowInventoryMediator(InventoryWindow inventoryWindow, Inventory inventory)
+    public InventoryInventoryWindowMediator(Inventory inventory, InventoryWindow inventoryWindow)
     {
-        _inventoryWindow = inventoryWindow;
         _inventory = inventory;
+        _inventoryWindow = inventoryWindow;
     }
 
     public override void Initialize()
