@@ -11,7 +11,7 @@ public class ProjectLifetimeScope : LifetimeScope
 
     protected override void Configure(IContainerBuilder builder)
     {
-        new DataSavingInstallers().Install(builder);
+        new DataSavingInstaller().Install(builder);
 
         new KeyBindingInstaller().Install(builder);
 
