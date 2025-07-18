@@ -7,5 +7,7 @@ public class MenuInstaller : IInstaller
     {
         builder.RegisterEntryPoint<SoundSliderModel>(Lifetime.Singleton).AsSelf();
         builder.RegisterEntryPoint<MusicSliderModel>(Lifetime.Singleton).AsSelf();
+
+        builder.RegisterEntryPoint<SensitivitySliderModel>(Lifetime.Singleton).AsSelf();
     }
 }

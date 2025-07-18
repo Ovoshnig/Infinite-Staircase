@@ -11,28 +11,28 @@ public class ProjectLifetimeScope : LifetimeScope
 
     protected override void Configure(IContainerBuilder builder)
     {
-#if !UNITY_EDITOR
-        builder.RegisterEntryPoint<SplashScreenPasser>(Lifetime.Singleton).AsSelf();
-#endif
-        builder.RegisterEntryPoint<SaveStorage>(Lifetime.Singleton).AsSelf();
-        builder.RegisterEntryPoint<SettingsStorage>(Lifetime.Singleton).AsSelf();
-        builder.RegisterEntryPoint<KeyBindingOverridesSaver>(Lifetime.Singleton).AsSelf();
-        builder.RegisterEntryPoint<SensitivitySliderModel>(Lifetime.Singleton).AsSelf();
-        builder.RegisterEntryPoint<SceneSwitch>(Lifetime.Singleton).AsSelf();
-        builder.RegisterEntryPoint<GamePauser>(Lifetime.Singleton).AsSelf();
+        new DataSavingInstallers().Install(builder);
+
+        new KeyBindingInstaller().Install(builder);
+
+        new SceneInstaller().Install(builder);
+
+        new GamePauseInstaller().Install(builder);
 
         new InputActionsInstaller().Install(builder);
+
         new GameSettingsInstaller(_gameSettings).Install(builder);
+
         new ScreenInstaller().Install(builder);
+
         new MenuInstaller().Install(builder);
+
+        new AudioMusicInstaller(_musicPlayerView).Install(builder);
+        new AudioMusicSceneInstaller().Install(builder);
 
         new AudioTuningInstaller(_audioMixerGroup).Install(builder);
         new AudioTuningGamePauseInstaller().Install(builder);
         new AudioTuningMenuInstaller().Install(builder);
-        builder.RegisterEntryPoint<AudioTuningMenuInitializer>(Lifetime.Singleton);
-
-        new AudioMusicInstaller(_musicPlayerView).Install(builder);
-        new AudioMusicSceneInstaller().Install(builder);
 
         new InventoryInstaller().Install(builder);
     }
