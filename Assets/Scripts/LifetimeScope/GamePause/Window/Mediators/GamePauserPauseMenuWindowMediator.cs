@@ -1,14 +1,14 @@
 using R3;
 
-public class PauseMenuWindowGamePauserMediator : Mediator
+public class GamePauserPauseMenuWindowMediator : Mediator
 {
-    private readonly PauseMenuWindow _pauseMenuWindow;
     private readonly GamePauser _gamePauser;
+    private readonly PauseMenuWindow _pauseMenuWindow;
 
-    public PauseMenuWindowGamePauserMediator(PauseMenuWindow pauseMenuWindow, GamePauser gamePauser)
+    public GamePauserPauseMenuWindowMediator(GamePauser gamePauser, PauseMenuWindow pauseMenuWindow)
     {
-        _pauseMenuWindow = pauseMenuWindow;
         _gamePauser = gamePauser;
+        _pauseMenuWindow = pauseMenuWindow;
     }
 
     public override void Initialize()
