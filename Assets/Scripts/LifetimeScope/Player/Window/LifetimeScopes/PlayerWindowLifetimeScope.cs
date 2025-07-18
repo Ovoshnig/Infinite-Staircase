@@ -2,7 +2,7 @@ using UnityEngine;
 using VContainer;
 using VContainer.Unity;
 
-public class PlayerWindowMediatorsLifetimeScope : LifetimeScope
+public class PlayerWindowLifetimeScope : LifetimeScope
 {
     protected override void Configure(IContainerBuilder builder)
     {
@@ -13,7 +13,7 @@ public class PlayerWindowMediatorsLifetimeScope : LifetimeScope
         }, Lifetime.Singleton);
 
         builder.RegisterEntryPoint<CameraSwitchScopeViewMediator>(Lifetime.Singleton);
-        builder.RegisterEntryPoint<WindowTrackerPlayerInputMediator>(Lifetime.Singleton);
+        builder.RegisterEntryPoint<PlayerActionsWindowTrackerMediator>(Lifetime.Singleton);
         builder.RegisterEntryPoint<WindowTrackerPlayerScopeViewMediator>(Lifetime.Singleton);
     }
 }
