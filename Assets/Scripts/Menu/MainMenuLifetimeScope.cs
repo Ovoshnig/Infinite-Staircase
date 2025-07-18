@@ -12,7 +12,4 @@ public class MainMenuLifetimeScope : LifetimeScope
 
         builder.RegisterEntryPoint<MenuInputHandler>(Lifetime.Singleton).AsSelf();
     }
-
-    private void Start() =>
-        Container.InjectGameObject(_mainMenuCanvas.gameObject);
 }

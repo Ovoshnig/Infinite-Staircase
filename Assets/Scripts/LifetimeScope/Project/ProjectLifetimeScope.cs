@@ -24,10 +24,16 @@ public class ProjectLifetimeScope : LifetimeScope
         new InputActionsInstaller().Install(builder);
         new GameSettingsInstaller(_gameSettings).Install(builder);
         new ScreenInstaller().Install(builder);
-        new AudioTuningInstaller(_audioMixerGroup).Install(builder);
-        new MusicInstaller(_musicPlayerView).Install(builder);
-        new InventoryInstaller().Install(builder);
+        new MenuInstaller().Install(builder);
 
-        builder.RegisterEntryPoint<AudioTuningInitializer>(Lifetime.Singleton);
+        new AudioTuningInstaller(_audioMixerGroup).Install(builder);
+        new AudioTuningGamePauseInstaller().Install(builder);
+        new AudioTuningMenuInstaller().Install(builder);
+        builder.RegisterEntryPoint<AudioTuningMenuInitializer>(Lifetime.Singleton);
+
+        new AudioMusicInstaller(_musicPlayerView).Install(builder);
+        new AudioMusicSceneInstaller().Install(builder);
+
+        new InventoryInstaller().Install(builder);
     }
 }

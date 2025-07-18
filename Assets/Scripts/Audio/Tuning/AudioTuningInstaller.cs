@@ -13,9 +13,5 @@ public class AudioTuningInstaller : IInstaller
     {
         builder.RegisterInstance(_audioMixerGroup);
         builder.Register<AudioMixerTuner>(Lifetime.Singleton).AsSelf();
-        builder.RegisterEntryPoint<GamePauserAudioMixerTunerMediator>(Lifetime.Singleton);
-        builder.RegisterEntryPoint<SoundSliderModel>(Lifetime.Singleton).AsSelf();
-        builder.RegisterEntryPoint<MusicSliderModel>(Lifetime.Singleton).AsSelf();
-        builder.Register<SliderAudioMixerTunerMediatorFactory>(Lifetime.Singleton);
     }
 }

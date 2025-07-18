@@ -1,15 +1,15 @@
 ﻿using Cysharp.Threading.Tasks;
 using R3;
 
-public class SceneSwitchMusicPlayerMediator : Mediator
+public class MusicPlayerSceneSwitchMediator : Mediator
 {
-    private readonly SceneSwitch _sceneSwitch;
     private readonly MusicPlayer _musicPlayer;
+    private readonly SceneSwitch _sceneSwitch;
 
-    public SceneSwitchMusicPlayerMediator(SceneSwitch sceneSwitch, MusicPlayer musicPlayer)
+    public MusicPlayerSceneSwitchMediator(MusicPlayer musicPlayer, SceneSwitch sceneSwitch)
     {
-        _sceneSwitch = sceneSwitch;
         _musicPlayer = musicPlayer;
+        _sceneSwitch = sceneSwitch;
     }
 
     public override void Initialize()

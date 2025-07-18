@@ -1,14 +1,14 @@
 using R3;
 
-public class GamePauserAudioMixerTunerMediator : Mediator
+public class AudioMixerTunerGamePauserMediator : Mediator
 {
-    private readonly GamePauser _gamePauser;
     private readonly AudioMixerTuner _audioMixerTuner;
+    private readonly GamePauser _gamePauser;
 
-    public GamePauserAudioMixerTunerMediator(GamePauser gamePauser, AudioMixerTuner audioMixerTuner)
+    public AudioMixerTunerGamePauserMediator(AudioMixerTuner audioMixerTuner, GamePauser gamePauser)
     {
-        _gamePauser = gamePauser;
         _audioMixerTuner = audioMixerTuner;
+        _gamePauser = gamePauser;
     }
 
     public override void Initialize()

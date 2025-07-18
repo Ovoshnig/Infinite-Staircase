@@ -1,11 +1,11 @@
 using VContainer;
 using VContainer.Unity;
 
-public class MusicInstaller : IInstaller
+public class AudioMusicInstaller : IInstaller
 {
     private readonly MusicPlayerView _musicPlayerView;
 
-    public MusicInstaller(MusicPlayerView musicPlayerView) =>
+    public AudioMusicInstaller(MusicPlayerView musicPlayerView) =>
         _musicPlayerView = musicPlayerView;
 
     public void Install(IContainerBuilder builder)
@@ -19,6 +19,5 @@ public class MusicInstaller : IInstaller
             .DontDestroyOnLoad();
 
         builder.RegisterEntryPoint<MusicPlayerMediator>(Lifetime.Singleton);
-        builder.RegisterEntryPoint<SceneSwitchMusicPlayerMediator>(Lifetime.Singleton);
     }
 }
