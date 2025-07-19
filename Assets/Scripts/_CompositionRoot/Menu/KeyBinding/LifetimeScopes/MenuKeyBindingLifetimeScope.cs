@@ -2,7 +2,7 @@ using UnityEngine;
 using VContainer;
 using VContainer.Unity;
 
-public class MenuKeyBindingMediatorsLifetimeScope : LifetimeScope
+public class MenuKeyBindingLifetimeScope : LifetimeScope
 {
     protected override void Configure(IContainerBuilder builder) =>
         builder.Register<MenuInputHandlerPanelCloseButtonViewMediatorFactory>(Lifetime.Singleton);

@@ -2,7 +2,7 @@ using UnityEngine;
 using VContainer;
 using VContainer.Unity;
 
-public class MenuScreenMediatorsLifetimeScope : LifetimeScope
+public class MenuScreenLifetimeScope : LifetimeScope
 {
     protected override void Configure(IContainerBuilder builder)
     {
