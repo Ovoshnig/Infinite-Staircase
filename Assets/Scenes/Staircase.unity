@@ -307,8 +307,8 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 687128052}
   - {fileID: 1410451879}
+  - {fileID: 2015446313}
   - {fileID: 437402791}
   - {fileID: 1722426192}
   - {fileID: 890677918}
@@ -742,13 +742,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 687128051}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1055081502}
-  m_Father: {fileID: 366930858}
+  m_Father: {fileID: 1410451879}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &687128053
 MonoBehaviour:
@@ -763,7 +763,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   parentReference:
-    TypeName: PlayerLifetimeScope
+    TypeName: FirstCameraLifetimeScope
   autoRun: 1
   autoInjectGameObjects: []
 --- !u!43 &777435971
@@ -931,6 +931,54 @@ Mesh:
     offset: 0
     size: 0
     path: 
+--- !u!1 &816476963
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 816476964}
+  - component: {fileID: 816476965}
+  m_Layer: 0
+  m_Name: PlayerCameraMenu
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &816476964
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 816476963}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2015446313}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &816476965
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 816476963}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b1e991a77ea7d3e4d9266227408d9bed, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  parentReference:
+    TypeName: ThirdCameraLifetimeScope
+  autoRun: 1
+  autoInjectGameObjects: []
 --- !u!1 &890677917
 GameObject:
   m_ObjectHideFlags: 0
@@ -1440,7 +1488,7 @@ GameObject:
   - component: {fileID: 1410451879}
   - component: {fileID: 1410451880}
   m_Layer: 0
-  m_Name: PlayerCamera
+  m_Name: FirstCamera
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1459,7 +1507,8 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 1753600318}
+  - {fileID: 687128052}
+  - {fileID: 1472861772}
   m_Father: {fileID: 366930858}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1410451880
@@ -1471,11 +1520,60 @@ MonoBehaviour:
   m_GameObject: {fileID: 1410451878}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f06e797b3b5b4674f91d1141a0b596b3, type: 3}
+  m_Script: {fileID: 11500000, guid: 89f048ea53388ac4c975e1df02fc3e8f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   parentReference:
     TypeName: PlayerLifetimeScope
+  autoRun: 1
+  autoInjectGameObjects: []
+  _cameraPriorityViewPrefab: {fileID: 6622164915239538272, guid: a12c5aa653b08fc41b854e07f188919f, type: 3}
+--- !u!1 &1472861771
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1472861772}
+  - component: {fileID: 1472861773}
+  m_Layer: 0
+  m_Name: PlayerCameraMenu
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1472861772
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1472861771}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1410451879}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1472861773
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1472861771}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b1e991a77ea7d3e4d9266227408d9bed, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  parentReference:
+    TypeName: FirstCameraLifetimeScope
   autoRun: 1
   autoInjectGameObjects: []
 --- !u!1 &1593485766
@@ -1672,54 +1770,6 @@ MonoBehaviour:
     TypeName: PlayerLifetimeScope
   autoRun: 1
   autoInjectGameObjects: []
---- !u!1 &1753600317
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1753600318}
-  - component: {fileID: 1753600319}
-  m_Layer: 0
-  m_Name: PlayerMenuMediators
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1753600318
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1753600317}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 1410451879}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1753600319
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1753600317}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b1e991a77ea7d3e4d9266227408d9bed, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  parentReference:
-    TypeName: PlayerCameraLifetimeScope
-  autoRun: 1
-  autoInjectGameObjects: []
 --- !u!1 &1765437324
 GameObject:
   m_ObjectHideFlags: 0
@@ -1865,11 +1915,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2248817891138265667, guid: bc8d9ad1ba721614ca12354093967007, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1.8281999
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2248817891138265667, guid: bc8d9ad1ba721614ca12354093967007, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0.075
+      value: -4
       objectReference: {fileID: 0}
     - target: {fileID: 2248817891138265667, guid: bc8d9ad1ba721614ca12354093967007, type: 3}
       propertyPath: m_LocalRotation.w
@@ -1903,11 +1953,73 @@ PrefabInstance:
       propertyPath: m_CustomSkybox
       value: 
       objectReference: {fileID: 2100000, guid: cc421da483ed06c49933077a621bff25, type: 2}
+    - target: {fileID: 8483640016350888644, guid: bc8d9ad1ba721614ca12354093967007, type: 3}
+      propertyPath: field of view
+      value: 60.000004
+      objectReference: {fileID: 0}
+    - target: {fileID: 8483640016350888644, guid: bc8d9ad1ba721614ca12354093967007, type: 3}
+      propertyPath: far clip plane
+      value: 150
+      objectReference: {fileID: 0}
+    - target: {fileID: 9057842961415806237, guid: bc8d9ad1ba721614ca12354093967007, type: 3}
+      propertyPath: DefaultBlend.Style
+      value: 7
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: bc8d9ad1ba721614ca12354093967007, type: 3}
+--- !u!1 &2015446312
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2015446313}
+  - component: {fileID: 2015446314}
+  m_Layer: 0
+  m_Name: ThirdCamera
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2015446313
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2015446312}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 816476964}
+  m_Father: {fileID: 366930858}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2015446314
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2015446312}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c711608bbc0ca0b4cb125a242cdb7880, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  parentReference:
+    TypeName: PlayerLifetimeScope
+  autoRun: 1
+  autoInjectGameObjects: []
+  _cameraPriorityViewPrefab: {fileID: 3721640407986944705, guid: 9f452c475aa18d146ac1de25904781c9, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

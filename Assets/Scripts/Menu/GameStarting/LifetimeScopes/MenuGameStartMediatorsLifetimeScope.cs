@@ -1,3 +1,4 @@
+using UnityEngine;
 using VContainer;
 using VContainer.Unity;
 
@@ -13,16 +14,18 @@ public class MenuGameStartMediatorsLifetimeScope : LifetimeScope
 
     private void Start()
     {
+        Canvas canvas = Container.Resolve<Canvas>();
+
         SaveStorageNewGameViewMediatorFactory saveStorageNewGameViewMediatorFactory = Container
             .Resolve<SaveStorageNewGameViewMediatorFactory>();
-        saveStorageNewGameViewMediatorFactory.CreateForEachView(Container);
+        saveStorageNewGameViewMediatorFactory.CreateForEachView(canvas);
 
         GameStarterSeedViewMediatorFactory gameStarterSeedViewMediatorFactory = Container
             .Resolve<GameStarterSeedViewMediatorFactory>();
-        gameStarterSeedViewMediatorFactory.CreateForEachView(Container);
+        gameStarterSeedViewMediatorFactory.CreateForEachView(canvas);
 
         GameStarterFirstLevelViewMediatorFactory gameStarterFirstLevelViewMediatorFactory = Container
             .Resolve<GameStarterFirstLevelViewMediatorFactory>();
-        gameStarterFirstLevelViewMediatorFactory.CreateForEachView(Container);
+        gameStarterFirstLevelViewMediatorFactory.CreateForEachView(canvas);
     }
 }

@@ -1,3 +1,4 @@
+using UnityEngine;
 using VContainer;
 using VContainer.Unity;
 
@@ -12,16 +13,18 @@ public class MenuScreenMediatorsLifetimeScope : LifetimeScope
 
     private void Start()
     {
+        Canvas canvas = Container.Resolve<Canvas>();
+
         FullScreenTunerToggleViewMediatorFactory fullScreenMediatorFactory = Container
             .Resolve<FullScreenTunerToggleViewMediatorFactory>();
-        fullScreenMediatorFactory.CreateForEachView(Container);
+        fullScreenMediatorFactory.CreateForEachView(canvas);
 
         VSyncTunerToggleViewMediatorFactory vSyncMediatorFactory = Container
             .Resolve<VSyncTunerToggleViewMediatorFactory>();
-        vSyncMediatorFactory.CreateForEachView(Container);
+        vSyncMediatorFactory.CreateForEachView(canvas);
 
         ResolutionTunerDropdownViewMediatorFactory resolutionMediatorFactory = Container
             .Resolve<ResolutionTunerDropdownViewMediatorFactory>();
-        resolutionMediatorFactory.CreateForEachView(Container);
+        resolutionMediatorFactory.CreateForEachView(canvas);
     }
 }

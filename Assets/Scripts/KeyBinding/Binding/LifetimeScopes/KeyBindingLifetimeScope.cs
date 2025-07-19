@@ -1,3 +1,4 @@
+using UnityEngine;
 using VContainer;
 using VContainer.Unity;
 
@@ -12,6 +13,7 @@ public class KeyBindingLifetimeScope : LifetimeScope
     private void Start()
     {
         KeyBinderMediatorFactory mediatorFactory = Container.Resolve<KeyBinderMediatorFactory>();
-        mediatorFactory.CreateForEachView(Container);
+        Canvas canvas = Container.Resolve<Canvas>();
+        mediatorFactory.CreateForEachView(canvas);
     }
 }

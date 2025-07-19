@@ -6,9 +6,7 @@ using VContainer.Unity;
 public class PlayerMover : IInitializable, ITickable, IDisposable
 {
     private readonly PlayerState _playerState;
-    private readonly Transform _firstCameraTransform;
-    private readonly Transform _thirdCameraTransform;
-    private readonly CameraSwitch _cameraSwitch;
+    private readonly Transform _cameraTransform;
     private readonly PlayerSettings _playerSettings;
     private readonly PlayerHorizontalMovementCalculator _horizontalCalculator;
     private readonly ReactiveProperty<Vector3> _frameMotion = new(Vector3.zero);
@@ -18,13 +16,11 @@ public class PlayerMover : IInitializable, ITickable, IDisposable
     private Vector3 _velocity;
     private bool _isPause = false;
 
-    public PlayerMover(PlayerState playerState, FirstCameraPriorityView firstCamera,
-        ThirdCameraPriorityView thirdCamera, CameraSwitch cameraSwitch, PlayerSettings playerSettings)
+    public PlayerMover(PlayerState playerState, CameraPriorityView cameraPriorityView,
+        PlayerSettings playerSettings)
     {
         _playerState = playerState;
-        _firstCameraTransform = firstCamera.transform;
-        _thirdCameraTransform = thirdCamera.transform;
-        _cameraSwitch = cameraSwitch;
+        _cameraTransform = cameraPriorityView.transform;
         _playerSettings = playerSettings;
 
         _horizontalCalculator = new PlayerHorizontalMovementCalculator(_playerSettings);
@@ -52,9 +48,7 @@ public class PlayerMover : IInitializable, ITickable, IDisposable
             return;
 
         float playerAngleY = _playerState.EulerAngles.y;
-        float cameraAngleY = _cameraSwitch.IsFirstPerson.CurrentValue
-            ? _firstCameraTransform.eulerAngles.y
-            : _thirdCameraTransform.eulerAngles.y;
+        float cameraAngleY = _cameraTransform.eulerAngles.y;
 
         HorizontalMovementResult horizontalResult = _horizontalCalculator
             .Calculate(_playerState.WalkInput, playerAngleY, cameraAngleY,

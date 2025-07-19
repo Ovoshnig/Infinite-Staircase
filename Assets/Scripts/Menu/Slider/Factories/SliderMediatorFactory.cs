@@ -3,7 +3,7 @@ using VContainer;
 
 public class SliderMediatorFactory : MediatorViewFactory<SliderMediator, SliderModel, SliderView>
 {
-    public override SliderMediator[] CreateForEachView(IObjectResolver container)
+    public SliderMediator[] CreateForEachView(IObjectResolver container)
     {
         Canvas canvas = container.Resolve<Canvas>();
         SliderView[] views = canvas.GetComponentsInChildren<SliderView>(true);

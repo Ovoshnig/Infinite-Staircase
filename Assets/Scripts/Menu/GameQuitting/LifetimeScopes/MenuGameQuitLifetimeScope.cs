@@ -1,15 +1,17 @@
+using UnityEngine;
 using VContainer;
 using VContainer.Unity;
 
 public class MenuGameQuitLifetimeScope : LifetimeScope
 {
-    protected override void Configure(IContainerBuilder builder) => 
+    protected override void Configure(IContainerBuilder builder) =>
         builder.Register<ApplicationGameQuitViewMediatorFactory>(Lifetime.Singleton);
 
     private void Start()
     {
         ApplicationGameQuitViewMediatorFactory mediatorFactory = Container
             .Resolve<ApplicationGameQuitViewMediatorFactory>();
-        mediatorFactory.CreateForEachView(Container);
+        Canvas canvas = Container.Resolve<Canvas>();
+        mediatorFactory.CreateForEachView(canvas);
     }
 }
