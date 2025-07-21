@@ -34,7 +34,7 @@ public class MenuInputHandlerPanelCloseButtonViewMediator : Mediator
     private bool TryClosePanel()
     {
         PanelCloseButtonView enabledButtonView = _panelCloseButtonViews
-                    .FirstOrDefault(b => b.isActiveAndEnabled);
+            .FirstOrDefault(b => b.isActiveAndEnabled);
 
         if (enabledButtonView == null || _previousListening)
             return false;

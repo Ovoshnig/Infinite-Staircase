@@ -6,10 +6,8 @@ public abstract class PanelSwitchButtonView : ButtonView
     [SerializeField] private GameObject _currentPanel;
     [SerializeField] private GameObject _newPanel;
 
-    protected override void Awake()
+    private void OnValidate()
     {
-        base.Awake();
-
         if (_currentPanel == null)
             _currentPanel = transform.parent.gameObject;
     }

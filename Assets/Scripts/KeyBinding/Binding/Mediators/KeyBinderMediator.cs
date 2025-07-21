@@ -37,10 +37,5 @@ public class KeyBinderMediator : Mediator
         _keyBinderView.ResetClicked
             .Subscribe(_ => _keyBinder.ResetBinding())
             .AddTo(CompositeDisposable);
-        Observable
-            .EveryValueChanged(_keyBinderView, v => v.isActiveAndEnabled)
-            .Where(isActiveAndEnabled => !isActiveAndEnabled)
-            .Subscribe(_ => _keyBinder.CancelListening())
-            .AddTo(CompositeDisposable);
     }
 }

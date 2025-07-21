@@ -13,11 +13,11 @@ public class MenuKeyBindingLifetimeScope : LifetimeScope
         PanelCloseButtonView[] views = windowCanvas
             .GetComponentsInChildren<PanelCloseButtonView>(includeInactive: true);
 
-        KeyListeningTracker keyListeningTracker =
-            Container.TryResolve(out KeyListeningTracker tracker) ? tracker : null;
+        KeyListeningTracker keyListeningTracker = Container
+            .TryResolve(out KeyListeningTracker tracker) ? tracker : null;
 
-        MenuInputHandlerPanelCloseButtonViewMediatorFactory factory =
-            Container.Resolve<MenuInputHandlerPanelCloseButtonViewMediatorFactory>();
+        MenuInputHandlerPanelCloseButtonViewMediatorFactory factory = Container
+            .Resolve<MenuInputHandlerPanelCloseButtonViewMediatorFactory>();
         factory.Create(keyListeningTracker, views);
     }
 }
