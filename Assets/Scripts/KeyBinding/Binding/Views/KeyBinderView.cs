@@ -11,6 +11,7 @@ public class KeyBinderView : MonoBehaviour
     [SerializeField] private Button _bindingResetButton;
     [SerializeField] private TMP_Text _actionNameText;
     [SerializeField] private TMP_Text _bindingButtonText;
+    [SerializeField] private Image _bindingConflictImage;
     [SerializeField] private InputActionReference _inputActionReference;
     [SerializeField] private GameSettings _gameSettings;
 
@@ -52,6 +53,8 @@ public class KeyBinderView : MonoBehaviour
 
     public void SetBindingText(string text) => _bindingButtonText.text = text;
 
-    public void SetResetButtonInteractable(bool hasOverrides) => 
-        _bindingResetButton.interactable = hasOverrides;
+    public void SetResetButtonInteractable(bool value) => 
+        _bindingResetButton.interactable = value;
+
+    public void SetConflictImageEnabled(bool value) => _bindingConflictImage.enabled = value;
 }

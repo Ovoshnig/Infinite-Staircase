@@ -45,7 +45,7 @@ public class Vector2KeyBinder : KeyBinder
     {
         InputControl[] controls = InputAction.controls.ToArray();
 
-        if (controls.Length == 4)
+        if (controls.Length >= 4)
             (controls[2], controls[1]) = (controls[1], controls[2]);
 
         string displayName = string.Join("/", controls.Select(c =>
@@ -69,7 +69,7 @@ public class Vector2KeyBinder : KeyBinder
             _temporaryControls[_keyInputNumber] = control;
             _keyInputNumber++;
 
-            if (_keyInputNumber == 4)
+            if (_keyInputNumber >= 4)
                 ApplyBinding(control);
             else
                 SetWaitingMessage();
@@ -109,11 +109,9 @@ public class Vector2KeyBinder : KeyBinder
             else
             {
                 for (int i = 0; i < 4; i++)
-                {
                     InputAction.ApplyBindingOverride(i + 1, _temporaryControls[i].path);
 
-                    EnableOverrides();
-                }
+                EnableOverrides();
             }
         }
 

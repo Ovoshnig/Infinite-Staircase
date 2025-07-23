@@ -2,6 +2,7 @@ using R3;
 using System;
 using System.Linq;
 using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.Utilities;
 using VContainer.Unity;
 
 public abstract class KeyBinder : IKeyBinder, IInitializable, IDisposable
@@ -9,9 +10,11 @@ public abstract class KeyBinder : IKeyBinder, IInitializable, IDisposable
     private readonly KeyListeningTracker _listeningTracker;
     private readonly SettingsStorage _settingsStorage;
     private readonly InputAction _inputAction;
+    private readonly ReactiveProperty<ReadOnlyArray<InputControl>> _controls = new();
     private readonly ReactiveProperty<bool> _hasOverrides = new(false);
     private readonly ReactiveProperty<string> _bindingText = new("Key");
     private readonly ReactiveProperty<bool> _isListening = new(false);
+    private readonly ReactiveProperty<bool> _hasConflict = new(false);
     private readonly CompositeDisposable _settingsDisposable = new();
     private readonly CompositeDisposable _listeningDisposable = new();
 
@@ -23,9 +26,11 @@ public abstract class KeyBinder : IKeyBinder, IInitializable, IDisposable
         _inputAction = inputAction;
     }
 
+    public ReactiveProperty<ReadOnlyArray<InputControl>> Controls => _controls;
     public ReadOnlyReactiveProperty<bool> HasOverrides => _hasOverrides;
     public ReadOnlyReactiveProperty<string> BindingText => _bindingText;
     public ReadOnlyReactiveProperty<bool> IsListening => _isListening;
+    public ReadOnlyReactiveProperty<bool> HasConflict => _hasConflict;
 
     protected KeyListeningTracker ListeningTracker => _listeningTracker;
     protected InputAction InputAction => _inputAction;
@@ -33,6 +38,7 @@ public abstract class KeyBinder : IKeyBinder, IInitializable, IDisposable
 
     public virtual void Initialize()
     {
+        _controls.Value = _inputAction.controls;
         _hasOverrides.Value = _inputAction.bindings.Any(b => b.hasOverrides);
         _bindingText.Value = GetActionDisplayName();
 
@@ -61,15 +67,22 @@ public abstract class KeyBinder : IKeyBinder, IInitializable, IDisposable
 
     public virtual void ResetBinding()
     {
-        _hasOverrides.Value = false;
-
         _inputAction.RemoveAllBindingOverrides();
+
+        _controls.Value = _inputAction.controls;
+        _hasOverrides.Value = false;
         _bindingText.Value = GetActionDisplayName();
     }
 
     public abstract string GetActionDisplayName();
 
-    public void EnableOverrides() => _hasOverrides.Value = true;
+    public void EnableOverrides()
+    {
+        _controls.Value = _inputAction.controls;
+        _hasOverrides.Value = true;
+    }
+
+    public void SetConflict(bool value) => _hasConflict.Value = value;
 
     public virtual void CancelListening()
     {

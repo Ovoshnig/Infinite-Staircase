@@ -30,6 +30,9 @@ public class KeyBinderMediator : Mediator
         _keyBinder.HasOverrides
             .Subscribe(_keyBinderView.SetResetButtonInteractable)
             .AddTo(CompositeDisposable);
+        _keyBinder.HasConflict
+            .Subscribe(_keyBinderView.SetConflictImageEnabled)
+            .AddTo(CompositeDisposable);
 
         _keyBinderView.BindingClicked
             .Subscribe(_ => _keyBinder.StartListening())
