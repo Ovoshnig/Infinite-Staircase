@@ -80,29 +80,27 @@ public class Vector2KeyBinder : KeyBinder
     {
         (_temporaryControls[1], _temporaryControls[2]) = (_temporaryControls[2], _temporaryControls[1]);
 
-        bool[] isDuplicates = _temporaryControls
+        bool hasDuplicates = _temporaryControls
             .GroupBy(c => c.path)
-            .Select(g => g.Count() > 1)
-            .ToArray();
-        bool[] isChanges = new bool[4];
-        bool[] sameAsDefault = new bool[4];
+            .Any(g => g.Count() > 1);
+        bool sameAsCurrent = true;
+        bool sameAsDefault = true;
 
         for (int i = 0; i < 4; i++)
         {
-            string defaultControlName = InputAction.bindings[i + 1].path.Split('/')[^1];
-            string currentControlName = InputAction.bindings[i + 1].effectivePath.Split('/')[^1];
-            string newControlName = _temporaryControls[i].path.Split('/')[^1];
+            string defaultBindingPath = InputAction.bindings[i + 1].path;
+            string currentBindingPath = InputAction.bindings[i + 1].effectivePath;
 
-            if (currentControlName != newControlName)
-                isChanges[i] = true;
+            if (!InputControlPath.Matches(currentBindingPath, _temporaryControls[i]))
+                sameAsCurrent = false;
 
-            if (newControlName == defaultControlName)
-                sameAsDefault[i] = true;
+            if (!InputControlPath.Matches(defaultBindingPath, _temporaryControls[i]))
+                sameAsDefault = false;
         }
 
-        if (isDuplicates.All(x => !x) && isChanges.Any(x => x))
+        if (!hasDuplicates && !sameAsCurrent)
         {
-            if (sameAsDefault.All(x => x))
+            if (sameAsDefault)
             {
                 ResetBinding();
             }
