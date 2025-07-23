@@ -16,20 +16,19 @@ public class KeyBindingsGeneratorEditor : Editor
             if (Application.isPlaying)
             {
                 Debug.LogWarning("Key bindings generation is disabled during Play Mode.");
+                return;
             }
-            else
-            {
-                int group = Undo.GetCurrentGroup();
-                Undo.IncrementCurrentGroup();
-                Undo.SetCurrentGroupName("Generate Key Bindings");
 
-                Undo.RegisterFullObjectHierarchyUndo(generator.gameObject, "Generate Key Bindings");
+            int group = Undo.GetCurrentGroup();
+            Undo.IncrementCurrentGroup();
+            Undo.SetCurrentGroupName("Generate Key Bindings");
 
-                generator.GenerateBindings();
+            Undo.RegisterFullObjectHierarchyUndo(generator.gameObject, "Generate Key Bindings");
 
-                EditorUtility.SetDirty(generator.gameObject);
-                EditorSceneManager.MarkSceneDirty(generator.gameObject.scene);
-            }
+            generator.GenerateBindings();
+
+            EditorUtility.SetDirty(generator.gameObject);
+            EditorSceneManager.MarkSceneDirty(generator.gameObject.scene);
         }
     }
 }
