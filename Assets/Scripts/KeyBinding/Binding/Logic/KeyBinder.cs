@@ -11,10 +11,10 @@ public abstract class KeyBinder : IKeyBinder, IInitializable, IDisposable
     private readonly SettingsStorage _settingsStorage;
     private readonly InputAction _inputAction;
     private readonly ReactiveProperty<ReadOnlyArray<InputControl>> _controls = new();
-    private readonly ReactiveProperty<bool> _hasOverrides = new(false);
-    private readonly ReactiveProperty<string> _bindingText = new("Key");
-    private readonly ReactiveProperty<bool> _isListening = new(false);
-    private readonly ReactiveProperty<bool> _hasConflict = new(false);
+    private readonly ReactiveProperty<bool> _hasOverrides = new();
+    private readonly ReactiveProperty<bool> _isListening = new();
+    private readonly ReactiveProperty<bool> _hasConflict = new();
+    private readonly Subject<string> _anyButtonPressed = new();
     private readonly CompositeDisposable _settingsDisposable = new();
     private readonly CompositeDisposable _listeningDisposable = new();
 
@@ -26,21 +26,23 @@ public abstract class KeyBinder : IKeyBinder, IInitializable, IDisposable
         _inputAction = inputAction;
     }
 
+    public abstract string ActionDisplayName { get; }
+    public abstract string WaitInputText { get; }
     public ReactiveProperty<ReadOnlyArray<InputControl>> Controls => _controls;
     public ReadOnlyReactiveProperty<bool> HasOverrides => _hasOverrides;
-    public ReadOnlyReactiveProperty<string> BindingText => _bindingText;
     public ReadOnlyReactiveProperty<bool> IsListening => _isListening;
     public ReadOnlyReactiveProperty<bool> HasConflict => _hasConflict;
+    public Observable<string> AnyButtonPressed => _anyButtonPressed;
 
     protected KeyListeningTracker ListeningTracker => _listeningTracker;
     protected InputAction InputAction => _inputAction;
-    protected abstract string WaitInputText { get; }
+
 
     public virtual void Initialize()
     {
         _controls.Value = _inputAction.controls;
         _hasOverrides.Value = _inputAction.bindings.Any(b => b.hasOverrides);
-        _bindingText.Value = GetActionDisplayName();
+        _isListening.Value = false;
 
         _settingsStorage.ResetHappened
             .Subscribe(_ => ResetBinding())
@@ -62,7 +64,7 @@ public abstract class KeyBinder : IKeyBinder, IInitializable, IDisposable
             .AddTo(_listeningDisposable);
 
         _isListening.Value = true;
-        SetWaitingMessage();
+        NotifyInputWaiting();
     }
 
     public virtual void ResetBinding()
@@ -71,41 +73,27 @@ public abstract class KeyBinder : IKeyBinder, IInitializable, IDisposable
 
         _controls.Value = _inputAction.controls;
         _hasOverrides.Value = false;
-        _bindingText.Value = GetActionDisplayName();
-    }
-
-    public abstract string GetActionDisplayName();
-
-    public void EnableOverrides()
-    {
-        _controls.Value = _inputAction.controls;
-        _hasOverrides.Value = true;
     }
 
     public void SetConflict(bool value) => _hasConflict.Value = value;
 
-    public virtual void CancelListening()
-    {
-        _bindingText.Value = GetActionDisplayName();
-
-        StopListening();
-    }
-
     protected abstract void OnAnyButtonPressed(InputControl control);
-
-    protected virtual void ApplyBinding(InputControl _)
-    {
-        _bindingText.Value = GetActionDisplayName();
-
-        StopListening();
-    }
+        
+    protected abstract void ApplyBinding(InputControl inputControl);
 
     protected virtual void StopListening()
     {
         _listeningDisposable.Clear();
         _listeningTracker.StopListening();
+
         _isListening.Value = false;
     }
 
-    protected void SetWaitingMessage() => _bindingText.Value = WaitInputText;
+    protected void EnableOverrides()
+    {
+        _controls.Value = _inputAction.controls;
+        _hasOverrides.Value = true;
+    }
+
+    protected void NotifyInputWaiting() => _anyButtonPressed.OnNext(WaitInputText);
 }

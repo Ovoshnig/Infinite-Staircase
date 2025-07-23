@@ -14,25 +14,16 @@ public class KeyBinderMediator : Mediator
     public override void Initialize()
     {
         _keyBinder.IsListening
-            .Subscribe(isListening =>
-            {
-                _keyBinderView.SetColor(isListening);
-
-                if (isListening)
-                    _keyBinderView.SetResetButtonInteractable(false);
-                else
-                    _keyBinderView.SetResetButtonInteractable(_keyBinder.HasOverrides.CurrentValue);
-            })
-            .AddTo(CompositeDisposable);
-        _keyBinder.BindingText
-            .Subscribe(_keyBinderView.SetBindingText)
+            .Subscribe(OnListening)
             .AddTo(CompositeDisposable);
         _keyBinder.HasOverrides
-            .Subscribe(_keyBinderView.SetResetButtonInteractable)
+            .Subscribe(OnHasOverrides)
             .AddTo(CompositeDisposable);
         _keyBinder.HasConflict
             .Subscribe(_keyBinderView.SetConflictImageEnabled)
             .AddTo(CompositeDisposable);
+        _keyBinder.AnyButtonPressed
+            .Subscribe(_keyBinderView.SetBindingText);
 
         _keyBinderView.BindingClicked
             .Subscribe(_ => _keyBinder.StartListening())
@@ -40,5 +31,20 @@ public class KeyBinderMediator : Mediator
         _keyBinderView.ResetClicked
             .Subscribe(_ => _keyBinder.ResetBinding())
             .AddTo(CompositeDisposable);
+    }
+
+    private void OnListening(bool isListening)
+    {
+        _keyBinderView.SetColor(isListening);
+        _keyBinderView.SetBindingText(isListening ? _keyBinder.WaitInputText : _keyBinder.ActionDisplayName);
+        _keyBinderView.SetResetButtonInteractable(!isListening && _keyBinder.HasOverrides.CurrentValue);
+    }
+
+    private void OnHasOverrides(bool hasOverrides)
+    {
+        _keyBinderView.SetResetButtonInteractable(hasOverrides);
+
+        if (!hasOverrides)
+            _keyBinderView.SetBindingText(_keyBinder.ActionDisplayName);
     }
 }

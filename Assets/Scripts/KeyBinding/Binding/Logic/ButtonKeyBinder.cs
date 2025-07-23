@@ -8,7 +8,17 @@ public class ButtonKeyBinder : KeyBinder
     {
     }
 
-    protected override string WaitInputText => KeyBindingConstants.WaitInputText;
+    public override string ActionDisplayName
+    {
+        get
+        {
+            string actionName = InputAction.controls[0].name;
+            actionName = char.ToUpper(actionName[0]) + actionName[1..];
+            return actionName;
+        }
+    }
+
+    public override string WaitInputText => KeyBindingConstants.WaitInputText;
 
     public override void StartListening()
     {
@@ -18,17 +28,10 @@ public class ButtonKeyBinder : KeyBinder
         base.StartListening();
     }
 
-    public override string GetActionDisplayName()
-    {
-        string actionName = InputAction.controls[0].name;
-        actionName = char.ToUpper(actionName[0]) + actionName[1..];
-        return actionName;
-    }
-
     protected override void OnAnyButtonPressed(InputControl control)
     {
         if (control == Keyboard.current.escapeKey)
-            CancelListening();
+            StopListening();
         else
             ApplyBinding(control);
     }
@@ -55,6 +58,6 @@ public class ButtonKeyBinder : KeyBinder
             }
         }
 
-        base.ApplyBinding(control);
+        StopListening();
     }
 }

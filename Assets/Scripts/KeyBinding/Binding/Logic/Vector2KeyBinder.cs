@@ -1,16 +1,15 @@
-using System;
 using System.Linq;
 using UnityEngine.InputSystem;
 
 public class Vector2KeyBinder : KeyBinder
 {
-    private enum Vector2Directions
+    private static readonly string[] _directionNames =
     {
-        верхней = 1,
-        левой,
-        нижней,
-        правой
-    }
+        KeyBindingConstants.UpName,
+        KeyBindingConstants.LeftName,
+        KeyBindingConstants.DownName,
+        KeyBindingConstants.RightName
+    };
 
     private InputControl[] _temporaryControls;
     private int _keyInputNumber;
@@ -21,14 +20,27 @@ public class Vector2KeyBinder : KeyBinder
     {
     }
 
-    protected override string WaitInputText
+    public override string ActionDisplayName
     {
         get
         {
-            object ordinalNumber = Enum.GetValues(typeof(Vector2Directions)).GetValue(_keyInputNumber);
-            return $"ќжидание ввода {ordinalNumber} клавиши...";
+            InputControl[] controls = InputAction.controls.ToArray();
+
+            if (controls.Length >= 4)
+                (controls[2], controls[1]) = (controls[1], controls[2]);
+
+            string displayName = string.Join("/", controls.Select(c =>
+            {
+                string name = c.name;
+                name = char.ToUpper(name[0]) + name[1..];
+                return name;
+            }));
+
+            return displayName;
         }
     }
+
+    public override string WaitInputText => $"ќжидание ввода {_directionNames[_keyInputNumber]} клавиши...";
 
     public override void StartListening()
     {
@@ -41,28 +53,11 @@ public class Vector2KeyBinder : KeyBinder
         base.StartListening();
     }
 
-    public override string GetActionDisplayName()
-    {
-        InputControl[] controls = InputAction.controls.ToArray();
-
-        if (controls.Length >= 4)
-            (controls[2], controls[1]) = (controls[1], controls[2]);
-
-        string displayName = string.Join("/", controls.Select(c =>
-        {
-            string name = c.name;
-            name = char.ToUpper(name[0]) + name[1..];
-            return name;
-        }));
-
-        return displayName;
-    }
-
     protected override void OnAnyButtonPressed(InputControl control)
     {
         if (control == Keyboard.current.escapeKey)
         {
-            CancelListening();
+            StopListening();
         }
         else
         {
@@ -72,7 +67,7 @@ public class Vector2KeyBinder : KeyBinder
             if (_keyInputNumber >= 4)
                 ApplyBinding(control);
             else
-                SetWaitingMessage();
+                NotifyInputWaiting();
         }
     }
 
@@ -113,6 +108,6 @@ public class Vector2KeyBinder : KeyBinder
             }
         }
 
-        base.ApplyBinding(control);
+        StopListening();
     }
 }
