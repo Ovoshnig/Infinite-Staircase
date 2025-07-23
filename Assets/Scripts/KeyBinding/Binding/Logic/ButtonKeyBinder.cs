@@ -35,12 +35,15 @@ public class ButtonKeyBinder : KeyBinder
 
     protected override void ApplyBinding(InputControl control)
     {
-        if (InputAction.controls[0].path != control.path)
-        {
-            string defaultControlName = InputAction.bindings[0].path.Split('/')[^1];
-            string newControlName = control.path.Split('/')[^1];
+        string defaultBindingPath = InputAction.bindings[0].path;
+        string currentBindingPath = InputAction.bindings[0].effectivePath;
 
-            if (defaultControlName == newControlName)
+        bool sameAsDefault = InputControlPath.Matches(defaultBindingPath, control);
+        bool sameAsCurrent = InputControlPath.Matches(currentBindingPath, control);
+
+        if (!sameAsCurrent)
+        {
+            if (sameAsDefault)
             {
                 ResetBinding();
             }

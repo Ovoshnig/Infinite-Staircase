@@ -83,19 +83,19 @@ public class Vector2KeyBinder : KeyBinder
         bool hasDuplicates = _temporaryControls
             .GroupBy(c => c.path)
             .Any(g => g.Count() > 1);
-        bool sameAsCurrent = true;
         bool sameAsDefault = true;
+        bool sameAsCurrent = true;
 
         for (int i = 0; i < 4; i++)
         {
             string defaultBindingPath = InputAction.bindings[i + 1].path;
             string currentBindingPath = InputAction.bindings[i + 1].effectivePath;
 
-            if (!InputControlPath.Matches(currentBindingPath, _temporaryControls[i]))
-                sameAsCurrent = false;
-
             if (!InputControlPath.Matches(defaultBindingPath, _temporaryControls[i]))
                 sameAsDefault = false;
+
+            if (!InputControlPath.Matches(currentBindingPath, _temporaryControls[i]))
+                sameAsCurrent = false;
         }
 
         if (!hasDuplicates && !sameAsCurrent)
