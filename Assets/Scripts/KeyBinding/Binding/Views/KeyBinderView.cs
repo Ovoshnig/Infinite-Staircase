@@ -34,21 +34,25 @@ public class KeyBinderView : MonoBehaviour
             .AddTo(this);
     }
 
+#if UNITY_EDITOR
     public void SetInputActionReference(InputActionReference inputActionReference, string name)
     {
-        if (!Application.isEditor || Application.isPlaying)
+        if (Application.isPlaying)
+        {
+            Debug.LogWarning("You cannot set InputActionReference in Play Mode.");
             return;
+        }
 
         _inputActionReference = inputActionReference;
         _actionNameText.text = name;
-    }
+    } 
+#endif
 
     public void SetColor(bool isListening)
     {
-        if (isListening)
-            _bindingButtonText.color = KeyBindingSettings.WaitingTextColor;
-        else
-            _bindingButtonText.color = KeyBindingSettings.NormalTextColor;
+        _bindingButtonText.color = isListening
+            ? KeyBindingSettings.ListeningTextColor 
+            : KeyBindingSettings.NormalTextColor;
     }
 
     public void SetBindingText(string text) => _bindingButtonText.text = text;
