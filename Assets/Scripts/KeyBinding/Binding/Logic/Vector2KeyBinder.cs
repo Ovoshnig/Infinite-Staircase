@@ -53,6 +53,14 @@ public class Vector2KeyBinder : KeyBinder
         base.StartListening();
     }
 
+    public override void ApplyBindingOverrides()
+    {
+        for (int i = 0; i < 4; i++)
+            InputAction.ApplyBindingOverride(i + 1, _temporaryControls[i].path);
+
+        base.ApplyBindingOverrides();
+    }
+
     protected override void OnAnyButtonPressed(InputControl control)
     {
         if (control == Keyboard.current.escapeKey)
@@ -65,13 +73,13 @@ public class Vector2KeyBinder : KeyBinder
             _keyInputNumber++;
 
             if (_keyInputNumber >= 4)
-                ApplyBinding(control);
+                HandleInput();
             else
                 NotifyInputWaiting();
         }
     }
 
-    protected override void ApplyBinding(InputControl control)
+    protected override void HandleInput()
     {
         (_temporaryControls[1], _temporaryControls[2]) = (_temporaryControls[2], _temporaryControls[1]);
 
@@ -96,16 +104,9 @@ public class Vector2KeyBinder : KeyBinder
         if (!hasDuplicates && !sameAsCurrent)
         {
             if (sameAsDefault)
-            {
-                ResetBinding();
-            }
+                RemoveBindingOverrides();
             else
-            {
-                for (int i = 0; i < 4; i++)
-                    InputAction.ApplyBindingOverride(i + 1, _temporaryControls[i].path);
-
-                EnableOverrides();
-            }
+                ApplyBindingOverrides();
         }
 
         StopListening();

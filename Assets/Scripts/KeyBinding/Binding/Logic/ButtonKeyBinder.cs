@@ -2,6 +2,8 @@ using UnityEngine.InputSystem;
 
 public class ButtonKeyBinder : KeyBinder
 {
+    private InputControl _inputControl;
+
     public ButtonKeyBinder(KeyListeningTracker listeningTracker, SettingsStorage settingsStorage,
         InputAction inputAction) :
         base(listeningTracker, settingsStorage, inputAction)
@@ -25,37 +27,45 @@ public class ButtonKeyBinder : KeyBinder
         if (!ListeningTracker.TryStartListening())
             return;
 
+        _inputControl = null;
+
         base.StartListening();
+    }
+
+    public override void ApplyBindingOverrides()
+    {
+        InputAction.ApplyBindingOverride(_inputControl.path);
+
+        base.ApplyBindingOverrides();
     }
 
     protected override void OnAnyButtonPressed(InputControl control)
     {
         if (control == Keyboard.current.escapeKey)
+        {
             StopListening();
+        }
         else
-            ApplyBinding(control);
+        {
+            _inputControl = control;
+            HandleInput();
+        }
     }
 
-    protected override void ApplyBinding(InputControl control)
+    protected override void HandleInput()
     {
         string defaultBindingPath = InputAction.bindings[0].path;
         string currentBindingPath = InputAction.bindings[0].effectivePath;
 
-        bool sameAsDefault = InputControlPath.Matches(defaultBindingPath, control);
-        bool sameAsCurrent = InputControlPath.Matches(currentBindingPath, control);
+        bool sameAsDefault = InputControlPath.Matches(defaultBindingPath, _inputControl);
+        bool sameAsCurrent = InputControlPath.Matches(currentBindingPath, _inputControl);
 
         if (!sameAsCurrent)
         {
             if (sameAsDefault)
-            {
-                ResetBinding();
-            }
+                RemoveBindingOverrides();
             else
-            {
-                InputAction.ApplyBindingOverride(control.path);
-
-                EnableOverrides();
-            }
+                ApplyBindingOverrides();
         }
 
         StopListening();

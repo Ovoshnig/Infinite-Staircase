@@ -1,5 +1,5 @@
 public interface IKeyBinder
 {
     void StartListening();
-    void ResetBinding();
+    void RemoveBindingOverrides();
 }

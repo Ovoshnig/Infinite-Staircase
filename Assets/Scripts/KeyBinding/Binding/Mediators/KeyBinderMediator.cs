@@ -29,7 +29,7 @@ public class KeyBinderMediator : Mediator
             .Subscribe(_ => _keyBinder.StartListening())
             .AddTo(CompositeDisposable);
         _keyBinderView.ResetClicked
-            .Subscribe(_ => _keyBinder.ResetBinding())
+            .Subscribe(_ => _keyBinder.RemoveBindingOverrides())
             .AddTo(CompositeDisposable);
     }
 

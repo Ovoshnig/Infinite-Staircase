@@ -45,7 +45,7 @@ public abstract class KeyBinder : IKeyBinder, IInitializable, IDisposable
         _isListening.Value = false;
 
         _settingsStorage.ResetHappened
-            .Subscribe(_ => ResetBinding())
+            .Subscribe(_ => RemoveBindingOverrides())
             .AddTo(_settingsDisposable);
     }
 
@@ -67,7 +67,13 @@ public abstract class KeyBinder : IKeyBinder, IInitializable, IDisposable
         NotifyInputWaiting();
     }
 
-    public virtual void ResetBinding()
+    public virtual void ApplyBindingOverrides()
+    {
+        _controls.Value = _inputAction.controls;
+        _hasOverrides.Value = true;
+    }
+
+    public virtual void RemoveBindingOverrides()
     {
         _inputAction.RemoveAllBindingOverrides();
 
@@ -79,7 +85,7 @@ public abstract class KeyBinder : IKeyBinder, IInitializable, IDisposable
 
     protected abstract void OnAnyButtonPressed(InputControl control);
         
-    protected abstract void ApplyBinding(InputControl inputControl);
+    protected abstract void HandleInput();
 
     protected virtual void StopListening()
     {
@@ -87,12 +93,6 @@ public abstract class KeyBinder : IKeyBinder, IInitializable, IDisposable
         _listeningTracker.StopListening();
 
         _isListening.Value = false;
-    }
-
-    protected void EnableOverrides()
-    {
-        _controls.Value = _inputAction.controls;
-        _hasOverrides.Value = true;
     }
 
     protected void NotifyInputWaiting() => _anyButtonPressed.OnNext(WaitInputText);
