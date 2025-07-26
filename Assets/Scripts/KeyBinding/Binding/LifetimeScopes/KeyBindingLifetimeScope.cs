@@ -6,7 +6,7 @@ public class KeyBindingLifetimeScope : LifetimeScope
 {
     protected override void Configure(IContainerBuilder builder)
     {
-        builder.Register<KeyListeningTracker>(Lifetime.Singleton);
+        builder.Register<ButtonListener>(Lifetime.Singleton);
         builder.Register<KeyBinderMediatorFactory>(Lifetime.Singleton);
         builder.Register<KeyListeningTrackerBlockerViewMediatorFactory>(Lifetime.Singleton);
 

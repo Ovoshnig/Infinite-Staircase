@@ -7,7 +7,7 @@ using VContainer.Unity;
 
 public abstract class KeyBinder : IInitializable, IDisposable
 {
-    private readonly KeyListeningTracker _listeningTracker;
+    private readonly ButtonListener _buttonListener;
     private readonly SettingsStorage _settingsStorage;
     private readonly InputAction _inputAction;
     private readonly ReactiveProperty<bool> _hasOverrides = new(false);
@@ -16,17 +16,16 @@ public abstract class KeyBinder : IInitializable, IDisposable
     private readonly ReactiveProperty<string> _bindingText = new();
     private readonly ReactiveProperty<ReadOnlyArray<InputControl>> _controls = new();
     private readonly CompositeDisposable _settingsDisposable = new();
-    private readonly CompositeDisposable _listeningDisposable = new();
 
     private InputControl[] _tempControls;
     private int _inputIndex;
 
     protected KeyBinder(
-        KeyListeningTracker listeningTracker,
+        ButtonListener buttonListener,
         SettingsStorage settingsStorage,
         InputAction inputAction)
     {
-        _listeningTracker = listeningTracker;
+        _buttonListener = buttonListener;
         _settingsStorage = settingsStorage;
         _inputAction = inputAction;
     }
@@ -51,25 +50,15 @@ public abstract class KeyBinder : IInitializable, IDisposable
             .AddTo(_settingsDisposable);
     }
 
-    public virtual void Dispose()
-    {
-        _settingsDisposable.Dispose();
-        _listeningDisposable.Dispose();
-    }
+    public virtual void Dispose() => _settingsDisposable.Dispose();
 
     public virtual void StartListening()
     {
-        if (!_listeningTracker.TryStartListening())
+        if (!_buttonListener.TryStartListening(OnAnyButtonPress))
             return;
 
         _inputIndex = 0;
         _tempControls = new InputControl[RequiredInputsCount];
-
-        InputSystem.onAnyButtonPress
-            .ToObservable()
-            .Where(c => c.device is Keyboard)
-            .Subscribe(OnAnyButtonPress)
-            .AddTo(_listeningDisposable);
 
         _isListening.Value = true;
         _bindingText.Value = GetWaitingText(_inputIndex);
@@ -150,8 +139,7 @@ public abstract class KeyBinder : IInitializable, IDisposable
 
     private void StopListening()
     {
-        _listeningDisposable.Clear();
-        _listeningTracker.StopListening();
+        _buttonListener.StopListening();
 
         _isListening.Value = false;
         _bindingText.Value = GetActionDisplayName();

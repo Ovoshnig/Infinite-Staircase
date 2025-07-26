@@ -1,5 +1,5 @@
 ﻿public class MenuInputHandlerPanelCloseButtonViewMediatorFactory
-    : MediatorFactory<MenuInputHandlerPanelCloseButtonViewMediator, KeyListeningTracker, PanelCloseButtonView[]>
+    : MediatorFactory<MenuInputHandlerPanelCloseButtonViewMediator, ButtonListener, PanelCloseButtonView[]>
 {
     private readonly MenuInputHandler _menuInputHandler;
 
@@ -7,6 +7,6 @@
         _menuInputHandler = menuInputHandler;
 
     protected override MenuInputHandlerPanelCloseButtonViewMediator CreateMediatorInstance(
-        KeyListeningTracker keyListeningTracker, PanelCloseButtonView[] views) =>
-        new(_menuInputHandler, views, keyListeningTracker);
+        ButtonListener buttonListener, PanelCloseButtonView[] views) =>
+        new(_menuInputHandler, views, buttonListener);
 }

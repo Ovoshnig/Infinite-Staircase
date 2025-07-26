@@ -9,8 +9,8 @@ public class Vector2KeyBinder : CompositeKeyBinder
         KeyBindingConstants.RightName
     };
 
-    public Vector2KeyBinder(KeyListeningTracker tracker, SettingsStorage storage, InputAction action)
-        : base(tracker, storage, action) { }
+    public Vector2KeyBinder(ButtonListener listener, SettingsStorage storage, InputAction action)
+        : base(listener, storage, action) { }
 
     protected override int RequiredInputsCount => 4;
     protected override string[] DirectionNames => _directionNames;

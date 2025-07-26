@@ -2,19 +2,19 @@ using R3;
 
 public class KeyListeningTrackerBlockerViewMediator : Mediator
 {
-    private readonly KeyListeningTracker _keyListeningTracker;
+    private readonly ButtonListener _buttonListener;
     private readonly BlockerView _blockerView;
 
-    public KeyListeningTrackerBlockerViewMediator(KeyListeningTracker keyListeningTracker,
+    public KeyListeningTrackerBlockerViewMediator(ButtonListener buttonListener,
         BlockerView blockerView)
     {
-        _keyListeningTracker = keyListeningTracker;
+        _buttonListener = buttonListener;
         _blockerView = blockerView;
     }
 
     public override void Initialize()
     {
-        _keyListeningTracker.IsListening
+        _buttonListener.IsListening
             .Subscribe(_blockerView.SetActive)
             .AddTo(CompositeDisposable);
     }

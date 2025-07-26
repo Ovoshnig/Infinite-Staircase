@@ -1,11 +1,11 @@
 public class KeyListeningTrackerBlockerViewMediatorFactory
     : MediatorViewFactory<KeyListeningTrackerBlockerViewMediator, BlockerView>
 {
-    private readonly KeyListeningTracker _keyListeningTracker;
+    private readonly ButtonListener _buttonListener;
 
-    public KeyListeningTrackerBlockerViewMediatorFactory(KeyListeningTracker keyListeningTracker) =>
-        _keyListeningTracker = keyListeningTracker;
+    public KeyListeningTrackerBlockerViewMediatorFactory(ButtonListener buttonListener) =>
+        _buttonListener = buttonListener;
 
     protected override KeyListeningTrackerBlockerViewMediator CreateMediatorInstance(BlockerView view) =>
-        new(_keyListeningTracker, view);
+        new(_buttonListener, view);
 }

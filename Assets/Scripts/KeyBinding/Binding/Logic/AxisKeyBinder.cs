@@ -7,8 +7,8 @@ public class AxisKeyBinder : CompositeKeyBinder
         KeyBindingConstants.PositiveName
     };
 
-    public AxisKeyBinder(KeyListeningTracker tracker, SettingsStorage storage, InputAction action)
-        : base(tracker, storage, action) { }
+    public AxisKeyBinder(ButtonListener listener, SettingsStorage storage, InputAction action)
+        : base(listener, storage, action) { }
 
     protected override int RequiredInputsCount => 2;
     protected override string[] DirectionNames => _directionNames;

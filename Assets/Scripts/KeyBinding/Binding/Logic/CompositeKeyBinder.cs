@@ -4,8 +4,8 @@ using UnityEngine.InputSystem;
 
 public abstract class CompositeKeyBinder : KeyBinder
 {
-    protected CompositeKeyBinder(KeyListeningTracker tracker, SettingsStorage storage, InputAction action)
-        : base(tracker, storage, action) { }
+    protected CompositeKeyBinder(ButtonListener listener, SettingsStorage storage, InputAction action)
+        : base(listener, storage, action) { }
 
     protected abstract string[] DirectionNames { get; }
 

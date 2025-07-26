@@ -2,8 +2,8 @@ using UnityEngine.InputSystem;
 
 public class ButtonKeyBinder : KeyBinder
 {
-    public ButtonKeyBinder(KeyListeningTracker tracker, SettingsStorage storage, InputAction action)
-        : base(tracker, storage, action) { }
+    public ButtonKeyBinder(ButtonListener listener, SettingsStorage storage, InputAction action)
+        : base(listener, storage, action) { }
 
     protected override int RequiredInputsCount => 1;
 

@@ -5,17 +5,17 @@ public class MenuInputHandlerPanelCloseButtonViewMediator : Mediator
 {
     private readonly MenuInputHandler _menuInputHandler;
     private readonly PanelCloseButtonView[] _panelCloseButtonViews;
-    private readonly KeyListeningTracker _keyListeningTracker;
+    private readonly ButtonListener _buttonListener;
 
     private bool _previousListening;
 
     public MenuInputHandlerPanelCloseButtonViewMediator(MenuInputHandler menuInputHandler,
         PanelCloseButtonView[] panelCloseButtonViews,
-        KeyListeningTracker keyListeningTracker)
+        ButtonListener buttonListener)
     {
         _menuInputHandler = menuInputHandler;
         _panelCloseButtonViews = panelCloseButtonViews;
-        _keyListeningTracker = keyListeningTracker;
+        _buttonListener = buttonListener;
     }
 
     public override void Initialize()
@@ -25,7 +25,7 @@ public class MenuInputHandlerPanelCloseButtonViewMediator : Mediator
             .Subscribe(_ => TryClosePanel())
             .AddTo(CompositeDisposable);
 
-        _keyListeningTracker?.IsListening
+        _buttonListener?.IsListening
             .DelayFrame(1)
             .Subscribe(isListening => _previousListening = isListening)
             .AddTo(CompositeDisposable);
