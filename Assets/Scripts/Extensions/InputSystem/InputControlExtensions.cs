@@ -5,16 +5,21 @@ public static class InputControlExtensions
 {
     public static string ToCaseIndependentString(this InputControl inputControl)
     {
-        Key key = ((KeyControl)inputControl).keyCode;
+        if (inputControl is KeyControl keyControl)
+        {
+            Key key = keyControl.keyCode;
 
-        if (key >= Key.Backquote && key <= Key.Z)
-        {
-            InputAction tempAction = new(binding: $"<Keyboard>/{key}");
-            return tempAction.bindings[0].ToDisplayString();
+            if (key >= Key.Backquote && key <= Key.Z)
+            {
+                InputAction tempAction = new(binding: $"<{inputControl.device}>/{key}");
+                return tempAction.bindings[0].ToDisplayString();
+            }
+            else
+            {
+                return inputControl.displayName;
+            }
         }
-        else
-        {
-            return inputControl.displayName;
-        }
+        
+        return inputControl.displayName;
     }
 }
