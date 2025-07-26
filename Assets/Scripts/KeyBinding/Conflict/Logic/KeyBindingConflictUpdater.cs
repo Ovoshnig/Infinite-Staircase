@@ -62,7 +62,7 @@ public class KeyBindingConflictUpdater : IDisposable
         private void ReevaluateConflicts()
         {
             IEnumerable<IGrouping<ReadOnlyArray<InputControl>, KeyBinder>> controlGroups = _binders
-                .GroupBy(b => b.Controls.Value, SequenceEqualComparer.Instance);
+                .GroupBy(b => b.Controls.CurrentValue, SequenceEqualComparer.Instance);
 
             foreach (var binder in _binders)
                 binder.SetConflict(false);

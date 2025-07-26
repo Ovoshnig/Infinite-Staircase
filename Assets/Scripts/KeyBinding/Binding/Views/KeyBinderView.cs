@@ -34,10 +34,9 @@ public class KeyBinderView : MonoBehaviour
             .AddTo(this);
     }
 
-#if UNITY_EDITOR
     public void SetInputActionReference(InputActionReference inputActionReference, string name)
     {
-        if (Application.isPlaying)
+        if (!Application.isEditor && Application.isPlaying)
         {
             Debug.LogWarning("You cannot set InputActionReference in Play Mode.");
             return;
@@ -45,19 +44,21 @@ public class KeyBinderView : MonoBehaviour
 
         _inputActionReference = inputActionReference;
         _actionNameText.text = name;
-    } 
-#endif
+    }
 
     public void SetColor(bool isListening)
     {
         _bindingButtonText.color = isListening
-            ? KeyBindingSettings.ListeningTextColor 
+            ? KeyBindingSettings.ListeningTextColor
             : KeyBindingSettings.NormalTextColor;
     }
 
     public void SetBindingText(string text) => _bindingButtonText.text = text;
 
-    public void SetResetButtonInteractable(bool value) => 
+    public void SetBindingButtonInteractable(bool value) =>
+        _bindingButton.interactable = value;
+
+    public void SetResetButtonInteractable(bool value) =>
         _bindingResetButton.interactable = value;
 
     public void SetConflictImageEnabled(bool value) => _bindingConflictImage.enabled = value;

@@ -5,7 +5,8 @@ public class KeyBinderMediator : Mediator
     private readonly KeyBinder _keyBinder;
     private readonly KeyBinderView _keyBinderView;
 
-    public KeyBinderMediator(KeyBinder keyBinder, KeyBinderView keyBinderView)
+    public KeyBinderMediator(KeyBinder keyBinder,
+        KeyBinderView keyBinderView)
     {
         _keyBinder = keyBinder;
         _keyBinderView = keyBinderView;
@@ -14,16 +15,17 @@ public class KeyBinderMediator : Mediator
     public override void Initialize()
     {
         _keyBinder.IsListening
-            .Subscribe(OnListening)
+            .Subscribe(OnListeningChanged)
             .AddTo(CompositeDisposable);
         _keyBinder.HasOverrides
-            .Subscribe(OnHasOverrides)
+            .Subscribe(_keyBinderView.SetResetButtonInteractable)
             .AddTo(CompositeDisposable);
         _keyBinder.HasConflict
             .Subscribe(_keyBinderView.SetConflictImageEnabled)
             .AddTo(CompositeDisposable);
-        _keyBinder.AnyButtonPressed
-            .Subscribe(_keyBinderView.SetBindingText);
+        _keyBinder.BindingText
+            .Subscribe(_keyBinderView.SetBindingText)
+            .AddTo(CompositeDisposable);
 
         _keyBinderView.BindingClicked
             .Subscribe(_ => _keyBinder.StartListening())
@@ -33,18 +35,11 @@ public class KeyBinderMediator : Mediator
             .AddTo(CompositeDisposable);
     }
 
-    private void OnListening(bool isListening)
+    private void OnListeningChanged(bool isListening)
     {
+        _keyBinderView.SetBindingButtonInteractable(!isListening);
+        _keyBinderView.SetResetButtonInteractable(!isListening && 
+            _keyBinder.HasOverrides.CurrentValue);
         _keyBinderView.SetColor(isListening);
-        _keyBinderView.SetBindingText(isListening ? _keyBinder.WaitInputText : _keyBinder.ActionDisplayName);
-        _keyBinderView.SetResetButtonInteractable(!isListening && _keyBinder.HasOverrides.CurrentValue);
-    }
-
-    private void OnHasOverrides(bool hasOverrides)
-    {
-        _keyBinderView.SetResetButtonInteractable(hasOverrides);
-
-        if (!hasOverrides)
-            _keyBinderView.SetBindingText(_keyBinder.ActionDisplayName);
     }
 }

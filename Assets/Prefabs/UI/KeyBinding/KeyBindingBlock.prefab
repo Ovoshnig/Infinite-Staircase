@@ -198,6 +198,22 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4912951026534261442, guid: 530458200879ce544b4494f4f8612b17, type: 3}
+      propertyPath: m_Colors.m_DisabledColor.a
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4912951026534261442, guid: 530458200879ce544b4494f4f8612b17, type: 3}
+      propertyPath: m_Colors.m_DisabledColor.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4912951026534261442, guid: 530458200879ce544b4494f4f8612b17, type: 3}
+      propertyPath: m_Colors.m_DisabledColor.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4912951026534261442, guid: 530458200879ce544b4494f4f8612b17, type: 3}
+      propertyPath: m_Colors.m_DisabledColor.r
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5553912703846147946, guid: 530458200879ce544b4494f4f8612b17, type: 3}
       propertyPath: m_Name
       value: BindingButton
