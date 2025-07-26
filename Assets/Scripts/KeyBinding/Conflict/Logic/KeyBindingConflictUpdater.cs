@@ -22,7 +22,7 @@ public class KeyBindingConflictUpdater : IDisposable
 
     public void RemoveKeyBinder(InputActionMap map, KeyBinder binder)
     {
-        if (_groups.TryGetValue(map, out var group))
+        if (_groups.TryGetValue(map, out BinderGroup group))
         {
             group.Remove(binder);
 
@@ -61,8 +61,10 @@ public class KeyBindingConflictUpdater : IDisposable
 
         private void ReevaluateConflicts()
         {
-            IEnumerable<IGrouping<ReadOnlyArray<InputControl>, KeyBinder>> controlGroups = _binders
-                .GroupBy(b => b.Controls.CurrentValue, SequenceEqualComparer.Instance);
+            IEnumerable<IGrouping<string, KeyBinder>> controlGroups = _binders
+                .GroupBy(b => string.Join('/', b.Controls.CurrentValue
+                    .OrderBy(c => c.path)
+                    .Select(c => c.path)));
 
             foreach (var binder in _binders)
                 binder.SetConflict(false);
@@ -77,15 +79,6 @@ public class KeyBindingConflictUpdater : IDisposable
         {
             _disposables.Dispose();
             _binders.Clear();
-        }
-
-        private class SequenceEqualComparer : IEqualityComparer<ReadOnlyArray<InputControl>>
-        {
-            public static readonly SequenceEqualComparer Instance = new();
-            public bool Equals(ReadOnlyArray<InputControl> x, ReadOnlyArray<InputControl> y) =>
-                x.SequenceEqual(y);
-            public int GetHashCode(ReadOnlyArray<InputControl> obj) =>
-                obj.Aggregate(17, (h, c) => h * 23 + c.GetHashCode());
         }
     }
 }

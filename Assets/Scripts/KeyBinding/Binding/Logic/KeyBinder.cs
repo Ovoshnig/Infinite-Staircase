@@ -1,8 +1,8 @@
 ﻿using R3;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine.InputSystem;
-using UnityEngine.InputSystem.Utilities;
 using VContainer.Unity;
 
 public abstract class KeyBinder : IInitializable, IDisposable
@@ -13,15 +13,14 @@ public abstract class KeyBinder : IInitializable, IDisposable
     private readonly ReactiveProperty<bool> _hasOverrides = new(false);
     private readonly ReactiveProperty<bool> _isListening = new(false);
     private readonly ReactiveProperty<bool> _hasConflict = new(false);
+    private readonly ReactiveProperty<IReadOnlyList<InputControl>> _controls = new();
     private readonly ReactiveProperty<string> _bindingText = new();
-    private readonly ReactiveProperty<ReadOnlyArray<InputControl>> _controls = new();
     private readonly CompositeDisposable _settingsDisposable = new();
 
     private InputControl[] _tempControls;
     private int _inputIndex;
 
-    protected KeyBinder(
-        ButtonListener buttonListener,
+    protected KeyBinder(ButtonListener buttonListener,
         SettingsStorage settingsStorage,
         InputAction inputAction)
     {
@@ -30,19 +29,19 @@ public abstract class KeyBinder : IInitializable, IDisposable
         _inputAction = inputAction;
     }
 
-    public InputAction InputAction => _inputAction;
     public ReadOnlyReactiveProperty<bool> HasOverrides => _hasOverrides;
     public ReadOnlyReactiveProperty<bool> IsListening => _isListening;
     public ReadOnlyReactiveProperty<bool> HasConflict => _hasConflict;
+    public ReadOnlyReactiveProperty<IReadOnlyList<InputControl>> Controls => _controls;
     public ReadOnlyReactiveProperty<string> BindingText => _bindingText;
-    public ReadOnlyReactiveProperty<ReadOnlyArray<InputControl>> Controls => _controls;
 
+    protected InputAction InputAction => _inputAction;
     protected abstract int RequiredInputsCount { get; }
 
     public virtual void Initialize()
     {
-        _controls.Value = _inputAction.controls;
         _hasOverrides.Value = _inputAction.bindings.Any(b => b.hasOverrides);
+        _controls.Value = _inputAction.controls;
         _bindingText.Value = GetActionDisplayName();
 
         _settingsStorage.ResetHappened

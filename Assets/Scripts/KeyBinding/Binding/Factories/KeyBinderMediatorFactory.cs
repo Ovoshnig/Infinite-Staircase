@@ -9,8 +9,10 @@ public class KeyBinderMediatorFactory : MediatorViewFactory<KeyBinderMediator, K
     private readonly InputActions _inputActions;
     private readonly KeyBindingConflictUpdater _keyBindingConflictChecker;
 
-    public KeyBinderMediatorFactory(ButtonListener buttonListener, SettingsStorage settingsStorage,
-        InputActions inputActions, KeyBindingConflictUpdater keyBindingConflictChecker)
+    public KeyBinderMediatorFactory(ButtonListener buttonListener,
+        SettingsStorage settingsStorage,
+        InputActions inputActions,
+        KeyBindingConflictUpdater keyBindingConflictChecker)
     {
         _buttonListener = buttonListener;
         _settingsStorage = settingsStorage;
@@ -45,10 +47,10 @@ public class KeyBinderMediatorFactory : MediatorViewFactory<KeyBinderMediator, K
                 throw new Exception($"KeyBinder is not provided for the {InputActionType.PassThrough}.");
         }
 
-        _keyBindingConflictChecker.AddKeyBinder(foundAction.actionMap, keyBinder);
-        
         keyBinder.Initialize();
         keyBinder.AddTo(CompositeDisposable);
+
+        _keyBindingConflictChecker.AddKeyBinder(foundAction.actionMap, keyBinder);
 
         return new KeyBinderMediator(keyBinder, view);
     }
