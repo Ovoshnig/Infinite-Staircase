@@ -11,7 +11,7 @@ public static class InputControlExtensions
 
             if (key >= Key.Backquote && key <= Key.Z)
             {
-                InputAction tempAction = new(binding: $"<{inputControl.device}>/{key}");
+                InputAction tempAction = new(binding: $"<Keyboard>/{key}");
                 return tempAction.bindings[0].ToDisplayString();
             }
             else
