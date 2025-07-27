@@ -10,6 +10,7 @@ public class KeyBindingLifetimeScope : LifetimeScope
         builder.Register<KeyBinderMediatorFactory>(Lifetime.Singleton);
         builder.Register<KeyListeningTrackerBlockerViewMediatorFactory>(Lifetime.Singleton);
 
+        builder.Register<IConflictDetectionStrategy, SetMatchConflictStrategy>(Lifetime.Singleton);
         builder.RegisterEntryPoint<KeyBindingConflictUpdater>(Lifetime.Singleton).AsSelf();
     }
 
