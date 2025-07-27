@@ -80,6 +80,10 @@ public class KeyBindingsGenerator : MonoBehaviour
                 KeyBinderView keyBinderView = bindingBlock.GetComponent<KeyBinderView>();
                 string formattedName = Regex.Replace(action.name, "([A-Z])", " $1").ToLower();
                 keyBinderView.SetInputActionReference(InputActionReference.Create(action), formattedName);
+
+                string actionDisplayName = string
+                    .Join("/", action.controls.Select(c => c.ToCaseIndependentString()));
+                keyBinderView.SetBindingText(actionDisplayName);
             }
         }
 
