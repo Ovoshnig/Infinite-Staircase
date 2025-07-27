@@ -16,7 +16,7 @@ public class ButtonListener : IDisposable
 
         InputSystem.onAnyButtonPress
             .ToObservable()
-            .Where(c => c.device is Keyboard)
+            .Distinct()
             .Subscribe(callback)
             .AddTo(_listeningDisposable);
 
