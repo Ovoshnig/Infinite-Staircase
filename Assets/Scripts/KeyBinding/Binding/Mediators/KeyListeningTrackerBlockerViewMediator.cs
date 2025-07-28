@@ -15,6 +15,10 @@ public class KeyListeningTrackerBlockerViewMediator : Mediator
     public override void Initialize()
     {
         _buttonListener.IsListening
+            .Select(isListening => isListening
+                ? Observable.Return(true)
+                : Observable.Return(false).DelayFrame(2))
+            .Switch()
             .Subscribe(_blockerView.SetActive)
             .AddTo(CompositeDisposable);
     }
