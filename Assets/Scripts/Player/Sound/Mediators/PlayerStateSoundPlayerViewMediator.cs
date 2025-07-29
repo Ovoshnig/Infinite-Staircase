@@ -14,7 +14,7 @@ public class PlayerStateSoundPlayerViewMediator : Mediator
 
     public override void Initialize()
     {
-        _playerState.IsGrounded
+        _playerState.Grounded
                 .Where(isGrounded => isGrounded)
                 .Subscribe(_ => _playerSoundPlayerView.PlayLandSound())
                 .AddTo(CompositeDisposable);

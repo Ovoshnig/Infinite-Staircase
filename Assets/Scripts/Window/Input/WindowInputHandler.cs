@@ -1,45 +1,36 @@
 using R3;
 using System;
-using UnityEngine.InputSystem;
 using VContainer.Unity;
 
 public class WindowInputHandler : IInitializable, IDisposable
 {
     private readonly InputActions.WindowsActions _windowsActions;
-    private readonly ReactiveProperty<bool> _closeCurrentPressed = new();
-    private readonly ReactiveProperty<bool> _pauseMenuSwitchPressed = new();
-    private readonly ReactiveProperty<bool> _inventorySwitchPressed = new();
+    private readonly CompositeDisposable _compositeDisposable = new();
 
     public WindowInputHandler(InputActions inputActions) => _windowsActions = inputActions.Windows;
 
-    public ReadOnlyReactiveProperty<bool> CloseCurrentPressed => _closeCurrentPressed;
-    public ReadOnlyReactiveProperty<bool> PauseMenuSwitchPressed => _pauseMenuSwitchPressed;
-    public ReadOnlyReactiveProperty<bool> InventorySwitchPressed => _inventorySwitchPressed;
+    public ReadOnlyReactiveProperty<bool> CloseCurrentPressed { get; private set; }
+    public ReadOnlyReactiveProperty<bool> PauseMenuSwitchPressed { get; private set; }
+    public ReadOnlyReactiveProperty<bool> InventorySwitchPressed { get; private set; }
 
     public void Initialize()
     {
         _windowsActions.Enable();
 
-        _windowsActions.CloseCurrent.Subscribe(OnCloseCurrent);
-        _windowsActions.SwitchPauseMenu.Subscribe(OnPauseMenuSwitch);
-        _windowsActions.SwitchInventory.Subscribe(OnInventorySwitch);
+        CloseCurrentPressed = _windowsActions.CloseCurrent
+            .AsButtonStream()
+            .AddTo(_compositeDisposable);
+        PauseMenuSwitchPressed = _windowsActions.SwitchPauseMenu
+            .AsButtonStream()
+            .AddTo(_compositeDisposable);
+        InventorySwitchPressed = _windowsActions.SwitchInventory
+            .AsButtonStream()
+            .AddTo(_compositeDisposable);
     }
 
     public void Dispose()
     {
+        _compositeDisposable.Dispose();
         _windowsActions.Disable();
-
-        _windowsActions.CloseCurrent.Unsubscribe(OnCloseCurrent);
-        _windowsActions.SwitchPauseMenu.Unsubscribe(OnPauseMenuSwitch);
-        _windowsActions.SwitchInventory.Unsubscribe(OnInventorySwitch);
     }
-
-    private void OnCloseCurrent(InputAction.CallbackContext context) =>
-        _closeCurrentPressed.Value = context.ReadValueAsButton();
-
-    private void OnPauseMenuSwitch(InputAction.CallbackContext context) =>
-        _pauseMenuSwitchPressed.Value = context.ReadValueAsButton();
-
-    private void OnInventorySwitch(InputAction.CallbackContext context) =>
-        _inventorySwitchPressed.Value = context.ReadValueAsButton();
 }

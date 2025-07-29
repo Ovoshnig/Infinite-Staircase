@@ -15,7 +15,7 @@ public class CameraSwitch : IInitializable, IDisposable
 
     public void Initialize()
     {
-        _playerInputHandler.IsTogglePerspectivePressed
+        _playerInputHandler.TogglePerspectivePressed
             .Where(isPressed => isPressed)
             .Subscribe(_ => _isFirstPerson.Value = !_isFirstPerson.Value)
             .AddTo(_compositeDisposable);

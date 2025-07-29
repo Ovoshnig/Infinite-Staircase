@@ -15,10 +15,10 @@ public class PlayerInputHandler : IInitializable, IDisposable
     public InputAction ZoomAction => _playerActions.Zoom;
     public ReadOnlyReactiveProperty<Vector2> WalkInput { get; private set; }
     public ReadOnlyReactiveProperty<Vector2> LookInput { get; private set; }
-    public ReadOnlyReactiveProperty<bool> IsRunPressed { get; private set; }
-    public ReadOnlyReactiveProperty<bool> IsZoomPressed { get; private set; }
-    public ReadOnlyReactiveProperty<bool> IsJumpPressed { get; private set; }
-    public ReadOnlyReactiveProperty<bool> IsTogglePerspectivePressed { get; private set; }
+    public ReadOnlyReactiveProperty<bool> RunPressed { get; private set; }
+    public ReadOnlyReactiveProperty<bool> ZoomPressed { get; private set; }
+    public ReadOnlyReactiveProperty<bool> JumpPressed { get; private set; }
+    public ReadOnlyReactiveProperty<bool> TogglePerspectivePressed { get; private set; }
 
     public void Initialize()
     {
@@ -31,16 +31,16 @@ public class PlayerInputHandler : IInitializable, IDisposable
             .AsValueStream<Vector2>()
             .AddTo(_compositeDisposable);
 
-        IsRunPressed = _playerActions.Run
+        RunPressed = _playerActions.Run
             .AsButtonStream()
             .AddTo(_compositeDisposable);
-        IsZoomPressed = _playerActions.Zoom
+        ZoomPressed = _playerActions.Zoom
             .AsButtonStream()
             .AddTo(_compositeDisposable);
-        IsJumpPressed = _playerActions.Jump
+        JumpPressed = _playerActions.Jump
             .AsButtonStream()
             .AddTo(_compositeDisposable);
-        IsTogglePerspectivePressed = _playerActions.TogglePerspective
+        TogglePerspectivePressed = _playerActions.TogglePerspective
             .AsButtonStream()
             .AddTo(_compositeDisposable);
     }

@@ -52,12 +52,12 @@ public class PlayerMover : IInitializable, ITickable, IDisposable
 
         HorizontalMovementResult horizontalResult = _horizontalCalculator
             .Calculate(_playerState.WalkInput.CurrentValue, playerAngleY, cameraAngleY,
-            _playerState.IsWalking.CurrentValue, _playerState.IsRunning.CurrentValue);
+            _playerState.Walking.CurrentValue, _playerState.Running.CurrentValue);
 
         _velocity.x = horizontalResult.Velocity.x;
         _velocity.z = horizontalResult.Velocity.z;
 
-        if (_playerState.IsGrounded.CurrentValue && _velocity.y < 0)
+        if (_playerState.Grounded.CurrentValue && _velocity.y < 0)
             _velocity.y = _playerSettings.StickToGroundForce;
         else
             _velocity.y -= _playerSettings.GravityForce * Time.deltaTime;

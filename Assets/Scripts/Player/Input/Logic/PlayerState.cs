@@ -19,38 +19,38 @@ public class PlayerState : IInitializable, IDisposable
 
     public ReadOnlyReactiveProperty<Vector2> WalkInput => _playerInputHandler.WalkInput;
     public ReadOnlyReactiveProperty<Vector2> LookInput => _playerInputHandler.LookInput;
-    public ReadOnlyReactiveProperty<bool> IsWalking { get; private set; }
-    public ReadOnlyReactiveProperty<bool> IsLooking { get; private set; }
-    public ReadOnlyReactiveProperty<bool> IsRunning { get; private set; }
-    public ReadOnlyReactiveProperty<bool> IsGrounded { get; private set; }
+    public ReadOnlyReactiveProperty<bool> Walking { get; private set; }
+    public ReadOnlyReactiveProperty<bool> Looking { get; private set; }
+    public ReadOnlyReactiveProperty<bool> Running { get; private set; }
+    public ReadOnlyReactiveProperty<bool> Grounded { get; private set; }
     public Observable<Unit> Jumped => _jumped;
     public Vector3 EulerAngles => _characterController.transform.eulerAngles;
 
     public void Initialize()
     {
-        IsWalking = WalkInput
+        Walking = WalkInput
             .Select(value => value != Vector2.zero)
             .ToReadOnlyReactiveProperty()
             .AddTo(_compositeDisposable);
-        IsLooking = LookInput
+        Looking = LookInput
             .Select(value => value != Vector2.zero)
             .ToReadOnlyReactiveProperty()
             .AddTo(_compositeDisposable);
 
-        IsGrounded = Observable
+        Grounded = Observable
             .EveryValueChanged(this, p => _characterController.isGrounded)
             .ToReadOnlyReactiveProperty()
             .AddTo(_compositeDisposable);
-        IsRunning = IsWalking
+        Running = Walking
             .CombineLatest(
-                _playerInputHandler.IsRunPressed,
+                _playerInputHandler.RunPressed,
                 (isWalking, isRunning) =>
                     isWalking && isRunning
             )
             .ToReadOnlyReactiveProperty()
             .AddTo(_compositeDisposable);
-        _playerInputHandler.IsJumpPressed
-            .Where(isPressed => isPressed && IsGrounded.CurrentValue)
+        _playerInputHandler.JumpPressed
+            .Where(isPressed => isPressed && Grounded.CurrentValue)
             .Subscribe(_ => _jumped.OnNext(Unit.Default))
             .AddTo(_compositeDisposable);
     }

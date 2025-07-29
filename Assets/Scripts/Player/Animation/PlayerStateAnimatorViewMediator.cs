@@ -14,13 +14,13 @@ public class PlayerStateAnimatorViewMediator : Mediator
 
     public override void Initialize()
     {
-        _playerState.IsWalking
+        _playerState.Walking
             .Subscribe(isWalking => _playerAnimatorView.SetWalking(isWalking))
             .AddTo(CompositeDisposable);
-        _playerState.IsRunning
+        _playerState.Running
             .Subscribe(isRunning => _playerAnimatorView.SetRunning(isRunning))
             .AddTo(CompositeDisposable);
-        _playerState.IsGrounded
+        _playerState.Grounded
             .Subscribe(isGrounded => _playerAnimatorView.SetGrounded(isGrounded))
             .AddTo(CompositeDisposable);
         _playerState.Jumped
