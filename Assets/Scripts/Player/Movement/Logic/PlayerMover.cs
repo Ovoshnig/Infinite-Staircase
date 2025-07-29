@@ -51,7 +51,7 @@ public class PlayerMover : IInitializable, ITickable, IDisposable
         float cameraAngleY = _cameraTransform.eulerAngles.y;
 
         HorizontalMovementResult horizontalResult = _horizontalCalculator
-            .Calculate(_playerState.WalkInput, playerAngleY, cameraAngleY,
+            .Calculate(_playerState.WalkInput.CurrentValue, playerAngleY, cameraAngleY,
             _playerState.IsWalking.CurrentValue, _playerState.IsRunning.CurrentValue);
 
         _velocity.x = horizontalResult.Velocity.x;

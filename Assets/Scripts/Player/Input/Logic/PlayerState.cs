@@ -7,10 +7,6 @@ public class PlayerState : IInitializable, IDisposable
 {
     private readonly PlayerInputHandler _playerInputHandler;
     private readonly CharacterController _characterController;
-    private readonly ReactiveProperty<bool> _isWalking = new(false);
-    private readonly ReactiveProperty<bool> _isRunning = new(false);
-    private readonly ReactiveProperty<bool> _isLooking = new(false);
-    private readonly ReactiveProperty<bool> _isGrounded = new(false);
     private readonly Subject<Unit> _jumped = new();
     private readonly CompositeDisposable _compositeDisposable = new();
 
@@ -21,39 +17,40 @@ public class PlayerState : IInitializable, IDisposable
         _characterController = characterController;
     }
 
-    public Vector2 WalkInput => _playerInputHandler.WalkInput;
-    public Vector2 LookInput => _playerInputHandler.LookInput;
-    public Vector3 EulerAngles => _characterController.transform.eulerAngles;
-    public ReadOnlyReactiveProperty<bool> IsWalking => _isWalking;
-    public ReadOnlyReactiveProperty<bool> IsRunning => _isRunning;
-    public ReadOnlyReactiveProperty<bool> IsLooking => _isLooking;
-    public ReadOnlyReactiveProperty<bool> IsGrounded => _isGrounded;
+    public ReadOnlyReactiveProperty<Vector2> WalkInput => _playerInputHandler.WalkInput;
+    public ReadOnlyReactiveProperty<Vector2> LookInput => _playerInputHandler.LookInput;
+    public ReadOnlyReactiveProperty<bool> IsWalking { get; private set; }
+    public ReadOnlyReactiveProperty<bool> IsLooking { get; private set; }
+    public ReadOnlyReactiveProperty<bool> IsRunning { get; private set; }
+    public ReadOnlyReactiveProperty<bool> IsGrounded { get; private set; }
     public Observable<Unit> Jumped => _jumped;
+    public Vector3 EulerAngles => _characterController.transform.eulerAngles;
 
     public void Initialize()
     {
-        Observable
+        IsWalking = WalkInput
+            .Select(value => value != Vector2.zero)
+            .ToReadOnlyReactiveProperty()
+            .AddTo(_compositeDisposable);
+        IsLooking = LookInput
+            .Select(value => value != Vector2.zero)
+            .ToReadOnlyReactiveProperty()
+            .AddTo(_compositeDisposable);
+
+        IsGrounded = Observable
             .EveryValueChanged(this, p => _characterController.isGrounded)
-            .Subscribe(isGrounded => _isGrounded.Value = isGrounded)
+            .ToReadOnlyReactiveProperty()
             .AddTo(_compositeDisposable);
-        _playerInputHandler.IsWalkPressed
-            .Subscribe(isPressed => _isWalking.Value = isPressed)
-            .AddTo(_compositeDisposable);
-        _playerInputHandler.IsWalkPressed
+        IsRunning = IsWalking
             .CombineLatest(
                 _playerInputHandler.IsRunPressed,
-                _isGrounded,
-                _isRunning,
-                (walk, runPressed, grounded, wasRunning) =>
-                    walk && runPressed && (grounded || wasRunning)
+                (isWalking, isRunning) =>
+                    isWalking && isRunning
             )
-            .Subscribe(shouldRun => _isRunning.Value = shouldRun)
-            .AddTo(_compositeDisposable);
-        _playerInputHandler.IsLookPressed
-            .Subscribe(isPressed => _isLooking.Value = isPressed)
+            .ToReadOnlyReactiveProperty()
             .AddTo(_compositeDisposable);
         _playerInputHandler.IsJumpPressed
-            .Where(isPressed => isPressed && _isGrounded.Value)
+            .Where(isPressed => isPressed && IsGrounded.CurrentValue)
             .Subscribe(_ => _jumped.OnNext(Unit.Default))
             .AddTo(_compositeDisposable);
     }
