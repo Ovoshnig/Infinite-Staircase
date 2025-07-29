@@ -78,12 +78,14 @@ public class KeyBindingsGenerator : MonoBehaviour
                 bindingBlock.name = $"🎬{action.name}";
 
                 KeyBinderView keyBinderView = bindingBlock.GetComponent<KeyBinderView>();
-                string formattedName = Regex.Replace(action.name, "([A-Z])", " $1").ToLower();
-                keyBinderView.SetInputActionReference(InputActionReference.Create(action), formattedName);
+                keyBinderView.SetInputAction(action);
 
-                string actionDisplayName = string
+                string formattedName = Regex.Replace(action.name, "([A-Z])", " $1").ToLower();
+                keyBinderView.SetActionNameText(formattedName);
+
+                string bindingText = string
                     .Join("/", action.controls.Select(c => c.ToCaseIndependentString()));
-                keyBinderView.SetBindingText(actionDisplayName);
+                keyBinderView.SetBindingText(bindingText);
             }
         }
 
