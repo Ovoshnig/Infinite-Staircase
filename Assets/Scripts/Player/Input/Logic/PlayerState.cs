@@ -7,7 +7,6 @@ public class PlayerState : IInitializable, IDisposable
 {
     private readonly PlayerInputHandler _playerInputHandler;
     private readonly CharacterController _characterController;
-    private readonly Subject<Unit> _jumped = new();
     private readonly CompositeDisposable _compositeDisposable = new();
 
     public PlayerState(PlayerInputHandler playerInputHandler,
@@ -23,7 +22,7 @@ public class PlayerState : IInitializable, IDisposable
     public ReadOnlyReactiveProperty<bool> Looking { get; private set; }
     public ReadOnlyReactiveProperty<bool> Running { get; private set; }
     public ReadOnlyReactiveProperty<bool> Grounded { get; private set; }
-    public Observable<Unit> Jumped => _jumped;
+    public Observable<Unit> Jumped { get; private set; }
     public Vector3 EulerAngles => _characterController.transform.eulerAngles;
 
     public void Initialize()
@@ -49,10 +48,9 @@ public class PlayerState : IInitializable, IDisposable
             )
             .ToReadOnlyReactiveProperty()
             .AddTo(_compositeDisposable);
-        _playerInputHandler.JumpPressed
+        Jumped = _playerInputHandler.JumpPressed
             .Where(isPressed => isPressed && Grounded.CurrentValue)
-            .Subscribe(_ => _jumped.OnNext(Unit.Default))
-            .AddTo(_compositeDisposable);
+            .Select(_ => Unit.Default);
     }
 
     public void Dispose() => _compositeDisposable.Dispose();
