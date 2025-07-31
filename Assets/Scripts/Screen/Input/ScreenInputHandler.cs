@@ -1,32 +1,22 @@
 using R3;
-using System;
-using VContainer.Unity;
 
-public class ScreenInputHandler : IInitializable, IDisposable
+public class ScreenInputHandler : InputHandler<InputActions.ScreenActions>
 {
-    private readonly InputActions.ScreenActions _screenActions;
-    private readonly CompositeDisposable _compositeDisposable = new();
-
-    public ScreenInputHandler(InputActions inputActions) => _screenActions = inputActions.Screen;
+    public ScreenInputHandler(InputActions inputActions)
+        : base(inputActions.Screen) { }
 
     public ReadOnlyReactiveProperty<bool> SwitchFullScreenPressed { get; private set; }
     public ReadOnlyReactiveProperty<bool> PassSplashImagePressed { get; private set; }
 
-    public void Initialize()
+    public override void Initialize()
     {
-        _screenActions.Enable();
+        base.Initialize();
 
-        SwitchFullScreenPressed = _screenActions.SwitchFullScreen
-            .AsButtonStream()
-            .AddTo(_compositeDisposable);
-        PassSplashImagePressed = _screenActions.PassSplashImage
-            .AsButtonStream()
-            .AddTo(_compositeDisposable);
+        SwitchFullScreenPressed = BindButton(a => a.SwitchFullScreen);
+        PassSplashImagePressed = BindButton(a => a.PassSplashImage);
     }
 
-    public void Dispose()
-    {
-        _compositeDisposable.Dispose();
-        _screenActions.Disable();
-    }
+    protected override void EnableActions() => Actions.Enable();
+
+    protected override void DisableActions() => Actions.Disable();
 }

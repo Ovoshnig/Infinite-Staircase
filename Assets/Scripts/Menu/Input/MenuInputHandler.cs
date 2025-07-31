@@ -1,28 +1,20 @@
 using R3;
-using System;
-using VContainer.Unity;
 
-public class MenuInputHandler : IInitializable, IDisposable
+public class MenuInputHandler : InputHandler<InputActions.MenuActions>
 {
-    private readonly InputActions.MenuActions _menuActions;
-    private readonly CompositeDisposable _compositeDisposable = new();
-
-    public MenuInputHandler(InputActions inputActions) => _menuActions = inputActions.Menu;
+    public MenuInputHandler(InputActions inputActions)
+        : base(inputActions.Menu) { }
 
     public ReadOnlyReactiveProperty<bool> CloseCurrentPressed { get; private set; }
 
-    public void Initialize()
+    public override void Initialize()
     {
-        _menuActions.Enable();
+        base.Initialize();
 
-        CloseCurrentPressed = _menuActions.CloseCurrent
-            .AsButtonStream()
-            .AddTo(_compositeDisposable);
+        CloseCurrentPressed = BindButton(a => a.CloseCurrent);
     }
 
-    public void Dispose()
-    {
-        _compositeDisposable.Dispose();
-        _menuActions.Disable();
-    }
+    protected override void EnableActions() => Actions.Enable();
+
+    protected override void DisableActions() => Actions.Disable();
 }

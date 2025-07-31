@@ -1,4 +1,5 @@
 {
+    "version": 1,
     "name": "InputActions",
     "maps": [
         {
@@ -230,7 +231,7 @@
             ]
         },
         {
-            "name": "Windows",
+            "name": "Window",
             "id": "e99e2a38-1195-4e44-b2ca-4dd6dd13629e",
             "actions": [
                 {

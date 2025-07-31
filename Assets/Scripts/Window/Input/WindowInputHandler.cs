@@ -1,36 +1,24 @@
 using R3;
-using System;
-using VContainer.Unity;
 
-public class WindowInputHandler : IInitializable, IDisposable
+public class WindowInputHandler : InputHandler<InputActions.WindowActions>
 {
-    private readonly InputActions.WindowsActions _windowsActions;
-    private readonly CompositeDisposable _compositeDisposable = new();
-
-    public WindowInputHandler(InputActions inputActions) => _windowsActions = inputActions.Windows;
+    public WindowInputHandler(InputActions inputActions)
+        : base(inputActions.Window) { }
 
     public ReadOnlyReactiveProperty<bool> CloseCurrentPressed { get; private set; }
     public ReadOnlyReactiveProperty<bool> PauseMenuSwitchPressed { get; private set; }
     public ReadOnlyReactiveProperty<bool> InventorySwitchPressed { get; private set; }
 
-    public void Initialize()
+    public override void Initialize()
     {
-        _windowsActions.Enable();
+        base.Initialize();
 
-        CloseCurrentPressed = _windowsActions.CloseCurrent
-            .AsButtonStream()
-            .AddTo(_compositeDisposable);
-        PauseMenuSwitchPressed = _windowsActions.SwitchPauseMenu
-            .AsButtonStream()
-            .AddTo(_compositeDisposable);
-        InventorySwitchPressed = _windowsActions.SwitchInventory
-            .AsButtonStream()
-            .AddTo(_compositeDisposable);
+        CloseCurrentPressed = BindButton(a => a.CloseCurrent);
+        PauseMenuSwitchPressed = BindButton(a => a.SwitchPauseMenu);
+        InventorySwitchPressed = BindButton(a => a.SwitchInventory);
     }
 
-    public void Dispose()
-    {
-        _compositeDisposable.Dispose();
-        _windowsActions.Disable();
-    }
+    protected override void EnableActions() => Actions.Enable();
+
+    protected override void DisableActions() => Actions.Disable();
 }
