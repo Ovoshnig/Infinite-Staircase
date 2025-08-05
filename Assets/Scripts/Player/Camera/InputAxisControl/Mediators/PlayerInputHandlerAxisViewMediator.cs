@@ -14,12 +14,10 @@ public class PlayerInputHandlerAxisViewMediator : Mediator
 
     public override void Initialize()
     {
-        Observable.EveryUpdate()
-            .Where(_ => _playerInputHandler.LookAction != null)
+        _playerInputHandler.LookInput
             .Subscribe(_ => _inputAxisView.ProcessInput(_playerInputHandler.LookAction))
             .AddTo(CompositeDisposable);
-        Observable.EveryUpdate()
-            .Where(_ => _playerInputHandler.ZoomAction != null)
+        _playerInputHandler.ZoomInput
             .Subscribe(_ => _inputAxisView.ProcessInput(_playerInputHandler.ZoomAction))
             .AddTo(CompositeDisposable);
     }

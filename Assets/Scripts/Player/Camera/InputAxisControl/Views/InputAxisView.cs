@@ -23,10 +23,8 @@ public abstract class InputAxisView : InputAxisControllerBase<InputAxisView.Read
     public void ProcessInput(InputAction action)
     {
         foreach (var controller in Controllers)
-        {
             if (controller.Input.InputAction.id == action.id)
                 controller.Input.ProcessInput(action);
-        }
     }
 
     [Serializable]

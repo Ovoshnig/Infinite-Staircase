@@ -11,8 +11,8 @@ public class PlayerInputHandler : InputHandler<InputActions.PlayerActions>
     public InputAction ZoomAction => Actions.Zoom;
     public ReadOnlyReactiveProperty<Vector2> WalkInput { get; private set; }
     public ReadOnlyReactiveProperty<Vector2> LookInput { get; private set; }
+    public ReadOnlyReactiveProperty<Vector2> ZoomInput { get; private set; }
     public ReadOnlyReactiveProperty<bool> RunPressed { get; private set; }
-    public ReadOnlyReactiveProperty<bool> ZoomPressed { get; private set; }
     public ReadOnlyReactiveProperty<bool> JumpPressed { get; private set; }
     public ReadOnlyReactiveProperty<bool> TogglePerspectivePressed { get; private set; }
 
@@ -22,8 +22,8 @@ public class PlayerInputHandler : InputHandler<InputActions.PlayerActions>
 
         WalkInput = BindValue(a => a.Walk);
         LookInput = BindValue(a => a.Look);
+        ZoomInput = BindValue(a => a.Zoom);
         RunPressed = BindButton(a => a.Run);
-        ZoomPressed = BindButton(a => a.Zoom);
         JumpPressed = BindButton(a => a.Jump);
         TogglePerspectivePressed = BindButton(a => a.TogglePerspective);
     }
