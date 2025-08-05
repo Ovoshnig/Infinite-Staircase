@@ -40,18 +40,14 @@ public class PlayerState : IInitializable, IDisposable
             .EveryValueChanged(this, p => _characterController.isGrounded)
             .ToReadOnlyReactiveProperty()
             .AddTo(_compositeDisposable);
+        Running = new ReactiveProperty<bool>(false);
         Running = Observable
             .CombineLatest(
                 Walking,
                 _playerInputHandler.RunPressed,
                 Grounded,
                 (isWalking, isRunningPressed, isGrounded) =>
-                {
-                    if (isGrounded)
-                        return isWalking && isRunningPressed;
-
-                    return isWalking && Running != null && Running.CurrentValue && isRunningPressed;
-                })
+                    isWalking && isRunningPressed && (isGrounded || Running.CurrentValue))
             .ToReadOnlyReactiveProperty()
             .AddTo(_compositeDisposable);
         Jumped = _playerInputHandler.JumpPressed
