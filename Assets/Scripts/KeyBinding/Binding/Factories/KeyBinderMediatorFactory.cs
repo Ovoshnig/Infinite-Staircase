@@ -24,28 +24,22 @@ public class KeyBinderMediatorFactory : MediatorViewFactory<KeyBinderMediator, K
     {
         InputAction viewAction = view.InputAction;
         InputAction foundAction = _inputActions.FindAction(viewAction.id.ToString())
-            ?? throw new Exception("Could not find " +
-            $"InputAction {viewAction.name} with id {viewAction.id}");
+            ?? throw new InvalidOperationException(
+                $"Could not find InputAction {viewAction.name} with id {viewAction.id}");
 
-        KeyBinder keyBinder = null;
-
-        switch (foundAction.type)
+        KeyBinder keyBinder = (foundAction.type, foundAction.expectedControlType) switch
         {
-            case InputActionType.Button:
-                keyBinder = new ButtonKeyBinder(_buttonListener, _settingsStorage, foundAction);
-                break;
-            case InputActionType.Value:
-                keyBinder = foundAction.expectedControlType switch
-                {
-                    "Axis" => new AxisKeyBinder(_buttonListener, _settingsStorage, foundAction),
-                    "Vector2" => new Vector2KeyBinder(_buttonListener, _settingsStorage, foundAction),
-                    _ => throw new Exception("KeyBinder is not provided for the " +
-                        $"{foundAction.expectedControlType} control type."),
-                };
-                break;
-            case InputActionType.PassThrough:
-                throw new Exception($"KeyBinder is not provided for the {InputActionType.PassThrough}.");
-        }
+            (InputActionType.Button, _) =>
+                new ButtonKeyBinder(_buttonListener, _settingsStorage, foundAction),
+            (InputActionType.Value, var expected) when string.Equals(expected, "Axis", StringComparison.OrdinalIgnoreCase) =>
+                new AxisKeyBinder(_buttonListener, _settingsStorage, foundAction),
+            (InputActionType.Value, var expected) when string.Equals(expected, "Vector2", StringComparison.OrdinalIgnoreCase) =>
+                new Vector2KeyBinder(_buttonListener, _settingsStorage, foundAction),
+            (InputActionType.PassThrough, _) =>
+                throw new NotSupportedException($"KeyBinder is not provided for {InputActionType.PassThrough}."),
+            _ => throw new NotSupportedException($"Action type {foundAction.type} / "
+                + $"control {foundAction.expectedControlType} is not supported.")
+        };
 
         keyBinder.Initialize();
         keyBinder.AddTo(CompositeDisposable);
