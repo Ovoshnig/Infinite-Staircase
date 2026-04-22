@@ -2,41 +2,47 @@
 
 using UnityEngine;
 using UnityEditor;
+using Boxophobic.Utility;
 using System.Collections.Generic;
 
-public class SkyboxExtendedShaderGUI : ShaderGUI
+namespace SkyboxExtended
 {
-    public override void OnGUI(MaterialEditor materialEditor, MaterialProperty[] props)
+    public class MaterialGUI : ShaderGUI
     {
-        //base.OnGUI(materialEditor, props);
-
-        var material0 = materialEditor.target as Material;
-
-        DrawDynamicInspector(material0, materialEditor, props);
-    }
-
-    void DrawDynamicInspector(Material material, MaterialEditor materialEditor, MaterialProperty[] props)
-    {
-        var customPropsList = new List<MaterialProperty>();
-
-        for (int i = 0; i < props.Length; i++)
+        public override void OnGUI(MaterialEditor materialEditor, MaterialProperty[] props)
         {
-            var prop = props[i];
+            //base.OnGUI(materialEditor, props);
 
-            if (prop.propertyFlags == UnityEngine.Rendering.ShaderPropertyFlags.HideInInspector)
-                continue;
+            var material0 = materialEditor.target as Material;
 
-            customPropsList.Add(prop);
+            DrawDynamicInspector(material0, materialEditor, props);
         }
 
-        //Draw Custom GUI
-        for (int i = 0; i < customPropsList.Count; i++)
+        void DrawDynamicInspector(Material material, MaterialEditor materialEditor, MaterialProperty[] props)
         {
-            var prop = customPropsList[i];
+            var customPropsList = new List<MaterialProperty>();
 
-            materialEditor.ShaderProperty(prop, prop.displayName);
+            for (int i = 0; i < props.Length; i++)
+            {
+                var prop = props[i];
+
+                if (BoxoUtils.IsShaderGUIPropertyHidden(prop))
+                {
+                    continue;
+                }
+
+                customPropsList.Add(prop);
+            }
+
+            //Draw Custom GUI
+            for (int i = 0; i < customPropsList.Count; i++)
+            {
+                var prop = customPropsList[i];
+
+                materialEditor.ShaderProperty(prop, prop.displayName);
+            }
+
+            GUILayout.Space(10);
         }
-
-        GUILayout.Space(10);
     }
 }

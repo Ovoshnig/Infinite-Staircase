@@ -11,6 +11,7 @@ AssetOrigin:
   serializedVersion: 1
   productId: 107400
   packageName: FREE Skybox Extended Shader
-  packageVersion: 2.2.0
-  assetPath: Assets/BOXOPHOBIC/Skybox Cubemap Extended/Demo/Materials/LowPoly - Wood.mat
-  uploadId: 734105
+  packageVersion: 2.5.0
+  assetPath: Assets/Resources/Materials/SkyboxCubemapExtended/Demo/Materials/LowPoly
+    - Wood.mat
+  uploadId: 878720
