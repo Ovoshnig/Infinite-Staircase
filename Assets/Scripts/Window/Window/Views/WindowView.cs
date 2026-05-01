@@ -3,16 +3,13 @@ using UnityEngine;
 
 public class WindowView : MonoBehaviour
 {
-    private readonly ReactiveProperty<bool> _isActive = new();
-
-    public ReadOnlyReactiveProperty<bool> IsActive => _isActive;
+    public ReadOnlyReactiveProperty<bool> IsActive { get; private set; }
 
     private void Awake()
     {
-        Observable
-            .EveryValueChanged(gameObject, g => g.activeSelf)
-            .Subscribe(activeSelf => _isActive.Value = activeSelf)
-            .AddTo(this);
+        IsActive = Observable
+            .EveryValueChanged(gameObject, g => g.activeSelf, destroyCancellationToken)
+            .ToReadOnlyReactiveProperty(false);
     }
 
     public void SetActive(bool value) => gameObject.SetActive(value);
