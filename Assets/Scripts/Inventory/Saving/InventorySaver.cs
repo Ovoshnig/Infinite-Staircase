@@ -12,7 +12,7 @@ public class InventorySaver : IInitializable, IDisposable
     private readonly CancellationTokenSource _cts = new();
     private readonly CompositeDisposable _compositeDisposable = new();
 
-    public InventorySaver(Inventory inventory, SaveStorage saveStorage, 
+    public InventorySaver(Inventory inventory, SaveStorage saveStorage,
         ItemDefinitionLoader itemDefinitionLoader)
     {
         _inventory = inventory;

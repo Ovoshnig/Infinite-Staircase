@@ -53,8 +53,7 @@ public abstract class DataStorage : IInitializable, IDisposable
         return defaultValue;
     }
 
-    public virtual void Set<T>(string key, T value) =>
-        _runtimeCache[key] = value;
+    public virtual void Set<T>(string key, T value) => _runtimeCache[key] = value;
 
     public virtual void ResetData()
     {

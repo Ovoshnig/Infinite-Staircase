@@ -6,7 +6,7 @@ using UnityEngine;
 public class Slot
 {
     private readonly ReactiveProperty<ItemData> _itemData = new(null);
-    
+
     public ReadOnlyReactiveProperty<ItemData> ItemData => _itemData;
 
     public bool HasItem => _itemData.Value != null;
@@ -14,7 +14,7 @@ public class Slot
 
     public void PlaceItem(ItemData itemData)
     {
-        if (itemData == null) 
+        if (itemData == null)
             return;
 
         if (HasItem)
@@ -43,7 +43,7 @@ public class Slot
 
     public SlotData ToData() => new() { ItemName = _itemData.Value?.Name };
 
-    public async UniTask LoadFromDataAsync(SlotData slotData, 
+    public async UniTask LoadFromDataAsync(SlotData slotData,
         ItemDefinitionLoader itemDefinitionLoader, CancellationToken token)
     {
         slotData ??= new SlotData();
