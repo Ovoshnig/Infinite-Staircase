@@ -23,38 +23,36 @@ namespace Boxophobic.StyledGUI
 
         public override void OnGUI(Rect position, MaterialProperty prop, string label, MaterialEditor materialEditor)
         {
-            if (conditions == "")
-            {
-                GUILayout.Space(space);
-            }
-            else
-            {
-                Material material = materialEditor.target as Material;
-
-                bool showInspector = false;
-
-                string[] split = conditions.Split(char.Parse(" "));
-
-                for (int i = 0; i < split.Length; i++)
-                {
-                    if (material.HasProperty(split[i]))
-                    {
-                        showInspector = true;
-                        break;
-                    }
-                }
-
-                if (showInspector)
-                {
-                    GUILayout.Space(space);
-                }
-            }
-
         }
 
         public override float GetPropertyHeight(MaterialProperty prop, string label, MaterialEditor editor)
         {
-            return -2;
+            if (conditions == "")
+            {
+                return space;
+            }
+
+            Material material = editor.target as Material;
+
+            bool showInspector = false;
+
+            string[] split = conditions.Split(char.Parse(" "));
+
+            for (int i = 0; i < split.Length; i++)
+            {
+                if (material.HasProperty(split[i]))
+                {
+                    showInspector = true;
+                    break;
+                }
+            }
+
+            if (showInspector)
+            {
+                return space;
+            }
+
+            return 0;
         }
     }
 }

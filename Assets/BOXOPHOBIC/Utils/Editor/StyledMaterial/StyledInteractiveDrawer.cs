@@ -15,11 +15,11 @@ namespace Boxophobic.StyledGUI
 
         public override void OnGUI(Rect position, MaterialProperty prop, String label, MaterialEditor materialEditor)
         {
-            //if (prop.floatValue > 0.5f)
-            //{
-                //GUI.enabled = true;
-            //}
-            //else
+            if (prop.floatValue > 0.5f)
+            {
+                GUI.enabled = true;
+            }
+            else
             {
                 GUI.enabled = false;
             }

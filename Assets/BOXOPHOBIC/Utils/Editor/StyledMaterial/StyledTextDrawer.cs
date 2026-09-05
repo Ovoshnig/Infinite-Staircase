@@ -40,8 +40,24 @@ namespace Boxophobic.StyledGUI
 
         public override void OnGUI(Rect position, MaterialProperty prop, String label, MaterialEditor materialEditor)
         {
-            //Material material = materialEditor.target as Material;
+            var styleLabel = GetStyleLabel();
 
+            Rect textRect = new Rect(position.x, position.y + top, position.width, styleLabel.CalcHeight(new GUIContent(text), position.width));
+
+            EditorGUI.LabelField(textRect, text, styleLabel);
+        }
+
+        public override float GetPropertyHeight(MaterialProperty prop, string label, MaterialEditor editor)
+        {
+            var styleLabel = GetStyleLabel();
+
+            float height = styleLabel.CalcHeight(new GUIContent(text), EditorGUIUtility.currentViewWidth);
+
+            return top + height + down;
+        }
+
+        GUIStyle GetStyleLabel()
+        {
             GUIStyle styleLabel = new GUIStyle(EditorStyles.label)
             {
                 richText = true,
@@ -49,12 +65,9 @@ namespace Boxophobic.StyledGUI
                 wordWrap = true
             };
 
-            GUILayout.Space(top);
-
             if (alignment == "Center")
             {
                 styleLabel.alignment = TextAnchor.MiddleCenter;
-
             }
             else if (alignment == "Left")
             {
@@ -84,14 +97,7 @@ namespace Boxophobic.StyledGUI
 
             styleLabel.fontSize = (int)size;
 
-            GUILayout.Label(text, styleLabel);
-
-            GUILayout.Space(down);
-        }
-
-        public override float GetPropertyHeight(MaterialProperty prop, string label, MaterialEditor editor)
-        {
-            return -2;
+            return styleLabel;
         }
     }
 }

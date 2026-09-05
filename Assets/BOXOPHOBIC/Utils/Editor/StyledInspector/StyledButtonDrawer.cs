@@ -14,20 +14,18 @@ namespace Boxophobic.StyledGUI
         {
             a = (StyledButton)attribute;
 
-            GUILayout.Space(a.top);
+            position.y += a.top;
+            position.height = EditorGUIUtility.singleLineHeight;
 
-            if (GUILayout.Button(a.text))
+            if (GUI.Button(position, a.text))
             {
                 property.boolValue = true;
             }
-
-            GUILayout.Space(a.down);
         }
 
         public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
         {
-            return -2;
+            return a.top + EditorGUIUtility.singleLineHeight + a.down;
         }
     }
 }
-

@@ -49,9 +49,10 @@ namespace Boxophobic.StyledGUI
                 }
             }
 
-            GUILayout.Space(top);
+            position.y += top;
+            position.height = EditorGUIUtility.singleLineHeight;
 
-            index = EditorGUILayout.MaskField(prop.displayName, index, allLayers);
+            index = EditorGUI.MaskField(position, prop.displayName, index, allLayers);
 
             //if (index < 0)
             //{
@@ -59,16 +60,14 @@ namespace Boxophobic.StyledGUI
             //}
 
             //Debug Value
-            //EditorGUILayout.LabelField(index.ToString());
+            //EditorGUI.LabelField(position, index.ToString());
 
             prop.floatValue = index;
-
-            GUILayout.Space(down);
         }
 
         public override float GetPropertyHeight(MaterialProperty prop, string label, MaterialEditor editor)
         {
-            return -2;
+            return top + EditorGUIUtility.singleLineHeight + down;
         }
     }
 }

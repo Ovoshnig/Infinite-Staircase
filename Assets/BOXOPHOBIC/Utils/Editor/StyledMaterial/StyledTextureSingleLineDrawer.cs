@@ -23,7 +23,6 @@ namespace Boxophobic.StyledGUI
             this.down = 0;
             this.tooltip = "";
         }
-
         public StyledTextureSingleLineDrawer(string tooltip)
         {
             this.top = 0;

@@ -489,6 +489,18 @@ namespace Boxophobic.Utility
             }
         }
 
+        public static void SetMaterialKeyword(Material material, string keyword, float enable)
+        {
+            if (enable > 0)
+            {
+                material.EnableKeyword(keyword);
+            }
+            else
+            {
+                material.DisableKeyword(keyword);
+            }
+        }
+
         public static void SetMaterialKeyword(Material material, string property, string keyword)
         {
             if (material.HasFloat(property))
@@ -522,6 +534,15 @@ namespace Boxophobic.Utility
                     {
                         material.DisableKeyword(keywords[i]);
                     }
+                }
+            }
+            else
+            {
+                material.EnableKeyword(keywords[0]);
+
+                for (int i = 1; i < keywords.Length; i++)
+                {
+                    material.DisableKeyword(keywords[i]);
                 }
             }
         }
@@ -576,7 +597,9 @@ namespace Boxophobic.Utility
                 }
                 else
                 {
-                    for (int i = 0; i < keywords.Length; i++)
+                    material.EnableKeyword(keywords[0]);
+
+                    for (int i = 1; i < keywords.Length; i++)
                     {
                         material.DisableKeyword(keywords[i]);
                     }
@@ -712,7 +735,9 @@ namespace Boxophobic.Utility
                 }
                 else
                 {
-                    for (int i = 0; i < keywords.Length; i++)
+                    material.EnableKeyword(keywords[0]);
+
+                    for (int i = 1; i < keywords.Length; i++)
                     {
                         material.DisableKeyword(keywords[i]);
                     }
@@ -918,6 +943,40 @@ namespace Boxophobic.Utility
         }
 
         // Text Utils
+        public static string FormatEnum(string text)
+        {
+            if (string.IsNullOrEmpty(text))
+            {
+                return "";
+            }
+
+            var sb = new StringBuilder(text.Length);
+
+            for (int i = 0; i < text.Length; i++)
+            {
+                if (i < text.Length - 2)
+                {
+                    string token = text.Substring(i, 3);
+
+                    switch (token)
+                    {
+                        case "MIN": sb.Append('-'); i += 2; continue;
+                        case "OPA": sb.Append('('); i += 2; continue;
+                        case "CPA": sb.Append(')'); i += 2; continue;
+                    }
+                }
+
+                if (text[i] == '_')
+                {
+                    sb.Append(' ');
+                    continue;
+                }
+
+                sb.Append(text[i]);
+            }
+
+            return sb.ToString();
+        }
         public static string FormatMessage(string message)
         {
             if (string.IsNullOrEmpty(message))

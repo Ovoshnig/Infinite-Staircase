@@ -26,25 +26,28 @@ namespace Boxophobic.StyledGUI
 
         public override void OnGUI(Rect position, MaterialProperty prop, String label, MaterialEditor materialEditor)
         {
-            GUILayout.Space(top);
+            Rect rect = new Rect(position.x, position.y + top, position.width, EditorGUIUtility.singleLineHeight * 2);
 
             if (EditorGUIUtility.currentViewWidth > 344)
             {
-                materialEditor.VectorProperty(prop, label);
-                GUILayout.Space(-space);
+                rect.height -= space;
             }
             else
             {
-                materialEditor.VectorProperty(prop, label);
-                GUILayout.Space(2);
+                rect.height += 2;
             }
 
-            GUILayout.Space(down);
+            prop.vectorValue = EditorGUI.Vector4Field(rect, prop.displayName, prop.vectorValue);
         }
 
         public override float GetPropertyHeight(MaterialProperty prop, string label, MaterialEditor editor)
         {
-            return -2;
+            if (EditorGUIUtility.currentViewWidth > 344)
+            {
+                return top + EditorGUIUtility.singleLineHeight * 2 - space + down;
+            }
+
+            return top + EditorGUIUtility.singleLineHeight * 2 + 2 + down;
         }
     }
 }

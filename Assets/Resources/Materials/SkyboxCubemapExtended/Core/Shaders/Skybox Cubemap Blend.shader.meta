@@ -11,7 +11,6 @@ AssetOrigin:
   serializedVersion: 1
   productId: 107400
   packageName: FREE Skybox Extended Shader
-  packageVersion: 2.5.0
-  assetPath: Assets/Resources/Materials/SkyboxCubemapExtended/Core/Shaders/Skybox
-    Cubemap Blend.shader
-  uploadId: 878720
+  packageVersion: 2.6.0
+  assetPath: Assets/Resources/Materials/SkyboxCubemapExtended/Core/Shaders/Skybox Cubemap Blend.shader
+  uploadId: 974514

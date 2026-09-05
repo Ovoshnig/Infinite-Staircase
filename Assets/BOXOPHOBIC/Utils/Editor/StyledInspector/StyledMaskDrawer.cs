@@ -45,7 +45,8 @@ namespace Boxophobic.StyledGUI
                 }
             }
 
-            GUILayout.Space(a.top);
+            position.y += a.top;
+            position.height = EditorGUIUtility.singleLineHeight;
 
             int index = property.intValue;
 
@@ -54,24 +55,24 @@ namespace Boxophobic.StyledGUI
                 a.display = property.displayName;
             }
 
-            index = EditorGUILayout.MaskField(a.display, index, enumOptions.ToArray());
+            index = EditorGUI.MaskField(position, a.display, index, enumOptions.ToArray());
 
             if (Mathf.Abs(index) > 32000)
             {
                 index = -1;
             }
 
+            position.y += EditorGUIUtility.singleLineHeight + EditorGUIUtility.standardVerticalSpacing;
+
             //Debug Value
-            EditorGUILayout.LabelField(index.ToString());
+            //EditorGUI.LabelField(position, index.ToString());
 
             property.intValue = index;
-
-            GUILayout.Space(a.down);
         }
 
         public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
         {
-            return -2;
+            return a.top + EditorGUIUtility.singleLineHeight + EditorGUIUtility.standardVerticalSpacing + EditorGUIUtility.singleLineHeight + a.down;
         }
     }
 }

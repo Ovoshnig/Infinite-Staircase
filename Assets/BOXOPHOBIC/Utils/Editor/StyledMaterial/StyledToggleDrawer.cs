@@ -22,73 +22,37 @@ namespace Boxophobic.StyledGUI
 
         public override void OnGUI(Rect position, MaterialProperty prop, String label, MaterialEditor materialEditor)
         {
-            //Material material = materialEditor.target as Material;
-
             EditorGUI.BeginChangeCheck();
 
             EditorGUI.showMixedValue = prop.hasMixedValue;
 
+            bool toggle = prop.floatValue > 0.5f;
+
             if (width == 0)
             {
-                bool toggle = false;
-
-                if (prop.floatValue > 0.5f)
-                {
-                    toggle = true;
-                }
-
-                toggle = EditorGUILayout.Toggle(label, toggle);
-
-                EditorGUI.showMixedValue = false;
-
-                if (EditorGUI.EndChangeCheck())
-                {
-                    if (toggle)
-                    {
-                        prop.floatValue = 1;
-                    }
-                    else
-                    {
-                        prop.floatValue = 0;
-                    }
-                }
+                toggle = EditorGUI.Toggle(position, label, toggle);
             }
             else
             {
-                GUILayout.BeginHorizontal();
+                Rect labelRect = new Rect(position.x, position.y, position.width - width, position.height);
 
-                GUILayout.Label(label);
+                Rect toggleRect = new Rect(position.xMax - width, position.y, width, position.height);
 
-                bool toggle = false;
+                EditorGUI.LabelField(labelRect, label);
+                toggle = EditorGUI.Toggle(toggleRect, GUIContent.none, toggle);
+            }
 
-                if (prop.floatValue > 0.5f)
-                {
-                    toggle = true;
-                }
+            EditorGUI.showMixedValue = false;
 
-                toggle = GUILayout.Toggle(toggle, "", GUILayout.Width(width));
-
-                EditorGUI.showMixedValue = false;
-
-                if (EditorGUI.EndChangeCheck())
-                {
-                    if (toggle)
-                    {
-                        prop.floatValue = 1;
-                    }
-                    else
-                    {
-                        prop.floatValue = 0;
-                    }
-                }
-
-                GUILayout.EndHorizontal();
+            if (EditorGUI.EndChangeCheck())
+            {
+                prop.floatValue = toggle ? 1 : 0;
             }
         }
 
         public override float GetPropertyHeight(MaterialProperty prop, string label, MaterialEditor editor)
         {
-            return -2;
+            return EditorGUIUtility.singleLineHeight;
         }
     }
 }

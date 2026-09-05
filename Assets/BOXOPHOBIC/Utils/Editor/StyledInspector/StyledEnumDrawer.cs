@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEditor;
 using System.IO;
 using System.Collections.Generic;
+using Boxophobic.Utility;
 
 namespace Boxophobic.StyledGUI
 {
@@ -42,7 +43,7 @@ namespace Boxophobic.StyledGUI
             {
                 if (i % 2 == 0)
                 {
-                    enumOptions.Add(enumSplit[i].Replace("_", " "));
+                    enumOptions.Add(BoxoUtils.FormatEnum(enumSplit[i]));
                 }
                 else
                 {
@@ -50,7 +51,8 @@ namespace Boxophobic.StyledGUI
                 }
             }
 
-            GUILayout.Space(a.top);
+            position.y += a.top;
+            position.height = EditorGUIUtility.singleLineHeight;
 
             int index = property.intValue;
             int realIndex = enumIndices[0];
@@ -68,19 +70,17 @@ namespace Boxophobic.StyledGUI
                 a.display = property.displayName;
             }
 
-            realIndex = EditorGUILayout.Popup(a.display, realIndex, enumOptions.ToArray());
+            realIndex = EditorGUI.Popup(position, a.display, realIndex, enumOptions.ToArray());
 
             //Debug Value
-            //EditorGUILayout.LabelField(enumIndices[realIndex].ToString());
+            //EditorGUI.LabelField(position, enumIndices[realIndex].ToString());
 
             property.intValue = enumIndices[realIndex];
-
-            GUILayout.Space(a.down);
         }
 
         public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
         {
-            return -2;
+            return a.top + EditorGUIUtility.singleLineHeight + a.down;
         }
     }
 }

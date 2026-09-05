@@ -135,6 +135,15 @@ namespace Boxophobic.StyledGUI
                     }
                 }
             }
+            else
+            {
+                material.EnableKeyword(keywords[0]);
+
+                for (int i = 1; i < keywords.Length; i++)
+                {
+                    material.DisableKeyword(keywords[i]);
+                }
+            }
         }
 
         void SetMaterialKeyword(Material material, string parent, string property, string keyword)
@@ -187,7 +196,9 @@ namespace Boxophobic.StyledGUI
                 }
                 else
                 {
-                    for (int i = 0; i < keywords.Length; i++)
+                    material.EnableKeyword(keywords[0]);
+
+                    for (int i = 1; i < keywords.Length; i++)
                     {
                         material.DisableKeyword(keywords[i]);
                     }
@@ -323,7 +334,9 @@ namespace Boxophobic.StyledGUI
                 }
                 else
                 {
-                    for (int i = 0; i < keywords.Length; i++)
+                    material.EnableKeyword(keywords[0]);
+
+                    for (int i = 1; i < keywords.Length; i++)
                     {
                         material.DisableKeyword(keywords[i]);
                     }

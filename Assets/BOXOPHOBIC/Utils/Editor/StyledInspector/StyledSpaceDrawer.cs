@@ -13,13 +13,13 @@ namespace Boxophobic.StyledGUI
         public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
         {
             a = (StyledSpace)attribute;
-
-            GUILayout.Space(a.space);
         }
 
         public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
         {
-            return -2;
+            a = (StyledSpace)attribute;
+
+            return a.space;
         }
     }
 }

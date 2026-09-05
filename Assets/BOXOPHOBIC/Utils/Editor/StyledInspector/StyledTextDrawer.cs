@@ -22,17 +22,28 @@ namespace Boxophobic.StyledGUI
 
             styleLabel.alignment = a.alignment;
 
-            GUILayout.Space(a.top);
+            float height = styleLabel.CalcHeight(new GUIContent(property.stringValue), position.width);
 
-            GUILayout.Label(property.stringValue, styleLabel);
+            Rect textRect = new Rect(position.x, position.y + a.top, position.width, height);
 
-            GUILayout.Space(a.down);
+            EditorGUI.LabelField(textRect, property.stringValue, styleLabel);
         }
 
         public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
         {
-            return -2;
+            a = (StyledText)attribute;
+
+            GUIStyle styleLabel = new GUIStyle(EditorStyles.label)
+            {
+                richText = true,
+                wordWrap = true
+            };
+
+            styleLabel.alignment = a.alignment;
+
+            float height = styleLabel.CalcHeight(new GUIContent(property.stringValue), EditorGUIUtility.currentViewWidth - EditorGUIUtility.labelWidth);
+
+            return a.top + height + a.down;
         }
     }
 }
-

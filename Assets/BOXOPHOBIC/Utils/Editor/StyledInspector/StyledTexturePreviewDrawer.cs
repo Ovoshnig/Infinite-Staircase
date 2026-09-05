@@ -20,17 +20,20 @@ namespace Boxophobic.StyledGUI
 
             var tex = (Texture)property.objectReferenceValue;
 
+            float y = position.y;
+
             if (a.displayName != "")
             {
-                GUILayout.BeginHorizontal();
-                GUILayout.Space(-1);
-                GUILayout.Label(a.displayName, GUILayout.Width(EditorGUIUtility.labelWidth - 1));
-                tex = (Texture)EditorGUILayout.ObjectField(tex, typeof(Texture), false);
-                GUILayout.EndHorizontal();
+                Rect objectRect = new Rect(position.x, y, position.width, EditorGUIUtility.singleLineHeight);
+                Rect labelRect = new Rect(objectRect.x, objectRect.y, EditorGUIUtility.labelWidth - 1, objectRect.height);
+                Rect fieldRect = new Rect( objectRect.x + EditorGUIUtility.labelWidth, objectRect.y, objectRect.width - EditorGUIUtility.labelWidth, objectRect.height);
 
-                GUILayout.Space(10);
+                EditorGUI.LabelField(labelRect, a.displayName);
+                tex = (Texture)EditorGUI.ObjectField(fieldRect, tex, typeof(Texture), false);
 
                 property.objectReferenceValue = tex;
+
+                y += EditorGUIUtility.singleLineHeight + 10;
             }
 
             if (tex == null)
@@ -51,24 +54,33 @@ namespace Boxophobic.StyledGUI
                 fontSize = 10,
             };
 
-            var rect = GUILayoutUtility.GetRect(0, 0, Screen.width, 0);
+            float previewHeight = position.width;
 
-            EditorGUI.DrawPreviewTexture(rect, tex, null, ScaleMode.ScaleAndCrop, 1, 0, channelMask);
+            if (tex.width > 0 && tex.height > 0)
+            {
+                previewHeight = position.width * tex.height / tex.width;
+            }
 
-            GUILayout.Space(2);
+            Rect previewRect = new Rect(position.x, y, position.width, previewHeight);
 
-            GUILayout.BeginHorizontal();
+            EditorGUI.DrawPreviewTexture(previewRect, tex, null, ScaleMode.ScaleAndCrop, 1, 0, channelMask);
 
-            GUILayout.Label((UnityEngine.Profiling.Profiler.GetRuntimeMemorySizeLong(tex) / 1024f / 1024f).ToString("F2") + " mb", styledText);
-            GUILayout.Space(-1);
-            GUILayout.Label(tex.width.ToString(), styledText);
-            GUILayout.Space(-1);
-            GUILayout.Label(tex.graphicsFormat.ToString(), styledText);
-            GUILayout.Space(-1);
+            y += previewHeight + 2;
 
-            channel = EditorGUILayout.Popup(channel, new string[] { "RGB", "R", "G", "B", "A" }, styledPopup, GUILayout.MaxWidth(60)); 
+            Rect infoRect = new Rect(position.x, y, position.width, EditorGUIUtility.singleLineHeight);
 
-            GUILayout.EndHorizontal();
+            float buttonWidth = (position.width - 60) / 3;
+
+            Rect memoryRect = new Rect(infoRect.x, infoRect.y, buttonWidth, infoRect.height);
+            Rect sizeRect = new Rect(memoryRect.xMax - 1, infoRect.y, buttonWidth, infoRect.height);
+            Rect formatRect = new Rect(sizeRect.xMax - 1, infoRect.y, buttonWidth, infoRect.height);
+            Rect popupRect = new Rect(infoRect.xMax - 60, infoRect.y, 60, infoRect.height);
+
+            EditorGUI.LabelField(memoryRect, (UnityEngine.Profiling.Profiler.GetRuntimeMemorySizeLong(tex) / 1024f / 1024f).ToString("F2") + " mb", styledText);
+            EditorGUI.LabelField(sizeRect, tex.width.ToString(), styledText);
+            EditorGUI.LabelField(formatRect, tex.graphicsFormat.ToString(), styledText);
+
+            channel = EditorGUI.Popup(popupRect, channel, new string[] { "RGB", "R", "G", "B", "A" }, styledPopup);
 
             if (channel == 0)
             {
@@ -94,7 +106,39 @@ namespace Boxophobic.StyledGUI
 
         public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
         {
-            return -2;
+            a = (StyledTexturePreview)attribute;
+
+            var tex = (Texture)property.objectReferenceValue;
+
+            if (tex == null)
+            {
+                if (a.displayName != "")
+                {
+                    return EditorGUIUtility.singleLineHeight;
+                }
+
+                return 0;
+            }
+
+            float height = 0;
+
+            if (a.displayName != "")
+            {
+                height += EditorGUIUtility.singleLineHeight + 10;
+            }
+
+            float previewHeight = EditorGUIUtility.currentViewWidth;
+
+            if (tex.width > 0 && tex.height > 0)
+            {
+                previewHeight *= tex.height / (float)tex.width;
+            }
+
+            height += previewHeight;
+            height += 2;
+            height += EditorGUIUtility.singleLineHeight;
+
+            return height;
         }
     }
 }

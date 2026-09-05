@@ -51,22 +51,24 @@ namespace Boxophobic.StyledGUI
 
         public override void OnGUI(Rect position, MaterialProperty prop, string label, MaterialEditor materialEditor)
         {
-            GUILayout.Space(top);
-
             EditorGUI.BeginChangeCheck();
 
             EditorGUI.showMixedValue = prop.hasMixedValue;
 
             Texture tex = null;
 
+            Rect textureRect = new Rect(position.x, position.y + top, position.width, size);
+
+            GUIContent content = new GUIContent(prop.displayName, tooltip);
+
             if (prop.textureDimension == UnityEngine.Rendering.TextureDimension.Tex2D)
             {
-                tex = (Texture2D)EditorGUILayout.ObjectField(new GUIContent(prop.displayName, tooltip), prop.textureValue, typeof(Texture2D), false, GUILayout.Height(50));
+                tex = (Texture2D)EditorGUI.ObjectField(textureRect, content, prop.textureValue, typeof(Texture2D), false);
             }
 
             if (prop.textureDimension == UnityEngine.Rendering.TextureDimension.Cube)
             {
-                tex = (Cubemap)EditorGUILayout.ObjectField(new GUIContent(prop.displayName, tooltip), prop.textureValue, typeof(Cubemap), false, GUILayout.Height(50));
+                tex = (Cubemap)EditorGUI.ObjectField(textureRect, content, prop.textureValue, typeof(Cubemap), false);
             }
 
             EditorGUI.showMixedValue = false;
@@ -75,13 +77,11 @@ namespace Boxophobic.StyledGUI
             {
                 prop.textureValue = tex;
             }
-
-            GUILayout.Space(down);
         }
 
         public override float GetPropertyHeight(MaterialProperty prop, string label, MaterialEditor editor)
         {
-            return -2;
+            return top + size + down;
         }
     }
 }

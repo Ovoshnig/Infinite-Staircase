@@ -8,8 +8,6 @@ namespace Boxophobic.StyledGUI
 {
     public class StyledRemapSliderDrawer : MaterialPropertyDrawer
     {
-        public string nameMin = "";
-        public string nameMax = "";
         public float min = 0;
         public float max = 0;
         public float top = 0;
@@ -20,30 +18,8 @@ namespace Boxophobic.StyledGUI
 
         bool showAdvancedSettings = false;
 
-        public StyledRemapSliderDrawer(string nameMin, string nameMax, float min, float max)
-        {
-            this.nameMin = nameMin;
-            this.nameMax = nameMax;
-            this.min = min;
-            this.max = max;
-            this.top = 0;
-            this.down = 0;
-        }
-
-        public StyledRemapSliderDrawer(string nameMin, string nameMax, float min, float max, float top, float down)
-        {
-            this.nameMin = nameMin;
-            this.nameMax = nameMax;
-            this.min = min;
-            this.max = max;
-            this.top = top;
-            this.down = down;
-        }
-
         public StyledRemapSliderDrawer()
         {
-            this.nameMin = null;
-            this.nameMax = null;
             this.min = 0;
             this.max = 1;
             this.top = 0;
@@ -52,8 +28,6 @@ namespace Boxophobic.StyledGUI
 
         public StyledRemapSliderDrawer(float min, float max)
         {
-            this.nameMin = null;
-            this.nameMax = null;
             this.min = min;
             this.max = max;
             this.top = 0;
@@ -62,8 +36,6 @@ namespace Boxophobic.StyledGUI
 
         public StyledRemapSliderDrawer(float min, float max, float top, float down)
         {
-            this.nameMin = null;
-            this.nameMax = null;
             this.min = min;
             this.max = max;
             this.top = top;
@@ -72,9 +44,6 @@ namespace Boxophobic.StyledGUI
 
         public override void OnGUI(Rect position, MaterialProperty prop, String label, MaterialEditor editor)
         {
-            var internalPropMin = MaterialEditor.GetMaterialProperty(editor.targets, nameMin);
-            var internalPropMax = MaterialEditor.GetMaterialProperty(editor.targets, nameMax);
-
             var stylePopupMini = new GUIStyle(EditorStyles.popup)
             {
                 fontSize = 9,
@@ -100,38 +69,37 @@ namespace Boxophobic.StyledGUI
                 internalValueMax = propVector.x;
             }
 
-            GUILayout.Space(top);
+            float y = position.y + top;
+            float height = EditorGUIUtility.singleLineHeight;
 
             EditorGUI.showMixedValue = prop.hasMixedValue;
 
-            GUILayout.BeginHorizontal();
+            Rect labelRect = new Rect(position.x, y, EditorGUIUtility.labelWidth, height);
+            Rect sliderRect = new Rect(position.x + EditorGUIUtility.labelWidth + 3, y, position.width - EditorGUIUtility.labelWidth - 59, height);
+            Rect popupRect = new Rect(position.xMax - 50, y, 50, height);
 
-            if (GUILayout.Button(label, styleButton, GUILayout.Width(EditorGUIUtility.labelWidth), GUILayout.Height(18)))
+            if (GUI.Button(labelRect, label, styleButton))
             {
                 showAdvancedSettings = !showAdvancedSettings;
             }
 
-            EditorGUILayout.MinMaxSlider(ref internalValueMin, ref internalValueMax, min, max);
+            EditorGUI.MinMaxSlider(sliderRect, ref internalValueMin, ref internalValueMax, min, max);
 
-            GUILayout.Space(2);
+            propVector.w = EditorGUI.Popup(popupRect, (int)propVector.w, new string[] { "Remap", "Invert" }, stylePopupMini);
 
-            propVector.w = (float)EditorGUILayout.Popup((int)propVector.w, new string[] { "Remap", "Invert" }, stylePopupMini, GUILayout.Width(50));
-
-            GUILayout.EndHorizontal();
+            y += height + EditorGUIUtility.standardVerticalSpacing;
 
             if (showAdvancedSettings)
             {
-                GUILayout.BeginHorizontal();
-                GUILayout.Space(-1);
-                GUILayout.Label("      Remap Min", GUILayout.Width(EditorGUIUtility.labelWidth));
-                internalValueMin = Mathf.Clamp(EditorGUILayout.Slider(internalValueMin, min, max), min, internalValueMax);
-                GUILayout.EndHorizontal();
+                Rect minRect = new Rect(position.x, y, position.width, height);
 
-                GUILayout.BeginHorizontal();
-                GUILayout.Space(-1);
-                GUILayout.Label("      Remap Max", GUILayout.Width(EditorGUIUtility.labelWidth));
-                internalValueMax = Mathf.Clamp(EditorGUILayout.Slider(internalValueMax, min, max), internalValueMin, max);
-                GUILayout.EndHorizontal();
+                internalValueMin = Mathf.Clamp(EditorGUI.Slider(minRect, "      Remap Min", internalValueMin, min, max), min, internalValueMax);
+
+                y += height + EditorGUIUtility.standardVerticalSpacing;
+
+                Rect maxRect = new Rect(position.x, y, position.width, height);
+
+                internalValueMax = Mathf.Clamp(EditorGUI.Slider(maxRect, "      Remap Max", internalValueMax, min, max), internalValueMin, max);
             }
 
             EditorGUI.showMixedValue = false;
@@ -152,20 +120,19 @@ namespace Boxophobic.StyledGUI
                 propVector.z = 1 / (propVector.y - propVector.x);
 
                 prop.vectorValue = propVector;
-
-                if (internalPropMin.displayName != null && internalPropMax.displayName != null)
-                {
-                    internalPropMin.floatValue = internalValueMin;
-                    internalPropMax.floatValue = internalValueMax;
-                }
             }
-
-            GUILayout.Space(down);
         }
 
         public override float GetPropertyHeight(MaterialProperty prop, string label, MaterialEditor editor)
         {
-            return -2;
+            if (showAdvancedSettings)
+            {
+                return top + EditorGUIUtility.singleLineHeight * 3 + EditorGUIUtility.standardVerticalSpacing * 2 + down;
+            }
+            else
+            {
+                return top + EditorGUIUtility.singleLineHeight + down;
+            }
         }
     }
 }

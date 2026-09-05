@@ -31,37 +31,48 @@ namespace Boxophobic.StyledGUI
 
         public override void OnGUI(Rect position, MaterialProperty prop, String label, MaterialEditor materialEditor)
         {
-            GUILayout.Space(top);
+            float y = position.y + top;
+            float height = EditorGUIUtility.singleLineHeight;
 
             if (EditorGUIUtility.currentViewWidth > 330)
             {
-                DrawVectorProperty(prop, label);
-                GUILayout.Space(-space);
+                DrawVectorProperty(new Rect(position.x, y, position.width, height), prop, label);
+
+                y += height - space;
             }
             else
             {
-                DrawVectorPropertyNextLine(prop, label);
-                GUILayout.Space(2);
-            }
+                DrawVectorPropertyNextLine(new Rect(position.x, y, position.width, height * 2 + 2), prop, label);
 
-            GUILayout.Space(down);
+                y += height * 2 + 2;
+            }
         }
 
         public override float GetPropertyHeight(MaterialProperty prop, string label, MaterialEditor editor)
         {
-            return -2;
+            float height = EditorGUIUtility.singleLineHeight;
+
+            if (EditorGUIUtility.currentViewWidth > 330)
+            {
+                return top + height - space + down;
+            }
+
+            return top + height * 2 + 2 + down;
         }
 
-        void DrawVectorProperty(MaterialProperty prop, string label)
+        void DrawVectorProperty(Rect position, MaterialProperty prop, string label)
         {
             EditorGUI.BeginChangeCheck();
             EditorGUI.showMixedValue = prop.hasMixedValue;
 
-            GUILayout.BeginHorizontal();
-            GUILayout.Space(-1);
-            GUILayout.Label(label, GUILayout.Width(EditorGUIUtility.labelWidth - 1));
-            Vector4 vec = EditorGUILayout.Vector4Field("", prop.vectorValue);
-            GUILayout.EndHorizontal();
+            Rect labelRect = new Rect(position.x, position.y, EditorGUIUtility.labelWidth - 1, position.height);
+            Rect fieldRect = new Rect(position.x + EditorGUIUtility.labelWidth, position.y, position.width - EditorGUIUtility.labelWidth, position.height);
+
+            EditorGUI.LabelField(labelRect, label);
+
+            Vector4 vec = EditorGUI.Vector4Field(fieldRect, GUIContent.none, prop.vectorValue);
+
+            EditorGUI.showMixedValue = false;
 
             if (EditorGUI.EndChangeCheck())
             {
@@ -69,17 +80,19 @@ namespace Boxophobic.StyledGUI
             }
         }
 
-        void DrawVectorPropertyNextLine(MaterialProperty prop, string label)
+        void DrawVectorPropertyNextLine(Rect position, MaterialProperty prop, string label)
         {
             EditorGUI.BeginChangeCheck();
             EditorGUI.showMixedValue = prop.hasMixedValue;
 
-            GUILayout.BeginHorizontal();
-            GUILayout.Space(-1);
-            GUILayout.Label(label, GUILayout.Width(EditorGUIUtility.labelWidth));
-            GUILayout.EndHorizontal();
+            Rect labelRect = new Rect(position.x, position.y, position.width, EditorGUIUtility.singleLineHeight);
+            Rect fieldRect = new Rect(position.x, position.y + EditorGUIUtility.singleLineHeight, position.width, EditorGUIUtility.singleLineHeight);
 
-            Vector4 vec = EditorGUILayout.Vector4Field("", prop.vectorValue);
+            EditorGUI.LabelField(labelRect, label);
+
+            Vector4 vec = EditorGUI.Vector4Field(fieldRect, GUIContent.none, prop.vectorValue);
+
+            EditorGUI.showMixedValue = false;
 
             if (EditorGUI.EndChangeCheck())
             {

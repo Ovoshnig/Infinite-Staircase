@@ -116,51 +116,80 @@ namespace Boxophobic.StyledGUI
                 {
                     if (material.GetFloat(keyword) == value)
                     {
-                        GUILayout.Space(top);
                         DrawMessage(position, prop);
-                        GUILayout.Space(down);
                     }
                 }
             }
             else
             {
-                GUILayout.Space(top);
                 DrawMessage(position, prop);
-                GUILayout.Space(down);
             }
         }
 
         public override float GetPropertyHeight(MaterialProperty prop, string label, MaterialEditor editor)
         {
-            return -2;
-        }
+            Material material = editor.target as Material;
 
-        void DrawMessage(Rect position, MaterialProperty prop)
-        {
+            if (keyword != null)
+            {
+                if (!material.HasProperty(keyword) || material.GetFloat(keyword) != value)
+                {
+                    return 0;
+                }
+            }
+
+            string text;
+
             if (messageLong == "")
             {
-                message = BoxoUtils.FormatMessage(message);
-
-                EditorGUILayout.HelpBox(message, messageType);
+                text = BoxoUtils.FormatMessage(message);
             }
             else
             {
                 if (!useMessageLong)
                 {
-                    message = BoxoUtils.FormatMessage(message);
-
-                    EditorGUILayout.HelpBox(message, messageType);
+                    text = BoxoUtils.FormatMessage(message);
                 }
                 else
                 {
-                    messageLong = BoxoUtils.FormatMessage(messageLong);
-
-                    EditorGUILayout.HelpBox(messageLong, messageType);
+                    text = BoxoUtils.FormatMessage(messageLong);
                 }
+            }
 
-                var lastRect = GUILayoutUtility.GetLastRect();
+            float height = Mathf.Max(36, EditorStyles.helpBox.CalcHeight(new GUIContent(text), EditorGUIUtility.currentViewWidth - 30));
 
-                if (GUI.Button(lastRect, GUIContent.none, GUIStyle.none))
+            return top + height + down;
+        }
+
+        void DrawMessage(Rect position, MaterialProperty prop)
+        {
+            string text;
+
+            if (messageLong == "")
+            {
+                text = BoxoUtils.FormatMessage(message);
+            }
+            else
+            {
+                if (!useMessageLong)
+                {
+                    text = BoxoUtils.FormatMessage(message);
+                }
+                else
+                {
+                    text = BoxoUtils.FormatMessage(messageLong);
+                }
+            }
+
+            float helpHeight = Mathf.Max(36, EditorStyles.helpBox.CalcHeight(new GUIContent(text), position.width - 30f));
+
+            Rect messageRect = new Rect(position.x, position.y + top, position.width, helpHeight);
+
+            EditorGUI.HelpBox(messageRect, text, messageType);
+
+            if (messageLong != "")
+            {
+                if (GUI.Button(messageRect, GUIContent.none, GUIStyle.none))
                 {
                     useMessageLong = !useMessageLong;
                 }

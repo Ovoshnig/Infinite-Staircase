@@ -5,6 +5,7 @@ using UnityEditor;
 using System;
 using System.IO;
 using System.Collections.Generic;
+using Boxophobic.Utility;
 
 namespace Boxophobic.StyledGUI
 {
@@ -15,6 +16,15 @@ namespace Boxophobic.StyledGUI
 
         public float top = 0;
         public float down = 0;
+
+        public StyledEnumDrawer(string file, string options)
+        {
+            this.file = file;
+            this.options = options;
+
+            this.top = 0;
+            this.down = 0;
+        }
 
         public StyledEnumDrawer(string file, string options, float top, float down)
         {
@@ -53,7 +63,7 @@ namespace Boxophobic.StyledGUI
             {
                 if (i % 2 == 0)
                 {
-                    enumOptions.Add(enumSplit[i].Replace("_", " "));
+                    enumOptions.Add(BoxoUtils.FormatEnum(enumSplit[i]));
                 }
                 else
                 {
@@ -61,7 +71,8 @@ namespace Boxophobic.StyledGUI
                 }
             }
 
-            GUILayout.Space(top);
+            position.y += top;
+            position.height = EditorGUIUtility.singleLineHeight;
 
             int index = (int)prop.floatValue;
             int realIndex = enumIndices[0];
@@ -74,19 +85,17 @@ namespace Boxophobic.StyledGUI
                 }
             }
 
-            realIndex = EditorGUILayout.Popup(prop.displayName, realIndex, enumOptions.ToArray());
+            realIndex = EditorGUI.Popup(position, prop.displayName, realIndex, enumOptions.ToArray());
 
             //Debug Value
-            //EditorGUILayout.LabelField(enumIndices[realIndex].ToString());
+            //EditorGUI.LabelField(position, enumIndices[realIndex].ToString());
 
             prop.floatValue = enumIndices[realIndex];
-
-            GUILayout.Space(down);
         }
 
         public override float GetPropertyHeight(MaterialProperty prop, string label, MaterialEditor editor)
         {
-            return -2;
+            return top + EditorGUIUtility.singleLineHeight + down;
         }
     }
 }

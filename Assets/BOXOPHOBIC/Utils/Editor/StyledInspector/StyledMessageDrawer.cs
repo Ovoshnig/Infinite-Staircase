@@ -1,52 +1,56 @@
-﻿// Cristian Pop - https://boxophobic.com/
-
+﻿using UnityEditor;
 using UnityEngine;
-using UnityEditor;
 
 namespace Boxophobic.StyledGUI
 {
     [CustomPropertyDrawer(typeof(StyledMessage))]
     public class StyledMessageAttributeDrawer : PropertyDrawer
     {
-        StyledMessage a;
-
-        bool show;
-        MessageType messageType;
-
         public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
         {
-            show = property.boolValue;
+            if (!property.boolValue)
+                return;
 
-            if (show)
+            StyledMessage a = (StyledMessage)attribute;
+
+            MessageType messageType = MessageType.None;
+
+            if (a.type == "None")
             {
-                a = (StyledMessage)attribute;
-
-                if (a.type == "None")
-                {
-                    messageType = MessageType.None;
-                }
-                else if (a.type == "Info")
-                {
-                    messageType = MessageType.Info;
-                }
-                else if (a.type == "Warning")
-                {
-                    messageType = MessageType.Warning;
-                }
-                else if (a.type == "Error")
-                {
-                    messageType = MessageType.Error;
-                }
-
-                GUILayout.Space(a.top);
-                EditorGUILayout.HelpBox(a.message, messageType);
-                GUILayout.Space(a.down);
+                messageType = MessageType.None;
             }
+            else if (a.type == "Info")
+            {
+                messageType = MessageType.Info;
+            }
+            else if (a.type == "Warning")
+            {
+                messageType = MessageType.Warning;
+            }
+            else if (a.type == "Error")
+            {
+                messageType = MessageType.Error;
+            }
+
+            float helpHeight = Mathf.Max(36, EditorStyles.helpBox.CalcHeight(new GUIContent(a.message), position.width - 30f));
+
+            Rect helpRect = new Rect(position.x, position.y + a.top, position.width, helpHeight);
+
+            EditorGUI.HelpBox(helpRect, a.message, messageType);
         }
 
         public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
         {
-            return -2;
+            if (!property.boolValue)
+                return 0;
+
+            StyledMessage a = (StyledMessage)attribute;
+
+            float viewWidth = EditorGUIUtility.currentViewWidth - 30f;
+
+            float helpHeight = Mathf.Max(36, EditorStyles.helpBox.CalcHeight(new GUIContent(a.message), viewWidth));
+
+            return a.top + helpHeight + a.down;
         }
     }
 }
